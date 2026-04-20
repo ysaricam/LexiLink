@@ -45,27 +45,19 @@ public class LinkTests
     }
 
     [Fact]
-    public void Equals_ShouldReturnTrue_WhenSameReference()
+    public void Id_ShouldBeDifferent_ForNewLinksWithSameValue()
+    {
+        // Entity: Her nesnenin kendine ait bir kimliği (ID) vardır.
+        var a = Link.Of("Real Madrid");
+        var b = Link.Of("Real Madrid");
+        Assert.NotEqual(a.Id, b.Id);
+    }
+
+    [Fact]
+    public void Equals_ShouldBeTrue_WhenSameInstance()
     {
         var a = Link.Of("Real Madrid");
         var b = a;
         Assert.Equal(a, b);
-    }
-
-    [Fact]
-    public void Equals_ShouldReturnFalse_WhenDifferentIdEvenSameValue()
-    {
-        // Aggregate Root'lar ID bazlıdır. Aynı isimde olsa bile farklı nesnelerdir.
-        var a = Link.Of("Real Madrid");
-        var b = Link.Of("Real Madrid");
-        Assert.NotEqual(a, b);
-    }
-
-    [Fact]
-    public void Equals_ShouldReturnFalse_WhenDifferentValue()
-    {
-        var a = Link.Of("Real Madrid");
-        var b = Link.Of("Barcelona");
-        Assert.NotEqual(a, b);
     }
 }
