@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/buildingblocks/" />
+  <Folder Name="/src/buildingblocks/Domain/">
+    <Project Path="src/buildingblocks/Domain/LexiLink.BuildingBlocks.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Games/" />
+  <Folder Name="/src/Modules/Games/Domain/">
+    <Project Path="src/Modules/Games/Domain/LexiLink.Modules.Games.Domain.csproj" />
+  </Folder>
+  <Folder Name="/src/tests/" />
+  <Folder Name="/src/tests/Games/" />
+  <Folder Name="/src/tests/Games/Domain/">
+    <Project Path="src/tests/Games/Domain/LexiLink.Tests.Games.Domain.csproj" />
+  </Folder>
+</Solution>
