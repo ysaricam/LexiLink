@@ -10,7 +10,7 @@ public static class DataSet
 
         Link Add(string val, params LinkId[] subIds)
         {
-            var link = Link.Of(val, subIds);
+            var link = Link.CreateNew(val, subIds);
             links.Add(link.Id, link);
             return link;
         }

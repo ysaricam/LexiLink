@@ -1,3 +1,4 @@
+using LexiLink.BuildingBlocks.Domain;
 using LexiLink.Modules.Games.Domain.GameLinks;
 
 namespace LexiLink.Modules.Games.Domain.Games;
@@ -8,10 +9,24 @@ public enum HintStatus
     RedirectedToSafety
 }
 
-/// <summary>
-/// İpucu işleminin sonucunu temsil eden bilgi paketi.
-/// </summary>
-public sealed record HintResult(
-    string Message, 
-    LinkId RecommendedLinkId, 
-    HintStatus Status);
+public sealed class HintResult : ValueObject
+{
+    public string Message { get; }
+    public LinkId RecommendedLinkId { get; }
+    public HintStatus Status { get; }
+
+    public HintResult(string message, LinkId recommendedLinkId, HintStatus status)
+    {
+        // Mesaj boş olamaz gibi basit bir kural eklenebilir
+        Message = message;
+        RecommendedLinkId = recommendedLinkId;
+        Status = status;
+    }
+
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Message;
+        yield return RecommendedLinkId;
+        yield return Status;
+    }
+}

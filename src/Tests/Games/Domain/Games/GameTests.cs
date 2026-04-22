@@ -11,7 +11,7 @@ namespace LexiLink.Tests.Games.Domain.Games;
 // Testler için basit bir resolver
 public class StubResolver : ITargetLinkResolver
 {
-    public LinkId FixedTargetId { get; set; } = Link.Of("Target").Id;
+    public LinkId FixedTargetId { get; set; } = Link.CreateNew("Target").Id;
     public List<LinkId> FixedPathIds { get; set; } = new List<LinkId>();
     
     public TargetResolution Resolve(LinkId startLinkId, int depth) 
@@ -27,7 +27,7 @@ public class GameTests
     [Fact]
     public void Create_ShouldInitializeWithNotStarted()
     {
-        var startLink = Link.Of("A");
+        var startLink = Link.CreateNew("A");
         var game = Game.Create(_categoryId, startLink.Id, _stubResolver, _scoreCalculator);
 
         Assert.Equal(GameState.NotStarted, game.State);
@@ -45,7 +45,7 @@ public class GameTests
     [Fact]
     public void Start_ShouldChangeStateToInProgress()
     {
-        var startLink = Link.Of("A");
+        var startLink = Link.CreateNew("A");
         var game = Game.Create(_categoryId, startLink.Id, _stubResolver, _scoreCalculator);
 
         game.Start();
@@ -56,7 +56,7 @@ public class GameTests
     [Fact]
     public void Start_ShouldThrow_WhenAlreadyInProgress()
     {
-        var startLink = Link.Of("A");
+        var startLink = Link.CreateNew("A");
         var game = Game.Create(_categoryId, startLink.Id, _stubResolver, _scoreCalculator);
         game.Start();
 
@@ -67,10 +67,10 @@ public class GameTests
     [Fact]
     public void MakeStep_ShouldCalculateScore_WhenTargetReached()
     {
-        var target = Link.Of("B");
+        var target = Link.CreateNew("B");
         _stubResolver.FixedTargetId = target.Id;
         
-        var root = Link.Of("A", new[] { target.Id });
+        var root = Link.CreateNew("A", new[] { target.Id });
         var game = Game.Create(_categoryId, root.Id, _stubResolver, _scoreCalculator, targetDepth: 1, maxSteps: 5); 
         game.Start();
 
@@ -89,9 +89,9 @@ public class GameTests
     [Fact]
     public void MakeStep_ShouldIncludeComboBonus_WhenCorrectPathFollowed()
     {
-        var target = Link.Of("C");
-        var b = Link.Of("B", new[] { target.Id });
-        var root = Link.Of("A", new[] { b.Id });
+        var target = Link.CreateNew("C");
+        var b = Link.CreateNew("B", new[] { target.Id });
+        var root = Link.CreateNew("A", new[] { b.Id });
 
         _stubResolver.FixedTargetId = target.Id;
         _stubResolver.FixedPathIds = new List<LinkId> { b.Id, target.Id };
@@ -114,21 +114,21 @@ public class GameTests
     [Fact]
     public void MakeStep_ShouldThrow_WhenGameIsNotInProgress()
     {
-        var startLink = Link.Of("A");
+        var startLink = Link.CreateNew("A");
         var game = Game.Create(_categoryId, startLink.Id, _stubResolver, _scoreCalculator);
         // Start() çağrılmadı, durum NotStarted
         
-        var exception = Assert.Throws<BusinessRuleValidationException>(() => game.MakeStep(Link.Of("B").Id, new List<LinkId>()));
+        var exception = Assert.Throws<BusinessRuleValidationException>(() => game.MakeStep(Link.CreateNew("B").Id, new List<LinkId>()));
         Assert.IsType<GameMustBeInSpecificStateRule>(exception.BrokenRule);
     }
 
     [Fact]
     public void MakeStep_ShouldKeepScoreAtZero_WhenFailed()
     {
-        var target = Link.Of("B");
-        var root = Link.Of("A", new[] { target.Id });
+        var target = Link.CreateNew("B");
+        var root = Link.CreateNew("A", new[] { target.Id });
         
-        _stubResolver.FixedTargetId = Link.Of("C").Id;
+        _stubResolver.FixedTargetId = Link.CreateNew("C").Id;
         
         var game = Game.Create(_categoryId, root.Id, _stubResolver, _scoreCalculator, maxSteps: 1); 
         game.Start();
@@ -142,9 +142,9 @@ public class GameTests
     [Fact]
     public void MakeStep_ShouldThrowBusinessRuleException_WhenNotNextInChain()
     {
-        var b = Link.Of("B");
-        var a = Link.Of("A", new[] { b.Id });
-        var x = Link.Of("X");
+        var b = Link.CreateNew("B");
+        var a = Link.CreateNew("A", new[] { b.Id });
+        var x = Link.CreateNew("X");
         
         var game = Game.Create(_categoryId, a.Id, _stubResolver, _scoreCalculator);
         game.Start();
@@ -156,7 +156,7 @@ public class GameTests
     [Fact]
     public void Fail_ShouldChangeStateToFailed()
     {
-        var game = Game.Create(_categoryId, Link.Of("A").Id, _stubResolver, _scoreCalculator);
+        var game = Game.Create(_categoryId, Link.CreateNew("A").Id, _stubResolver, _scoreCalculator);
         game.Start();
         
         game.Fail();
@@ -167,9 +167,9 @@ public class GameTests
     [Fact]
     public void UndoMove_ShouldRevertToPreviousLink()
     {
-        var b = Link.Of("B");
-        var a = Link.Of("A", new[] { b.Id });
-        _stubResolver.FixedTargetId = Link.Of("Target").Id;
+        var b = Link.CreateNew("B");
+        var a = Link.CreateNew("A", new[] { b.Id });
+        _stubResolver.FixedTargetId = Link.CreateNew("Target").Id;
         
         var game = Game.Create(_categoryId, a.Id, _stubResolver, _scoreCalculator);
         game.Start();
@@ -187,7 +187,7 @@ public class GameTests
     [Fact]
     public void UndoMove_ShouldThrow_WhenNoHistory()
     {
-        var game = Game.Create(_categoryId, Link.Of("A").Id, _stubResolver, _scoreCalculator);
+        var game = Game.Create(_categoryId, Link.CreateNew("A").Id, _stubResolver, _scoreCalculator);
         game.Start();
 
         var exception = Assert.Throws<BusinessRuleValidationException>(() => game.UndoMove());
@@ -197,9 +197,9 @@ public class GameTests
     [Fact]
     public void UndoMove_ShouldThrow_WhenLimitReached()
     {
-        var b = Link.Of("B");
-        var a = Link.Of("A", new[] { b.Id });
-        _stubResolver.FixedTargetId = Link.Of("Target").Id;
+        var b = Link.CreateNew("B");
+        var a = Link.CreateNew("A", new[] { b.Id });
+        _stubResolver.FixedTargetId = Link.CreateNew("Target").Id;
         var game = Game.Create(_categoryId, a.Id, _stubResolver, _scoreCalculator);
         game.Start();
 
@@ -219,8 +219,8 @@ public class GameTests
     [Fact]
     public void GetHint_ShouldReturnNextStep_WhenOnCorrectPath()
     {
-        var b = Link.Of("B");
-        var a = Link.Of("A", new[] { b.Id });
+        var b = Link.CreateNew("B");
+        var a = Link.CreateNew("A", new[] { b.Id });
         _stubResolver.FixedTargetId = b.Id;
         _stubResolver.FixedPathIds = new List<LinkId> { b.Id };
 
@@ -236,9 +236,9 @@ public class GameTests
     [Fact]
     public void GetHint_ShouldRedirect_WhenOnWrongPath()
     {
-        var b = Link.Of("B");
-        var x = Link.Of("X");
-        var a = Link.Of("A", new[] { b.Id, x.Id });
+        var b = Link.CreateNew("B");
+        var x = Link.CreateNew("X");
+        var a = Link.CreateNew("A", new[] { b.Id, x.Id });
         
         _stubResolver.FixedTargetId = b.Id;
         _stubResolver.FixedPathIds = new List<LinkId> { b.Id };

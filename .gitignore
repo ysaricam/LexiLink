@@ -103,3 +103,6 @@ csx/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Local task tracking
+src/Modules/Games/Domain/Yapilacak.md

@@ -25,5 +25,10 @@ public sealed class ScoreValue : ValueObject
         return new ScoreValue(Value + amount);
     }
 
+    protected override IEnumerable<object> GetEqualityComponents()
+    {
+        yield return Value;
+    }
+
     public override string ToString() => Value.ToString();
 }

@@ -1,9 +1,10 @@
 using LexiLink.BuildingBlocks.Domain;
 using LexiLink.Modules.Games.Domain.GameLinks.Rules;
+using LexiLink.Modules.Games.Domain.GameLinks.Events;
 
 namespace LexiLink.Modules.Games.Domain.GameLinks;
 
-public sealed class Link : Entity, IAggregateRoot
+public sealed class Link : AggregateRoot
 {
     public LinkId Id { get; private set; }
     public string Value { get; private set; }
@@ -11,7 +12,7 @@ public sealed class Link : Entity, IAggregateRoot
     private readonly List<LinkId> _subLinkIds;
     public IReadOnlyList<LinkId> SubLinkIds => _subLinkIds;
 
-    public static Link Of(string value, IEnumerable<LinkId>? subLinkIds = null)
+    internal static Link CreateNew(string value, IEnumerable<LinkId>? subLinkIds = null)
     {
         return new Link(value, subLinkIds);
     }
@@ -23,5 +24,7 @@ public sealed class Link : Entity, IAggregateRoot
         Id = new LinkId(Guid.NewGuid());
         Value = value.Trim();
         _subLinkIds = (subLinkIds ?? Enumerable.Empty<LinkId>()).ToList();
+
+        this.AddDomainEvent(new LinkCreatedDomainEvent(this.Id, this.Value));
     }
 }

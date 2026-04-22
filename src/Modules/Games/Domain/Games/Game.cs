@@ -3,10 +3,11 @@ using LexiLink.Modules.Games.Domain.GameLinks;
 using LexiLink.Modules.Games.Domain.Score;
 using LexiLink.Modules.Games.Domain.Games.Rules;
 using LexiLink.Modules.Games.Domain.Categories;
+using LexiLink.Modules.Games.Domain.Games.Events;
 
 namespace LexiLink.Modules.Games.Domain.Games;
 
-public class Game : Entity, IAggregateRoot
+public class Game : AggregateRoot
 {
     public GameId Id { get; private set; }
     public GameCategoryId CategoryId { get; private set; }
@@ -48,6 +49,8 @@ public class Game : Entity, IAggregateRoot
         _maxSteps = maxSteps;
         _resolver = resolver;
         _scoreCalculator = scoreCalculator;
+
+        this.AddDomainEvent(new GameCreatedDomainEvent(this.Id, this.CategoryId));
     }
 
     internal static Game Create(
@@ -79,6 +82,8 @@ public class Game : Entity, IAggregateRoot
         CurrentStep = 0;
         Score = ScoreValue.Zero;
         State = GameState.InProgress;
+
+        this.AddDomainEvent(new GameStartedDomainEvent(this.Id, this.StartLinkId, _targetLinkId!, _targetDepth, _maxSteps));
     }
 
     public MoveResult MakeStep(LinkId nextLinkId, IReadOnlyList<LinkId> currentAvailableSubLinkIds)
@@ -86,12 +91,15 @@ public class Game : Entity, IAggregateRoot
         CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
         CheckRule(new NextStepMustBeSubLinkOfCurrentRule(nextLinkId, currentAvailableSubLinkIds));
 
+        var previousLinkId = _currentLinkId;
         _history.Add(_currentLinkId);
         
         // Kombo kontrolü: Eğer seçilen link hedef yoldaki sıradaki link ise kombo artar, değilse sıfırlanır.
+        bool isCorrectStep = false;
         if (_targetPathIds.Count > CurrentStep && _targetPathIds[CurrentStep].Equals(nextLinkId))
         {
             _consecutiveCorrectSteps++;
+            isCorrectStep = true;
         }
         else
         {
@@ -101,15 +109,23 @@ public class Game : Entity, IAggregateRoot
         _currentLinkId = nextLinkId;
         CurrentStep++;
 
+        this.AddDomainEvent(new GameStepMadeDomainEvent(this.Id, previousLinkId, nextLinkId, CurrentStep, isCorrectStep));
+
         if(_currentLinkId == _targetLinkId)
         {
             State = GameState.Completed;
             Score = _scoreCalculator.Calculate(_targetDepth, CurrentStep, _maxSteps, _consecutiveCorrectSteps);
+            
+            this.AddDomainEvent(new GameCompletedDomainEvent(this.Id, this.Score, this.CurrentStep));
+            
             return MoveResult.Completed;
         }
         else if(CurrentStep >= _maxSteps)
         {
             State = GameState.Failed;
+            
+            this.AddDomainEvent(new GameFailedDomainEvent(this.Id, "MaxStepsReached"));
+            
             return MoveResult.Failed;
         }
         return MoveResult.Continue;
@@ -133,49 +149,59 @@ public class Game : Entity, IAggregateRoot
             }
         }
 
+        HintResult hintResult;
+
         // Eğer başlangıç noktasındaysak ilk adımı önerelim
         if (_currentLinkId.Equals(StartLinkId))
         {
-            return new HintResult("Doğru yoldasınız. İlk adım olarak bu kelimeyi seçebilirsiniz.", _targetPathIds[0], HintStatus.OnCorrectPath);
+            hintResult = new HintResult("Doğru yoldasınız. İlk adım olarak bu kelimeyi seçebilirsiniz.", _targetPathIds[0], HintStatus.OnCorrectPath);
         }
-
         // Eğer doğru yoldaysak ve henüz sona gelmediysek
-        if (currentIndexInPath != -1 && currentIndexInPath < _targetPathIds.Count - 1)
+        else if (currentIndexInPath != -1 && currentIndexInPath < _targetPathIds.Count - 1)
         {
-            return new HintResult("Doğru yoldasınız. Bir sonraki adımınız bu olmalı.", _targetPathIds[currentIndexInPath + 1], HintStatus.OnCorrectPath);
+            hintResult = new HintResult("Doğru yoldasınız. Bir sonraki adımınız bu olmalı.", _targetPathIds[currentIndexInPath + 1], HintStatus.OnCorrectPath);
         }
-
-        // 2. Durum: Oyuncu yanlış yolda.
-        for (int i = _history.Count - 1; i >= 0; i--)
+        else
         {
-            var historicLinkId = _history[i];
-            
-            int pathIndex = -1;
-            for (int j = 0; j < _targetPathIds.Count; j++)
+            // 2. Durum: Oyuncu yanlış yolda.
+            int safeHistoryIndex = -1;
+            for (int i = _history.Count - 1; i >= 0; i--)
             {
-                if (_targetPathIds[j].Equals(historicLinkId))
+                var historicLinkId = _history[i];
+                
+                int pathIndex = -1;
+                for (int j = 0; j < _targetPathIds.Count; j++)
                 {
-                    pathIndex = j;
-                    break;
+                    if (_targetPathIds[j].Equals(historicLinkId))
+                    {
+                        pathIndex = j;
+                        break;
+                    }
+                }
+
+                if (pathIndex != -1 || historicLinkId.Equals(StartLinkId))
+                {
+                    safeHistoryIndex = i;
+                    _currentLinkId = historicLinkId;
+                    _history.RemoveRange(i, _history.Count - i);
+                    CurrentStep = _history.Count;
+
+                    var nextCorrectStepId = (pathIndex != -1 && pathIndex < _targetPathIds.Count - 1) 
+                        ? _targetPathIds[pathIndex + 1] 
+                        : (pathIndex == -1 ? _targetPathIds[0] : _targetLinkId!);
+
+                    hintResult = new HintResult("Yoldan sapmıştınız, sizi en son doğru yaptığınız adıma geri döndürdüm.", nextCorrectStepId, HintStatus.RedirectedToSafety);
+                    goto emitHintEvent;
                 }
             }
 
-            if (pathIndex != -1 || historicLinkId.Equals(StartLinkId))
-            {
-                _currentLinkId = historicLinkId;
-                _history.RemoveRange(i, _history.Count - i);
-                CurrentStep = _history.Count;
-
-                var nextCorrectStepId = (pathIndex != -1 && pathIndex < _targetPathIds.Count - 1) 
-                    ? _targetPathIds[pathIndex + 1] 
-                    : (pathIndex == -1 ? _targetPathIds[0] : _targetLinkId!);
-
-                return new HintResult("Yoldan sapmıştınız, sizi en son doğru yaptığınız adıma geri döndürdüm.", nextCorrectStepId, HintStatus.RedirectedToSafety);
-            }
+            ResetToStartInternal();
+            hintResult = new HintResult("Yoldan çok uzaklaşmıştınız, sizi başlangıca geri döndürdüm.", _targetPathIds[0], HintStatus.RedirectedToSafety);
         }
 
-        ResetToStart();
-        return new HintResult("Yoldan çok uzaklaşmıştınız, sizi başlangıca geri döndürdüm.", _targetPathIds[0], HintStatus.RedirectedToSafety);
+        emitHintEvent:
+        this.AddDomainEvent(new GameHintUsedDomainEvent(this.Id, hintResult.Status, this.CurrentStep, _currentLinkId));
+        return hintResult;
     }
 
     public void UndoMove()
@@ -184,6 +210,7 @@ public class Game : Entity, IAggregateRoot
         CheckRule(new GameHasHistoryToUndoRule(_history.Count));
         CheckRule(new UndoLimitReachedRule(_remainingUndos));
 
+        var previousLinkId = _currentLinkId;
         var lastIndex = _history.Count - 1;
         _currentLinkId = _history[lastIndex];
         _history.RemoveAt(lastIndex);
@@ -195,6 +222,8 @@ public class Game : Entity, IAggregateRoot
         {
             _consecutiveCorrectSteps--;
         }
+
+        this.AddDomainEvent(new GameMoveUndoneDomainEvent(this.Id, _currentLinkId, previousLinkId));
     }
 
     public void ResetToStart()
@@ -202,9 +231,19 @@ public class Game : Entity, IAggregateRoot
         CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
         CheckRule(new ResetLimitReachedRule(_remainingResets));
         
+        var resetFromLinkId = _currentLinkId;
+        var stepNumberAtReset = CurrentStep;
+
+        ResetToStartInternal();
+        _remainingResets--;
+
+        this.AddDomainEvent(new GameResetToStartDomainEvent(this.Id, resetFromLinkId, stepNumberAtReset));
+    }
+
+    private void ResetToStartInternal()
+    {
         _currentLinkId = StartLinkId;
         _history.Clear();
-        _remainingResets--;
         _consecutiveCorrectSteps = 0;
         CurrentStep = 0;
     }
@@ -213,12 +252,16 @@ public class Game : Entity, IAggregateRoot
     {
         CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
         State = GameState.Failed;
+
+        this.AddDomainEvent(new GameFailedDomainEvent(this.Id, "ManualFail"));
     }
 
     public void Timeout()
     {
         CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
         State = GameState.TimedOut;
+
+        this.AddDomainEvent(new GameTimedOutDomainEvent(this.Id));
     }
 }
 

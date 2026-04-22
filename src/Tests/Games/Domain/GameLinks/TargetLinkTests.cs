@@ -18,7 +18,7 @@ public class TargetLinkTests
     [Fact]
     public void Resolve_ShouldThrow_WhenDepthIsLessThanOne()
     {
-        var startLink = Link.Of("Test");
+        var startLink = Link.CreateNew("Test");
         var resolver = new TargetLinkResolver(id => startLink);
         Assert.Throws<ArgumentException>(() => resolver.Resolve(startLink.Id, 0));
     }
@@ -45,8 +45,8 @@ public class TargetLinkTests
     {
         // Arrange
         // Alt bağlantısı olmayan bir link (yaprak düğüm)
-        var leaf = Link.Of("Son Durak");
-        var root = Link.Of("Başlangıç", new[] { leaf.Id });
+        var leaf = Link.CreateNew("Son Durak");
+        var root = Link.CreateNew("Başlangıç", new[] { leaf.Id });
         var allLinks = new Dictionary<LinkId, Link> { { leaf.Id, leaf }, { root.Id, root } };
         var resolver = new TargetLinkResolver(id => allLinks[id]);
 
