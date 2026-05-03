@@ -2,9 +2,10 @@ namespace LexiLink.Modules.Games.Domain.Games;
 
 public enum GameState
 {
-    NotStarted,
+    Initial,
     InProgress,
+    LastStepWarning,
     Completed,
     Failed,
-    TimedOut
+    Abandoned
 }

@@ -1,16 +1,13 @@
-using LexiLink.BuildingBlocks.Domain;
-using LexiLink.Modules.Games.Domain.Categories;
+using LexiLink.Common.Domain;
 
 namespace LexiLink.Modules.Games.Domain.Games.Events;
 
-public class GameCreatedDomainEvent : DomainEventBase
+public class GameCreatedDomainEvent : DomainEvent
 {
     public GameId GameId { get; }
-    public GameCategoryId CategoryId { get; }
 
-    public GameCreatedDomainEvent(GameId gameId, GameCategoryId categoryId)
+    public GameCreatedDomainEvent(GameId gameId)
     {
         GameId = gameId;
-        CategoryId = categoryId;
     }
 }

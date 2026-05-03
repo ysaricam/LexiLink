@@ -1,273 +1,198 @@
-using LexiLink.BuildingBlocks.Domain;
-using LexiLink.Modules.Games.Domain.GameLinks;
-using LexiLink.Modules.Games.Domain.Score;
-using LexiLink.Modules.Games.Domain.Games.Rules;
-using LexiLink.Modules.Games.Domain.Categories;
+using LexiLink.Common.Domain;
+using LexiLink.Modules.Games.Domain.Games.Allowances;
 using LexiLink.Modules.Games.Domain.Games.Events;
+using LexiLink.Modules.Games.Domain.Games.Puzzles;
+using LexiLink.Modules.Games.Domain.Games.Rules;
+using LexiLink.Modules.Games.Domain.Links;
+using LexiLink.Modules.Games.Domain.Services;
 
 namespace LexiLink.Modules.Games.Domain.Games;
 
-public class Game : AggregateRoot
+public class Game : Entity, IAggregateRoot
 {
+    private readonly List<GameHistoryStep> _history;
+    private readonly Puzzle _puzzle;
+    private Score? _score;
+
     public GameId Id { get; private set; }
-    public GameCategoryId CategoryId { get; private set; }
-    public LinkId StartLinkId { get; }
-    public int CurrentStep { get; private set; } = 0;
-    public GameState State { get; private set; } = GameState.NotStarted;
-    public ScoreValue Score { get; private set; } = ScoreValue.Zero;
+    public Guid PlayerId { get; private set; }
 
-    private LinkId? _targetLinkId;
     private LinkId _currentLinkId;
-    private readonly List<LinkId> _history = new();
-    private IReadOnlyList<LinkId> _targetPathIds = new List<LinkId>();
 
-    private int _remainingUndos = 3;
-    private int _remainingResets = 1;
-    private int _remainingHints = 2;
-    private int _consecutiveCorrectSteps = 0;
+    private GameState _gameState;
 
-    private readonly ITargetLinkResolver _resolver;
-    private readonly IScoreCalculator _scoreCalculator;
-    private readonly int _targetDepth;
-    private readonly int _maxSteps;
+    private StepBudget _stepBudget;
+
+    private HintAllowance _hintAllowance;
+    private UndoAllowance _undoAllowance;
+    private ResetAllowance _resetAllowance;
+
+    public LinkId CurrentLinkId => _currentLinkId;
+    public IReadOnlyCollection<LinkId> History => _history.Select(s => s.LinkId).ToList().AsReadOnly();
+    public GameState State => _gameState;
+    public Score? Score => _score;
+
+    private Game()
+    {
+        _history = [];
+    }
 
     private Game(
-        GameCategoryId categoryId,
-        LinkId startLinkId, 
-        ITargetLinkResolver resolver, 
-        IScoreCalculator scoreCalculator, 
-        int targetDepth = 3, 
-        int maxSteps = 10)
+        Guid playerId,
+        Puzzle puzzle,
+        int maxSteps,
+        int hints,
+        int undos,
+        int resets)
     {
-        CheckRule(new GameStartLinkCannotBeNullRule(startLinkId));
-
         Id = new GameId(Guid.NewGuid());
-        CategoryId = categoryId;
-        StartLinkId = startLinkId!;
-        _currentLinkId = startLinkId!;
-        _targetDepth = targetDepth;
-        _maxSteps = maxSteps;
-        _resolver = resolver;
-        _scoreCalculator = scoreCalculator;
+        PlayerId = playerId;
 
-        this.AddDomainEvent(new GameCreatedDomainEvent(this.Id, this.CategoryId));
+        _puzzle = puzzle;
+
+        _currentLinkId = puzzle.StartLinkId;
+
+        _stepBudget = StepBudget.Of(maxSteps);
+
+        _hintAllowance = HintAllowance.Of(hints);
+        _undoAllowance = UndoAllowance.Of(undos);
+        _resetAllowance = ResetAllowance.Of(resets);
+
+        _history = [];
+        _gameState = GameState.Initial;
+
+        AddDomainEvent(new GameCreatedDomainEvent(Id));
     }
 
     internal static Game Create(
-        GameCategoryId categoryId,
-        LinkId startLinkId, 
-        ITargetLinkResolver resolver, 
-        IScoreCalculator scoreCalculator, 
-        int targetDepth = 3, 
-        int maxSteps = 10)
+        Guid playerId,
+        Puzzle puzzle,
+        int maxSteps,
+        int hints,
+        int undos,
+        int resets)
     {
-        return new Game(categoryId, startLinkId, resolver, scoreCalculator, targetDepth, maxSteps);
+        return new Game(playerId, puzzle, maxSteps, hints, undos, resets);
     }
 
     public void Start()
     {
-        CheckRule(new GameMustBeInSpecificStateRule(State, GameState.NotStarted));
+        CheckRule(new GameMustBeNotStartedRule(_gameState));
 
-        var resolution = _resolver.Resolve(StartLinkId, _targetDepth);
-        
-        _targetLinkId = resolution.TargetId;
-        _targetPathIds = resolution.PathIds;
-        
-        _currentLinkId = StartLinkId;
-        _history.Clear();
-        _remainingUndos = 3;
-        _remainingResets = 1;
-        _remainingHints = 2;
-        _consecutiveCorrectSteps = 0;
-        CurrentStep = 0;
-        Score = ScoreValue.Zero;
-        State = GameState.InProgress;
-
-        this.AddDomainEvent(new GameStartedDomainEvent(this.Id, this.StartLinkId, _targetLinkId!, _targetDepth, _maxSteps));
+        _gameState = GameState.InProgress;
+        AddDomainEvent(new GameStartedDomainEvent(Id));
     }
 
-    public MoveResult MakeStep(LinkId nextLinkId, IReadOnlyList<LinkId> currentAvailableSubLinkIds)
+    public void MakeStep(
+        LinkId nextLinkId,
+        ILinkNeighborResolver neighborResolver,
+        IScoreCalculator scoreCalculator)
     {
-        CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
-        CheckRule(new NextStepMustBeSubLinkOfCurrentRule(nextLinkId, currentAvailableSubLinkIds));
+        CheckRule(new GameMustBeInProgressRule(_gameState));
 
-        var previousLinkId = _currentLinkId;
-        _history.Add(_currentLinkId);
-        
-        // Kombo kontrolü: Eğer seçilen link hedef yoldaki sıradaki link ise kombo artar, değilse sıfırlanır.
-        bool isCorrectStep = false;
-        if (_targetPathIds.Count > CurrentStep && _targetPathIds[CurrentStep].Equals(nextLinkId))
-        {
-            _consecutiveCorrectSteps++;
-            isCorrectStep = true;
-        }
-        else
-        {
-            _consecutiveCorrectSteps = 0;
-        }
+        var validOutgoingLinkIds = neighborResolver.GetOutgoingLinkIds(_currentLinkId);
+        CheckRule(new StepMustBeValidRule(nextLinkId, validOutgoingLinkIds));
 
         _currentLinkId = nextLinkId;
-        CurrentStep++;
+        _history.Add(new GameHistoryStep(_history.Count + 1, nextLinkId));
+        _stepBudget = _stepBudget.Step();
+        AddDomainEvent(new StepMadeDomainEvent(Id, nextLinkId));
 
-        this.AddDomainEvent(new GameStepMadeDomainEvent(this.Id, previousLinkId, nextLinkId, CurrentStep, isCorrectStep));
-
-        if(_currentLinkId == _targetLinkId)
-        {
-            State = GameState.Completed;
-            Score = _scoreCalculator.Calculate(_targetDepth, CurrentStep, _maxSteps, _consecutiveCorrectSteps);
-            
-            this.AddDomainEvent(new GameCompletedDomainEvent(this.Id, this.Score, this.CurrentStep));
-            
-            return MoveResult.Completed;
-        }
-        else if(CurrentStep >= _maxSteps)
-        {
-            State = GameState.Failed;
-            
-            this.AddDomainEvent(new GameFailedDomainEvent(this.Id, "MaxStepsReached"));
-            
-            return MoveResult.Failed;
-        }
-        return MoveResult.Continue;
+        EvaluatePostStepTransitions(scoreCalculator);
     }
 
-    public HintResult GetHint()
+    private void EvaluatePostStepTransitions(IScoreCalculator scoreCalculator)
     {
-        CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
-        CheckRule(new HintLimitReachedRule(_remainingHints));
-
-        _remainingHints--;
-
-        // 1. Durum: Oyuncu şu an doğru yolda mı?
-        int currentIndexInPath = -1;
-        for (int i = 0; i < _targetPathIds.Count; i++)
+        if (_currentLinkId == _puzzle.TargetLinkId)
         {
-            if (_targetPathIds[i].Equals(_currentLinkId))
-            {
-                currentIndexInPath = i;
-                break;
-            }
+            Complete(scoreCalculator);
+            return;
         }
 
-        HintResult hintResult;
-
-        // Eğer başlangıç noktasındaysak ilk adımı önerelim
-        if (_currentLinkId.Equals(StartLinkId))
+        if (_stepBudget.IsExhausted)
         {
-            hintResult = new HintResult("Doğru yoldasınız. İlk adım olarak bu kelimeyi seçebilirsiniz.", _targetPathIds[0], HintStatus.OnCorrectPath);
-        }
-        // Eğer doğru yoldaysak ve henüz sona gelmediysek
-        else if (currentIndexInPath != -1 && currentIndexInPath < _targetPathIds.Count - 1)
-        {
-            hintResult = new HintResult("Doğru yoldasınız. Bir sonraki adımınız bu olmalı.", _targetPathIds[currentIndexInPath + 1], HintStatus.OnCorrectPath);
-        }
-        else
-        {
-            // 2. Durum: Oyuncu yanlış yolda.
-            int safeHistoryIndex = -1;
-            for (int i = _history.Count - 1; i >= 0; i--)
-            {
-                var historicLinkId = _history[i];
-                
-                int pathIndex = -1;
-                for (int j = 0; j < _targetPathIds.Count; j++)
-                {
-                    if (_targetPathIds[j].Equals(historicLinkId))
-                    {
-                        pathIndex = j;
-                        break;
-                    }
-                }
-
-                if (pathIndex != -1 || historicLinkId.Equals(StartLinkId))
-                {
-                    safeHistoryIndex = i;
-                    _currentLinkId = historicLinkId;
-                    _history.RemoveRange(i, _history.Count - i);
-                    CurrentStep = _history.Count;
-
-                    var nextCorrectStepId = (pathIndex != -1 && pathIndex < _targetPathIds.Count - 1) 
-                        ? _targetPathIds[pathIndex + 1] 
-                        : (pathIndex == -1 ? _targetPathIds[0] : _targetLinkId!);
-
-                    hintResult = new HintResult("Yoldan sapmıştınız, sizi en son doğru yaptığınız adıma geri döndürdüm.", nextCorrectStepId, HintStatus.RedirectedToSafety);
-                    goto emitHintEvent;
-                }
-            }
-
-            ResetToStartInternal();
-            hintResult = new HintResult("Yoldan çok uzaklaşmıştınız, sizi başlangıca geri döndürdüm.", _targetPathIds[0], HintStatus.RedirectedToSafety);
+            Fail();
+            return;
         }
 
-        emitHintEvent:
-        this.AddDomainEvent(new GameHintUsedDomainEvent(this.Id, hintResult.Status, this.CurrentStep, _currentLinkId));
+        if (_stepBudget.IsAtLastWarning && _gameState != GameState.LastStepWarning)
+        {
+            _gameState = GameState.LastStepWarning;
+            AddDomainEvent(new LastStepWarningIssuedDomainEvent(Id));
+        }
+    }
+
+    public HintResult UseHint()
+    {
+        CheckRule(new GameMustBeInProgressRule(_gameState));
+
+        _hintAllowance = _hintAllowance.Consume();
+        var hintResult = _puzzle.RequestHint(_currentLinkId);
+
+        AddDomainEvent(new HintUsedDomainEvent(Id, hintResult));
+
         return hintResult;
     }
 
-    public void UndoMove()
+    public void Undo()
     {
-        CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
-        CheckRule(new GameHasHistoryToUndoRule(_history.Count));
-        CheckRule(new UndoLimitReachedRule(_remainingUndos));
+        CheckRule(new GameMustBeInProgressRule(_gameState));
+        CheckRule(new GameHistoryMustNotBeEmptyRule(_history));
 
-        var previousLinkId = _currentLinkId;
-        var lastIndex = _history.Count - 1;
-        _currentLinkId = _history[lastIndex];
-        _history.RemoveAt(lastIndex);
-        
-        _remainingUndos--;
-        CurrentStep--;
+        _undoAllowance = _undoAllowance.Consume();
 
-        if (_consecutiveCorrectSteps > 0)
+        _history.RemoveAt(_history.Count - 1);
+        _currentLinkId = _history.Count > 0 ? _history[^1].LinkId : _puzzle.StartLinkId;
+        _stepBudget = _stepBudget.UndoStep();
+
+        if (_gameState == GameState.LastStepWarning && _stepBudget.IsBelowLastWarning)
         {
-            _consecutiveCorrectSteps--;
+            _gameState = GameState.InProgress;
         }
 
-        this.AddDomainEvent(new GameMoveUndoneDomainEvent(this.Id, _currentLinkId, previousLinkId));
+        AddDomainEvent(new UndoUsedDomainEvent(Id));
     }
 
     public void ResetToStart()
     {
-        CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
-        CheckRule(new ResetLimitReachedRule(_remainingResets));
-        
-        var resetFromLinkId = _currentLinkId;
-        var stepNumberAtReset = CurrentStep;
+        CheckRule(new GameMustBeInProgressRule(_gameState));
+        CheckRule(new GameHistoryMustNotBeEmptyRule(_history));
 
-        ResetToStartInternal();
-        _remainingResets--;
+        _resetAllowance = _resetAllowance.Consume();
 
-        this.AddDomainEvent(new GameResetToStartDomainEvent(this.Id, resetFromLinkId, stepNumberAtReset));
-    }
-
-    private void ResetToStartInternal()
-    {
-        _currentLinkId = StartLinkId;
+        _currentLinkId = _puzzle.StartLinkId;
         _history.Clear();
-        _consecutiveCorrectSteps = 0;
-        CurrentStep = 0;
+        _stepBudget = _stepBudget.Reset();
+        _gameState = GameState.InProgress;
+
+        AddDomainEvent(new ResetUsedDomainEvent(Id));
     }
 
-    public void Fail()
+    public void Abandon()
     {
-        CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
-        State = GameState.Failed;
+        CheckRule(new GameMustNotBeFinishedRule(_gameState));
 
-        this.AddDomainEvent(new GameFailedDomainEvent(this.Id, "ManualFail"));
+        _gameState = GameState.Abandoned;
+        AddDomainEvent(new GameAbandonedDomainEvent(Id));
     }
 
-    public void Timeout()
+    private void Complete(IScoreCalculator scoreCalculator)
     {
-        CheckRule(new GameMustBeInSpecificStateRule(State, GameState.InProgress));
-        State = GameState.TimedOut;
+        _gameState = GameState.Completed;
+        _score = scoreCalculator.Calculate(
+            difficulty: _puzzle.Difficulty,
+            targetDepth: _puzzle.Depth,
+            stepsTaken: _history.Count,
+            hintsUsed: _hintAllowance.Used,
+            undosUsed: _undoAllowance.Used,
+            resetsUsed: _resetAllowance.Used);
 
-        this.AddDomainEvent(new GameTimedOutDomainEvent(this.Id));
+        AddDomainEvent(new GameCompletedDomainEvent(Id, _score));
     }
-}
 
-public enum MoveResult
-{
-    Continue,
-    Completed,
-    Failed
+    private void Fail()
+    {
+        _gameState = GameState.Failed;
+        AddDomainEvent(new GameFailedDomainEvent(Id));
+    }
 }

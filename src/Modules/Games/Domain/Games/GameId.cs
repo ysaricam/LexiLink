@@ -1,4 +1,4 @@
-using LexiLink.BuildingBlocks.Domain;
+using LexiLink.Common.Domain;
 
 namespace LexiLink.Modules.Games.Domain.Games;
 

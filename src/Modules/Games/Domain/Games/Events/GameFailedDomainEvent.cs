@@ -1,15 +1,13 @@
-using LexiLink.BuildingBlocks.Domain;
+using LexiLink.Common.Domain;
 
 namespace LexiLink.Modules.Games.Domain.Games.Events;
 
-public class GameFailedDomainEvent : DomainEventBase
+public class GameFailedDomainEvent : DomainEvent
 {
     public GameId GameId { get; }
-    public string Reason { get; }
 
-    public GameFailedDomainEvent(GameId gameId, string reason)
+    public GameFailedDomainEvent(GameId gameId)
     {
         GameId = gameId;
-        Reason = reason;
     }
 }
