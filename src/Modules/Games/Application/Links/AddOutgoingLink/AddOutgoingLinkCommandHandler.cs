@@ -18,6 +18,9 @@ internal class AddOutgoingLinkCommandHandler : ICommandHandler<AddOutgoingLinkCo
         var link = await _linkRepository.GetByIdAsync(new LinkId(request.LinkId), cancellationToken)
             ?? throw new NotFoundException(nameof(Link), request.LinkId);
 
-        link.AddOutgoingLink(new LinkId(request.OutgoingLinkId));
+        var outgoingLink = await _linkRepository.GetByIdAsync(new LinkId(request.OutgoingLinkId), cancellationToken)
+            ?? throw new NotFoundException(nameof(Link), request.OutgoingLinkId);
+
+        link.AddOutgoingLink(outgoingLink.Id, outgoingLink.CategoryId);
     }
 }

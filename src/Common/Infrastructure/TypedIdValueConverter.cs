@@ -6,7 +6,11 @@ namespace LexiLink.Common.Infrastructure;
 public class TypedIdValueConverter<TTypedIdValue> : ValueConverter<TTypedIdValue, Guid>
     where TTypedIdValue : TypedIdValueBase
 {
-    public TypedIdValueConverter(ConverterMappingHints? mappingHints = null)
+    public TypedIdValueConverter() : this(null)
+    {
+    }
+
+    public TypedIdValueConverter(ConverterMappingHints? mappingHints)
         : base(id => id.Value, value => Create(value), mappingHints)
     {
     }

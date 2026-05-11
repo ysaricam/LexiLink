@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v10.0": {
       "LexiLink.Modules.Games.Infrastructure/1.0.0": {
         "dependencies": {
+          "Dapper": "2.1.72",
           "FluentValidation": "12.1.1",
           "LexiLink.Common.Infrastructure": "1.0.0",
           "LexiLink.Modules.Games.Application": "1.0.0",
@@ -320,6 +321,7 @@
       "LexiLink.Modules.Games.Application/1.0.0": {
         "dependencies": {
           "Dapper": "2.1.72",
+          "FluentValidation": "12.1.1",
           "LexiLink.Common.Application": "1.0.0",
           "LexiLink.Modules.Games.Domain": "1.0.0"
         },

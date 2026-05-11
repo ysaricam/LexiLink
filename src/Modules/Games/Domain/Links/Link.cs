@@ -14,6 +14,11 @@ public class Link : Entity, IAggregateRoot
     private string _description;
     private bool _isActive;
 
+    public CategoryId CategoryId => _categoryId;
+
+    public IReadOnlyCollection<LinkId> OutgoingLinkIds
+        => _outgoingLinks.Select(o => o.TargetId).ToList().AsReadOnly();
+
     private Link()
     {
         _outgoingLinks = [];
@@ -46,9 +51,10 @@ public class Link : Entity, IAggregateRoot
         AddDomainEvent(new LinkCreatedDomainEvent(Id));
     }
 
-    public void AddOutgoingLink(LinkId outgoingLinkId)
+    public void AddOutgoingLink(LinkId outgoingLinkId, CategoryId outgoingCategoryId)
     {
         CheckRule(new LinkCannotPointToItselfRule(Id, outgoingLinkId));
+        CheckRule(new LinkOutgoingMustBeSameCategoryRule(_categoryId, outgoingCategoryId));
         CheckRule(new LinkOutgoingAlreadyExistsRule(_outgoingLinks, outgoingLinkId));
 
         _outgoingLinks.Add(new OutgoingLink(outgoingLinkId));

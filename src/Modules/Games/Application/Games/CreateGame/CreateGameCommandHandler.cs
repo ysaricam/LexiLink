@@ -13,6 +13,7 @@ internal class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Gui
     private readonly ICategoryRepository _categoryRepository;
     private readonly ILinkRepository _linkRepository;
     private readonly IGameRepository _gameRepository;
+    private readonly ICompletedGameLinkPairRepository _completedGameLinkPairRepository;
     private readonly IPathFinderService _pathFinder;
     private readonly IGameConfigurationService _gameConfiguration;
     private readonly Random _random;
@@ -21,6 +22,7 @@ internal class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Gui
         ICategoryRepository categoryRepository,
         ILinkRepository linkRepository,
         IGameRepository gameRepository,
+        ICompletedGameLinkPairRepository completedGameLinkPairRepository,
         IPathFinderService pathFinder,
         IGameConfigurationService gameConfiguration,
         Random random)
@@ -28,6 +30,7 @@ internal class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Gui
         _categoryRepository = categoryRepository;
         _linkRepository = linkRepository;
         _gameRepository = gameRepository;
+        _completedGameLinkPairRepository = completedGameLinkPairRepository;
         _pathFinder = pathFinder;
         _gameConfiguration = gameConfiguration;
         _random = random;
@@ -39,6 +42,10 @@ internal class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Gui
             ?? throw new NotFoundException(nameof(Category), request.CategoryId);
 
         var linkIds = await _linkRepository.GetActiveIdsByCategoryAsync(category.Id, cancellationToken);
+        var completedPairs = await _completedGameLinkPairRepository.GetCompletedPairsAsync(
+            request.PlayerId,
+            category.Id,
+            cancellationToken);
 
         var puzzle = Puzzle.Create(
             category.Id,
@@ -46,7 +53,8 @@ internal class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Gui
             request.Difficulty,
             _pathFinder,
             _gameConfiguration,
-            _random);
+            _random,
+            completedPairs);
 
         var maxSteps = _gameConfiguration.ResolveMaxSteps(request.Difficulty, puzzle.Depth);
         var hints = _gameConfiguration.ResolveHints(request.Difficulty);

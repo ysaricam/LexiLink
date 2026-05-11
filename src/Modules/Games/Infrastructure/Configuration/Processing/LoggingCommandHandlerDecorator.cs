@@ -1,3 +1,4 @@
+using LexiLink.Common.Application;
 using LexiLink.Modules.Games.Application.Configuration.Commands;
 using LexiLink.Modules.Games.Application.Contracts;
 using Serilog;
@@ -11,19 +12,24 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T>
     where T : ICommand
 {
     private readonly ILogger _logger;
+    private readonly IExecutionContextAccessor _executionContextAccessor;
     private readonly ICommandHandler<T> _decorated;
 
     public LoggingCommandHandlerDecorator(
         ILogger logger,
+        IExecutionContextAccessor executionContextAccessor,
         ICommandHandler<T> decorated)
     {
         _logger = logger;
+        _executionContextAccessor = executionContextAccessor;
         _decorated = decorated;
     }
 
     public async Task Handle(T command, CancellationToken cancellationToken)
     {
-        using (LogContext.Push(new CommandLogEnricher(command)))
+        using (LogContext.Push(
+            new RequestLogEnricher(_executionContextAccessor),
+            new CommandLogEnricher(command)))
         {
             try
             {
@@ -62,6 +68,36 @@ internal class LoggingCommandHandlerDecorator<T> : ICommandHandler<T>
             logEvent.AddOrUpdateProperty(new LogEventProperty(
                 "Context",
                 new ScalarValue($"Command:{_command.Id}")));
+        }
+    }
+
+    private class RequestLogEnricher : ILogEventEnricher
+    {
+        private readonly IExecutionContextAccessor _executionContextAccessor;
+
+        public RequestLogEnricher(IExecutionContextAccessor executionContextAccessor)
+        {
+            _executionContextAccessor = executionContextAccessor;
+        }
+
+        public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
+        {
+            if (!_executionContextAccessor.IsAvailable)
+            {
+                return;
+            }
+
+            try
+            {
+                var correlationId = _executionContextAccessor.CorrelationId;
+                logEvent.AddOrUpdateProperty(new LogEventProperty(
+                    "Context",
+                    new ScalarValue($"Request:{correlationId}")));
+            }
+            catch (ApplicationException)
+            {
+                // execution context not yet wired (no auth/correlation) — silently skip
+            }
         }
     }
 }

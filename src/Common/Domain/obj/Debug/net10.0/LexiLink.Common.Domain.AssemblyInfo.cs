@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LexiLink.Common.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c2becfd105833d8766ef1032e44d6a50c1436bb0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97a1772872e3589f9061c81b099a005023ddac20")]
 [assembly: System.Reflection.AssemblyProductAttribute("LexiLink.Common.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LexiLink.Common.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -19,10 +19,10 @@ internal class GetCategoriesQueryHandler : IQueryHandler<GetCategoriesQuery, Lis
 
         const string sql = """
             SELECT
-                [Category].[Id] AS [Id],
-                [Category].[Name] AS [Name]
-            FROM [Games].[v_Categories] AS [Category]
-            ORDER BY [Category].[Name]
+                "Category"."Id" AS "Id",
+                "Category"."Name" AS "Name"
+            FROM "games"."v_Categories" AS "Category"
+            ORDER BY "Category"."Name"
         """;
 
         var results = await connection.QueryAsync<CategoryListItemDto>(

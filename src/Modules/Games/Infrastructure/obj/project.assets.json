@@ -474,6 +474,7 @@
         "framework": ".NETCoreApp,Version=v10.0",
         "dependencies": {
           "Dapper": "2.1.72",
+          "FluentValidation": "12.1.1",
           "LexiLink.Common.Application": "1.0.0",
           "LexiLink.Modules.Games.Domain": "1.0.0"
         },
@@ -1199,6 +1200,7 @@
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "Dapper >= 2.1.72",
       "FluentValidation >= 12.1.1",
       "LexiLink.Common.Infrastructure >= 1.0.0",
       "LexiLink.Modules.Games.Application >= 1.0.0",
@@ -1256,6 +1258,10 @@
       "net10.0": {
         "targetAlias": "net10.0",
         "dependencies": {
+          "Dapper": {
+            "target": "Package",
+            "version": "[2.1.72, )"
+          },
           "FluentValidation": {
             "target": "Package",
             "version": "[12.1.1, )"

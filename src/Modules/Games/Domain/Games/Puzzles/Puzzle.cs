@@ -43,18 +43,46 @@ public sealed class Puzzle : ValueObject
         Difficulty difficulty,
         IPathFinderService pathFinder,
         IGameConfigurationService gameConfiguration,
-        Random random)
+        Random random) =>
+        Create(categoryId, categoryLinkIds, difficulty, pathFinder, gameConfiguration, random, []);
+
+    internal static Puzzle Create(
+        CategoryId categoryId,
+        IReadOnlyList<LinkId> categoryLinkIds,
+        Difficulty difficulty,
+        IPathFinderService pathFinder,
+        IGameConfigurationService gameConfiguration,
+        Random random,
+        IReadOnlyCollection<CompletedGameLinkPair> completedPairs)
     {
         CheckRule(new CategoryMustHaveEnoughLinksToStartGameRule(categoryLinkIds));
 
-        var startLinkId = ChooseStartLink(categoryLinkIds, random);
-
         var (minDepth, maxDepth) = gameConfiguration.ResolveDepthRange(difficulty);
-        var targetLinkId = ChooseTargetLink(startLinkId, categoryLinkIds, minDepth, maxDepth, pathFinder);
+        var completedPairSet = completedPairs
+            .Select(pair => (pair.StartLinkId, pair.TargetLinkId))
+            .ToHashSet();
 
-        var optimalPath = pathFinder.FindOptimalPath(startLinkId, targetLinkId);
+        foreach (var startLinkId in Shuffle(categoryLinkIds, random))
+        {
+            foreach (var targetLinkId in categoryLinkIds.Where(linkId => linkId != startLinkId))
+            {
+                if (completedPairSet.Contains((startLinkId, targetLinkId)))
+                {
+                    continue;
+                }
 
-        return new Puzzle(categoryId, difficulty, startLinkId, targetLinkId, optimalPath);
+                var optimalPath = pathFinder.FindOptimalPath(startLinkId, targetLinkId);
+                if (optimalPath.Count < minDepth || optimalPath.Count > maxDepth)
+                {
+                    continue;
+                }
+
+                return new Puzzle(categoryId, difficulty, startLinkId, targetLinkId, optimalPath);
+            }
+        }
+
+        CheckRule(new PuzzleTargetLinkMustBeReachableRule(null));
+        return null!;
     }
 
     public HintResult RequestHint(LinkId currentLinkId)
@@ -69,20 +97,6 @@ public sealed class Puzzle : ValueObject
         return HintResult.WrongPath(closestCorrectLinkId);
     }
 
-    private static LinkId ChooseStartLink(IReadOnlyList<LinkId> categoryLinkIds, Random random)
-    {
-        return categoryLinkIds[random.Next(categoryLinkIds.Count)];
-    }
-
-    private static LinkId ChooseTargetLink(
-        LinkId startLinkId,
-        IReadOnlyList<LinkId> categoryLinkIds,
-        int minDepth,
-        int maxDepth,
-        IPathFinderService pathFinder)
-    {
-        var targetLinkId = pathFinder.FindTarget(startLinkId, categoryLinkIds, minDepth, maxDepth);
-        CheckRule(new PuzzleTargetLinkMustBeReachableRule(targetLinkId));
-        return targetLinkId!;
-    }
+    private static IReadOnlyList<LinkId> Shuffle(IReadOnlyList<LinkId> linkIds, Random random) =>
+        linkIds.OrderBy(_ => random.Next()).ToList();
 }

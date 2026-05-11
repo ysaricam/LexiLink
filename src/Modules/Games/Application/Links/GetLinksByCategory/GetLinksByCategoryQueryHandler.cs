@@ -19,11 +19,11 @@ internal class GetLinksByCategoryQueryHandler : IQueryHandler<GetLinksByCategory
 
         const string sql = """
             SELECT
-                [Link].[Id] AS [Id],
-                [Link].[Value] AS [Value],
-                [Link].[IsActive] AS [IsActive]
-            FROM [Games].[v_Links] AS [Link]
-            WHERE [Link].[CategoryId] = @CategoryId
+                "Link"."Id" AS "Id",
+                "Link"."Value" AS "Value",
+                "Link"."IsActive" AS "IsActive"
+            FROM "games"."v_Links" AS "Link"
+            WHERE "Link"."CategoryId" = @CategoryId
         """;
 
         var results = await connection.QueryAsync<LinkListItemDto>(

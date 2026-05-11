@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="NetArchTest.Rules" Version="1.3.2" />
+    <PackageReference Include="NUnit" Version="4.0.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+    <Using Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\API\LexiLink.API\LexiLink.API.csproj" />
+    <ProjectReference Include="..\..\Common\Domain\LexiLink.Common.Domain.csproj" />
+    <ProjectReference Include="..\..\Common\Application\LexiLink.Common.Application.csproj" />
+    <ProjectReference Include="..\..\Common\Infrastructure\LexiLink.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Games\Domain\LexiLink.Modules.Games.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Games\Application\LexiLink.Modules.Games.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Games\Infrastructure\LexiLink.Modules.Games.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Players\Domain\LexiLink.Modules.Players.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Players\Application\LexiLink.Modules.Players.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Players\Infrastructure\LexiLink.Modules.Players.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

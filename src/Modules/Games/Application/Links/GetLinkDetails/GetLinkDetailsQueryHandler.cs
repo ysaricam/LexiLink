@@ -20,13 +20,13 @@ internal class GetLinkDetailsQueryHandler : IQueryHandler<GetLinkDetailsQuery, L
 
         const string sql = """
             SELECT
-                [Link].[Id] AS [Id],
-                [Link].[CategoryId] AS [CategoryId],
-                [Link].[Value] AS [Value],
-                [Link].[Description] AS [Description],
-                [Link].[IsActive] AS [IsActive]
-            FROM [Games].[v_Links] AS [Link]
-            WHERE [Link].[Id] = @LinkId
+                "Link"."Id" AS "Id",
+                "Link"."CategoryId" AS "CategoryId",
+                "Link"."Value" AS "Value",
+                "Link"."Description" AS "Description",
+                "Link"."IsActive" AS "IsActive"
+            FROM "games"."v_Links" AS "Link"
+            WHERE "Link"."Id" = @LinkId
         """;
 
         var dto = await connection.QuerySingleOrDefaultAsync<LinkDetailsDto>(

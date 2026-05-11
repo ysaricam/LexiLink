@@ -20,16 +20,16 @@ internal class GetCategoryDetailsQueryHandler : IQueryHandler<GetCategoryDetails
 
         const string sql = """
             SELECT
-                [Category].[Id] AS [Id],
-                [Category].[Name] AS [Name],
-                [Category].[Description] AS [Description],
+                "Category"."Id" AS "Id",
+                "Category"."Name" AS "Name",
+                "Category"."Description" AS "Description",
                 (
-                    SELECT COUNT(*)
-                    FROM [Games].[v_Links] AS [Link]
-                    WHERE [Link].[CategoryId] = [Category].[Id]
-                ) AS [LinkCount]
-            FROM [Games].[v_Categories] AS [Category]
-            WHERE [Category].[Id] = @CategoryId
+                    SELECT COUNT(*)::int
+                    FROM "games"."v_Links" AS "Link"
+                    WHERE "Link"."CategoryId" = "Category"."Id"
+                ) AS "LinkCount"
+            FROM "games"."v_Categories" AS "Category"
+            WHERE "Category"."Id" = @CategoryId
         """;
 
         var dto = await connection.QuerySingleOrDefaultAsync<CategoryDetailsDto>(

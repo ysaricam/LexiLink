@@ -57,9 +57,11 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 Categories/CreateCategory/
  CreateCategoryCommand.cs
  CreateCategoryCommandHandler.cs
+ CreateCategoryCommandValidator.cs
 Categories/EditCategory/
  EditCategoryCommand.cs
  EditCategoryCommandHandler.cs
+ EditCategoryCommandValidator.cs
 Categories/GetCategories/
  CategoryListItemDto.cs
  GetCategoriesQuery.cs
@@ -74,14 +76,17 @@ Configuration/
 Contracts/
  CommandBase.cs
  ICommand.cs
+ IGamesModule.cs
  IQuery.cs
  QueryBase.cs
 Games/AbandonGame/
  AbandonGameCommand.cs
  AbandonGameCommandHandler.cs
+ AbandonGameCommandValidator.cs
 Games/CreateGame/
  CreateGameCommand.cs
  CreateGameCommandHandler.cs
+ CreateGameCommandValidator.cs
 Games/GetGameById/
  GameDetailsDto.cs
  GameHistoryStepDto.cs
@@ -90,31 +95,40 @@ Games/GetGameById/
 Games/MakeStep/
  MakeStepCommand.cs
  MakeStepCommandHandler.cs
+ MakeStepCommandValidator.cs
 Games/Reset/
  ResetCommand.cs
  ResetCommandHandler.cs
+ ResetCommandValidator.cs
 Games/StartGame/
  StartGameCommand.cs
  StartGameCommandHandler.cs
+ StartGameCommandValidator.cs
 Games/Undo/
  UndoCommand.cs
  UndoCommandHandler.cs
+ UndoCommandValidator.cs
 Games/UseHint/
  HintResultDto.cs
  UseHintCommand.cs
  UseHintCommandHandler.cs
+ UseHintCommandValidator.cs
 Links/ActivateLink/
  ActivateLinkCommand.cs
  ActivateLinkCommandHandler.cs
+ ActivateLinkCommandValidator.cs
 Links/AddOutgoingLink/
  AddOutgoingLinkCommand.cs
  AddOutgoingLinkCommandHandler.cs
+ AddOutgoingLinkCommandValidator.cs
 Links/CreateLink/
  CreateLinkCommand.cs
  CreateLinkCommandHandler.cs
+ CreateLinkCommandValidator.cs
 Links/DeactivateLink/
  DeactivateLinkCommand.cs
  DeactivateLinkCommandHandler.cs
+ DeactivateLinkCommandValidator.cs
 Links/GetLinkDetails/
  GetLinkDetailsQuery.cs
  GetLinkDetailsQueryHandler.cs
@@ -130,6 +144,7 @@ Links/GetLinksByCategory/
 Links/RemoveOutgoingLink/
  RemoveOutgoingLinkCommand.cs
  RemoveOutgoingLinkCommandHandler.cs
+ RemoveOutgoingLinkCommandValidator.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LexiLink.Modules.Games.Application.AssemblyInfo.cs
@@ -310,6 +325,7 @@ obj/Debug/net10.0/
  WindowsBase.dll
 <NUGET>/
  dapper/2.1.72/lib/net10.0/Dapper.dll
+ fluentvalidation/12.1.1/lib/net8.0/FluentValidation.dll
  mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
  mediatr/14.1.0/lib/net10.0/MediatR.dll
  microsoft.extensions.dependencyinjection.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll

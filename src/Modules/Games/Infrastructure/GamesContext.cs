@@ -1,3 +1,6 @@
+using LexiLink.Common.Application.Outbox;
+using LexiLink.Common.Domain;
+using LexiLink.Common.Infrastructure;
 using LexiLink.Modules.Games.Domain.Categories;
 using LexiLink.Modules.Games.Domain.Games;
 using LexiLink.Modules.Games.Domain.Links;
@@ -14,6 +17,8 @@ public class GamesContext : DbContext
 
     public DbSet<Game> Games { get; set; } = null!;
 
+    public DbSet<OutboxMessage> OutboxMessages { get; set; } = null!;
+
     private readonly ILoggerFactory _loggerFactory;
 
     public GamesContext(DbContextOptions options, ILoggerFactory loggerFactory)
@@ -25,6 +30,24 @@ public class GamesContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // optionsBuilder.UseLoggerFactory(_loggerFactory).EnableSensitiveDataLogging();
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        base.ConfigureConventions(configurationBuilder);
+
+        var typedIdTypes = typeof(GamesContext).Assembly.GetReferencedAssemblies()
+            .Select(System.Reflection.Assembly.Load)
+            .Concat([typeof(GamesContext).Assembly])
+            .SelectMany(a => a.GetTypes())
+            .Where(t => t is { IsClass: true, IsAbstract: false }
+                        && typeof(TypedIdValueBase).IsAssignableFrom(t));
+
+        foreach (var typedIdType in typedIdTypes)
+        {
+            var converterType = typeof(TypedIdValueConverter<>).MakeGenericType(typedIdType);
+            configurationBuilder.Properties(typedIdType).HaveConversion(converterType);
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,0 +1,179 @@
+using Autofac;
+using FluentValidation;
+using LexiLink.Common.Application.Data;
+using LexiLink.Common.Application.Events;
+using LexiLink.Common.Application.Outbox;
+using LexiLink.Common.Infrastructure;
+using LexiLink.Common.Infrastructure.DomainEventsDispatching;
+using LexiLink.Modules.Games.Application.Configuration.Commands;
+using LexiLink.Modules.Games.Application.Configuration.Queries;
+using LexiLink.Modules.Games.Application.Contracts;
+using LexiLink.Modules.Games.Domain.Categories;
+using LexiLink.Modules.Games.Domain.Games;
+using LexiLink.Modules.Games.Domain.Links;
+using LexiLink.Modules.Games.Domain.Services;
+using LexiLink.Modules.Games.Infrastructure.Configuration.Processing;
+using LexiLink.Modules.Games.Infrastructure.Domain;
+using LexiLink.Modules.Games.Infrastructure.Domain.Categories;
+using LexiLink.Modules.Games.Infrastructure.Domain.Games;
+using LexiLink.Modules.Games.Infrastructure.Domain.Links;
+using LexiLink.Modules.Games.Infrastructure.Domain.Services;
+using LexiLink.Modules.Games.Infrastructure.Outbox;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+
+namespace LexiLink.Modules.Games.Infrastructure.Configuration;
+
+public class GamesAutofacModule : Autofac.Module
+{
+    private readonly string _connectionString;
+
+    public GamesAutofacModule(string connectionString)
+    {
+        _connectionString = connectionString;
+    }
+
+    protected override void Load(ContainerBuilder builder)
+    {
+        var connectionString = _connectionString;
+
+        builder.Register(_ => new SqlConnectionFactory(connectionString))
+            .As<ISqlConnectionFactory>()
+            .InstancePerLifetimeScope();
+
+
+        var applicationAssembly = Assemblies.Application;
+        var allCtors = new AllConstructorFinder();
+
+        builder.RegisterType<GamesModule>()
+            .As<IGamesModule>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        // DbContext binding for UnitOfWork (which depends on the abstract DbContext).
+        builder.Register(c => c.Resolve<GamesContext>())
+            .As<DbContext>()
+            .InstancePerLifetimeScope();
+
+        // UnitOfWork + domain event dispatch infrastructure.
+        builder.RegisterType<UnitOfWork>()
+            .As<IUnitOfWork>()
+            .InstancePerLifetimeScope();
+
+        builder.RegisterType<DomainEventsAccessor>()
+            .As<IDomainEventsAccessor>()
+            .InstancePerLifetimeScope();
+
+        builder.RegisterType<DomainEventsDispatcher>()
+            .As<IDomainEventsDispatcher>()
+            .InstancePerLifetimeScope();
+
+        builder.RegisterType<OutboxAccessor>()
+            .As<IOutbox>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        // Repositories.
+        builder.RegisterType<CategoryRepository>()
+            .As<ICategoryRepository>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterType<LinkRepository>()
+            .As<ILinkRepository>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterType<GameRepository>()
+            .As<IGameRepository>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterType<CompletedGameLinkPairRepository>()
+            .As<ICompletedGameLinkPairRepository>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        // Domain services.
+        builder.RegisterType<StandardScoreCalculator>()
+            .As<IScoreCalculator>()
+            .SingleInstance();
+
+        builder.RegisterType<StandardGameConfigurationService>()
+            .As<IGameConfigurationService>()
+            .SingleInstance();
+
+        builder.RegisterType<PathFinderService>()
+            .As<IPathFinderService>()
+            .SingleInstance();
+
+        builder.RegisterType<LinkNeighborResolver>()
+            .As<ILinkNeighborResolver>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.Register(_ => new Random())
+            .AsSelf()
+            .SingleInstance();
+
+        // Handlers (assembly scan). AsImplementedInterfaces makes each handler resolvable as
+        // both ICommandHandler<T> (decorator target) and IRequestHandler<T> (MediatR target).
+        builder.RegisterAssemblyTypes(applicationAssembly)
+            .AsClosedTypesOf(typeof(ICommandHandler<>))
+            .AsImplementedInterfaces()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterAssemblyTypes(applicationAssembly)
+            .AsClosedTypesOf(typeof(ICommandHandler<,>))
+            .AsImplementedInterfaces()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterAssemblyTypes(applicationAssembly)
+            .AsClosedTypesOf(typeof(IQueryHandler<,>))
+            .AsImplementedInterfaces()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterAssemblyTypes(applicationAssembly)
+            .AsClosedTypesOf(typeof(IValidator<>))
+            .AsImplementedInterfaces()
+            .InstancePerLifetimeScope();
+
+        // Decorator chain — all stacked on IRequestHandler<>/<,> so MediatR's resolution path
+        // runs the full chain. The decorators implement ICommandHandler<T> (which extends
+        // IRequestHandler<T>), so the previous registration auto-fills the next decorator's
+        // `ICommandHandler<T> decorated` constructor slot via runtime cast.
+        // Constraint `where T : ICommand[<TResult>]` filters queries out — query handlers
+        // pass through the bare IRequestHandler<,> registration unchanged.
+        // Order: innermost first, outermost last → at runtime Logging → Validation → UoW → handler.
+        builder.RegisterGenericDecorator(
+            typeof(UnitOfWorkCommandHandlerDecorator<>),
+            typeof(IRequestHandler<>));
+
+        builder.RegisterGenericDecorator(
+            typeof(UnitOfWorkCommandHandlerWithResultDecorator<,>),
+            typeof(IRequestHandler<,>));
+
+        builder.RegisterGenericDecorator(
+            typeof(ValidationCommandHandlerDecorator<>),
+            typeof(IRequestHandler<>));
+
+        builder.RegisterGenericDecorator(
+            typeof(ValidationCommandHandlerWithResultDecorator<,>),
+            typeof(IRequestHandler<,>));
+
+        builder.RegisterGenericDecorator(
+            typeof(LoggingCommandHandlerDecorator<>),
+            typeof(IRequestHandler<>));
+
+        builder.RegisterGenericDecorator(
+            typeof(LoggingCommandHandlerWithResultDecorator<,>),
+            typeof(IRequestHandler<,>));
+
+        builder.RegisterGenericDecorator(
+            typeof(DomainEventsDispatcherNotificationHandlerDecorator<>),
+            typeof(INotificationHandler<>));
+    }
+}

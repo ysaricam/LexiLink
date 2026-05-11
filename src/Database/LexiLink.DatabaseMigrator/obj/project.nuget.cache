@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "ha61iAQv6j4=",
+  "success": true,
+  "projectFilePath": "/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Database/LexiLink.DatabaseMigrator/LexiLink.DatabaseMigrator.csproj",
+  "expectedPackageFiles": [
+    "/Users/yasin/.nuget/packages/dbup-core/6.0.4/dbup-core.6.0.4.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/dbup-postgresql/6.1.2/dbup-postgresql.6.1.2.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.2/microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/microsoft.extensions.logging.abstractions/8.0.2/microsoft.extensions.logging.abstractions.8.0.2.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/npgsql/9.0.3/npgsql.9.0.3.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/serilog/4.3.1/serilog.4.3.1.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/serilog.sinks.console/6.0.0/serilog.sinks.console.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

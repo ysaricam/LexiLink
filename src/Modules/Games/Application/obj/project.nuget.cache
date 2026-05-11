@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "+F6etxQnp1c=",
+  "dgSpecHash": "TUEfGdkwruw=",
   "success": true,
   "projectFilePath": "/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Games/Application/LexiLink.Modules.Games.Application.csproj",
   "expectedPackageFiles": [
     "/Users/yasin/.nuget/packages/dapper/2.1.72/dapper.2.1.72.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/fluentvalidation/12.1.1/fluentvalidation.12.1.1.nupkg.sha512",
     "/Users/yasin/.nuget/packages/mediatr/14.1.0/mediatr.14.1.0.nupkg.sha512",
     "/Users/yasin/.nuget/packages/mediatr.contracts/2.0.1/mediatr.contracts.2.0.1.nupkg.sha512",
     "/Users/yasin/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.0/microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",

@@ -62,6 +62,7 @@ Events/
 Exceptions/
  InvalidCommandException.cs
  NotFoundException.cs
+IExecutionContextAccessor.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LexiLink.Common.Application.AssemblyInfo.cs

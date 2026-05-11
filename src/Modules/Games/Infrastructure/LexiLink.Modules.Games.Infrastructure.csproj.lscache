@@ -54,24 +54,40 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Configuration/Processing/
- LoggingCommandHandlerDecorator.cs
- LoggingCommandHandlerWithResultDecorator.cs
- UnitOfWorkCommandHandlerDecorator.cs
- UnitOfWorkCommandHandlerWithResultDecorator.cs
- ValidationCommandHandlerDecorator.cs
- ValidationCommandHandlerWithResultDecorator.cs
+Assemblies.cs
+Configuration/
+ GamesAutofacModule.cs
+ GamesModule.cs
+ GamesStartup.cs
+ Outbox/OutboxModule.cs
+ Processing/
+  LoggingCommandHandlerDecorator.cs
+  LoggingCommandHandlerWithResultDecorator.cs
+  UnitOfWorkCommandHandlerDecorator.cs
+  UnitOfWorkCommandHandlerWithResultDecorator.cs
+  ValidationCommandHandlerDecorator.cs
+  ValidationCommandHandlerWithResultDecorator.cs
 Domain/Categories/
  CategoryEntityTypeConfiguration.cs
  CategoryRepository.cs
+Domain/Games/
+ CompletedGameLinkPairRepository.cs
+ GameEntityTypeConfiguration.cs
+ GameRepository.cs
 Domain/Links/
  LinkEntityTypeConfiguration.cs
  LinkRepository.cs
+Domain/
+ Services/LinkNeighborResolver.cs
+ SqlConnectionFactory.cs
 GamesContext.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LexiLink.Modules.Games.Infrastructure.AssemblyInfo.cs
  LexiLink.Modules.Games.Infrastructure.GlobalUsings.g.cs
+Outbox/
+ OutboxAccessor.cs
+ OutboxMessageEntityTypeConfiguration.cs
 
 [metadataReferences]
 ../../../Common/

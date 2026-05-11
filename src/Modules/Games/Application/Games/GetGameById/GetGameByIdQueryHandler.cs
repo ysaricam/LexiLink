@@ -20,40 +20,40 @@ internal class GetGameByIdQueryHandler : IQueryHandler<GetGameByIdQuery, GameDet
 
         const string sql = """
             SELECT
-                [Game].[Id]             AS [Id],
-                [Game].[PlayerId]       AS [PlayerId],
-                [Game].[CategoryId]     AS [CategoryId],
-                [Game].[Difficulty]     AS [Difficulty],
-                [Game].[StartLinkId]    AS [StartLinkId],
-                [StartLink].[Value]     AS [StartWord],
-                [Game].[TargetLinkId]   AS [TargetLinkId],
-                [TargetLink].[Value]    AS [TargetWord],
-                [Game].[CurrentLinkId]  AS [CurrentLinkId],
-                [CurrentLink].[Value]   AS [CurrentWord],
-                [Game].[State]          AS [State],
-                [Game].[Score]          AS [Score],
-                [Game].[MaxSteps]       AS [MaxSteps],
-                [Game].[StepsTaken]     AS [StepsTaken],
-                [Game].[HintsTotal]     AS [HintsTotal],
-                [Game].[HintsUsed]      AS [HintsUsed],
-                [Game].[UndosTotal]     AS [UndosTotal],
-                [Game].[UndosUsed]      AS [UndosUsed],
-                [Game].[ResetsTotal]    AS [ResetsTotal],
-                [Game].[ResetsUsed]     AS [ResetsUsed]
-            FROM [Games].[v_Games] AS [Game]
-            INNER JOIN [Games].[v_Links] AS [StartLink]   ON [StartLink].[Id]   = [Game].[StartLinkId]
-            INNER JOIN [Games].[v_Links] AS [TargetLink]  ON [TargetLink].[Id]  = [Game].[TargetLinkId]
-            INNER JOIN [Games].[v_Links] AS [CurrentLink] ON [CurrentLink].[Id] = [Game].[CurrentLinkId]
-            WHERE [Game].[Id] = @GameId;
+                "Game"."Id"             AS "Id",
+                "Game"."PlayerId"       AS "PlayerId",
+                "Game"."CategoryId"     AS "CategoryId",
+                "Game"."Difficulty"     AS "Difficulty",
+                "Game"."StartLinkId"    AS "StartLinkId",
+                "StartLink"."Value"     AS "StartWord",
+                "Game"."TargetLinkId"   AS "TargetLinkId",
+                "TargetLink"."Value"    AS "TargetWord",
+                "Game"."CurrentLinkId"  AS "CurrentLinkId",
+                "CurrentLink"."Value"   AS "CurrentWord",
+                "Game"."State"          AS "State",
+                "Game"."Score"          AS "Score",
+                "Game"."MaxSteps"       AS "MaxSteps",
+                "Game"."StepsTaken"     AS "StepsTaken",
+                "Game"."HintsTotal"     AS "HintsTotal",
+                "Game"."HintsUsed"      AS "HintsUsed",
+                "Game"."UndosTotal"     AS "UndosTotal",
+                "Game"."UndosUsed"      AS "UndosUsed",
+                "Game"."ResetsTotal"    AS "ResetsTotal",
+                "Game"."ResetsUsed"     AS "ResetsUsed"
+            FROM "games"."v_Games" AS "Game"
+            INNER JOIN "games"."v_Links" AS "StartLink"   ON "StartLink"."Id"   = "Game"."StartLinkId"
+            INNER JOIN "games"."v_Links" AS "TargetLink"  ON "TargetLink"."Id"  = "Game"."TargetLinkId"
+            INNER JOIN "games"."v_Links" AS "CurrentLink" ON "CurrentLink"."Id" = "Game"."CurrentLinkId"
+            WHERE "Game"."Id" = @GameId;
 
             SELECT
-                [History].[StepNumber] AS [StepNumber],
-                [History].[LinkId]     AS [LinkId],
-                [Link].[Value]         AS [LinkValue]
-            FROM [Games].[v_GameHistory] AS [History]
-            INNER JOIN [Games].[v_Links] AS [Link] ON [Link].[Id] = [History].[LinkId]
-            WHERE [History].[GameId] = @GameId
-            ORDER BY [History].[StepNumber] ASC;
+                "History"."StepNumber" AS "StepNumber",
+                "History"."LinkId"     AS "LinkId",
+                "Link"."Value"         AS "LinkValue"
+            FROM "games"."v_GameHistory" AS "History"
+            INNER JOIN "games"."v_Links" AS "Link" ON "Link"."Id" = "History"."LinkId"
+            WHERE "History"."GameId" = @GameId
+            ORDER BY "History"."StepNumber" ASC;
         """;
 
         using var multi = await connection.QueryMultipleAsync(

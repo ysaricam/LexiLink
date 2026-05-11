@@ -187,7 +187,7 @@ public class Game : Entity, IAggregateRoot
             undosUsed: _undoAllowance.Used,
             resetsUsed: _resetAllowance.Used);
 
-        AddDomainEvent(new GameCompletedDomainEvent(Id, _score));
+        AddDomainEvent(new GameCompletedDomainEvent(Id, PlayerId, _puzzle.StartLinkId, _puzzle.TargetLinkId, _score));
     }
 
     private void Fail()

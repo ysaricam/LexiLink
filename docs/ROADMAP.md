@@ -14,7 +14,7 @@ Detailed delivery in `progress.md`.
 
 ---
 
-## Sprint 2 — Application Layer ⏳ in progress
+## Sprint 2 — Application Layer ✅ closed 2026-05-03
 
 Goal: make the Domain operable. Wire MediatR, write commands/queries, hook cross-cutting decorators (Kamil-style, Autofac-registered), fill in the read side with Dapper.
 
@@ -88,7 +88,7 @@ DTOs:
 
 ---
 
-## Sprint 3 — Games.Infrastructure ⏳ in progress
+## Sprint 3 — Games.Infrastructure ✅ closed 2026-05-04
 
 Goal: persist the write model with EF Core (PostgreSQL via `Npgsql.EntityFrameworkCore.PostgreSQL`), implement the domain services that need I/O. Pattern: birebir Kamil-faithful — Postgres is the only deviation.
 
@@ -137,7 +137,7 @@ Goal: persist the write model with EF Core (PostgreSQL via `Npgsql.EntityFramewo
 
 ---
 
-## Sprint 4 — API Host
+## Sprint 4 — API Host ✅ closed 2026-05-05
 
 Goal: boot the system end-to-end with HTTP endpoints.
 
@@ -155,7 +155,7 @@ Goal: boot the system end-to-end with HTTP endpoints.
 
 ---
 
-## Sprint 5 — Tests
+## Sprint 5 — Tests ✅ closed 2026-05-09
 
 Goal: lock down the contract surface with three flavors of test.
 
@@ -184,11 +184,73 @@ Goal: lock down the contract surface with three flavors of test.
 
 ---
 
-## Beyond Sprint 5
+## Sprint 7 — Players Module ✅ closed 2026-05-11
 
-- **Player module** — second module; first cross-module integration via Outbox/Inbox.
-- **Integration Events / Outbox-Inbox** — required when Player module ships.
-- **Read-model projection / CQRS denormalization** — when leaderboard / streak views land.
+Goal: ship the second module to validate the modular monolith pattern. Scope: minimum-viable Player identity (Guest + Apple + Google), profile (DisplayName + Discriminator), no stats (Stats is a future module per the Sprint 8 plan). Tek aggregate, tek schema (`players`), kendi Outbox tablosu, kendi decorator stack'i — `Modules/Games` layout'una birebir.
+
+### Slice 1 — Domain layer ✅ done
+
+- [x] `LexiLink.Modules.Players.Domain.csproj` + `InternalsVisibleTo` Application/Infrastructure/Tests.
+- [x] `Player` aggregate root (`RegisterGuest` factory + `LinkAuthProvider` + `UpdateProfile`).
+- [x] VOs: `PlayerId`, `Discriminator` (1-9999, `D4` format), `AuthIdentity` (owned).
+- [x] Enum: `AuthProvider` (Guest, Apple, Google).
+- [x] 9 rules (`DisplayName*`, `Locale*`, `DeviceId*`, `ExternalAuthId*`, `PlayerMustNotAlreadyHaveAuthProvider`, `SocialAuthProviderRequired`, `Discriminator*`, `AvatarUrl*`).
+- [x] 3 events: `PlayerRegistered`, `AuthProviderLinked`, `PlayerProfileUpdated`.
+- [x] Repository contract `IPlayerRepository` with `GetByIdAsync` + `GetByAuthProviderAsync` (login flow) + `AddAsync`.
+- [x] Domain service interface `IDiscriminatorGenerator` (handler calls; Infrastructure implementation queries DB).
+
+### Slice 2 — Application layer ✅ done
+
+- [x] **`Players.Application/Configuration/IPlayerContext.cs`** + **`PlayerContext : IPlayerContext`** in the same folder. Kamil-faithful per-module context — impl `IExecutionContextAccessor.UserId`'yi `new PlayerId(...)` ile sarar. Kamil bunu Application katmanında tutuyor (Infrastructure'da değil) çünkü HTTP'den okumuyor, sadece bir interface'i daraltıyor.
+- [x] Per-module CQRS contracts: `Contracts/{ICommand, ICommand<TResult>, IQuery<TResult>, CommandBase, CommandBase<TResult>, QueryBase<TResult>}` + `Configuration/Commands/ICommandHandler` + `Configuration/Queries/IQueryHandler`. Games modülünün birebir kopyası, Kamil pattern'iyle birebir.
+- [x] Commands (3): `RegisterGuestPlayerCommand` (`CommandBase<Guid>`), `LinkAuthProviderCommand` (`CommandBase`), `UpdatePlayerProfileCommand` (`CommandBase`). `internal` handler + `internal` ctor; Domain factory metotları çağrılır.
+- [x] Queries (2): `GetPlayerByIdQuery` (`QueryBase<PlayerDetailsDto>`) → NotFoundException atar; `GetPlayerByAuthProviderQuery` (`QueryBase<PlayerDetailsDto?>`) → null döner (login flow için gerekli — Apple/Google sub claim'i sorgusunda "yok" geçerli yanıt).
+- [x] FluentValidation `AbstractValidator<T>` per command — yüzeysel kontroller (`NotEmpty`, `MaximumLength`/`MinimumLength` referansları domain `MaxLength` sabitlerinden), default mesajlarla (Games konvansiyonu — Kamil `.WithMessage(...)` kullanıyor ama biz proje içinde tutarlı kalıyoruz).
+- [x] DTOs: `PlayerDetailsDto` (init `AuthIdentities` collection, Game pattern'i) + `AuthIdentityDto` (positional record).
+
+### Slice 3 — Infrastructure layer ✅ done
+
+- [x] `PlayersContext : DbContext` + `players` schema; `DbSet<Player>`, `DbSet<OutboxMessage>`. `ConfigureConventions` typed-ID reflection (Games pattern'i).
+- [x] `PlayerEntityTypeConfiguration` — `OwnsMany<AuthIdentity>` mapping (composite PK `(PlayerId, Provider)`, `Provider` `varchar(32)` HasConversion<string>); `Discriminator` owned single (`DiscriminatorValue` column); field-access mode everywhere.
+- [x] `PlayerRepository : IPlayerRepository` — `GetByIdAsync` (EF), **`GetByAuthProviderAsync` two-step (Dapper lookup PlayerId → EF load aggregate)** çünkü owned collection EF query'leri kırılgan; SqlConnectionFactory zaten injekte ediliyor.
+- [x] `RandomDiscriminatorGenerator : IDiscriminatorGenerator` — Dapper ile `SELECT "DiscriminatorValue" WHERE "DisplayName"`; 10 random attempt + sequential scan fallback. Race condition DB unique constraint'i tetikler — retry handler-level future work.
+- [x] `OutboxAccessor`, `OutboxMessageEntityTypeConfiguration` (table `players.OutboxMessages`) — Games'in birebir kopyası (Kamil pattern: per-module).
+- [x] `PlayersAutofacModule` + `OutboxModule` (Games kopyası, namespace farkı dışında bire bir). `PlayerContext : IPlayerContext` da burada `InstancePerLifetimeScope` registered.
+- [x] Decorator kopyaları (UoW × 2, Logging × 2, Validation × 2) `Configuration/Processing/` altında, Players'ın kendi `ICommandHandler<>` / `ICommandHandler<,>` / `ICommand` / `ICommand<T>` constraint'leriyle.
+
+### Slice 4 — Database scripts ✅ done (2026-05-11)
+
+- [x] `src/Database/LexiLink.Database/Structure/players/Schema/001_CreateSchema.sql`.
+- [x] `players/Tables/010_Players.sql` + **unique index** `UX_Players_DisplayName_DiscriminatorValue`.
+- [x] `players/Tables/020_PlayerAuthIdentities.sql` — composite PK `(PlayerId, Provider)` + **unique index** `UX_PlayerAuthIdentities_Provider_ExternalId` + FK→Players ON DELETE CASCADE.
+- [x] `players/Tables/070_OutboxMessages.sql` — Games tablosuyla birebir, PK adı `PK_Players_OutboxMessages` (cross-schema name uniqueness için prefix).
+- [x] `players/Views/110_v_Players.sql` — denormalized `Handle = DisplayName || '#' || lpad(DiscriminatorValue::text, 4, '0')`.
+- [x] DbUp ile deploy: 5 script applied (first run), idempotent re-run "0 pending scripts" — schema temiz.
+
+### Slice 5 — API host wiring ✅ done (2026-05-11)
+
+- [x] `src/API/LexiLink.API/Modules/Players/PlayerEndpoints.cs` — 5 routes: `POST /players/guest` → 201 with `{id}`, `POST /players/{id}/auth-providers` → 204, `PATCH /players/{id}/profile` → 204, `GET /players/{id}` → 200 `PlayerDetailsDto` (NotFound → 404 via middleware), `GET /players/by-auth?provider=Apple&externalId=...` → 200 or 404 (null DTO → 404 — login flow).
+- [x] `Program.cs` — `PlayersContext` DbContext registration, `PlayersAutofacModule`, separate `playersDomainNotificationsMap`, `PlayersOutboxModule` registered alongside Games equivalents. Type aliases (`GamesOutboxModule` / `PlayersOutboxModule`) ile same-name class clash çözüldü. Her iki `CheckMappings` build'den sonra çağrılır.
+- [x] Smoke verified end-to-end: register guest → `Yasin#5879` handle → link Apple → patch profile → `isGuest` flips false → `/by-auth?provider=Apple` returns same player → unknown sub returns 404 → validator catches empty deviceId (422). Cross-Player Apple-sub collision DB-level unique constraint fires (500 — should map to 409 in a future polish; data integrity preserved).
+- **Slice-içi fix**: EF auto-discovered public `Player.AuthIdentities` getter as a second navigation (alongside the OwnsMany-mapped `_authIdentities` private field) and failed model validation with `Unable to determine the relationship represented by navigation 'Player.AuthIdentities'`. Resolved by `builder.Ignore(p => p.AuthIdentities)` in `PlayerEntityTypeConfiguration`. Aggregate public collection getter over owned VO collection olan her durumda aynı tuzak — gelecek modüller için not.
+
+### Slice 6 — Tests + end-to-end smoke ✅ done (2026-05-11)
+
+- [x] `LexiLink.Modules.Players.Tests` (NUnit 4) — 25 domain unit tests (RegisterGuest, LinkAuthProvider, UpdateProfile, all Player rules, Discriminator VO). Added missing avatar URL max-length branch coverage.
+- [x] `LexiLink.Modules.Players.IntegrationTests` — Kamil-style real Postgres composition root (Autofac + MediatR + `PlayersAutofacModule` + `OutboxModule`), `[Category("Integration")]`, per-test cleanup of `players` schema tables.
+- [x] Integration coverage: register guest, link Apple + query by auth provider, update profile, unknown auth provider returns null. Verified: 4/4 passing.
+- [x] Migrator + API smoke covered in Slice 5: yeni player kaydet, Apple bağla, profili güncelle, by-auth ile bul.
+
+---
+
+## Beyond Sprint 7
+
+- **Architecture alignment pass (current)** — Kamil comparison sonrası eksikler sırayla kapatılıyor. Slice 1 ArchTests baseline, Slice 2 API module facade, Slice 3 module startup APIs ve Slice 4 no-repeat completed start-target pairs tamamlandı.
+- **Stats module** (next / Sprint 8) — Integration Events + Outbox/Inbox eksikliğini kapatacak sıradaki adım. Games + Players event'lerini dinleyen üçüncü modül olacak; `Stats.Infrastructure` ilk gerçek cross-module consumer olacak. BiDictionary `IDomainEventNotification<T>` mapping'leri, outbox processor ve inbox/idempotency burada anlamlanacak.
+- **Authentication middleware** (Sprint 9+) — Apple/Google ID token doğrulama, JWT issue/refresh, API host'ta `JwtBearer` ya da custom auth handler. `IExecutionContextAccessor.UserId` claim'lerden gerçekten dolar.
+- **Push notifications** (Sprint 10+) — FCM/APNs token saklama (`Players` aggregate'ine `DeviceInfo` owned VO eklenir) + ayrı `Notifications` modülü.
+- **Integration Events / Outbox-Inbox processor (Quartz)** — Stats modülüyle birlikte gelir; her modül kendi `ProcessOutboxJob`'unu işletir.
+- **Read-model projection / CQRS denormalization** — leaderboard / streak view'leri Stats modülünde.
 - **Event sourcing** — explicitly *not* on the path. Game state is durable; events are a notification mechanism, not the source of truth.
 
 ---
