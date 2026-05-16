@@ -1,4 +1,5 @@
 using LexiLink.Common.Application.Exceptions;
+using LexiLink.Common.Application.Time;
 using LexiLink.Modules.Players.Application.Configuration.Commands;
 using LexiLink.Modules.Players.Domain.Players;
 
@@ -7,10 +8,12 @@ namespace LexiLink.Modules.Players.Application.Players.LinkAuthProvider;
 internal class LinkAuthProviderCommandHandler : ICommandHandler<LinkAuthProviderCommand>
 {
     private readonly IPlayerRepository _playerRepository;
+    private readonly IClock _clock;
 
-    internal LinkAuthProviderCommandHandler(IPlayerRepository playerRepository)
+    internal LinkAuthProviderCommandHandler(IPlayerRepository playerRepository, IClock clock)
     {
         _playerRepository = playerRepository;
+        _clock = clock;
     }
 
     public async Task Handle(LinkAuthProviderCommand request, CancellationToken cancellationToken)
@@ -22,6 +25,6 @@ internal class LinkAuthProviderCommandHandler : ICommandHandler<LinkAuthProvider
             provider: request.Provider,
             externalId: request.ExternalId,
             email: request.Email,
-            linkedAt: DateTime.UtcNow);
+            linkedAt: _clock.UtcNow);
     }
 }

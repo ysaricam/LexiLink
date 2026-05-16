@@ -1,18 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="6.12.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-    <PackageReference Include="NetArchTest.Rules" Version="1.3.2" />
-    <PackageReference Include="NUnit" Version="4.0.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="NetArchTest.Rules" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,11 +23,22 @@
     <ProjectReference Include="..\..\Common\Application\LexiLink.Common.Application.csproj" />
     <ProjectReference Include="..\..\Common\Infrastructure\LexiLink.Common.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Games\Domain\LexiLink.Modules.Games.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Games\IntegrationEvents\LexiLink.Modules.Games.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\Modules\Games\Application\LexiLink.Modules.Games.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Games\Infrastructure\LexiLink.Modules.Games.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Players\Domain\LexiLink.Modules.Players.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Players\IntegrationEvents\LexiLink.Modules.Players.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\Modules\Players\Application\LexiLink.Modules.Players.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Players\Infrastructure\LexiLink.Modules.Players.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Stats\Application\LexiLink.Modules.Stats.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Stats\Infrastructure\LexiLink.Modules.Stats.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Energy\Domain\LexiLink.Modules.Energy.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Energy\Application\LexiLink.Modules.Energy.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Energy\Infrastructure\LexiLink.Modules.Energy.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Quests\Domain\LexiLink.Modules.Quests.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Quests\IntegrationEvents\LexiLink.Modules.Quests.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Modules\Quests\Application\LexiLink.Modules.Quests.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Quests\Infrastructure\LexiLink.Modules.Quests.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,9 @@ public class OutboxMessage
     public string Type { get; }
     public string Data { get; }
     public DateTime? ProcessedDate { get; private set; }
+    public int RetryCount { get; private set; }
+    public DateTime? NextRetryDate { get; private set; }
+    public string? Error { get; private set; }
 
     public OutboxMessage(Guid id, DateTime occurredOn, string type, string data)
     {
@@ -17,10 +20,15 @@ public class OutboxMessage
     }
 
     private OutboxMessage()
-    { }
-
-    public void Process()
     {
-        ProcessedDate = DateTime.UtcNow;
+        Type = null!;
+        Data = null!;
+    }
+
+    public void Process(DateTime processedDate)
+    {
+        ProcessedDate = processedDate;
+        NextRetryDate = null;
+        Error = null;
     }
 }

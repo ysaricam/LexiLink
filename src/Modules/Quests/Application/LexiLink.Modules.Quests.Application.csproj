@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>LexiLink.Modules.Quests.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\LexiLink.Modules.Quests.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Common\Application\LexiLink.Common.Application.csproj" />
+    <ProjectReference Include="..\..\Players\IntegrationEvents\LexiLink.Modules.Players.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Games\IntegrationEvents\LexiLink.Modules.Games.IntegrationEvents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
+
+</Project>

@@ -1,6 +1,8 @@
+using LexiLink.API.Configuration.Authentication;
 using LexiLink.Modules.Games.Application.Games.AbandonGame;
 using LexiLink.Modules.Games.Application.Games.CreateGame;
 using LexiLink.Modules.Games.Application.Games.GetGameById;
+using LexiLink.Modules.Games.Application.Games.GetGameOptions;
 using LexiLink.Modules.Games.Application.Games.MakeStep;
 using LexiLink.Modules.Games.Application.Games.Reset;
 using LexiLink.Modules.Games.Application.Games.StartGame;
@@ -15,7 +17,12 @@ public static class GameEndpoints
 {
     public static void MapGameEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/games").WithTags("Games");
+        var group = app.MapGroup("/games")
+            .WithTags("Games")
+            .RequireAuthorization(AuthConstants.AuthenticatedPlayerPolicy)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status404NotFound);
 
         group.MapPost("/", async (CreateGameRequest body, IGamesModule gamesModule, CancellationToken ct) =>
         {
@@ -27,6 +34,9 @@ public static class GameEndpoints
 
         group.MapGet("/{id:guid}", async (Guid id, IGamesModule gamesModule, CancellationToken ct) =>
             Results.Ok(await gamesModule.ExecuteQueryAsync(new GetGameByIdQuery(id), ct)));
+
+        group.MapGet("/{id:guid}/options", async (Guid id, IGamesModule gamesModule, CancellationToken ct) =>
+            Results.Ok(await gamesModule.ExecuteQueryAsync(new GetGameOptionsQuery(id), ct)));
 
         group.MapPost("/{id:guid}/start", async (Guid id, IGamesModule gamesModule, CancellationToken ct) =>
         {

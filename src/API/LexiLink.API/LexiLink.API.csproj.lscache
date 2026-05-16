@@ -55,16 +55,47 @@ TemporaryDependencyNodeTargetIdentifier=net10.0
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
+Configuration/Authentication/
+ AuthConstants.cs
+ DevelopmentExternalIdentityVerifier.cs
+ DisabledExternalIdentityVerifier.cs
+ ExternalIdentityValidationMode.cs
+ IExternalIdentityVerifier.cs
+ IJwtTokenIssuer.cs
+ IssuedToken.cs
+ JwtTokenIssuer.cs
+ LexiLinkAuthMode.cs
+ LexiLinkAuthOptions.cs
+ LexiLinkAuthOptionsValidator.cs
+ LexiLinkBearerAuthenticationHandler.cs
+Configuration/ExceptionHandling/
+ ApiProblemResults.cs
+ ExceptionHandlingMiddleware.cs
+Configuration/ExecutionContext/
+ CorrelationMiddleware.cs
+ ExecutionContextAccessor.cs
+Configuration/Health/
+ DatabaseMigrationScriptMatcher.cs
+ HealthCheckResponseWriter.cs
+ LexiLinkDatabaseHealthCheck.cs
+ LexiLinkMigrationHealthCheck.cs
 Configuration/
- ExceptionHandling/ExceptionHandlingMiddleware.cs
- ExecutionContext/
-  CorrelationMiddleware.cs
-  ExecutionContextAccessor.cs
-Modules/Games/
- CategoryEndpoints.cs
- GameEndpoints.cs
- LinkEndpoints.cs
-Modules/Players/PlayerEndpoints.cs
+ Inbox/ProcessStatsInboxMessagesJob.cs
+ OpenApi/LexiLinkOpenApiTransformers.cs
+ Operations/ProcessorBacklogReader.cs
+ Outbox/ProcessOutboxMessagesJob.cs
+CrossModule/EnergyGuard.cs
+Modules/
+ Auth/AuthEndpoints.cs
+ Energy/EnergyEndpoints.cs
+ Games/
+  CategoryEndpoints.cs
+  GameEndpoints.cs
+  LinkEndpoints.cs
+ Operations/OperationsEndpoints.cs
+ Players/PlayerEndpoints.cs
+ Quests/QuestEndpoints.cs
+ Stats/StatsEndpoints.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LexiLink.API.AssemblyInfo.cs
@@ -76,14 +107,28 @@ Program.cs
  Application/obj/Debug/net10.0/ref/LexiLink.Common.Application.dll
  Domain/obj/Debug/net10.0/ref/LexiLink.Common.Domain.dll
  Infrastructure/obj/Debug/net10.0/ref/LexiLink.Common.Infrastructure.dll
+../../Modules/Energy/
+ Application/obj/Debug/net10.0/ref/LexiLink.Modules.Energy.Application.dll
+ Domain/obj/Debug/net10.0/ref/LexiLink.Modules.Energy.Domain.dll
+ Infrastructure/obj/Debug/net10.0/ref/LexiLink.Modules.Energy.Infrastructure.dll
 ../../Modules/Games/
  Application/obj/Debug/net10.0/ref/LexiLink.Modules.Games.Application.dll
  Domain/obj/Debug/net10.0/ref/LexiLink.Modules.Games.Domain.dll
  Infrastructure/obj/Debug/net10.0/ref/LexiLink.Modules.Games.Infrastructure.dll
+ IntegrationEvents/obj/Debug/net10.0/ref/LexiLink.Modules.Games.IntegrationEvents.dll
 ../../Modules/Players/
  Application/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Application.dll
  Domain/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Domain.dll
  Infrastructure/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Infrastructure.dll
+ IntegrationEvents/obj/Debug/net10.0/ref/LexiLink.Modules.Players.IntegrationEvents.dll
+../../Modules/Quests/
+ Application/obj/Debug/net10.0/ref/LexiLink.Modules.Quests.Application.dll
+ Domain/obj/Debug/net10.0/ref/LexiLink.Modules.Quests.Domain.dll
+ Infrastructure/obj/Debug/net10.0/ref/LexiLink.Modules.Quests.Infrastructure.dll
+ IntegrationEvents/obj/Debug/net10.0/ref/LexiLink.Modules.Quests.IntegrationEvents.dll
+../../Modules/Stats/
+ Application/obj/Debug/net10.0/ref/LexiLink.Modules.Stats.Application.dll
+ Infrastructure/obj/Debug/net10.0/ref/LexiLink.Modules.Stats.Infrastructure.dll
 <DOTNET>/packs/Microsoft.AspNetCore.App.Ref/10.0.2/ref/net10.0/
  Microsoft.AspNetCore.Antiforgery.dll
  Microsoft.AspNetCore.Authentication.Abstractions.dll
@@ -413,6 +458,9 @@ Program.cs
  newtonsoft.json/13.0.4/lib/net6.0/Newtonsoft.Json.dll
  npgsql.entityframeworkcore.postgresql/10.0.1/lib/net10.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll
  npgsql/10.0.2/lib/net10.0/Npgsql.dll
+ quartz.extensions.dependencyinjection/3.18.1/lib/net10.0/Quartz.Extensions.DependencyInjection.dll
+ quartz.extensions.hosting/3.18.1/lib/net10.0/Quartz.Extensions.Hosting.dll
+ quartz/3.18.1/lib/net10.0/Quartz.dll
  scalar.aspnetcore/2.14.10/lib/net10.0/Scalar.AspNetCore.dll
  serilog.aspnetcore/9.0.0/lib/net9.0/Serilog.AspNetCore.dll
  serilog.extensions.hosting/9.0.0/lib/net9.0/Serilog.Extensions.Hosting.dll

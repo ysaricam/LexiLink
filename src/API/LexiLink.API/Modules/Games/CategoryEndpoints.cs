@@ -1,3 +1,4 @@
+using LexiLink.API.Configuration.Authentication;
 using LexiLink.Modules.Games.Application.Categories.CreateCategory;
 using LexiLink.Modules.Games.Application.Categories.EditCategory;
 using LexiLink.Modules.Games.Application.Categories.GetCategories;
@@ -10,7 +11,12 @@ public static class CategoryEndpoints
 {
     public static void MapCategoryEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/categories").WithTags("Categories");
+        var group = app.MapGroup("/categories")
+            .WithTags("Categories")
+            .RequireAuthorization(AuthConstants.AuthenticatedPlayerPolicy)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status404NotFound);
 
         group.MapPost("/", async (CreateCategoryRequest body, IGamesModule gamesModule, CancellationToken ct) =>
         {

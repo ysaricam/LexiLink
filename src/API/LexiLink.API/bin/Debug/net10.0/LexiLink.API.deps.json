@@ -10,11 +10,17 @@
         "dependencies": {
           "Autofac.Extensions.DependencyInjection": "10.0.0",
           "LexiLink.Common.Infrastructure": "1.0.0",
+          "LexiLink.Modules.Energy.Infrastructure": "1.0.0",
           "LexiLink.Modules.Games.Infrastructure": "1.0.0",
           "LexiLink.Modules.Players.Infrastructure": "1.0.0",
+          "LexiLink.Modules.Quests.Infrastructure": "1.0.0",
+          "LexiLink.Modules.Stats.Infrastructure": "1.0.0",
           "MediatR": "14.1.0",
           "Microsoft.AspNetCore.OpenApi": "10.0.0",
+          "Microsoft.IdentityModel.JsonWebTokens": "8.14.0",
+          "Microsoft.IdentityModel.Tokens": "8.14.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.1",
+          "Quartz.Extensions.Hosting": "3.18.1",
           "Scalar.AspNetCore": "2.14.10",
           "Serilog.AspNetCore": "9.0.0"
         },
@@ -204,6 +210,36 @@
           }
         }
       },
+      "Quartz/3.18.1": {
+        "runtime": {
+          "lib/net10.0/Quartz.dll": {
+            "assemblyVersion": "3.18.1.0",
+            "fileVersion": "3.18.1.0"
+          }
+        }
+      },
+      "Quartz.Extensions.DependencyInjection/3.18.1": {
+        "dependencies": {
+          "Quartz": "3.18.1"
+        },
+        "runtime": {
+          "lib/net10.0/Quartz.Extensions.DependencyInjection.dll": {
+            "assemblyVersion": "3.18.1.0",
+            "fileVersion": "3.18.1.0"
+          }
+        }
+      },
+      "Quartz.Extensions.Hosting/3.18.1": {
+        "dependencies": {
+          "Quartz.Extensions.DependencyInjection": "3.18.1"
+        },
+        "runtime": {
+          "lib/net10.0/Quartz.Extensions.Hosting.dll": {
+            "assemblyVersion": "3.18.1.0",
+            "fileVersion": "3.18.1.0"
+          }
+        }
+      },
       "Scalar.AspNetCore/2.14.10": {
         "runtime": {
           "lib/net10.0/Scalar.AspNetCore.dll": {
@@ -341,12 +377,57 @@
       "LexiLink.Common.Infrastructure/1.0.0": {
         "dependencies": {
           "Autofac": "9.1.0",
+          "Dapper": "2.1.72",
           "LexiLink.Common.Application": "1.0.0",
           "Microsoft.EntityFrameworkCore": "10.0.4",
-          "Newtonsoft.Json": "13.0.4"
+          "Newtonsoft.Json": "13.0.4",
+          "Npgsql": "10.0.2"
         },
         "runtime": {
           "LexiLink.Common.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Energy.Application/1.0.0": {
+        "dependencies": {
+          "Dapper": "2.1.72",
+          "FluentValidation": "12.1.1",
+          "LexiLink.Common.Application": "1.0.0",
+          "LexiLink.Modules.Energy.Domain": "1.0.0",
+          "LexiLink.Modules.Players.IntegrationEvents": "1.0.0",
+          "LexiLink.Modules.Quests.IntegrationEvents": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Energy.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Energy.Domain/1.0.0": {
+        "dependencies": {
+          "LexiLink.Common.Domain": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Energy.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Energy.Infrastructure/1.0.0": {
+        "dependencies": {
+          "Dapper": "2.1.72",
+          "FluentValidation": "12.1.1",
+          "LexiLink.Common.Infrastructure": "1.0.0",
+          "LexiLink.Modules.Energy.Application": "1.0.0",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.1",
+          "Serilog": "4.3.1"
+        },
+        "runtime": {
+          "LexiLink.Modules.Energy.Infrastructure.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -383,11 +464,23 @@
           "FluentValidation": "12.1.1",
           "LexiLink.Common.Infrastructure": "1.0.0",
           "LexiLink.Modules.Games.Application": "1.0.0",
+          "LexiLink.Modules.Games.IntegrationEvents": "1.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.1",
           "Serilog": "4.3.1"
         },
         "runtime": {
           "LexiLink.Modules.Games.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Games.IntegrationEvents/1.0.0": {
+        "dependencies": {
+          "LexiLink.Common.Application": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Games.IntegrationEvents.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -424,11 +517,108 @@
           "FluentValidation": "12.1.1",
           "LexiLink.Common.Infrastructure": "1.0.0",
           "LexiLink.Modules.Players.Application": "1.0.0",
+          "LexiLink.Modules.Players.IntegrationEvents": "1.0.0",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.1",
           "Serilog": "4.3.1"
         },
         "runtime": {
           "LexiLink.Modules.Players.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Players.IntegrationEvents/1.0.0": {
+        "dependencies": {
+          "LexiLink.Common.Application": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Players.IntegrationEvents.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Quests.Application/1.0.0": {
+        "dependencies": {
+          "Dapper": "2.1.72",
+          "FluentValidation": "12.1.1",
+          "LexiLink.Common.Application": "1.0.0",
+          "LexiLink.Modules.Games.IntegrationEvents": "1.0.0",
+          "LexiLink.Modules.Players.IntegrationEvents": "1.0.0",
+          "LexiLink.Modules.Quests.Domain": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Quests.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Quests.Domain/1.0.0": {
+        "dependencies": {
+          "LexiLink.Common.Domain": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Quests.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Quests.Infrastructure/1.0.0": {
+        "dependencies": {
+          "Dapper": "2.1.72",
+          "FluentValidation": "12.1.1",
+          "LexiLink.Common.Infrastructure": "1.0.0",
+          "LexiLink.Modules.Quests.Application": "1.0.0",
+          "LexiLink.Modules.Quests.IntegrationEvents": "1.0.0",
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "10.0.1",
+          "Serilog": "4.3.1"
+        },
+        "runtime": {
+          "LexiLink.Modules.Quests.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Quests.IntegrationEvents/1.0.0": {
+        "dependencies": {
+          "LexiLink.Common.Application": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Quests.IntegrationEvents.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Stats.Application/1.0.0": {
+        "dependencies": {
+          "Dapper": "2.1.72",
+          "LexiLink.Common.Application": "1.0.0",
+          "LexiLink.Modules.Games.IntegrationEvents": "1.0.0",
+          "LexiLink.Modules.Players.IntegrationEvents": "1.0.0"
+        },
+        "runtime": {
+          "LexiLink.Modules.Stats.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "LexiLink.Modules.Stats.Infrastructure/1.0.0": {
+        "dependencies": {
+          "Autofac": "9.1.0",
+          "Dapper": "2.1.72",
+          "LexiLink.Common.Infrastructure": "1.0.0",
+          "LexiLink.Modules.Stats.Application": "1.0.0",
+          "MediatR": "14.1.0",
+          "Npgsql": "10.0.2"
+        },
+        "runtime": {
+          "LexiLink.Modules.Stats.Infrastructure.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -575,6 +765,27 @@
       "path": "npgsql.entityframeworkcore.postgresql/10.0.1",
       "hashPath": "npgsql.entityframeworkcore.postgresql.10.0.1.nupkg.sha512"
     },
+    "Quartz/3.18.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-q/n/gKLcApDlTk90BRNvj6P8HKR+vbtZEQxo5BAbeEoN5e/8/aqRuG6yH7tVg02CeAXAD40boS74s9hVnh4XDw==",
+      "path": "quartz/3.18.1",
+      "hashPath": "quartz.3.18.1.nupkg.sha512"
+    },
+    "Quartz.Extensions.DependencyInjection/3.18.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-ct+sIqr7n961jvo695GnqHjB+dhK6b/Y9LSXxK6n9EJ6JzMXpwcusd5u2lCqVqqNHaiGBLXp37E75hpPXHQkzA==",
+      "path": "quartz.extensions.dependencyinjection/3.18.1",
+      "hashPath": "quartz.extensions.dependencyinjection.3.18.1.nupkg.sha512"
+    },
+    "Quartz.Extensions.Hosting/3.18.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kZ7ufndI5vygLpI0kCeukVKlzpRFtGjfoU3BoWZ6u6QKoRF2Z3KV1dSpv+VpMqRekz3SrObfN0iLZKWldoZLZw==",
+      "path": "quartz.extensions.hosting/3.18.1",
+      "hashPath": "quartz.extensions.hosting.3.18.1.nupkg.sha512"
+    },
     "Scalar.AspNetCore/2.14.10": {
       "type": "package",
       "serviceable": true,
@@ -660,6 +871,21 @@
       "serviceable": false,
       "sha512": ""
     },
+    "LexiLink.Modules.Energy.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Energy.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Energy.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "LexiLink.Modules.Games.Application/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -675,6 +901,11 @@
       "serviceable": false,
       "sha512": ""
     },
+    "LexiLink.Modules.Games.IntegrationEvents/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
     "LexiLink.Modules.Players.Application/1.0.0": {
       "type": "project",
       "serviceable": false,
@@ -686,6 +917,41 @@
       "sha512": ""
     },
     "LexiLink.Modules.Players.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Players.IntegrationEvents/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Quests.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Quests.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Quests.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Quests.IntegrationEvents/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Stats.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "LexiLink.Modules.Stats.Infrastructure/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

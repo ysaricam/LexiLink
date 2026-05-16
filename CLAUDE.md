@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 LexiLink is a **.NET 10 Modular Monolith** following **Domain-Driven Design** in the style of Kamil Grzybek's [modular-monolith-with-ddd](https://github.com/kgrzybek/modular-monolith-with-ddd) reference. It's a word-graph puzzle game: players step from a start word to a target word through a directed graph of category-bound `Link`s.
 
-**Sprints 1–7 are closed.** Games module is mature end-to-end (Domain, Application, Infrastructure, API, DbUp schema, unit + integration tests). Players module shipped as the second module on 2026-05-11 and validates the modular monolith pattern with its own schema, outbox, decorators, API endpoints, and tests. Next likely roadmap step: Sprint 8 Stats module.
+**Sprints 1–7 are closed and Stats + Energy + Quests modules have shipped.** Games module is mature end-to-end (Domain, Application, Infrastructure, API, DbUp schema, unit + integration tests). Players module shipped as the second module on 2026-05-11 and validates the modular monolith pattern. Stats module is a read-model/projection module driven by integration events. Energy module shipped on 2026-05-14 as the first business module with synchronous cross-module integration: `Games.Application/IEnergyGuard` is invoked by `StartGameCommandHandler` before `game.Start()`, and Energy listens to `PlayerRegisteredIntegrationEvent` for lazy aggregate initialization. Quests module shipped on 2026-05-15 as the fifth module — daily/play-driven quests with event-driven reward delivery; introduces LexiLink's **first reverse cross-module event dependency** (`Energy.Application` consumes `Quests.IntegrationEvents.QuestClaimedIntegrationEvent` and grants bonus energy via `PlayerEnergy.GrantBonus`, which permits over-max balance).
 
 ## Documentation Map
 
@@ -18,6 +18,7 @@ All project docs live under `docs/`. Read the relevant one before non-trivial ch
 - **`docs/ROADMAP.md`** — Sprint plan with detailed checklists.
 - **`docs/activeContext.md`** — What's happening *right now* + recent surprising design choices.
 - **`docs/progress.md`** — What's been delivered and when.
+- **`docs/OPERATIONS.md`** — Runtime config, required env vars, health checks, operational endpoints, and migration/run guidance.
 
 ## Commands
 
@@ -28,8 +29,14 @@ dotnet build LexiLink.sln
 # Build a single project (faster feedback when iterating on Domain)
 dotnet build src/Modules/Games/Domain/LexiLink.Modules.Games.Domain.csproj
 
-# Run all tests (NUnit)
-dotnet test
+# Run the project quality gate.
+# Integration test projects share a local Postgres database, so this script runs
+# DB-free projects first and DB-dependent projects serially. The script also
+# passes -m:1 to keep MSBuild from spawning parallel worker nodes.
+./scripts/test.sh
+
+# Equivalent one-liner when you need solution-level execution:
+dotnet test LexiLink.sln -m:1
 
 # Run tests for a single project
 dotnet test src/Modules/Games/Tests/LexiLink.Modules.Games.Tests.csproj
@@ -49,14 +56,21 @@ dotnet test --filter "FullyQualifiedName~Game_Should_Transition_To_Completed"
 src/Common/                            # BuildingBlocks
   Domain/ Application/ Infrastructure/ Tests/
 src/Modules/Games/
-  Domain/ Application/ Infrastructure/ Tests/ IntegrationTests/
+  Domain/ Application/ Infrastructure/ IntegrationEvents/ Tests/ IntegrationTests/
 src/Modules/Players/
+  Domain/ Application/ Infrastructure/ IntegrationEvents/ Tests/ IntegrationTests/
+src/Modules/Stats/
+  Application/ Infrastructure/ IntegrationTests/   # projection-only, no Domain
+src/Modules/Energy/
   Domain/ Application/ Infrastructure/ Tests/ IntegrationTests/
+src/Modules/Quests/
+  Domain/ Application/ Infrastructure/ IntegrationEvents/ Tests/ IntegrationTests/
 src/API/LexiLink.API/                  # Minimal API host
+  CrossModule/                         # API-host adapters for sync cross-module gateways
 src/Database/                          # DbUp migrator + SQL structure files
 ```
 
-Aggregates: Games module has **Category**, **Link**, **Game**; Players module has **Player**. Cross-aggregate references are by Id only (`TypedIdValueBase`). Full descriptions in `GLOSSARY.md`.
+Aggregates: Games module has **Category**, **Link**, **Game**; Players module has **Player**; Energy module has **PlayerEnergy**; Quests module has **PlayerQuest**. Cross-aggregate references are by Id only (`TypedIdValueBase`). Full descriptions in `GLOSSARY.md`.
 
 ## When Proposing Changes
 

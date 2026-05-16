@@ -21,6 +21,7 @@ public class Player : Entity, IAggregateRoot
 
     private Player()
     {
+        Id = null!;
         _displayName = null!;
         _discriminator = null!;
         _locale = null!;
@@ -50,7 +51,7 @@ public class Player : Entity, IAggregateRoot
 
         _authIdentities = [new AuthIdentity(AuthProvider.Guest, deviceId, email: null, linkedAt: registeredAt)];
 
-        AddDomainEvent(new PlayerRegisteredDomainEvent(Id, _displayName, _discriminator, _isGuest));
+        AddDomainEvent(new PlayerRegisteredDomainEvent(Id, _displayName, _discriminator, _locale, _isGuest));
     }
 
     internal static Player RegisterGuest(
@@ -83,6 +84,6 @@ public class Player : Entity, IAggregateRoot
         _avatarUrl = string.IsNullOrEmpty(avatarUrl) ? null : avatarUrl;
         _locale = locale;
 
-        AddDomainEvent(new PlayerProfileUpdatedDomainEvent(Id));
+        AddDomainEvent(new PlayerProfileUpdatedDomainEvent(Id, _avatarUrl, _locale));
     }
 }

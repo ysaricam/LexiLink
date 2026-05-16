@@ -1,3 +1,4 @@
+using LexiLink.API.Configuration.Authentication;
 using LexiLink.Modules.Games.Application.Links.ActivateLink;
 using LexiLink.Modules.Games.Application.Links.AddOutgoingLink;
 using LexiLink.Modules.Games.Application.Links.CreateLink;
@@ -14,7 +15,12 @@ public static class LinkEndpoints
 {
     public static void MapLinkEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/links").WithTags("Links");
+        var group = app.MapGroup("/links")
+            .WithTags("Links")
+            .RequireAuthorization(AuthConstants.AuthenticatedPlayerPolicy)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status404NotFound);
 
         group.MapPost("/", async (CreateLinkRequest body, IGamesModule gamesModule, CancellationToken ct) =>
         {

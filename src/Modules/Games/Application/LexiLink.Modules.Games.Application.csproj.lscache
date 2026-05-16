@@ -72,6 +72,7 @@ Categories/GetCategoryDetails/
  GetCategoryDetailsQueryHandler.cs
 Configuration/
  Commands/ICommandHandler.cs
+ CrossModule/IEnergyGuard.cs
  Queries/IQueryHandler.cs
 Contracts/
  CommandBase.cs
@@ -92,6 +93,10 @@ Games/GetGameById/
  GameHistoryStepDto.cs
  GetGameByIdQuery.cs
  GetGameByIdQueryHandler.cs
+Games/GetGameOptions/
+ GetGameOptionsQuery.cs
+ GetGameOptionsQueryHandler.cs
+ OutgoingLinkSelector.cs
 Games/MakeStep/
  MakeStepCommand.cs
  MakeStepCommandHandler.cs

@@ -145,3 +145,8 @@
 /Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/obj/Debug/net10.0/LexiLink.Modules.Players.IntegrationTests.pdb
 /Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/obj/Debug/net10.0/LexiLink.Modules.Players.IntegrationTests.genruntimeconfig.cache
 /Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/obj/Debug/net10.0/ref/LexiLink.Modules.Players.IntegrationTests.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/bin/Debug/net10.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/bin/Debug/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/bin/Debug/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/bin/Debug/net10.0/LexiLink.Modules.Players.IntegrationEvents.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/IntegrationTests/bin/Debug/net10.0/LexiLink.Modules.Players.IntegrationEvents.pdb

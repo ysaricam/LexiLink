@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - master
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  ASPNETCORE_LexiLink_IntegrationTests_ConnectionString: Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852
+
+jobs:
+  build-test:
+    name: Build and test
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: lexilink
+          POSTGRES_USER: lexiadmin
+          POSTGRES_PASSWORD: "0852"
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U lexiadmin -d lexilink"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore
+        run: dotnet restore LexiLink.sln --disable-build-servers -v minimal
+
+      - name: Build
+        run: dotnet build LexiLink.sln --no-restore --disable-build-servers -v minimal -m:1
+
+      - name: Apply database migrations
+        run: >
+          dotnet run
+          --project src/Database/LexiLink.DatabaseMigrator/LexiLink.DatabaseMigrator.csproj
+          --no-restore
+          --
+          "$ASPNETCORE_LexiLink_IntegrationTests_ConnectionString"
+          src/Database/LexiLink.Database/Structure
+
+      - name: Test
+        run: ./scripts/test.sh --no-restore -v minimal

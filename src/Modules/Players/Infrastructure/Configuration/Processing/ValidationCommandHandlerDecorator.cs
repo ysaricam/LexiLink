@@ -29,7 +29,11 @@ internal class ValidationCommandHandlerDecorator<T> : ICommandHandler<T>
 
         if (errors.Any())
         {
-            throw new InvalidCommandException(errors.Select(x => x.ErrorMessage).ToList());
+            throw new InvalidCommandException(errors
+                .GroupBy(error => error.PropertyName)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Select(error => error.ErrorMessage).ToArray()));
         }
 
         await _decorated.Handle(command, cancellationToken);

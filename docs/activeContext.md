@@ -1,170 +1,219 @@
 # activeContext.md
 
-What's happening on the project **right now**. Update this file at the start and end of each significant work session — short and current beats long and stale.
+Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
+uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
+`kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-11 (Next step decided: Stats module will close the Integration Events / Outbox-Inbox gap.)
+> Last updated: 2026-05-17
 
 ---
 
 ## Active Sprint
 
-**Architecture Alignment Pass** ⏳ in progress. Kamil Grzybek'in modular-monolith-with-ddd referansına göre eksikler sırayla kapatılıyor. **Slice 1 — ArchTests baseline**, **Slice 2 — API module facade**, ve **Slice 3 — module startup APIs** tamamlandı. Endpoint'ler facade üzerinden dispatch ediyor; API host module-specific composition detaylarını startup API'lerine delege ediyor.
+**Production Readiness Pass** baseline tamamlandı.
 
-**Slices 1-6 done** (2026-05-11):
-- Domain: 1 aggregate (`Player`), 3 owned VOs (`PlayerId`, `Discriminator`, `AuthIdentity`), enum `AuthProvider`, 9 rules, 3 events, `IPlayerRepository` + `IDiscriminatorGenerator`.
-- Application: per-module CQRS contracts, `IPlayerContext` + `PlayerContext` (Kamil pattern — Application'da), 3 command (Register/Link/UpdateProfile), 2 query (GetById + **GetByAuthProvider returning `PlayerDetailsDto?`** for login flow), FluentValidation per command.
-- Infrastructure: `PlayersContext` + EF mapping (OwnsMany<AuthIdentity> + OwnsOne<Discriminator>), `PlayerRepository` (two-step Dapper+EF for auth lookup), `RandomDiscriminatorGenerator`, per-module Outbox + 6 decorator copies + `PlayersAutofacModule` + `OutboxModule`.
-- Database/API: `players` DbUp scripts (`Players`, `PlayerAuthIdentities`, `OutboxMessages`, `v_Players`) + `PlayerEndpoints` + API composition root wiring for `PlayersContext`/`PlayersAutofacModule`/`PlayersOutboxModule`.
-- Tests: `Players.Tests` **25/25 passing**; `Players.IntegrationTests` **4/4 passing** against local Postgres. Integration suite covers register guest, link Apple + by-auth lookup, update profile, unknown auth provider returns null.
+Kamil Architecture Alignment Pass tamamlandı. Ardından public/real usage'a
+yaklaşmak için auth, product-facing Stats derinliği, API contract hardening,
+operational readiness, database hygiene ve release smoke gate baseline'ları
+kapandı.
 
-**Current focus** — bugün kodlama durdu. Yarınki sıradaki adım net: **Stats module** eklenecek ve Integration Events / Outbox-Inbox eksikliği bu modül üzerinden kapatılacak. Stats, Games + Players event'lerini consume eden ilk gerçek cross-module consumer olacak; direct module call yapılmayacak.
+Tamamlanan Kamil alignment slice'ları:
 
-Open carry-overs:
-- Stats module — next slice. Kamil-style Integration Events + Outbox/Inbox akışını gerçek consumer ile doğrulayacak.
-- `IDomainEventNotification<T>` wrappers stay empty until Stats starts — first concrete wrappers should be Games/Players events consumed by Stats.
-- Outbox processor + Inbox/idempotency — Stats slice ile birlikte ele alınacak; direct module call yok.
-
----
-
-## Currently Building
-
-- `src/Modules/Players/Domain/` — **mature** as of Sprint 7. 1 aggregate, 3 VOs, 9 rules, 3 events.
-- `src/Modules/Players/Application/` — **mature** as of Sprint 7. 3 commands, 2 queries, DTOs, validators, per-module CQRS contracts, `IPlayerContext`.
-- `src/Modules/Players/Infrastructure/` — **mature** as of Sprint 7. EF mapping/repository/domain service/outbox/decorator stack are wired.
-- `src/Database/LexiLink.Database/Structure/players/` — **done**. `players` schema + 3 tables + `v_Players` view.
-- `src/API/LexiLink.API/Modules/Players/` — **done**. 5 Minimal API routes; API host registers Players module alongside Games.
-- `src/API/LexiLink.API/Modules/{Games,Players}/` — **Kamil-aligned dispatch**. Endpoint'ler `ISender` yerine module facade çağırıyor.
-- `src/Modules/{Games,Players}/Infrastructure/Configuration/*Startup.cs` — **Kamil-aligned initialization step**. API host module-specific composition details yerine startup API çağırıyor.
-- `src/Modules/Games/Domain/Games/Puzzles/Puzzle.cs` — **no-repeat pair selection**. Player'ın tamamladığı start-target çiftleri puzzle üretiminde elenir.
-- `src/Modules/Stats/` — **next**. Henüz yok; yarın Integration Events / Outbox-Inbox gap'ini kapatmak için eklenecek.
-- `src/Modules/Players/Tests/` — **done**. 25 NUnit domain tests, 100% passing.
-- `src/Modules/Players/IntegrationTests/` — **done**. 4 real-DB tests, 100% passing; project added to solution.
-- `src/Tests/ArchitectureTests/` — **baseline done**. 10 ArchTests passing; layer dependency + domain convention rules.
-
-- `src/Modules/Games/Tests/` — UnitTests project (renamed in spirit; csproj name stays `LexiLink.Modules.Games.Tests.csproj`). NUnit 4.0.1 + FluentAssertions 6.12.0 + NSubstitute 5.1.0. Folder layout mirrors source: `Categories/`, `Links/`, `Games/{Allowances,Puzzles}/` plus `SeedWork/{TestBase, DomainEventsTestHelper}`. Per-aggregate `XxxTestsBase` factories (e.g., `LinkTestsBase`, `GameTestsBase`) hold setup helpers and event-clearing utilities. Domain.csproj exposes `InternalsVisibleTo` for both `Application` and `Tests` so the `internal Create` factories are reachable from tests. **84 tests, 100% passing, ~95ms total runtime.**
-- `src/Modules/Games/IntegrationTests/` — new project, real Autofac composition root mirroring `Program.cs` (drops the HTTP host, keeps DbContext + MediatR + GamesAutofacModule + OutboxModule). `TestBase` runs `[OneTimeSetUp]` → build container, `[SetUp]` → fresh lifetime scope + `DELETE FROM "games"."..."` cleanup, `[TearDown]` → dispose scope. Connection string from `ASPNETCORE_LexiLink_IntegrationTests_ConnectionString` env var with `localhost:5432/lexilink` default. Three test classes (`CategoryIntegrationTests`, `LinkIntegrationTests`, `GameIntegrationTests`) with per-aggregate `XxxHelper` factories. **18 tests, 100% passing, ~1-2s total runtime.**
-- `src/Database/LexiLink.DatabaseMigrator/` — DbUp Postgres console runner (`dbup-postgresql 6.1.2` + `Serilog`). Two-arg CLI: `<connectionString> <scriptsDirectory>`. Calls `EnsureDatabase.For.PostgresqlDatabase`, `JournalToPostgresqlTable("public", "MigrationsJournal")`, `WithScriptsFromFileSystem(... { IncludeSubDirectories = true })`. Runs once per environment; idempotent across re-runs.
-- `src/Database/LexiLink.Database/Structure/games/{Schema,Tables,Views}/` — 12 first-class `.sql` files: `001_CreateSchema`, 7 tables (Categories, Links, LinkOutgoingLinks, Games, GameHistory, GameOptimalPath, OutboxMessages), 4 views (`v_Categories`, `v_Links`, `v_Games` with `*Total = Remaining + Used` arithmetic, `v_GameHistory`). PascalCase quoted identifiers everywhere; `games` schema lowercase.
-- `Modules/Games/Infrastructure/Outbox/{OutboxAccessor.cs, OutboxMessageEntityTypeConfiguration.cs}` — per-module EF-backed outbox; `OutboxAccessor.Add` writes via `GamesContext.Set<OutboxMessage>().Add()`. `IOutbox` interface stays in `Common.Application.Outbox`.
-- `Modules/Games/Infrastructure/Configuration/Outbox/OutboxModule.cs` — separate Autofac module taking `BiDictionary<string, Type>` ctor arg; registers `DomainNotificationsMapper` with the dict. Static `CheckMappings(BiDictionary)` reflection validator scans `Assemblies.Application` + this assembly for `IDomainEventNotification` impls and throws `ApplicationException` listing any unmapped types. Called from `Program.cs` after `builder.Build()`.
-
----
-
-## Last Completed
-
-- **Architecture Alignment Slice 1 — ArchTests baseline (2026-05-11).** Kamil'in Architecture Unit Tests yaklaşımına uygun `src/Tests/ArchitectureTests/` eklendi (`NetArchTest.Rules`, NUnit, `[Category("ArchTests")]`). Kurallar: Domain → no Application/Infrastructure/API/other-module deps; Application → no Infrastructure/API/other-module deps; Infrastructure → no other-module/API deps; `*Rule` → `IBusinessRule`; `IDomainEvent` → `*DomainEvent` suffix; aggregate names → `IAggregateRoot`; `Entity` türevleri public ctor içermez. Verified: 10/10 passing. Bilinçli olarak henüz enforce edilmeyen Kamil gap'i: API'nin module facade yerine Infrastructure/MediatR'a direkt bağlı olması.
-- **Architecture Alignment Slice 2 — API module facade (2026-05-11).** `IGamesModule` / `IPlayersModule` Application contract'larına eklendi; Infrastructure tarafında MediatR-backed facade implementation register edildi; API endpoint'ler `ISender` yerine facade çağırıyor. ArchTests'e API module endpoint'lerinin MediatR/module Infrastructure'a bağımlı olmamasını kilitleyen kural eklendi. Verified: ArchTests 11/11, full solution executable tests 142 passing.
-- **Architecture Alignment Slice 3 — Module startup APIs (2026-05-11).** `GamesStartup` / `PlayersStartup` eklendi; `Program.cs` artık `GamesContext`, `PlayersContext`, module `OutboxModule`, typed-id converter veya module Autofac module detaylarını doğrudan bilmiyor. ArchTests'e API composition root'un EF/module wiring detaylarına bağımlı olmamasını kilitleyen kural eklendi. Verified: API build 0/0, ArchTests 12/12, full solution executable tests 143 passing.
-- **Architecture Alignment Slice 4 — No repeated completed start-target pair per player (2026-05-11).** `GameCompletedDomainEvent` artık `PlayerId`, `StartLinkId`, `TargetLinkId` taşır. `CompletedGameLinkPair` + `ICompletedGameLinkPairRepository` eklendi; `CreateGameCommandHandler` completed pair history'yi Games read model'inden alıp `Puzzle.Create`'e geçirir. `Puzzle.Create` completed pairs'i eleyerek yeni start-target seçer. `games.Games` için completed-pair lookup index'i eklendi. Verified: Games.Tests 85/85, ArchTests 12/12, full solution executable tests 144 passing.
-- **Next planned — Stats module for Integration Events / Outbox-Inbox.** Karar: integration-event eksikliği Players'a geçici read model ekleyerek değil, Kamil'e daha uygun olan Stats module ile kapatılacak. İlk hedef: Games `GameCompleted` ve Players player lifecycle events üzerinden Stats read model/projection oluşturmak; outbox processor ve inbox idempotency bu slice'ın parçası olacak.
-- **Architecture Alignment Slice 3 — Module startup APIs (2026-05-11).** `GamesStartup` / `PlayersStartup` eklendi; `Program.cs` artık `GamesContext`, `PlayersContext`, module `OutboxModule`, typed-id converter veya module Autofac module detaylarını doğrudan bilmiyor. ArchTests'e API composition root'un EF/module wiring detaylarına bağımlı olmamasını kilitleyen kural eklendi. Verified: API build 0/0, ArchTests 12/12, full solution executable tests 143 passing.
-- **Architecture Alignment Slice 2 — API module facade (2026-05-11).** `IGamesModule` / `IPlayersModule` Application contract'larına eklendi; Infrastructure tarafında MediatR-backed facade implementation register edildi; API endpoint'ler `ISender` yerine facade çağırıyor. ArchTests'e API module endpoint'lerinin MediatR/module Infrastructure'a bağımlı olmamasını kilitleyen kural eklendi. Verified: ArchTests 11/11, full solution executable tests 142 passing.
-- **Architecture Alignment Slice 1 — ArchTests baseline (2026-05-11).** Kamil'in Architecture Unit Tests yaklaşımına uygun `src/Tests/ArchitectureTests/` eklendi (`NetArchTest.Rules`, NUnit, `[Category("ArchTests")]`). Kurallar: Domain → no Application/Infrastructure/API/other-module deps; Application → no Infrastructure/API/other-module deps; Infrastructure → no other-module/API deps; `*Rule` → `IBusinessRule`; `IDomainEvent` → `*DomainEvent` suffix; aggregate names → `IAggregateRoot`; `Entity` türevleri public ctor içermez. Verified: 10/10 passing. Slice 2'de API facade gap'i kapatıldı.
-- **Sprint 7 Slice 6 — Players tests + integration smoke (2026-05-11).** `Players.Tests` now has 25 NUnit tests: RegisterGuest (7), LinkAuthProvider (6), UpdateProfile (6), Discriminator (6). Added the missing `AvatarUrlMustBeValidIfProvidedRule.MaxLength` branch. New `Players.IntegrationTests` project mirrors Games integration style: real Autofac composition root, `PlayersContext`, `PlayersAutofacModule`, `OutboxModule`, `TestExecutionContextAccessor`, `[Category("Integration")]`, per-test cleanup of `players` tables. Coverage: register guest, link Apple + by-auth query, update profile, unknown auth returns null. Verified: `Players.Tests` 25/25 passing; `Players.IntegrationTests` 4/4 passing against local Postgres.
-- **Sprint 7 Slice 5 — API host wiring (2026-05-11).** `PlayerEndpoints` shipped 5 routes (`POST /players/guest`, `POST /players/{id}/auth-providers`, `PATCH /players/{id}/profile`, `GET /players/{id}`, `GET /players/by-auth`). `Program.cs` registers `PlayersContext`, `PlayersAutofacModule`, and separate `PlayersOutboxModule` next to Games equivalents. Smoke verified guest registration → Apple link → profile update → by-auth lookup; duplicate Apple sub rejected by DB unique index. EF public getter owned-navigation issue fixed with `builder.Ignore(p => p.AuthIdentities)`.
-- **Sprint 7 Slice 4 — Players DbUp scripts (2026-05-11).** `src/Database/LexiLink.Database/Structure/players/` created with `Schema/001_CreateSchema.sql`, `Tables/010_Players.sql`, `020_PlayerAuthIdentities.sql`, `070_OutboxMessages.sql`, and `Views/110_v_Players.sql`. Unique indexes enforce `(DisplayName, DiscriminatorValue)` and `(Provider, ExternalId)`. DbUp first run applied 5 scripts; re-run was idempotent with 0 pending scripts.
-- **Sprint 7 Slice 3 — Players.Infrastructure (2026-05-11).** `PlayersContext` (DbSet<Player> + DbSet<OutboxMessage> + typed-ID `ConfigureConventions`), `PlayerEntityTypeConfiguration` (`OwnsOne<Discriminator>` `DiscriminatorValue` column + `OwnsMany<AuthIdentity>` to `players.PlayerAuthIdentities` with composite PK `(PlayerId, Provider)` + `Provider varchar(32)`), `PlayerRepository` (`GetByIdAsync` EF; `GetByAuthProviderAsync` two-step Dapper lookup + EF load — owned collection EF queries brittle so SqlConnectionFactory does the auth-identity lookup), `RandomDiscriminatorGenerator` (Dapper `SELECT "DiscriminatorValue" WHERE "DisplayName"`, 10 random attempts + sequential fallback, race condition handled by DB unique constraint), `SqlConnectionFactory` (Games kopyası), 6 decorators (UoW/Validation/Logging × void+result, per-module Kamil pattern), `OutboxAccessor` + `OutboxMessageEntityTypeConfiguration` (`players.OutboxMessages`), `PlayersAutofacModule` (full Kamil-style decorator chain on `IRequestHandler<>/<,>` + `INotificationHandler<>` dispatcher decorator + assembly scan for handlers/validators), `OutboxModule` (`BiDictionary<string, Type>` ctor + `CheckMappings` static reflection validator). Build clean (0 error, 0 warning).
-- **Sprint 7 Slice 2 — Players.Application (2026-05-11).** Per-module CQRS contracts (`Contracts/{ICommand, ICommand<TResult>, IQuery<TResult>, CommandBase, CommandBase<TResult>, QueryBase<TResult>}` + `Configuration/Commands/ICommandHandler` + `Configuration/Queries/IQueryHandler`) — Games modülünün birebir kopyası, Kamil pattern'iyle birebir. **`IPlayerContext` + `PlayerContext` Application'da** (Kamil'in `Meetings.Application.Members.MemberContext` ile aynı yer — Infrastructure'da değil, HTTP'den okumadığı için). 3 command (`RegisterGuestPlayer` `CommandBase<Guid>`, `LinkAuthProvider` `CommandBase`, `UpdatePlayerProfile` `CommandBase`) — hepsi `internal` handler + `internal` ctor; Domain factory'lere `DateTime.UtcNow` geçer. 2 query: `GetPlayerByIdQuery` (NotFoundException atar) ve `GetPlayerByAuthProviderQuery` (`PlayerDetailsDto?` döner — login flow için "yok" geçerli yanıt). Dapper enum'u default int gönderiyor — owned collection'a `varchar(32)` yazıldığı için explicit `new { Provider = query.Provider.ToString() }` cast. FluentValidation per command, default mesajlar (Games konvansiyonu). Build clean (0 error, 0 warning).
-- **Sprint 7 Slice 1 — Players.Domain (2026-05-11).** `Player` aggregate root (`RegisterGuest` factory, `LinkAuthProvider` Apple/Google için tek metot — Guest reddedilir, `UpdateProfile` avatar + locale). VOs: `PlayerId`, `Discriminator` (1-9999, `D4` format), `AuthIdentity` owned (Provider/ExternalId/Email?/LinkedAt). Enum: `AuthProvider {Guest, Apple, Google}`. 9 rules: DisplayName (empty/min2/max32), Locale BCP 47 regex `^[a-z]{2}-[A-Z]{2}$`, DeviceId not empty, ExternalAuthId not empty, PlayerMustNotAlreadyHaveAuthProvider, SocialAuthProviderRequired (Guest reddet), Discriminator in range, AvatarUrl HTTP(S) max 500. 3 events. `IPlayerRepository` (`GetByIdAsync` + **`GetByAuthProviderAsync`** kritik mobile login için + `AddAsync`) + `IDiscriminatorGenerator` (Domain side interface, Infrastructure impl handler tarafında çağrılır — factory deterministik kalır). Build clean (0 error, 1 expected CS8618 warning on `Id`).
-
-- **Sprint 6 — Tests (closed 2026-05-09).** xUnit 2.9 → NUnit 4.0.1 + FluentAssertions 6.12.0 + NSubstitute 5.1.0. `SeedWork/TestBase` provides `AssertPublishedDomainEvent<T>`, `AssertPublishedDomainEvents<T>`, `AssertDomainEventNotPublished<T>`, `AssertBrokenRule<TRule>` (sync + async overloads) — direct port of Kamil's. `SeedWork/DomainEventsTestHelper` reflection walker handles aggregates with nested entities. Domain coverage: `CategoryTests` (10), `Link*Tests` × 3 files (12 using `LinkTestsBase`), `Game*Tests` × 7 files (33 using `GameTestsBase`), `Allowances/{Hint,Undo,Reset}AllowanceTests` (10), `StepBudgetTests` (10), `ScoreTests` (3), `Puzzles/PuzzleTests` (6) = **84 tests**. Integration coverage: `CategoryIntegrationTests` (4), `LinkIntegrationTests` (6), `GameIntegrationTests` (8) = **18 tests** running against real Postgres via `localhost:5432/lexilink`. Naming: domain follows Kamil's `Method_When_Condition_Result`; integration uses `Operation_Test`. **`Domain.csproj` `InternalsVisibleTo` extended** to `Modules.Games.Infrastructure` and `Modules.Games.Tests`. **No per-handler Application unit tests** (Kamil's deliberate omission — covered through IntegrationTests). **ArchTests deferred** to Sprint 7+ (low payoff for single-module project). Build clean (0 error, 0 warning); all 102 tests pass in ~1-2 seconds.
+1. ArchTests baseline.
+2. API endpoint'lerinin module facade kullanması.
+3. API composition root'un module startup API'larına yaslanması.
+4. Games içinde completed start-target pair tekrarını engelleme.
+5. Games/Players IntegrationEvents + Outbox -> Stats projection akışı.
+6. Stats read surface ve shared-container composition hardening.
+7. `Directory.Build.props`, `Directory.Packages.props`, application convention
+   ArchTests.
+8. GitHub Actions CI quality gate: restore, build, DbUp migrations,
+   `scripts/test.sh`.
+9. Auth/authorization baseline: `LexiLinkBearer` scheme, authenticated-player
+   policy, protected endpoint groups, API auth smoke tests.
+10. Outbox scheduling hardening: Quartz hosted scheduler, retry metadata
+    columns, persisted errors, delayed retry eligibility, partial-failure
+    integration test.
+11. Raw Stats Inbox pattern: consuming integration handlers append serialized
+    messages first; scheduled processor projects, retries failures, and keeps
+    duplicate event ids idempotent.
+12. Stats Internal Commands baseline: module-owned command storage, scheduler,
+    retry/error processor, Quartz-triggered `ProcessStatsInboxCommand`, and
+    architecture convention coverage.
+13. Event bus abstraction baseline: public integration events no longer inherit
+    MediatR `INotification`; producers publish through `IEventsBus`, Stats
+    consumes through `IIntegrationEventHandler<T>`, and the first implementation
+    remains in-process.
+14. Module composition isolation review: shared host container kept; event bus
+    lifetime tightened to scoped; architecture tests now guard against global
+    `DbContext`/`IUnitOfWork`/dispatcher/outbox leakage and singleton bus scope
+    capture.
+15. Time abstraction: Common `IClock`/`SystemClock` introduced; Players
+    time-dependent command decisions and processing retry/processed timestamps
+    now use the clock; direct production `DateTime.UtcNow` remains only in the
+    clock implementation and domain-event occurrence metadata.
 
 ---
 
-- **Sprint 5 Slice 6 — End-to-end smoke against real Postgres (2026-05-09).** Migrator first run created `MigrationsJournal` and applied 12 scripts cleanly. `POST /categories` returned 201 with id; 6 `POST /links` (cat, mat, bat, bag, bug, rug); 10 `POST /links/{a}/outgoing/{b}` for bidirectional chain; `POST /games` (Easy difficulty) returned a Game with start=`bug`, target=`mat`, depth=3; `POST /games/{id}/start` → 204; three `POST /games/{id}/steps` (bug→bag→bat→mat) → 204 each; final `GET /games/{id}` showed `state=Completed`, `score=300`, `stepsTaken=3`, three `history` rows in correct order. Read-side views (`v_Categories`, `v_Links`, `v_Games`, `v_GameHistory`) all serve correctly through their Dapper handlers. **`OutboxMessages` table stays empty** as expected — no `IDomainEventNotification<T>` wrappers shipped yet. Three EF/Dapper bugs surfaced and fixed during the run (see Sprint 5 progress entry for details). Build clean (0 error).
-- **Sprint 5 Slice 5 — DomainNotificationsMapper + CheckMappings (2026-05-09).** `OutboxModule.cs` separate Autofac module under `Modules/Games/Infrastructure/Configuration/Outbox/`. Takes `BiDictionary<string, Type>` ctor arg, registers `DomainNotificationsMapper` as singleton via `WithParameter("domainNotificationMap", _domainNotificationsMap)`. Static `CheckMappings(BiDictionary)` reflection validator scans `Assemblies.Application` + the Infrastructure assembly for non-abstract types implementing `IDomainEventNotification`, throws `ApplicationException` listing any types missing from the dict. The previous "empty `BiDictionary` injected via `GamesAutofacModule.Register(_ => new DomainNotificationsMapper(...))`" registration removed. `Program.cs` builds the (currently empty) dict, registers the module via `containerBuilder.RegisterModule(new OutboxModule(...))`, then calls `OutboxModule.CheckMappings(...)` after `builder.Build()`. Build clean.
-- **Sprint 5 Slice 4 — EF-backed Outbox per-module (2026-05-09).** `Modules/Games/Infrastructure/Outbox/OutboxMessageEntityTypeConfiguration.cs` maps to `[games].[OutboxMessages]` (`Id` PK, `OccurredOn`, `Type`, `Data`, `ProcessedDate` nullable). `OutboxAccessor.cs : IOutbox` (`internal`, scoped) injects `GamesContext` and writes via `_gamesContext.Set<OutboxMessage>().Add(message)`. `GamesContext` gains `DbSet<OutboxMessage> OutboxMessages`. `GamesAutofacModule` registration switched from `InMemoryOutbox` (singleton) to `OutboxAccessor` (`InstancePerLifetimeScope` + `FindConstructorsWith(allCtors)` since the ctor is internal). `Common.Infrastructure/Outbox/InMemoryOutbox.cs` and the parent folder deleted (no remaining references). The `IOutbox` interface stays in `Common.Application.Outbox` — only the implementation is per-module.
-- **Sprint 5 Slice 3 — Read-side view DDL (2026-05-09).** Four view files under `src/Database/LexiLink.Database/Structure/games/Views/`: `110_v_Categories.sql` (Id, Name, Description), `120_v_Links.sql` (Id, CategoryId, Value, Description, IsActive), `130_v_Games.sql` (all Game scalar columns + computed `HintsTotal = HintsRemaining + HintsUsed`, same shape for `UndosTotal`/`ResetsTotal`), `140_v_GameHistory.sql` (GameId, StepNumber, LinkId). `CREATE OR REPLACE VIEW` so re-running is safe; future column changes ship as new sequence-numbered files. Column shapes match exactly what existing Dapper query handlers select, verified by booting the API and hitting all four read endpoints.
-- **Sprint 5 Slice 2 — Schema + table DDL (2026-05-09).** Eight files: `Schema/001_CreateSchema.sql` (`CREATE SCHEMA IF NOT EXISTS "games"`), then 7 table files (`010_Categories` through `070_OutboxMessages`). FK relationships: `Links.CategoryId → Categories.Id`; `LinkOutgoingLinks.LinkId → Links.Id ON DELETE CASCADE` (writeable join), `LinkOutgoingLinks.OutgoingLinkId → Links.Id` (no cascade — soft delete only); `GameHistory.GameId → Games.Id ON DELETE CASCADE`; `GameOptimalPath.GameId → Games.Id ON DELETE CASCADE`. `Score` column on Games is nullable (no Score until completion); enum columns (`State`, `Difficulty`) are `varchar(32)`. Two indexes: `IX_Links_CategoryId` (used by `GetIdsByCategoryAsync` / `GetActiveIdsByCategoryAsync`) and `IX_OutboxMessages_ProcessedDate_OccurredOn` (anticipates Quartz processor query shape).
-- **Sprint 5 Slice 1 — DbUp runner + Database project scaffold (2026-05-09).** `src/Database/LexiLink.DatabaseMigrator/` console app: `Program.cs` validates two args (connection string + scripts directory), wires Serilog console sink, calls `EnsureDatabase.For.PostgresqlDatabase` then `DeployChanges.To.PostgresqlDatabase(...).WithScriptsFromFileSystem(scriptsDir, new FileSystemScriptOptions { IncludeSubDirectories = true }).JournalToPostgresqlTable("public", "MigrationsJournal").LogToConsole().Build()`. Returns -1 on failure. `src/Database/LexiLink.Database/Structure/` content folder (no .csproj — DbUp reads from filesystem at runtime). Project added to `LexiLink.sln`. **Existing module-embedded scaffold (`Modules/Games/Infrastructure/Database/{GamesDatabaseInitializer.cs, Initialize/*.sql}`) deleted** plus its package ref (`dbup-postgresql 7.0.1`) and `<EmbeddedResource>` item from `Games.Infrastructure.csproj`. API `Program.cs` no longer auto-runs migrations on startup — schema deployment is the operator's job, exactly Kamil's split.
-- **Sprint 4 Slice 5 — Real appsettings + Scalar API reference (2026-05-05).** `Scalar.AspNetCore 2.14.10` package added to API project; `app.MapScalarApiReference("/scalar")` in Development env reads the existing `AddOpenApi`-generated `/openapi/v1.json` and serves an interactive API explorer. Verified: `GET /scalar` redirects (302) to `/scalar/` which serves an HTML page titled "Scalar API Reference" referencing `/openapi/v1.json`. Connection string handling reworked: localhost dev default moved out of `appsettings.json` into `appsettings.Development.json`; `appsettings.json` now ships an empty `LexiLinkDb` so production must explicitly set `ConnectionStrings__LexiLinkDb` env var (or fail fast at startup). The fail-fast check now does `string.IsNullOrWhiteSpace(...)` and throws `InvalidOperationException` with a hint pointing to either the env var or `appsettings.Development.json`. Verified: `ASPNETCORE_ENVIRONMENT=Production` startup throws on missing connection string. Validators still fire post-rework (smoke-tested with empty-name POST returning 422). Build clean (0 error, 0 warning).
-- **Sprint 4 Slice 4 — FluentValidation `AbstractValidator<T>` per command + decorator chain rework (2026-05-05).** 14 internal validator classes alongside their commands (`CreateCategoryCommandValidator`, `EditCategoryCommandValidator`, 5 Link command validators, 7 Game command validators). Each `: AbstractValidator<TCommand>` with a public default ctor and `RuleFor(...)` chains. Surface-level checks only — `NotEmpty` on Guid id fields, `NotEmpty` + `MaximumLength(...)` on strings (max lengths reference `CategoryNameMustNotExceedMaxLengthRule.MaxLength` / `CategoryDescriptionMustNotExceedMaxLengthRule.MaxLength` constants so domain and API stay in sync), `IsInEnum()` for `Difficulty`. Domain-level invariants stay in `CheckRule(...)`. `FluentValidation 12.1.1` package added to `Games.Application.csproj` (handler decorators in `Games.Infrastructure` already had it). Validators auto-discovered via the existing `RegisterAssemblyTypes(applicationAssembly).AsClosedTypesOf(typeof(IValidator<>)).AsImplementedInterfaces()` registration in `GamesAutofacModule`. **Decorator chain reworked** — discovered (via diagnostic endpoint) that the previous "Logging on `IRequestHandler<>`, UoW + Validation on `ICommandHandler<>`" split bridge was broken: when Autofac built the Logging decorator it filled the `ICommandHandler<T> decorated` ctor parameter with the previous `IRequestHandler<>` registration cast at runtime to `ICommandHandler<T>` (the cast succeeds because each handler implements both interfaces), so UoW + Validation on the *separate* `ICommandHandler<>` chain were never reached. Fix: stack all three decorators on `IRequestHandler<>`/`IRequestHandler<,>` in the order UoW → Validation → Logging (innermost first). Each decorator's `where T : ICommand[<TResult>]` constraint filters out queries — query handlers continue to resolve as the bare `IRequestHandler<,>` registration. Verified with empty-name/too-long-name/empty-Guid POSTs all returning `422 { errors[] }` from the validation decorator instead of falling through to domain `CheckRule(...)`. Build clean (0 error, 0 warning).
-- **Sprint 4 Slice 3 — Minimal API endpoints (2026-05-05).** Three group-per-file modules under `src/API/LexiLink.API/Modules/Games/`: `CategoryEndpoints.cs` (4 routes — `POST /categories`, `PATCH /categories/{id}`, `GET /categories`, `GET /categories/{id}`), `LinkEndpoints.cs` (8 routes — `POST /links`, `POST/DELETE /links/{linkId}/outgoing/{outgoingLinkId}`, `POST /links/{id}/activate`, `POST /links/{id}/deactivate`, `GET /links?categoryId={id}`, `GET /links/{id}`, `GET /links/{id}/outgoing`), `GameEndpoints.cs` (8 routes — `POST /games`, `GET /games/{id}`, plus `POST /games/{id}/{start|steps|hint|undo|reset|abandon}`). Each module is a `static class` with `MapXxxEndpoints(this IEndpointRouteBuilder)` extension; `Program.cs` calls all three. Inline lambdas inject `ISender` + `CancellationToken`, build the command/query, await `sender.Send(...)`, return `Results.Created(...)`/`Results.Ok(...)`/`Results.NoContent()`. Request DTOs are positional `record`s living in the same endpoint file (`CreateCategoryRequest`, `EditCategoryRequest`, `CreateLinkRequest`, `CreateGameRequest`, `MakeStepRequest`). `MapGroup("/{prefix}").WithTags("...")` per group for OpenAPI grouping. Global `JsonStringEnumConverter` registered via `ConfigureHttpJsonOptions` so `Difficulty` accepts `"Easy"`/`"Medium"`/`"Hard"` strings instead of integers. Smoke-tested: OpenAPI document at `/openapi/v1.json` lists 17 paths / 22 method bindings (matches 14 commands + 8 queries). `GET /categories` returns 500 with the canonical error JSON shape (DB unreachable in current state — exception middleware caught the EF connect failure as expected). Build clean (0 error, 0 warning).
-- **Sprint 4 Slice 2 — Exception middleware + `IExecutionContextAccessor` (2026-05-05).** Three exception → HTTP mappings via single `ExceptionHandlingMiddleware` (`src/API/LexiLink.API/Configuration/ExceptionHandling/`): `BusinessRuleValidationException` → 400 with `{ rule, detail }`; `NotFoundException` → 404 with `{ entityName, id }`; `InvalidCommandException` → 422 with `{ errors[] }`; unhandled → 500 logged via Serilog. JSON responses via `System.Text.Json`. Smoke-tested via temp test endpoints — all three return correct status + payload. `IExecutionContextAccessor` interface in `Common.Application` (Kamil-faithful: `UserId`, `CorrelationId`, `IsAvailable`); HTTP-context impl in `src/API/.../Configuration/ExecutionContext/ExecutionContextAccessor.cs` (reads `sub` claim for UserId — throws `ApplicationException` if missing, matching Kamil; reads correlation header for CorrelationId). `CorrelationMiddleware` ensures every request has a `X-Correlation-ID` header (parses if valid Guid; generates `Guid.NewGuid()` otherwise). MS DI registration in `Program.cs`: `AddHttpContextAccessor` + `AddSingleton<IExecutionContextAccessor, ExecutionContextAccessor>` flows into Autofac via `Populate`. Both `LoggingCommandHandlerDecorator<T>` and `LoggingCommandHandlerWithResultDecorator<T, TResult>` retro-fitted: now inject `IExecutionContextAccessor`, push both `RequestLogEnricher` and `CommandLogEnricher` to LogContext (Kamil order). `RequestLogEnricher.Enrich` guards with `IsAvailable` and try/catches `ApplicationException` so it silently skips when no auth / correlation is wired (current state) — when auth ships, the enricher activates without code change. Middleware order: `ExceptionHandling` (outermost) → `CorrelationMiddleware` → `UseSerilogRequestLogging` → endpoints. Build clean (0 error).
-- **Sprint 4 Slice 1 — Composition root foundation (2026-05-05).** New `LexiLink.API` ASP.NET Core project under `src/API/`. Autofac container via `AutofacServiceProviderFactory`; Serilog wired (`UseSerilog` + `UseSerilogRequestLogging`); `AddDbContext<GamesContext>` with `UseNpgsql` + `ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>()`; `AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly))` (only registers MediatR infra — handlers come from Autofac to avoid duplicate registration); `AddOpenApi` scaffolded for Slice 5. Single `GamesAutofacModule` registers: `GamesContext` → `DbContext`, `IUnitOfWork` → `UnitOfWork`, `IDomainEventsAccessor`, `IDomainEventsDispatcher`, `IDomainNotificationsMapper` (empty `BiDictionary`), `IOutbox` → `InMemoryOutbox` stub, three repos (scoped), three domain services + score calc (singletons except `LinkNeighborResolver` which is scoped), `Random` singleton. Handler assembly scan via `AsClosedTypesOf(...).AsImplementedInterfaces().FindConstructorsWith(new AllConstructorFinder())` for `ICommandHandler<>`, `ICommandHandler<,>`, `IQueryHandler<,>`, `IValidator<>`. Decorator stack (Kamil-faithful): UoW + Validation on `ICommandHandler<>`/`ICommandHandler<,>`, **Logging on `IRequestHandler<>`/`IRequestHandler<,>`** (the bridge — Logging's `ICommandHandler<T>` ctor parameter switches resolution from `IRequestHandler<>` chain to `ICommandHandler<>` chain so MediatR's resolution path runs through all decorators), DomainEvents on `INotificationHandler<>`. Smoke-tested: API binds port 5099, container builds clean. Build: 0 error, 0 warning. New: `Common.Infrastructure/AllConstructorFinder.cs`, `Common.Infrastructure/Outbox/InMemoryOutbox.cs`, `Modules/Games/Infrastructure/Assemblies.cs`, `Modules/Games/Infrastructure/Configuration/GamesAutofacModule.cs`, `src/API/LexiLink.API/{LexiLink.API.csproj, Program.cs, appsettings.json, appsettings.Development.json}`.
-- **Cross-category edge — closed at write-time (2026-05-04).** `Link.AddOutgoingLink` now takes `(LinkId outgoingLinkId, CategoryId outgoingCategoryId)` and checks `LinkOutgoingMustBeSameCategoryRule` before the existing self-loop and duplicate rules. New public projection `Link.CategoryId` exposes the private `_categoryId` for caller-side reads. `AddOutgoingLinkCommandHandler` loads both source and target Links and forwards `target.CategoryId` to the aggregate method. Kamil-style "method parameter for cross-aggregate state" — no new domain service, no new interface. Consequence: `PathFinderService.FindOptimalPath` needs no category filter (graph is category-clean by construction). Build clean (0 error). Rule count 18 → 19; events unchanged.
-- **Sprint 3 slice 4 — Domain service implementations.** `StandardGameConfigurationService` (hardcoded difficulty values, Domain-side, sealed), `PathFinderService` (BFS-based; pure algorithm depending on `ILinkNeighborResolver` via DI; Domain-side, sealed), `LinkNeighborResolver` (Infrastructure-side, internal, syncs EF query against `GamesContext`). New public projection `Link.OutgoingLinkIds` so the resolver can read outgoing topology. PathFinder.FindTarget returns first node in `[minDepth, maxDepth]`; FindOptimalPath returns BFS path excluding start, including target (so `Count == depth`, matches `Puzzle.Depth`). Wire-up deferred to Sprint 4 Autofac. Build clean (0 error, expected CS8618 warnings only).
-- **Sprint 3 slice 3 — Game aggregate mapping/repository (heaviest).** `GameEntityTypeConfiguration` + `GameRepository` under `Modules/Games/Infrastructure/Domain/Games/`. Five `OwnsOne` mappings (Puzzle flat + nested `OwnsMany<OptimalPathStep>`; Score nullable single column; StepBudget; three Allowances). One `OwnsMany<GameHistoryStep>` at the aggregate root. Enums (`GameState`, `Difficulty`) stored as `varchar(32)` via `HasConversion<string>()`. All eight owned navigations use field access mode. Domain side: removed Game-level `_startLinkId`/`_targetLinkId` (duplicated Puzzle's data); introduced `GameHistoryStep` and `OptimalPathStep` wrapper VOs; added private parameterless ctors to six owned VOs. `GameHistoryMustNotBeEmptyRule` signature retyped to `IReadOnlyCollection<GameHistoryStep>`. Build clean (0 error, 0 warning). Repository minimal: just `GetByIdAsync` (auto-loads owned collections) + `AddAsync`.
-- **Sprint 3 slice 2 — Link aggregate mapping/repository.** `LinkEntityTypeConfiguration` + `LinkRepository` under `Modules/Games/Infrastructure/Domain/Links/`. New domain VO `OutgoingLink` (sealed `ValueObject`, single prop `LinkId TargetId`) replaces the raw `List<LinkId>` inside Link — gives EF a target for `OwnsMany` and keeps `_outgoingLinks` semantically distinct from random LinkId collections. Two outgoing-rules (`LinkOutgoingAlreadyExistsRule`, `LinkOutgoingMustExistRule`) updated to `IReadOnlyCollection<OutgoingLink>`. `OwnsMany` to table `[games].LinkOutgoingLinks` with composite PK `(LinkId, OutgoingLinkId)`; field-access mode set explicit. Repo queries private fields via `EF.Property<T>(x, "_categoryId" / "_isActive")`. Owned collection auto-loaded by EF — no explicit `Include`.
-- `Games.Application` Games: 7 commands (`CreateGame` returning `Guid`, `StartGame`, `MakeStep`, `UseHint` returning `HintResultDto`, `Undo`, `Reset`, `AbandonGame`) + `GetGameByIdQuery` returning `GameDetailsDto` (with denormalized `StartWord`/`TargetWord`/`CurrentWord` and `IReadOnlyList<GameHistoryStepDto> History`).
-- Domain tweak: `Game.UseHint()` `void` → `HintResult` (so handler can project to DTO without reading event payload).
-- Domain addition: `ILinkRepository.GetActiveIdsByCategoryAsync` (for `CreateGameCommand` puzzle generation).
-- `Games.Application` Categories: `CreateCategory`, `EditCategory`, `GetCategoryDetails` (with `LinkCount`), `GetCategories`.
-- `Games.Application` Links: 5 commands + 3 queries.
-- `Common.Application/Exceptions/NotFoundException`, `Common.Application/Data/ISqlConnectionFactory`.
-- Domain additions for Link soft-delete: `Link.Activate()` / `Link.Deactivate()` with rules + events.
+## Current Direction
+
+Tamamlanan production readiness baseline:
+
+1. **Production Auth / Identity** — fake bearer baseline'ı production'da
+   kapatıldı; first-party signed JWT validation, token issuing boundary,
+   guest-to-auth integration coverage ve command-level execution context
+   testleri eklendi. Real Apple/Google verifier provider credential'ları
+   gelene kadar deferred.
+2. **Stats Feature Depth** — daily/weekly leaderboard tamamlandı. Existing
+   all-time leaderboard korundu; yeni period read model daily/weekly aggregate
+   tutuyor.
+3. **API Contract Hardening** — validation/problem-details/OpenAPI contract ve
+   endpoint smoke coverage baseline'ı tamamlandı.
+4. **Operational Readiness** — health checks, structured logs ve async processor
+   görünürlüğü eklendi.
+5. **Database Hygiene** — index/query review, DbUp runbook ve migration drift
+   readiness guard tamamlandı.
+6. **Release Smoke Gate** — local production-mode migration + startup + HTTP
+   health smoke script eklendi.
+
+Kalanlar artık aktif production-readiness slice değil:
+
+- Real Apple/Google external token verifier, provider credential/client config
+  gelene kadar deferred.
+- Full schema diff tooling, tekrar eden drift problemi oluşana kadar non-action.
+- Broad permission/UserAccess module, gerçek permission modeli oluşana kadar
+  non-action.
+- Warnings-as-errors/analyzer policy, mevcut warning borcu temizlenene kadar
+  deferred.
+
+Backend tarafında önerilen sıradaki ürün fazı **Game content/admin tooling**
+idi. İlk pratik content import hattı `docs/category-spor.json` üzerinden
+başlatıldı. 2026-05-13 itibarıyla backend aktif çalışma bilinçli olarak
+bekletiliyor; odak Flutter frontend MVP akışında. Frontend'in güncel aktif
+sırası `docs/frontendActiveContext.md` içindedir.
+
+**2026-05-14 güncellemesi — Energy modülü kapandı.** Detaylar
+`ROADMAP.md > Energy Module` ve `progress.md` içindedir. Önemli mimari
+değişiklik: ilk synchronous cross-module gateway (`IEnergyGuard`) eklendi;
+`Games.Application` Energy contract'larına structural reference vermez,
+adapter API host'ta (`LexiLink.API/CrossModule/EnergyGuard.cs`) yaşar.
+ArchTest'ler bu sınırı koruyor. Energy modülü `PlayerRegisteredIntegrationEvent`
+dinler ve aggregate'i lazy şekilde init eder; raw inbox pattern'i bilinçli
+olarak henüz eklenmedi (Stats'te var, Energy'de gerçek ihtiyaç çıkana kadar
+yok).
+
+**2026-05-15 güncellemesi — Quests modülü kapandı.** 8 slice teslim edildi.
+Detaylar `ROADMAP.md > Quests Module ✅ closed 2026-05-15` ve `progress.md`
+içindedir. Önemli mimari değişiklikler:
+
+- **İlk reverse cross-module event dependency** canlı — `Energy.Application`
+  artık `Quests.IntegrationEvents.QuestClaimedIntegrationEvent`'i tüketiyor.
+  Stats'in Games/Players IntegrationEvents'i tüketmesiyle aynı pattern;
+  granular ArchTest allow eklendi (`LexiLink.Modules.Quests.Domain/Application/
+  Infrastructure` Energy'de hâlâ forbidden).
+- **`PlayerEnergy.GrantBonus(amount, now)`** eklendi — max kontrolü yapmaz,
+  over-max balance'ı bilinçli olarak tutar. `Consume` timer davranışı
+  düzeltildi: artık sadece bucket "at/above max → below max" geçerken
+  `_lastRefilledOn` set ediliyor (önceki davranış 10/5 → 9/5 case'inde
+  timer'ı yanlışlıkla sıfırlıyordu).
+- **Hardcoded 4 quest catalog** (FirstGameCompleted +3⚡, ThreeGamesCompleted
+  +5⚡, AccountLinked +5⚡ prereq=ThreeGames, DailyThreeGames +5⚡). Daily
+  expiry lazy: `IssueQuestCommand` daily için `_expiresAt = NextUtcMidnight`,
+  `RecordQuestProgressCommand` ve `GetActiveQuestsQuery` `ExpireIfPast(now)`
+  ile lazy projection.
+- **API:** `GET /quests/me`, `POST /quests/{id}/claim` (her ikisi de
+  `AuthenticatedPlayer` policy; başka oyuncunun questi → 404).
 
 ---
 
-## Next Focus
+## Active Constraints
 
-**Sprint 8 — Stats module** is the natural next roadmap step. It should consume Games + Players events, validate the cross-module notification pattern, and make the currently empty `IDomainEventNotification<T>` wrapper / BiDictionary mapping infrastructure useful for the first time.
-
-Before starting Sprint 8, do a short architecture pass:
-- Add ArchTests now that there are two real modules.
-- Decide whether Stats needs only read-model projections first, or also a durable aggregate.
-- Define the minimum Stats read API (leaderboard, streak, played/completed counts) before introducing Outbox-Inbox/Quartz processing.
-
-Open carry-overs:
-- View versioning — `CREATE OR REPLACE VIEW` works for adds but column drops/renames need a new sequence-numbered file. Decide convention when the first drop happens.
-- `Activate`/`Deactivate` on Category — UI ihtiyacı doğunca.
-- Configurable difficulty values — Sprint 7 sonrası, `ConfigurableGameConfigurationService` (Infrastructure, reads from DB) `StandardScoreCalculator` pattern'iyle.
-
----
-
-## Open Decisions
-
-- **Activate/Deactivate on Category?** Categories own Links. Deactivating a Category would functionally cascade to its Links for read purposes. Whether to expose this on the aggregate, surface it as an Application orchestration, or skip it entirely — undecided. Default: leave it out for now; revisit when the UI exposes a category-level archive action.
-
----
-
-## Recent Design Choices That Might Surprise Future-Claude
-
-These look redundant or weird but each is intentional. Don't "clean them up" without re-reading the rationale.
-
-- **`IPlayerContext` + `PlayerContext` Application'da, Infrastructure'da değil.** Kamil'in `Meetings.Application.Members.MemberContext`'iyle aynı yerleşim. Impl `IExecutionContextAccessor.UserId`'yi `new PlayerId(...)` ile sarmaktan ibaret — HTTP, file system, network'le hiçbir bağlantısı yok, pure Application logic. Interface'i Kamil `Domain.Members.IMemberContext`'e koymuş (Domain Application'a bağımlı olur — bizce debatable); bizim seçimimiz `Application.Configuration` daha temiz. Autofac registration `PlayersAutofacModule`'de yapılıyor (composition root burası) ama class kendi başına Application'a aittir. Infrastructure'a taşıma — bu yerleşim Kamil-faithful.
-- **`Player.LinkAuthProvider` tek metot, `LinkApple`/`LinkGoogle` ikiz değil.** Allowances'ların tersine (`HintAllowance` ≠ `UndoAllowance` çünkü her birinin kendi rule'u var), Apple ile Google fonksiyonel olarak aynı — aynı field set, aynı rule set, aynı event. İkiz metot kod tekrarı olur, gerçek bir tip-güvenlik kazanımı sağlamaz. `SocialAuthProviderRequiredRule` Guest'i ayıklıyor (factory'nin ekleyebileceği tek sağlayıcı). Future Facebook/X gelirse enum'a ekleme yetiyor, yeni metot/yeni rule yok. Allowances pattern'i takip ederek üç ayrı metot yazma — tekrar.
-- **`DisplayName + Discriminator` Discord pattern, global-unique `Username` değil.** Mobile oyunda "Yasin" gibi yaygın isimlerin alınması frustrating UX. Username unique zorunluluğu yerine `(DisplayName, DiscriminatorValue)` çifti unique — 9999 "Yasin" var olabilir (Yasin#0001 ... Yasin#9999). `RandomDiscriminatorGenerator` register sırasında atar (handler'da, factory'de değil — Domain factory deterministik sync kalır). DB-level unique index `(DisplayName, DiscriminatorValue)` race condition'da ikinci commit'i reddeder; handler retry henüz yok (smoke test gerek doğurursa eklenir).
-- **`GetPlayerByAuthProviderQuery` `PlayerDetailsDto?` döner, NotFoundException atmaz.** Login flow'unda kritik: Apple/Google ile gelen `sub` claim'i için "bu kullanıcı sistemde var mı?" sorusunun "yok" cevabı geçerli iş kararı, exception değil. `GetPlayerByIdQuery` `NotFoundException` atar (entity beklenen yerde yok = bug); `GetPlayerByAuthProviderQuery` null döner (login akışında yeni hesap oluşturulur). İki query'nin signature'ı bilinçli farklı.
-- **`PlayerRepository.GetByAuthProviderAsync` two-step Dapper+EF.** EF Core 10'da owned collection üzerinden direct `Any(...)` query yazmak kırılgan: `AuthIdentities` public getter `_authIdentities.AsReadOnly()` döner (her çağrıda yeni ReadOnlyCollection), EF bu method call'u SQL'e çeviremez; `EF.Property<ICollection<AuthIdentity>>(p, "_authIdentities")` translatable olabilir ama dokümante edilmemiş kenar. **Daha güvenilir yol**: Dapper ile `PlayerAuthIdentities` tablosundan `PlayerId` çek (raw SQL idiomatic), sonra EF ile aggregate yükle. Repository hem `PlayersContext` hem `ISqlConnectionFactory` injekte eder. Owned collection üzerinde gelecek query'ler için referans pattern.
-- **`RandomDiscriminatorGenerator` Infrastructure'da, Random + DB-aware.** Domain'de `IDiscriminatorGenerator` interface; impl Infrastructure'da Dapper ile mevcut `DiscriminatorValue`'leri çeker, 10 random attempt + sequential 1-9999 fallback. Tüm 9999 değer dolu olursa `InvalidOperationException` (gerçekçi durumda asla olmaz). Handler `Player.RegisterGuest`'ten ÖNCE çağırır → factory deterministik sync kalır, async I/O Application katmanında. Aynı pattern Stats modülünde benzer "username-aware generator" gerektiğinde tekrarlanır.
-- **NUnit 4, not xUnit — and no per-handler Application unit tests.** Kamil's reference uses NUnit 4.0.1 + FluentAssertions 6.12.0 + NSubstitute 5.1.0. We switched our test projects from xUnit 2.9 (auto-scaffolded by `dotnet new`) to match — `[TestFixture]/[Test]/[SetUp]/[TearDown]`, `Assert.Catch<T>` and `Assert.CatchAsync<T>` for exception-throwing assertions, `Should().Be(...)` for value comparisons. **No mock-based handler tests.** Per Kamil, command/query handlers are covered through the IntegrationTests project against a real DB; per-handler unit tests with mocked repos add maintenance overhead without catching the bugs that integration runs do. Don't introduce a `LexiLink.Modules.Games.Application.UnitTests` project unless we discover handler logic complex enough to warrant isolated unit testing.
-- **Test helpers live per-module, not in Common.** `Modules/Games/Tests/SeedWork/{TestBase, DomainEventsTestHelper}` are duplicated when the Player module ships, just like decorators. Same Kamil-style "module owns everything" rationale. Don't promote them to `Common.Tests` — that would force every module's TestBase to extend a Common base (per-module test conventions diverge over time and shared bases lock everyone to the lowest common denominator).
-- **`Domain.csproj` `InternalsVisibleTo` for `Tests` is intentional.** Aggregates' `internal static Create(...)` factories are not part of the public domain API — they're meant to be called from `Application` (handlers) and tests. Without the `InternalsVisibleTo`, tests would either need to make `Create` public (leaking the factory) or use reflection (brittle). The visible-to scope stays scoped: Application + Infrastructure + Tests. If a fourth assembly needs internals, add an explicit entry; don't reach for `[InternalsVisibleTo("*")]`.
-- **Tests tagged `[Category("Integration")]` on the IntegrationTests `TestBase`.** Lets `dotnet test --filter "TestCategory!=Integration"` skip the DB-dependent suite in environments without Postgres. Don't put this category on UnitTests — they're DB-free and should always run.
-- **`Puzzle` test setup uses reflection to bypass random start-link selection.** `Puzzle.Create(...)` picks a random start from `categoryLinkIds`, which makes deterministic test setup awkward. `GameTestsBase.BuildPuzzle(start, target, optimalPath)` reflects against the private `Puzzle(CategoryId, Difficulty, LinkId, LinkId, IEnumerable<LinkId>)` ctor. The factory remains the API surface; tests that exercise the factory's randomness use `Puzzle.Create` directly with mocked services (see `PuzzleTests`). Don't widen the visibility of the private ctor — the reflection scope is contained inside `GameTestsBase`.
-- **Schema = DbUp + standalone `.sql` files; no EF migrations, no `IDesignTimeDbContextFactory`.** Kamil's reference uses SSDT `.sqlproj` + DbUp. SSDT is SQL-Server-only so we drop it; the rest of the pattern (DbUp runner + first-class `.sql` files in module-mirrored folder structure + read-side views as standalone artifacts) stays. Tradeoff: `dotnet ef migrations add` doesn't work — generating a migration would need adding the Design package and a factory. Don't add either; if you want to evolve the schema, add a sequence-numbered `.sql` file under `src/Database/LexiLink.Database/Structure/games/{Tables,Views}/` and re-run the migrator. The journal table (`public."MigrationsJournal"`) ensures each script runs exactly once per DB.
-- **Per-module `OutboxMessages` table; per-module `OutboxAccessor : IOutbox`.** The `IOutbox` interface stays in `Common.Application.Outbox` — only the implementation is per-module (`Modules/Games/Infrastructure/Outbox/OutboxAccessor.cs`). Each module owns its own outbox table in its own schema (`games.OutboxMessages`, eventually `players.OutboxMessages`, etc.) with its own `IEntityTypeConfiguration<OutboxMessage>` inside the module's Infrastructure. The single `OutboxMessage` type lives in Common.Application — modules share it via composition, not inheritance. Don't try to hoist the table or accessor to Common.
-- **`OutboxModule` is a separate Autofac module, not part of `GamesAutofacModule`.** Mirrors Kamil's pattern: composition root builds an explicit `BiDictionary<string, Type>` (initially empty for us — no cross-module notifications yet), passes it as the constructor arg to `OutboxModule`, registers via `containerBuilder.RegisterModule(...)`, then calls `OutboxModule.CheckMappings(...)` after `builder.Build()`. Hand-listed BiDictionary ≠ reflection-populated; the reflection scan is only for *validation* (catches notifications that someone forgot to add to the dict). When the first `IDomainEventNotification<T>` wrapper ships, hand-add it to the dict in `Program.cs`.
-- **Strongly-typed-ID property convention via `ConfigureConventions`, not `ReplaceService<IValueConverterSelector, ...>` alone.** The `StronglyTypedIdValueConverterSelector` registered via `ReplaceService` works for direct entity properties but fails for typed-ID properties on owned entities (EF treats them as navigations and tries `ConstructorBindingConvention` first, before consulting the converter selector). Fix: `GamesContext.ConfigureConventions` reflects over assemblies for all `TypedIdValueBase` subclasses and calls `configurationBuilder.Properties(typedIdType).HaveConversion(typeof(TypedIdValueConverter<>).MakeGenericType(typedIdType))`. Required `TypedIdValueConverter<T>` to gain an explicit parameterless ctor (the previous `(ConverterMappingHints? = null)` overload wasn't visible to `Activator.CreateInstance(type)`). The `ReplaceService` registration is now redundant — kept for now since it's cheap, but the convention is what actually makes typed IDs work.
-- **`Position` (OptimalPathStep) and `StepNumber` (GameHistoryStep) need `.ValueGeneratedNever()`.** EF's default for `int` PK columns is `ValueGeneratedOnAdd` (treats as identity column). Our schema declares them as plain `integer NOT NULL` — no sequence, no identity. Without the override, EF skips passing the value during INSERT, expecting the DB to assign one, and Postgres rejects with a not-null violation. Both columns are domain-meaningful values (path position, step ordinal) — they ARE the value, not auto-generated.
-- **Score owned navigation marked optional via `builder.Navigation("_score").IsRequired(false)`.** `_score` is `Score?` on the Game aggregate. EF Core 10 doesn't auto-detect optionality of an owned navigation from the field's `?` annotation — it must be declared explicitly. Putting `IsRequired(false)` on the inner `Points` property fails because `int` is not nullable. The optionality belongs at the navigation, not the scalar.
-- **All decorators stacked on `IRequestHandler<>`/`IRequestHandler<,>`, not split between `ICommandHandler<>` and `IRequestHandler<>`.** Order in `GamesAutofacModule.Load`: UoW → Validation → Logging (innermost first). MediatR resolves `IRequestHandler<TCommand>` and gets the full chain `Logging(Validation(UoW(handler)))`. Each decorator's ctor takes `ICommandHandler<T> decorated`, but Autofac auto-fills it via runtime cast from the previous `IRequestHandler<>` registration (the cast succeeds because every handler implements both). Earlier we tried Kamil's split (UoW/Validation on `ICommandHandler<>`, Logging on `IRequestHandler<>`) — it built clean and looked right but at runtime UoW + Validation were silently bypassed: Autofac filled Logging's `ICommandHandler<T>` ctor parameter with the previous `IRequestHandler<>` registration (cast), not by re-resolving from the separate `ICommandHandler<>` decorator chain. Diagnosed via `/_diag/chain` showing `IRequestHandler<>` → Logging but `Logging._decorated` → bare handler. The unified `IRequestHandler<>` stack avoids the double-registration bridge entirely. Constraint `where T : ICommand[<TResult>]` filters queries out — query handlers resolve as the bare `IRequestHandler<,>` registration. **Don't reintroduce the split** — any "Kamil-faithful" rationale that argues otherwise is reproducing a bug we already paid to find.
-- **`AsImplementedInterfaces()` on handler scan.** Each handler is registered as ALL its interfaces — `MyCommandHandler : ICommandHandler<MyCommand>` ends up as both `ICommandHandler<MyCommand>` AND `IRequestHandler<MyCommand>`. This is what makes the bridge above work: `ICommandHandler<>` chain has decorators, `IRequestHandler<>` chain has Logging on top, both terminate at the same handler instance.
-- **`AllConstructorFinder` everywhere.** Repos and handlers are `internal` with `internal` constructors. Autofac defaults to public ctors only and would fail to instantiate them. `FindConstructorsWith(new AllConstructorFinder())` opts into reflective access of internals.
-- **`AddMediatR` points at MediatR's own assembly.** `cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly)` registers `IMediator`/`ISender`/`IPublisher` infrastructure but scans MediatR's assembly for handler impls (finds none of ours). Handlers are registered exclusively via the Autofac module so the decorator chain isn't duplicated/bypassed by MS DI's Populate.
-- **Cross-category edges enforced at write-time, not via PathFinder filter.** `Link.AddOutgoingLink(LinkId, CategoryId)` checks `LinkOutgoingMustBeSameCategoryRule` — caller (Application handler) loads target Link and passes `target.CategoryId` as a method parameter. Three reasons: (a) the entire game is Category-bound (Puzzle picks a Category, BFS stays within it), so cross-category edges are semantically wrong, not just a query inconvenience — DDD says invariants belong write-time; (b) Kamil's "method parameter for cross-aggregate state" pattern is already used by `Game.MakeStep(LinkId, ILinkNeighborResolver, IScoreCalculator)` (SKILLS rule #5), so this is consistent; (c) introducing an `ILinkCategoryChecker` domain service was rejected as speculative abstraction (CLAUDE.md). Cost: one extra `GetByIdAsync` in `AddOutgoingLinkCommandHandler` for the target. Consequence: `PathFinderService.FindOptimalPath` needs no category filter — graph is category-clean by construction.
-
-- **Cross-cutting concerns are decorators, not pipeline behaviors — and they live per-module, not in Common.** Command-handler decorators sit in `Modules/Games/Infrastructure/Configuration/Processing/` and target the module's own `ICommandHandler<T>` / `ICommandHandler<T, TResult>` (from `Games.Application.Configuration.Commands`), not MediatR's `IRequestHandler` directly and not `IPipelineBehavior<,>`. Two reasons: (a) `INotificationHandler<T>` (used for in-process domain events — see `DomainEventsDispatcherNotificationHandlerDecorator` in Common) has no `IPipelineBehavior` equivalent, so the notification side *must* be decorator-based and keeping commands on the same pattern means one mental model; (b) the module-specific generic constraint (`where T : ICommand`) prevents extracting these to Common — exactly Kamil's per-module Processing/ layout. Cost: every concern needs two generic decorator types (void + result), and Player module will get its own copies. Don't "modernize" this to pipeline behaviors and don't move decorators to Common.
-- **Per-module CQRS contracts (`ICommand`, `IQuery`, handlers).** `Games.Application/Configuration/{Commands,Queries}/` duplicates contracts that *look* like they belong in `Common.Application`. Kamil's deliberate choice — each module is independently extractable into a microservice; shared contracts couple modules together. See `SKILLS.md` rule #10.
-- **Positional `record` DTOs.** Kamil's reference uses `class` because records didn't exist when it was written (2019). For LexiLink, `record` is the modern equivalent — works with Dapper, immutable, value equality. See `CONVENTIONS.md` → DTO Style.
-- **`QueryBase<T>.Id` looks redundant.** It's not. The forthcoming `LoggingBehavior` correlates a single query through the pipeline using that Id — without it, multiple log lines from one query can't be tied together.
-- **Soft delete only — no `Delete` / `Remove` on aggregates.** Past Games reference Links by Id and need their words readable for replay/history. Lifecycle is `Activate()` / `Deactivate()` with rules + events. See `SKILLS.md` rule #12.
-- **Nullable repositories + handler throws `NotFoundException`.** Repository contract returns `T?`; handler converts `null` to `NotFoundException` with `?? throw new NotFoundException(...)`. Cleaner than Kamil's pre-nullable pattern of throwing inside the repository.
-- **`StandardScoreCalculator` lives in Domain, not Infrastructure.** Pure logic, no I/O. A future `ConfigurableScoreCalculator` would be Infrastructure. See `SKILLS.md` rule #8.
-- **Domain services as method parameters, not aggregate fields.** `Game.MakeStep(LinkId, ILinkNeighborResolver, IScoreCalculator)`. The dependency is visible at the call site instead of hidden behind constructor injection. See `SKILLS.md` rule #5.
-- **Allowances are three separate VOs (Hint/Undo/Reset), not one generic `Allowance<T>`.** Each carries its own rule; the type system distinguishes them so a method that takes `HintAllowance` can't accidentally receive a `ResetAllowance`. Generic deduplication was considered and rejected.
-- **`OutgoingLink` is a one-property VO wrapping `LinkId TargetId` — not just `List<LinkId>` inside Link.** Three reasons: (a) gives EF a target type for `OwnsMany` mapping (typed-IDs alone aren't entity-shaped); (b) semantically distinct — "outgoing edge" is a domain concept inside Link's invariant, not a random LinkId collection; (c) leaves room to grow (e.g., metadata like Order, AddedAt) without a ripple. JSON-column and shared-`DbSet` alternatives were rejected — the former breaks queryability and isn't Kamil's tabular style; the latter would expose the join row as its own entity and break Link's aggregate boundary.
-- **`GameHistoryStep` and `OptimalPathStep` are wrapper VOs on the same pattern as `OutgoingLink`.** `GameHistoryStep(int StepNumber, LinkId LinkId)` lives at the Game aggregate root; `OptimalPathStep(int Position, LinkId LinkId)` lives nested inside the `Puzzle` owned VO. Both exist for the same three reasons as `OutgoingLink` — EF needs an entity-shaped target for `OwnsMany`, the wrapper gives the position/step a semantic name (not just a list index), and the schema gains explicit ordering columns. Domain consequence: `Game._history.Add(linkId)` becomes `Game._history.Add(new GameHistoryStep(_history.Count + 1, linkId))`; `_history[^1]` becomes `_history[^1].LinkId`. Minor but contained.
-- **Game-level `_startLinkId` and `_targetLinkId` fields removed in favor of `_puzzle.StartLinkId`/`TargetLinkId`.** They duplicated Puzzle's data — set in the ctor and never mutated afterward. Keeping both would force EF to either map two duplicate columns or share one column ambiguously; removing them collapses to a single source of truth. If a future Sprint adds a "puzzle re-roll while preserving Game.Id" feature that needs the original endpoints, re-introducing them is a one-PR change.
-- **Owned VOs (`Score`, `StepBudget`, three `Allowance`s, `Puzzle`) carry private parameterless ctors, even though their primary ctors are `private`.** EF Core 10 *can* bind to parameterized ctors when parameter names match property names, but it's brittle for owned types — particularly when a parameter is a collection (Puzzle's `List<LinkId> optimalPath`). Adding `private SomeVo() { }` mirrors the aggregate-root pattern (`private Game() { _history = []; }`) and is reliably honored by EF. Don't remove these as "dead code" — they're the EF materialization path. Same precedent as `OutgoingLink`.
+- API endpoint dağıtım stili bilinçli karar; Kamil'e benzetmek için
+  controller/minimal API yapısı değiştirilmeyecek.
+- PostgreSQL + DbUp + SQL script yapısı bilinçli karar; SQL Server/SSDT veya EF
+  migrations'a geçilmeyecek.
+- Shared host container şimdilik kabul edilebilir. Bu model altında module-owned
+  UnitOfWork/domain dispatcher yaklaşımı korunmalı.
+- Decorator registration split'i Kamil'den birebir kopyalanmayacak; LexiLink'te
+  denenmiş ve command decorator bypass riski doğurmuştu.
+- Stats şu an read-model/projection module'dür. Gerçek invariant oluşmadan
+  yapay Domain layer eklenmeyecek.
+- Energy modülü ilk synchronous cross-module gateway sahibi. Yeni sync gateway
+  *yalnızca* invariant-level cross-module check için açılır; her açılışta
+  `IEnergyGuard` pattern'i (consumer-module Application interface + API host
+  adapter) korunmalı, ArchTest'lerle reverse-dependency yasak.
+- Quests reward delivery **event-driven** kalır — Energy bonus için yeni bir
+  sync gateway açılmaz. `QuestClaimedIntegrationEvent` outbox üzerinden
+  `IEventsBus.PublishAsync`, sonra Energy.Application
+  `QuestClaimedIntegrationEventHandler` defensive `EnsurePlayerEnergyExists`
+  + `GrantEnergyCommand`. Bu pattern reverse cross-module event dep için
+  şablondur; benzer ihtiyaçlar (ör. başka modüllerin Quests event'i tüketmesi)
+  aynı şekilde granular `IntegrationEvents` allow ile çözülür.
+- `PlayerEnergy.GrantBonus(amount, now)` over-max'ı bilinçli olarak izin verir;
+  `EnergyAmountCannotExceedMaximumRule` `Consume`/`GrantBonus` üzerinde
+  enforce edilmez (defansif invariant olarak kalır). `Consume` timer'ı
+  yalnızca at/above max → below max geçişinde set edilir.
+- Quests'te raw inbox pattern *bilinçli olarak yok* — Energy gibi inline.
+  Gerçek duplicate/retry sorunu çıkana kadar Stats-style raw inbox
+  eklenmeyecek.
+- `LexiLinkBearer`/`DevelopmentBearer` şimdilik baseline/test scheme'idir.
+  `Authentication:Mode=DevelopmentBearer` production'da startup fail eder.
+- `Authentication:Mode=ProductionJwt` issuer, audience, lifetime, HMAC signature
+  ve GUID `sub` doğrular.
+- `POST /auth/token` sadece external identity verifier başarılıysa JWT üretir.
+  Mevcut `DevelopmentExternalToken` verifier production'da yasaktır; gerçek
+  Apple/Google verifier provider credential'ları geldiğinde eklenecek.
+- Full local gate: `./scripts/test.sh --no-restore -v minimal`. Integration test
+  projeleri shared local DB kullandığı için serial çalıştırılmalı.
+- Package version değişiklikleri `Directory.Packages.props` üzerinden yapılmalı.
 
 ---
 
-## Pointers
+## Working Files To Watch
 
-- `progress.md` — log of delivered work.
-- `ROADMAP.md` — what's next, in detail.
-- `SKILLS.md` — the rules.
-- `GLOSSARY.md` — what the terms mean.
-- `CONVENTIONS.md` — naming, layout, visibility.
+- `docs/ROADMAP.md` — kapanan production readiness baseline ve sıradaki faz
+  adayları.
+- `docs/kamil-modular-monolith-comparison.md` — farkların gerekçesi ve kapsam
+  dışı kararlar.
+- `docs/progress.md` — teslim edilen işlerin kronolojik kaydı.
+- `scripts/test.sh` — local quality gate.
+- `scripts/smoke.sh` — production-mode local smoke gate.
+- `src/Tests/ArchitectureTests/` — boundary ve convention koruma testleri.
+
+---
+
+## Next Action
+
+Game Options Selection slice'ı kapandı. Aktif sıra yok; sıradaki faz adayları:
+
+1. **Frontend Slice 11 — Game Screen Polish** — yeni
+   `GET /games/{id}/options` endpoint'i hazır. Flutter tarafında
+   `GameRepository.getOptions(gameId)` ile mevcut
+   `getOutgoing(...)` çağrısı değiştirilecek. Detay
+   `docs/frontendActiveContext.md`.
+2. **Game Content/Admin Tooling** — backlog'daki ilk backend adayı.
+   Kategori/link dataset'lerinin tekrarlanabilir
+   validation/import/seed iş akışı. `LexiLink.Tools.CategoryImporter`
+   baseline mevcut (`docs/category-spor.json` ile çalıştı); admin UI ve
+   daha geniş content workflow eksik.
+3. **Apple/Google external token verifier** — provider credential'ları
+   geldiğinde production JWT issuance hattının son parçası tamamlanır.
+
+**2026-05-17 — Game Options Selection mini-slice kapandı.** `GET
+/games/{id}/options` endpoint'i canlı; deterministik greedy
+densest-k-subgraph selector (`OutgoingLinkSelector`) 6'dan fazla outlink
+olduğunda pairwise common-neighbor toplamını maksimize ederek 6'lı alt
+küme seçer. previousLinkId her zaman kilitli; oyuncu daha bir adım
+atmamışsa null, tam 1 adım atmışsa `Game.StartLinkId`, ≥2 adımda
+history[count-2]. Bu sonuncu mantık history'nin start adımını tutmaması
+sebebiyle ilk testte ortaya çıkan bug'ı çözdü.
+
+**2026-05-17 — target reachability revizyonu.** Frontend tarafında Spor
+kategorisiyle test sırasında ortaya çıkan ikinci bug: density-only seçim
+target'a giden tek outlink "izole" konumdaysa atıyordu. Selector ikinci
+bir lock parametresi (`pathToTargetLinkId`) aldı; handler kategori-scoped
+adjacency üzerinde in-memory BFS ile ilk hop'u çözüyor. Test
+(`GetGameOptions_ReachabilityIsolatedLeaf_IsAlwaysIncluded` + 4 selector
+unit) ile kilitli. Detay
+`progress.md > Game Options Selection — target reachability revision
+(2026-05-17)` ve `ROADMAP.md` içindedir. Quality gate 285/285, 0 warning.

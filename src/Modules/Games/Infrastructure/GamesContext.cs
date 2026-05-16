@@ -21,7 +21,7 @@ public class GamesContext : DbContext
 
     private readonly ILoggerFactory _loggerFactory;
 
-    public GamesContext(DbContextOptions options, ILoggerFactory loggerFactory)
+    public GamesContext(DbContextOptions<GamesContext> options, ILoggerFactory loggerFactory)
         : base(options)
     {
         _loggerFactory = loggerFactory;

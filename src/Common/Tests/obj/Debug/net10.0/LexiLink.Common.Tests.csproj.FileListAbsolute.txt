@@ -131,3 +131,9 @@
 /Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/runtimes/win/lib/net6.0/System.Diagnostics.EventLog.Messages.dll
 /Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/runtimes/win/lib/net6.0/System.Diagnostics.EventLog.dll
 /Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/Dapper.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll
+/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Common/Tests/bin/Debug/net10.0/Npgsql.dll

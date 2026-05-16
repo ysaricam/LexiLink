@@ -1,0 +1,11 @@
+using LexiLink.Common.Application.IntegrationEvents;
+
+namespace LexiLink.Modules.Quests.IntegrationEvents;
+
+public sealed record QuestClaimedIntegrationEvent(
+    Guid Id,
+    DateTime OccurredOn,
+    Guid PlayerId,
+    Guid PlayerQuestId,
+    string QuestType,
+    int RewardAmount) : IIntegrationEvent;

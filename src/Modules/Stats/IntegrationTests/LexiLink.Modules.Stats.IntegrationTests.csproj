@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\LexiLink.Modules.Stats.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\LexiLink.Modules.Stats.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Games\Application\LexiLink.Modules.Games.Application.csproj" />
+    <ProjectReference Include="..\..\Games\Infrastructure\LexiLink.Modules.Games.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Players\Application\LexiLink.Modules.Players.Application.csproj" />
+    <ProjectReference Include="..\..\Players\Infrastructure\LexiLink.Modules.Players.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Games\IntegrationEvents\LexiLink.Modules.Games.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\..\Common\Infrastructure\LexiLink.Common.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Npgsql" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+    <Using Include="FluentAssertions" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+</Project>

@@ -60,6 +60,12 @@ public class DomainEventsDispatcher : IDomainEventsDispatcher
         foreach (var domainNotification in domainEventNotifications)
         {
             var type = _domainNotificationsMapper.GetName(domainNotification.GetType());
+            if (type is null)
+            {
+                throw new ApplicationException(
+                    $"Domain notification type '{domainNotification.GetType().FullName}' is not mapped.");
+            }
+
             var data = JsonConvert.SerializeObject(domainNotification, new JsonSerializerSettings
             {
                 ContractResolver = new AllPropertiesContractResolver()

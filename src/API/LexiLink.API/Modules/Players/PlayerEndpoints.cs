@@ -1,3 +1,5 @@
+using LexiLink.API.Configuration.Authentication;
+using LexiLink.API.Configuration.ExceptionHandling;
 using LexiLink.Modules.Players.Application.Players.GetPlayerByAuthProvider;
 using LexiLink.Modules.Players.Application.Players.GetPlayerById;
 using LexiLink.Modules.Players.Application.Players.LinkAuthProvider;
@@ -12,14 +14,19 @@ public static class PlayerEndpoints
 {
     public static void MapPlayerEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/players").WithTags("Players");
+        var group = app.MapGroup("/players")
+            .WithTags("Players")
+            .RequireAuthorization(AuthConstants.AuthenticatedPlayerPolicy)
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status404NotFound);
 
         group.MapPost("/guest", async (RegisterGuestPlayerRequest body, IPlayersModule playersModule, CancellationToken ct) =>
         {
             var id = await playersModule.ExecuteCommandAsync(
                 new RegisterGuestPlayerCommand(body.DeviceId, body.DisplayName, body.Locale), ct);
             return Results.Created($"/players/{id}", new { id });
-        });
+        }).AllowAnonymous();
 
         group.MapPost("/{id:guid}/auth-providers",
             async (Guid id, LinkAuthProviderRequest body, IPlayersModule playersModule, CancellationToken ct) =>
@@ -41,11 +48,20 @@ public static class PlayerEndpoints
             Results.Ok(await playersModule.ExecuteQueryAsync(new GetPlayerByIdQuery(id), ct)));
 
         group.MapGet("/by-auth",
-            async (AuthProvider provider, string externalId, IPlayersModule playersModule, CancellationToken ct) =>
+            async (
+                AuthProvider provider,
+                string externalId,
+                IPlayersModule playersModule,
+                HttpContext httpContext,
+                CancellationToken ct) =>
         {
             var dto = await playersModule.ExecuteQueryAsync(new GetPlayerByAuthProviderQuery(provider, externalId), ct);
-            return dto is null ? Results.NotFound() : Results.Ok(dto);
-        });
+            return dto is null
+                ? ApiProblemResults.NotFound(
+                    httpContext,
+                    $"Player with auth provider '{provider}' and external id '{externalId}' was not found.")
+                : Results.Ok(dto);
+        }).AllowAnonymous();
     }
 }
 

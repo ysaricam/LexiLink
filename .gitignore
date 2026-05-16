@@ -1,0 +1,19 @@
+# .NET
+bin/
+obj/
+TestResults/
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+coverage/
+
+# IDE
+.idea/
+*.iml
+
+# OS
+.DS_Store

@@ -63,6 +63,8 @@ Configuration/
  Processing/
   LoggingCommandHandlerDecorator.cs
   LoggingCommandHandlerWithResultDecorator.cs
+  PlayersDomainEventsDispatcher.cs
+  PlayersUnitOfWork.cs
   UnitOfWorkCommandHandlerDecorator.cs
   UnitOfWorkCommandHandlerWithResultDecorator.cs
   ValidationCommandHandlerDecorator.cs
@@ -76,9 +78,17 @@ obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LexiLink.Modules.Players.Infrastructure.AssemblyInfo.cs
  LexiLink.Modules.Players.Infrastructure.GlobalUsings.g.cs
+Outbox/DomainEventNotifications/
+ AuthProviderLinkedDomainEventNotification.cs
+ PlayerProfileUpdatedDomainEventNotification.cs
+ PlayerRegisteredDomainEventNotification.cs
 Outbox/
  OutboxAccessor.cs
  OutboxMessageEntityTypeConfiguration.cs
+ Publishers/
+  AuthProviderLinkedDomainEventNotificationHandler.cs
+  PlayerProfileUpdatedDomainEventNotificationHandler.cs
+  PlayerRegisteredDomainEventNotificationHandler.cs
 PlayersContext.cs
 
 [metadataReferences]
@@ -89,6 +99,7 @@ PlayersContext.cs
 ../
  Application/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Application.dll
  Domain/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Domain.dll
+ IntegrationEvents/obj/Debug/net10.0/ref/LexiLink.Modules.Players.IntegrationEvents.dll
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.2/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
@@ -271,6 +282,9 @@ PlayersContext.cs
  microsoft.extensions.configuration.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll
  microsoft.extensions.dependencyinjection.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
  microsoft.extensions.dependencyinjection/10.0.4/lib/net10.0/Microsoft.Extensions.DependencyInjection.dll
+ microsoft.extensions.diagnostics.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+ microsoft.extensions.fileproviders.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+ microsoft.extensions.hosting.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll
  microsoft.extensions.logging.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll
  microsoft.extensions.logging/10.0.4/lib/net10.0/Microsoft.Extensions.Logging.dll
  microsoft.extensions.options/10.0.4/lib/net10.0/Microsoft.Extensions.Options.dll

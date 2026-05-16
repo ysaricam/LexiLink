@@ -90,8 +90,8 @@ internal class LoggingCommandHandlerWithResultDecorator<T, TResult> : ICommandHa
             {
                 var correlationId = _executionContextAccessor.CorrelationId;
                 logEvent.AddOrUpdateProperty(new LogEventProperty(
-                    "Context",
-                    new ScalarValue($"Request:{correlationId}")));
+                    "CorrelationId",
+                    new ScalarValue(correlationId)));
             }
             catch (ApplicationException)
             {

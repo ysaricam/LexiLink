@@ -70,6 +70,7 @@ Games/
  GameTestsBase.cs
  GameUndoTests.cs
  GameUseHintTests.cs
+ OutgoingLinkSelectorTests.cs
  Puzzles/PuzzleTests.cs
  ScoreTests.cs
  StepBudgetTests.cs
@@ -95,6 +96,7 @@ SeedWork/
  Application/obj/Debug/net10.0/ref/LexiLink.Modules.Games.Application.dll
  Domain/obj/Debug/net10.0/ref/LexiLink.Modules.Games.Domain.dll
  Infrastructure/obj/Debug/net10.0/ref/LexiLink.Modules.Games.Infrastructure.dll
+ IntegrationEvents/obj/Debug/net10.0/ref/LexiLink.Modules.Games.IntegrationEvents.dll
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.2/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
@@ -280,6 +282,9 @@ SeedWork/
  microsoft.extensions.configuration.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll
  microsoft.extensions.dependencyinjection.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
  microsoft.extensions.dependencyinjection/10.0.4/lib/net10.0/Microsoft.Extensions.DependencyInjection.dll
+ microsoft.extensions.diagnostics.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+ microsoft.extensions.fileproviders.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+ microsoft.extensions.hosting.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll
  microsoft.extensions.logging.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll
  microsoft.extensions.logging/10.0.4/lib/net10.0/Microsoft.Extensions.Logging.dll
  microsoft.extensions.options/10.0.4/lib/net10.0/Microsoft.Extensions.Options.dll

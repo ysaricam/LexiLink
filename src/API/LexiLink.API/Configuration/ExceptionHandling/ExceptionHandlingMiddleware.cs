@@ -1,6 +1,7 @@
 using System.Text.Json;
 using LexiLink.Common.Application.Exceptions;
 using LexiLink.Common.Domain;
+using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using ILogger = Serilog.ILogger;
 
@@ -8,6 +9,8 @@ namespace LexiLink.API.Configuration.ExceptionHandling;
 
 public class ExceptionHandlingMiddleware
 {
+    private const string ProblemJsonContentType = "application/problem+json";
+
     private readonly RequestDelegate _next;
     private readonly ILogger _logger;
 
@@ -25,48 +28,70 @@ public class ExceptionHandlingMiddleware
         }
         catch (BusinessRuleValidationException ex)
         {
-            await WriteJsonAsync(context, StatusCodes.Status400BadRequest, new
+            await WriteProblemDetailsAsync(context, new ProblemDetails
             {
-                status = StatusCodes.Status400BadRequest,
-                title = "Business rule violation",
-                detail = ex.Details,
-                rule = ex.BrokenRule.GetType().Name
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Business rule violation",
+                Detail = ex.Details,
+                Type = "https://httpstatuses.com/400",
+                Instance = context.Request.Path
+            }, extensions =>
+            {
+                extensions["rule"] = ex.BrokenRule.GetType().Name;
             });
         }
         catch (NotFoundException ex)
         {
-            await WriteJsonAsync(context, StatusCodes.Status404NotFound, new
+            await WriteProblemDetailsAsync(context, new ProblemDetails
             {
-                status = StatusCodes.Status404NotFound,
-                title = "Not Found",
-                entityName = ex.EntityName,
-                id = ex.Id
+                Status = StatusCodes.Status404NotFound,
+                Title = "Resource not found",
+                Detail = $"{ex.EntityName} with id '{ex.Id}' was not found.",
+                Type = "https://httpstatuses.com/404",
+                Instance = context.Request.Path
+            }, extensions =>
+            {
+                extensions["entityName"] = ex.EntityName;
+                extensions["id"] = ex.Id;
             });
         }
         catch (InvalidCommandException ex)
         {
-            await WriteJsonAsync(context, StatusCodes.Status422UnprocessableEntity, new
+            await WriteProblemDetailsAsync(context, new HttpValidationProblemDetails(ex.ErrorsByProperty)
             {
-                status = StatusCodes.Status422UnprocessableEntity,
-                title = "Invalid command",
-                errors = ex.Errors
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Validation failed",
+                Detail = "One or more validation errors occurred.",
+                Type = "https://httpstatuses.com/400",
+                Instance = context.Request.Path
             });
         }
         catch (Exception ex)
         {
             _logger.Error(ex, "Unhandled exception");
-            await WriteJsonAsync(context, StatusCodes.Status500InternalServerError, new
+            await WriteProblemDetailsAsync(context, new ProblemDetails
             {
-                status = StatusCodes.Status500InternalServerError,
-                title = "Internal server error"
+                Status = StatusCodes.Status500InternalServerError,
+                Title = "Internal server error",
+                Type = "https://httpstatuses.com/500",
+                Instance = context.Request.Path
             });
         }
     }
 
-    private static Task WriteJsonAsync(HttpContext context, int statusCode, object payload)
+    private static Task WriteProblemDetailsAsync(
+        HttpContext context,
+        ProblemDetails problemDetails,
+        Action<IDictionary<string, object?>>? configureExtensions = null)
     {
-        context.Response.StatusCode = statusCode;
-        context.Response.ContentType = "application/json";
-        return context.Response.WriteAsync(JsonSerializer.Serialize(payload));
+        problemDetails.Extensions["traceId"] = context.TraceIdentifier;
+        configureExtensions?.Invoke(problemDetails.Extensions);
+
+        context.Response.StatusCode = problemDetails.Status ?? StatusCodes.Status500InternalServerError;
+        context.Response.ContentType = ProblemJsonContentType;
+        return context.Response.WriteAsync(JsonSerializer.Serialize(
+            problemDetails,
+            problemDetails.GetType(),
+            JsonSerializerOptions.Web));
     }
 }

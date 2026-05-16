@@ -4,8 +4,10 @@ using LexiLink.Common.Application;
 using LexiLink.Common.Application.Data;
 using LexiLink.Common.Application.Events;
 using LexiLink.Common.Application.Outbox;
+using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure;
 using LexiLink.Common.Infrastructure.DomainEventsDispatching;
+using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Modules.Players.Application.Configuration;
 using LexiLink.Modules.Players.Application.Configuration.Commands;
 using LexiLink.Modules.Players.Application.Configuration.Queries;
@@ -17,6 +19,8 @@ using LexiLink.Modules.Players.Infrastructure.Domain.Players;
 using LexiLink.Modules.Players.Infrastructure.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace LexiLink.Modules.Players.Infrastructure.Configuration;
 
@@ -45,28 +49,32 @@ public class PlayersAutofacModule : Autofac.Module
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
 
-        // DbContext binding for UnitOfWork (which depends on the abstract DbContext).
-        builder.Register(c => c.Resolve<PlayersContext>())
-            .As<DbContext>()
-            .InstancePerLifetimeScope();
-
         // UnitOfWork + domain event dispatch infrastructure.
-        builder.RegisterType<UnitOfWork>()
-            .As<IUnitOfWork>()
-            .InstancePerLifetimeScope();
-
-        builder.RegisterType<DomainEventsAccessor>()
-            .As<IDomainEventsAccessor>()
-            .InstancePerLifetimeScope();
-
-        builder.RegisterType<DomainEventsDispatcher>()
-            .As<IDomainEventsDispatcher>()
-            .InstancePerLifetimeScope();
-
-        builder.RegisterType<OutboxAccessor>()
-            .As<IOutbox>()
+        builder.RegisterType<PlayersDomainEventsDispatcher>()
+            .AsSelf()
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
+
+        builder.RegisterType<PlayersUnitOfWork>()
+            .AsSelf()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterType<OutboxAccessor>()
+            .AsSelf()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.Register(c => new OutboxProcessor(
+                connectionString,
+                "players",
+                c.Resolve<IDomainNotificationsMapper>(),
+                c.Resolve<IPublisher>(),
+                c.ResolveOptional<ILogger<OutboxProcessor>>() ?? NullLogger<OutboxProcessor>.Instance,
+                c.Resolve<IClock>(),
+                c.ResolveOptional<Microsoft.Extensions.Options.IOptions<OutboxProcessingOptions>>()))
+            .As<IOutboxProcessor>()
+            .InstancePerLifetimeScope();
 
         // Repositories.
         builder.RegisterType<PlayerRepository>()
@@ -114,6 +122,18 @@ public class PlayersAutofacModule : Autofac.Module
             .AsImplementedInterfaces()
             .InstancePerLifetimeScope();
 
+        builder.RegisterAssemblyTypes(typeof(PlayersAutofacModule).Assembly)
+            .AsClosedTypesOf(typeof(INotificationHandler<>))
+            .AsImplementedInterfaces()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterAssemblyTypes(typeof(PlayersAutofacModule).Assembly)
+            .AsClosedTypesOf(typeof(IDomainEventNotification<>))
+            .AsImplementedInterfaces()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
         // Decorator chain — all stacked on IRequestHandler<>/<,> so MediatR's resolution path
         // runs the full chain. The decorators implement ICommandHandler<T> (which extends
         // IRequestHandler<T>), so the previous registration auto-fills the next decorator's
@@ -145,8 +165,5 @@ public class PlayersAutofacModule : Autofac.Module
             typeof(LoggingCommandHandlerWithResultDecorator<,>),
             typeof(IRequestHandler<,>));
 
-        builder.RegisterGenericDecorator(
-            typeof(DomainEventsDispatcherNotificationHandlerDecorator<>),
-            typeof(INotificationHandler<>));
     }
 }

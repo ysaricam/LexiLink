@@ -63,6 +63,10 @@ Exceptions/
  InvalidCommandException.cs
  NotFoundException.cs
 IExecutionContextAccessor.cs
+IntegrationEvents/
+ IEventsBus.cs
+ IIntegrationEvent.cs
+ IIntegrationEventHandler.cs
 obj/Debug/net10.0/
  .NETCoreApp,Version=v10.0.AssemblyAttributes.cs
  LexiLink.Common.Application.AssemblyInfo.cs
@@ -70,6 +74,7 @@ obj/Debug/net10.0/
 Outbox/
  IOutbox.cs
  OutboxMessage.cs
+Time/IClock.cs
 
 [metadataReferences]
 ../Domain/obj/Debug/net10.0/ref/LexiLink.Common.Domain.dll

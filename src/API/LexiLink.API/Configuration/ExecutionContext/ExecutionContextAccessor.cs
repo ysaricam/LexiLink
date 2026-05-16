@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using LexiLink.Common.Application;
 
 namespace LexiLink.API.Configuration.ExecutionContext;
@@ -16,7 +17,9 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
         get
         {
             var subClaim = _httpContextAccessor.HttpContext?.User?.Claims?
-                .SingleOrDefault(x => x.Type == "sub")?.Value;
+                .SingleOrDefault(x => x.Type == "sub")?.Value
+                ?? _httpContextAccessor.HttpContext?.User?.Claims?
+                    .SingleOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (subClaim != null)
             {

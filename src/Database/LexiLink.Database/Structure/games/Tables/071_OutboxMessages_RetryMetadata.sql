@@ -1,0 +1,7 @@
+ALTER TABLE "games"."OutboxMessages"
+    ADD COLUMN IF NOT EXISTS "RetryCount" integer NOT NULL DEFAULT 0,
+    ADD COLUMN IF NOT EXISTS "NextRetryDate" timestamp without time zone NULL,
+    ADD COLUMN IF NOT EXISTS "Error" text NULL;
+
+CREATE INDEX IF NOT EXISTS "IX_OutboxMessages_Retry"
+    ON "games"."OutboxMessages" ("ProcessedDate", "RetryCount", "NextRetryDate", "OccurredOn");

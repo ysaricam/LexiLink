@@ -4,6 +4,795 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Game Options Selection ✅ closed 2026-05-17
+
+Goal: oyun ekranı her zaman **tam 6 outgoing link** göstersin. Veritabanında
+bir kelimenin 6'dan fazla outlink'i olabilir; backend deterministik bir 6'lı
+alt küme seçsin.
+
+### Decisions (locked 2026-05-16)
+
+| Decision | Choice |
+| --- | --- |
+| Selection metric | **Pairwise common-neighbor sum** — seçilen 6 outlink'in kendi outlink kümeleri arasındaki ikili ortak-komşu sayılarının toplamı maksimize edilir |
+| Previous link | **Always locked into the 6** — oyuncunun geri dönebilmesi için son adım her zaman dahil; simetri DB'de zaten var ama frontend tarafında "ne olursa olsun göster" garantisi şart |
+| Algorithm | **Greedy** — densest-k-subgraph yaklaşımı; previousLinkId ile (varsa) tohumla, her iterasyonda mevcut sete olan toplam common-neighbor skoru en yüksek adayı ekle |
+| Tie-break | **Fully deterministic** — skor DESC → degree DESC → LinkId ASC; aynı game state için her zaman aynı 6 |
+| API shape | **New endpoint `GET /games/{id}/options`** — backend game state'i kendi içinde tarar (currentLinkId + path history → previousLinkId), frontend hesap yapmaz. Existing `GET /links/{id}/outgoing` admin/dataset araçları için olduğu gibi kalır |
+
+### Files to touch
+
+- `LexiLink.Modules.Games.Application/Games/GetGameOptions/` —
+  `GetGameOptionsQuery`, `GetGameOptionsQueryHandler`, `OutgoingLinkSelector`
+  (saf algoritma, internal static, kolay unit test).
+- `LexiLink.Modules.Games.Infrastructure/...` — handler için Dapper SQL'leri
+  (candidates + degree, pairwise common-neighbor matrix).
+- `LexiLink.API.Modules.Games.GameEndpoints` — yeni endpoint
+  (`AuthenticatedPlayer` policy).
+- `src/Modules/Games/Tests/` — `OutgoingLinkSelector` unit testleri.
+- `src/Modules/Games/IntegrationTests/` — `GetGameOptionsQueryHandler`
+  + endpoint smoke (mini seed grafı).
+
+### Edge cases
+
+- `|candidates| ≤ 6` → hepsini dön (seçim atla).
+- `previousLinkId = null` (ilk adım) → en yüksek pairwise skorlu çift ile
+  tohumla, sonra greedy ile 6'ya tamamla.
+- previousLinkId aday setinde değil (defansif; aktif olmayan link olabilir)
+  → previousLinkId yokmuş gibi davran ve greedy ile 6 dön.
+- Tüm pairwise skorlar 0 (seyrek graf) → degree DESC + LinkId ASC fallback.
+
+### Non-goals
+
+- `GameDetails`'a `Options: List<OutgoingLinkDto>` embed etmek (chatty
+  round-trip için sonraki optimizasyon kararı).
+- Tam 6-way intersection (NP-hard tam çözüm).
+- Hint scoring veya hedefe yakınlık tabanlı seçim.
+- Random çeşitlendirme (deterministik tie-break tercih edildi).
+
+### Acceptance
+
+- `GET /games/{id}/options` 6 outlink döner (veya tüm adaylar 6'dan azsa
+  hepsini).
+- previousLinkId her zaman dönen sette mevcut.
+- Aynı game state için aynı 6, aynı sırada (test ile kilitli).
+- `flutter analyze` + `flutter test` + backend test suite hâlâ yeşil
+  (frontend dokunulmaz bu slice'ta).
+
+Frontend Slice 11 (Game Screen Polish) bu endpoint geldikten sonra
+`GameRepository.getOptions(gameId)` ile mevcut `getOutgoing(...)` çağrısını
+değiştirir.
+
+### Delivery summary (2026-05-17)
+
+- **Application** — `GetGameOptionsQuery` (`QueryBase<List<OutgoingLinkDto>>`,
+  `GameId`), `GetGameOptionsQueryHandler` (Dapper; aday + degree fetch,
+  pairwise common-neighbor matrix, kategori-scoped BFS adjacency pull),
+  `OutgoingLinkSelector` (saf algoritma, internal static, deterministik
+  tie-break: score DESC → degree DESC → id ASC).
+- **Previous link resolution** — `_history` start adımını tutmaz; handler
+  history count'u sayar: 0 → previous yok, 1 → `Game.StartLinkId`, ≥2 →
+  history[count-2]. Bu ayrım test (`GetGameOptions_AfterStep_PreviousLinkIsAlwaysIncluded`)
+  ile kilitli.
+- **Target reachability lock (post-ship revision)** — Selector ikinci bir
+  lock alır: `pathToTargetLinkId`. Handler kategori-scoped adjacency
+  üzerinde in-memory BFS ile `currentLinkId → targetLinkId` yolunun ilk
+  hop'unu çözer ve selector'a iletir. Density heuristic'i artık target'a
+  giden tek outlink'i sessizce drop edemez. Edge case'ler: `target ==
+  current` → lock yok; `target` zaten candidate → kendisi lock; yol yoksa
+  null. Test (`GetGameOptions_ReachabilityIsolatedLeaf_IsAlwaysIncluded`)
+  ile kilitli.
+- **API** — `GET /games/{id:guid}/options`, `AuthenticatedPlayer` policy,
+  mevcut `GamesEndpoints` grubunun içinde.
+- **Tests** — 13 yeni `OutgoingLinkSelectorTests` (greedy seed, previous
+  lock, target lock, dual lock, locks-collide edge case, target-id not in
+  candidates, tie-break determinism, degree fallback, pre-limit ordering,
+  determinism), 5 yeni `GetGameOptionsIntegrationTests` (≤6 outlink
+  pass-through, 8-leaf star → tam 6, step sonrası previous her zaman
+  dahil, deterministic repeat, target reachability isolated leaf lock).
+- **Quality gate** — `./scripts/test.sh`: 285/285 pass (önceki 267 + 18),
+  0 warning.
+
+### Verification
+
+- `dotnet build LexiLink.sln` → 0 error, 0 warning.
+- `./scripts/test.sh` → 11 test projects, **285 tests pass**.
+
+---
+
+## Quests Module ✅ closed 2026-05-15
+
+Goal: ship the fifth module — daily and play-driven quests that grant rewards
+(initially Energy). First module with reverse cross-module event dependency
+(Energy listens to Quests' integration event).
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Module name | **Quests** |
+| Reward delivery | **Event-driven async** — `QuestClaimedIntegrationEvent` (Quests outbox) → Energy module listener → `GrantEnergyCommand` |
+| Claim model | **Explicit** — state machine `Active → ReadyToClaim → Claimed`; player must tap claim |
+| Energy over-max | **Allow over-max temporarily** — bonus path does not cap; recharge timer stays idle while `current > max`; consume drains over-max first |
+
+### Architecture notes
+
+- **Reverse dependency direction.** Energy.Application will reference
+  `Quests.IntegrationEvents` (public contract assembly) — analogous to how
+  Stats.Application references Games/Players IntegrationEvents. Cross-module
+  Domain/Application/Infrastructure stay forbidden via ArchTests.
+- **No new synchronous gateway.** Energy stays the only sync cross-module
+  gateway (`IEnergyGuard`, invariant check). Rewards are intent, not
+  invariant — event-driven is the right pattern.
+- **Energy domain change.** New `PlayerEnergy.GrantBonus(amount, now)` method
+  that does NOT check `EnergyAmountCannotExceedMaximumRule`. Existing recharge
+  math already no-ops when `current >= max`, so over-max naturally stays put.
+  New unit tests cover the over-max consume edge cases: `10/5 → consume 1 →
+  9/5 (timer not set)`, `6/5 → consume 1 → 5/5 (timer not set)`, `5/5 →
+  consume 1 → 4/5 (timer set)`.
+
+### MVP quest catalog (Slice 3, hardcoded)
+
+| QuestType | Cadence | Goal | Trigger | Reward | Prerequisite |
+| --- | --- | --- | --- | --- | --- |
+| `FirstGameCompleted` | One-time | 1 game | `GameCompletedIntegrationEvent` | +3⚡ | — |
+| `ThreeGamesCompleted` | One-time | 3 games | `GameCompletedIntegrationEvent` | +5⚡ | — |
+| `AccountLinked` | One-time | 1 link | `AuthProviderLinkedIntegrationEvent` | +5⚡ | `ThreeGamesCompleted` claimed |
+| `DailyThreeGames` | Daily (UTC midnight) | 3 games | `GameCompletedIntegrationEvent` | +5⚡ | — |
+
+Daily reset is lazy: `_expiresAt = nextUtcMidnight` set at issue;
+`ExpireIfPast(now)` is called when the quest is queried or progressed; the
+catalog re-issues a fresh daily quest after expiry on the next relevant event.
+
+### Slice plan (8 slices)
+
+1. **Quests.Domain** — `PlayerQuest` aggregate, `QuestType` enum, `QuestState`
+   enum, 5 rules
+   (`QuestProgressDeltaMustBePositiveRule`,
+   `QuestProgressCannotExceedGoalRule`,
+   `QuestMustBeActiveToProgressRule`,
+   `QuestMustBeReadyToBeClaimedRule`,
+   `QuestGoalMustBePositiveRule`),
+   3 events (`PlayerQuestIssuedDomainEvent`,
+   `PlayerQuestCompletedDomainEvent`,
+   `PlayerQuestClaimedDomainEvent`), `IQuestCatalog`,
+   `IPlayerQuestRepository`. Unit tests.
+2. **Quests.Application** — per-module CQRS contracts;
+   `IssueQuestCommand` (idempotent),
+   `RecordQuestProgressCommand` (no-op when no active quest),
+   `ClaimQuestCommand`,
+   `GetActiveQuestsQuery`,
+   DTOs, validators.
+3. **Quests.Infrastructure** — `QuestsContext`, repository, hardcoded
+   `QuestCatalog`, decorators, outbox, Autofac module + composition root.
+4. **Database** — DbUp scripts: `quests/Schema/001_CreateSchema.sql`,
+   `quests/Tables/010_PlayerQuests.sql` (PK `Id`, indexes on
+   `(PlayerId, State)` and `(PlayerId, QuestType)`),
+   `quests/Tables/070_OutboxMessages.sql`,
+   `quests/Views/110_v_PlayerQuests.sql`.
+5. **Integration event handlers in Quests** —
+   `IIntegrationEventHandler<GameCompletedIntegrationEvent>` and
+   `IIntegrationEventHandler<AuthProviderLinkedIntegrationEvent>` issue and
+   progress quests; prerequisites enforced; daily quest issuance is lazy.
+   Integration tests with Players + Games + Quests modules booted together.
+6. **Energy reward delivery** —
+   `Quests.IntegrationEvents/QuestClaimedIntegrationEvent` (public contract);
+   Energy.Application adds
+   `IIntegrationEventHandler<QuestClaimedIntegrationEvent>`,
+   `GrantEnergyCommand`, `PlayerEnergy.GrantBonus(amount, now)` domain method,
+   `BonusAmountMustBePositiveRule`, over-max consume edge-case unit tests.
+   ArchTest rule: Energy.Application MAY reference
+   `LexiLink.Modules.Quests.IntegrationEvents` (granular allow).
+7. **API endpoints** — `GET /quests/me` (authenticated; active + ready + last
+   N closed quests, list DTO with progress/goal/state/reward/expiresAt),
+   `POST /quests/{id}/claim` (transitions current player's quest to claimed
+   if `ReadyToClaim`). API tests + live smoke.
+8. **Documentation** — `GLOSSARY.md`, `CLAUDE.md`,
+   `kamil-modular-monolith-comparison.md`, `ROADMAP.md`, `activeContext.md`,
+   `progress.md`, `OPERATIONS.md` updates.
+
+### Deliberate non-actions
+
+- **No quest UI redesign per slice 7.** API contract sets the shape; frontend
+  consumption is a separate (later) slice on the Flutter side.
+- **No raw inbox in Quests.** Stays inline like Energy; revisit if a real
+  duplicate/retry need surfaces.
+- **No quest reward outbound integration events** beyond the single
+  `QuestClaimedIntegrationEvent`. Issuance/completion stays internal to
+  Quests.
+
+### Delivery summary (2026-05-15)
+
+All 8 slices delivered:
+
+- **Domain** — `PlayerQuest` aggregate (keyed by its own `PlayerQuestId`), 5
+  rules
+  (`QuestGoalMustBePositiveRule`,
+  `QuestRewardAmountMustBePositiveRule`,
+  `QuestProgressDeltaMustBePositiveRule`,
+  `QuestMustBeActiveToProgressRule`,
+  `QuestMustBeReadyToBeClaimedRule`),
+  3 events (`PlayerQuestIssuedDomainEvent`,
+  `PlayerQuestCompletedDomainEvent`,
+  `PlayerQuestClaimedDomainEvent`), `QuestType`/`QuestState`/`QuestCadence`
+  enums, `QuestDefinition` record, `IQuestCatalog`, `IPlayerQuestRepository`.
+- **Application** — per-module CQRS contracts; `IssueQuestCommand`
+  (idempotent, prereq + cadence aware), `RecordQuestProgressCommand` (no-op
+  when no active quest, clamps delta), `ClaimQuestCommand`,
+  `GetActiveQuestsQuery` (Dapper + lazy expiry projection at read time).
+- **Infrastructure** — `QuestsContext` (schema `quests`), repository,
+  hardcoded `QuestCatalog` (4 MVP definitions), full module-owned UoW +
+  domain event dispatcher + outbox accessor + decorator chain, Autofac
+  module + composition root, `PlayerQuestClaimedDomainEventNotification`
+  + publisher that emits `QuestClaimedIntegrationEvent` via `IEventsBus`.
+- **Database** — DbUp scripts: `quests/Schema/001_CreateSchema.sql`,
+  `quests/Tables/010_PlayerQuests.sql` (PK `Id`, indexes on
+  `(PlayerId, State)` and `(PlayerId, QuestType)`),
+  `quests/Tables/070_OutboxMessages.sql`,
+  `quests/Views/110_v_PlayerQuests.sql`.
+- **Integration event handlers (consumer side)** —
+  `GameCompletedIntegrationEventHandler` issues + progresses
+  FirstGameCompleted, ThreeGamesCompleted, and DailyThreeGames;
+  `AuthProviderLinkedIntegrationEventHandler` issues + progresses
+  AccountLinked (prereq enforcement inside `IssueQuestCommandHandler`).
+- **IntegrationEvents assembly** —
+  `LexiLink.Modules.Quests.IntegrationEvents` published `QuestClaimedIntegrationEvent`.
+- **Energy reward delivery (reverse cross-module event dep)** —
+  `PlayerEnergy.GrantBonus(amount, now)` permits over-max balance;
+  `BonusAmountMustBePositiveRule`; `Consume` timer fix (only arms when
+  consume crosses from at/above max to below max); `GrantEnergyCommand`
+  + validator + handler in Energy.Application; Energy.Application's
+  `QuestClaimedIntegrationEventHandler` defensively runs
+  `EnsurePlayerEnergyExistsCommand` then `GrantEnergyCommand`. ArchTests
+  added granular allow: Energy.Application MAY reference
+  `LexiLink.Modules.Quests.IntegrationEvents` only.
+- **API** — `GET /quests/me` and `POST /quests/{id:guid}/claim`
+  (both require `AuthenticatedPlayer` policy); claiming another
+  player's quest returns 404. API host wired through `QuestsStartup`.
+- **Tests** — 23 Quests.Tests (unit), 5 Quests.IT (issue/progress/claim
+  state machine + outbox processing), +7 Energy.Tests
+  (GrantBonus + over-max consume edge cases), +2 Energy.IT
+  (QuestClaimed → bonus delivery, lazy aggregate init under race),
+  +5 API.Tests (Quests endpoints auth + happy/error paths),
+  +3 ArchTests (Quests Domain/Application/Infrastructure rules,
+  plus Quests added to other modules' forbidden lists, plus
+  Quests.IntegrationEvents in the integration-events scan). Full
+  quality gate: 267/267 green, 0 warnings.
+
+### Verification
+
+- `dotnet build LexiLink.sln` → 0 error, 0 warning.
+- `./scripts/test.sh` → 11 test projects, **267 tests pass**.
+- Local API smoke: `POST /players/guest` → `GET /quests/me` returns `[]`;
+  `POST /quests/{random-id}/claim` returns 404 ProblemDetails;
+  unauthenticated calls return 401.
+- DbUp re-run idempotent (0 pending after first apply).
+
+---
+
+## Energy Module ✅ closed 2026-05-14
+
+Goal: ship the first business module with a synchronous cross-module dependency
+on Games. Players unlock energy on registration; starting a game consumes one
+unit; energy refills lazily over time.
+
+Delivered:
+
+- **Domain** — `PlayerEnergy` aggregate (keyed by `PlayerEnergyId` = player
+  Guid), 4 rules
+  (`EnergyConfigurationMustBeValidRule`,
+  `EnergyAmountCannotBeNegativeRule`,
+  `EnergyAmountCannotExceedMaximumRule`,
+  `EnergyMustBeSufficientToConsumeRule`),
+  2 events (`PlayerEnergyConsumedDomainEvent`,
+  `PlayerEnergyRefilledDomainEvent`), `IEnergyConfigurationService`,
+  `IPlayerEnergyRepository`, `EnergyRefillCalculator` (pure-math projection,
+  internal, reused by read and write paths). 16 unit tests.
+- **Application** — per-module CQRS contracts; `EnsurePlayerEnergyExistsCommand`
+  (idempotent init), `ConsumePlayerEnergyCommand`, `GetPlayerEnergyQuery`
+  (lazy refill applied at read time via the shared math).
+- **Infrastructure** — `EnergyContext` (schema `energy`), repository, config
+  service backed by `IConfiguration` (`Energy:MaxAmount` /
+  `Energy:RechargeIntervalSeconds` / `Energy:GameStartCost`; defaults 5 / 900
+  / 1), full module-owned UoW + domain event dispatcher + outbox accessor +
+  decorator chain, Autofac module + composition root.
+- **Database** — DbUp scripts: `energy/Schema/001_CreateSchema.sql`,
+  `energy/Tables/010_PlayerEnergies.sql`, `energy/Tables/070_OutboxMessages.sql`,
+  `energy/Views/110_v_PlayerEnergies.sql`.
+- **Cross-module wiring (Games → Energy)** — `IEnergyGuard` interface in
+  `Modules/Games/Application/Configuration/CrossModule/`; adapter in
+  `LexiLink.API/CrossModule/EnergyGuard.cs`; `StartGameCommandHandler` calls
+  `_energyGuard.EnsureCanStartGameAsync(game.PlayerId)` before `game.Start()`;
+  insufficient energy raises `BusinessRuleValidationException`. Architecture
+  tests forbid Games.Application from referencing any Energy namespace.
+- **PlayerRegistered consumer** —
+  `IIntegrationEventHandler<PlayerRegisteredIntegrationEvent>` in
+  `Energy.Application` dispatches `EnsurePlayerEnergyExistsCommand` through
+  `IEnergyModule`; the in-memory event bus delivers it after the Players
+  outbox processor publishes.
+- **API endpoint** — `GET /energy/me` (authenticated). Returns
+  `PlayerEnergySnapshotDto` with current/max/`isFull`/recharge interval/last
+  refill plus `secondsUntilNextRefill` and `fullyRefilledAt` projections.
+- **Tests** — Energy unit tests (16), Energy integration tests (2: lifecycle +
+  same-device idempotency), Games and Stats integration test bases gained an
+  `AlwaysAllowingEnergyGuard` stub so they continue to exercise Games in
+  isolation, ArchitectureTests gained Energy layer-dependency rules, API tests
+  gained 3 `/energy/me` smoke tests.
+
+Deliberate non-actions for this sprint:
+
+- Skipped publishing public `PlayerEnergyConsumed` / `PlayerEnergyRefilled`
+  integration events — no consumer needs them yet. The notification-wrapper
+  scaffold is unused and can be added when a real consumer appears.
+- Skipped the raw inbox pattern in Energy (the Stats pattern). Energy listens
+  inline; revisit if duplicate-event or retry needs surface.
+- Residual dual-write risk between Energy commit and `game.Start()` is
+  documented in `StartGameCommandHandler` and the comparison doc, not fixed
+  with a compensating action.
+
+---
+
+## Production Readiness Backlog ✅ baseline closed
+
+Kamil alignment tamamlandıktan sonraki yürütülebilir sıra. Amaç artık mimari
+benzerlik değil; LexiLink'i gerçek kullanıcı, gerçek identity, izlenebilir
+background processing ve daha net API contract'ları için hazırlamak.
+
+Closure status:
+
+- Slices 16-21 are complete as the current production-readiness baseline.
+- Deferred: real Apple/Google external token verifiers. This needs provider
+  credentials/client configuration and should be added before public mobile
+  release, not guessed locally.
+- Deferred: warnings-as-errors/analyzer policy. Turn it on only after existing
+  known EF materialization warnings are either removed or intentionally
+  suppressed.
+- Non-action: full schema diff tooling. The current DbUp journal readiness guard
+  is enough unless schema drift becomes a recurring operational problem.
+- Non-action: broad role/permission matrix and UserAccess-style module. The
+  current `AuthenticatedPlayer` policy is enough until a real permission model
+  appears.
+
+Recommended next product phase:
+
+1. **Game content/admin tooling** — category/link dataset import, validation,
+   and repeatable content seeding.
+2. **Gameplay product polish** — puzzle generation quality, difficulty tuning,
+   hints, scoring, and session feel.
+3. **Deployment packaging** — Docker/compose/env templates and release workflow,
+   if hosting is the next concrete goal.
+
+### Slice 16 — Production Auth / Identity
+
+Goal: temporary bearer baseline'ını production path'ten ayırıp gerçek identity
+doğrulama kararını ve guest-to-auth geçiş akışını kapatmak.
+
+- [x] Current `LexiLinkBearer` scheme'i Development/Test-only baseline olarak
+  sınırla veya açıkça non-production guard ile koru.
+- [x] Production auth provider stratejisini seç: Apple token validation,
+  Google token validation, first-party JWT issuing, veya bunların aşamalı
+  kombinasyonu.
+- [x] Players login/link flow'unun guest player -> authenticated player
+  dönüşümünü kırmadan çalıştığını integration testlerle kilitle.
+- [x] Command-level authenticated execution testleri ekle; sadece endpoint 401
+  smoke testleriyle yetinme.
+- [x] API config/env requirements dokümante et.
+
+Current status:
+
+- `Authentication:Mode=DevelopmentBearer` is now guarded: API startup fails in
+  `Production` if this temporary mode is active.
+- First production strategy is first-party signed JWT validation:
+  `Authentication:Mode=ProductionJwt` validates issuer, audience, lifetime,
+  HMAC signature, and GUID `sub`.
+- API tests cover development bearer, production startup guard, valid
+  production JWT, and wrong-signature JWT rejection.
+- `POST /auth/token` issues first-party JWTs after external identity
+  verification. The current verifier is `DevelopmentExternalToken` and is
+  blocked in Production.
+- Guest -> social identity transition is covered in Players integration tests.
+- Command-level execution context propagation is covered by Players integration
+  tests through the real command decorator pipeline.
+- Slice 16 baseline is complete. Real Apple/Google verifier implementation is
+  deferred until those provider credentials are available.
+
+Non-goals:
+
+- Geniş role/permission matrisi ekleme; gerçek permission ihtiyacı yoksa
+  `AuthenticatedPlayer` policy baseline'ı yeterli.
+- UserAccess benzeri ayrı module yaratma; identity behavior büyümeden ceremony
+  ekleme.
+
+### Slice 17 — Stats Feature Depth
+
+Goal: Stats'i sadece projection plumbing göstergesi olmaktan çıkarıp product
+değeri olan metriklerle güçlendirmek.
+
+- [x] İlk feature'ı seç: daily/weekly leaderboard.
+- [x] Period leaderboard read model'i ekle: daily/weekly aggregates, all-time
+  leaderboard ile geriye uyumlu query contract.
+- [x] Producer event payload'ları yeterli değilse minimal contract genişletmesi
+  yap.
+- [x] Stats projection/replay davranışını yeni metrik için test et.
+- [x] Stats Domain layer ekleme kararını sadece gerçek invariant varsa ver.
+
+Current plan:
+
+- Existing `PlayerStats` remains the all-time read model.
+- Added a Stats-owned period leaderboard read model keyed by period type, period
+  start date, and player id.
+- Extended `GET /stats/leaderboard` with `period=allTime|daily|weekly` and kept
+  `orderBy`/`limit` behavior.
+- Uses UTC calendar days and Monday-start UTC weeks. Optional `periodStart`
+  is supported for deterministic historical period queries.
+- No producer payload change was needed; `GameCompletedIntegrationEvent`
+  already carries `OccurredOn`, `PlayerId`, and `Score`.
+- Stats remains a projection/read-model module; no Domain layer was added.
+
+Non-goals:
+
+- Sırf modül yapısı tam görünsün diye Stats Domain project'i açma.
+
+### Slice 18 — API Contract Hardening
+
+Goal: public API davranışını daha deterministik, testli ve tüketilebilir hale
+getirmek.
+
+- [x] Request validation response shape'ini standardize et.
+- [x] ProblemDetails/error response contract'ını endpointlerde tutarlı yap.
+- [x] OpenAPI/Scalar output'unu auth ve error contract'ları açısından gözden
+  geçir.
+- [x] Kritik endpointler için smoke/integration coverage'ı genişlet.
+
+Current status:
+
+- Command validation failures now return `application/problem+json` with
+  RFC7807 fields and an `errors` dictionary keyed by request/command property.
+- API smoke coverage locks the validation problem shape for a protected command
+  endpoint.
+- Endpoint-level not-found responses now use a shared ProblemDetails helper.
+- Business-rule failures are covered as 400 ProblemDetails with rule metadata.
+- Conflict-style domain failures remain classified as 400 business-rule
+  violations until a concrete domain rule needs a separate 409 API contract.
+- OpenAPI now exposes the `LexiLinkBearer` bearer security scheme and applies
+  it to protected operations while keeping anonymous operations unsecured.
+- Protected endpoint groups advertise ProblemDetails responses for common
+  400/401/404 paths. Auth token exchange advertises 401/404 ProblemDetails.
+- API smoke coverage verifies the generated `/openapi/v1.json` auth and
+  ProblemDetails metadata.
+- Slice 18 baseline is complete.
+
+### Slice 19 — Operational Readiness
+
+Goal: API ve async processors production'da izlenebilir, teşhis edilebilir ve
+sağlık kontrolü yapılabilir hale gelsin.
+
+- [x] Health checks: API liveness/readiness, database connectivity.
+- [x] Outbox/inbox/internal-command backlog ve poison/error visibility için
+  admin query veya structured log standardı.
+- [x] Processor job failure logging ve correlation bilgisini gözden geçir.
+- [x] Configuration defaults ve required env vars dokümante et.
+
+Current status:
+
+- API now exposes anonymous `/health/live` and `/health/ready` endpoints.
+  Readiness includes PostgreSQL connectivity through a direct `SELECT 1`
+  check, and both endpoints return a small JSON health report.
+- API now exposes protected `/operations/processors` visibility for
+  `games-outbox`, `players-outbox`, `stats-inbox`, and
+  `stats-internal-commands`. The response includes unprocessed, ready,
+  scheduled retry, poisoned, failed counts, oldest unprocessed timestamp, and a
+  capped recent error sample.
+- Quartz jobs now create a background `CorrelationId` and log structured
+  `BackgroundJob`, `ProcessorQueue`, `ProcessorType`, Quartz fire/trigger
+  metadata around start, completion, and failure paths.
+- `docs/OPERATIONS.md` now documents required production env vars, development
+  defaults, auth modes, background processor settings, health/operations
+  endpoints, and DbUp migration execution.
+- Slice 19 baseline is complete.
+
+### Slice 20 — Database Hygiene
+
+Goal: PostgreSQL + DbUp tercihini koruyarak query/index ve migration operasyonu
+tarafını güçlendirmek.
+
+- [x] Critical query/index review: Players auth lookup, Games puzzle/link
+  traversal, Stats leaderboard.
+- [x] DbUp migration runbook: fresh database, existing database, rollback/manual
+  recovery yaklaşımı.
+- [x] Lightweight migration drift validation: API artifact'teki DbUp script
+  manifest'i `public.MigrationsJournal` ile readiness içinde karşılaştırılır.
+
+Current status:
+
+- Players auth lookup already has a unique `(Provider, ExternalId)` index on
+  `players.PlayerAuthIdentities`; no query/index change needed there.
+- Games completed-pair lookup already uses
+  `IX_Games_PlayerId_CategoryId_State_StartLinkId_TargetLinkId`.
+- Added `IX_Links_CategoryId_IsActive_Id` for active category link selection
+  during puzzle creation.
+- Added all-time and period leaderboard indexes for `BestScore`, `TotalScore`,
+  and `GamesCompleted` ordering paths.
+- DbUp applied the 3 new index scripts locally; Games integration, Stats
+  integration, and Architecture test suites pass.
+- `docs/OPERATIONS.md` now covers fresh database migration, existing database
+  migration, failure recovery, and forward-only rollback policy.
+- `/health/ready` now includes a lightweight DbUp journal validation check.
+  LexiLink intentionally avoids a full schema diff unless drift becomes a
+  recurring operational problem.
+- Slice 20 baseline is complete.
+
+### Slice 21 — Release Smoke Gate
+
+Goal: deployment öncesi en küçük production-mode doğrulama komutunu eklemek.
+
+- [x] Local smoke script: API build, DbUp migration, production-mode API start.
+- [x] HTTP health verification: `/health/live` and `/health/ready`.
+- [x] Operations doc'a smoke command ve override env vars ekle.
+
+Current status:
+
+- `scripts/smoke.sh` local PostgreSQL'e karşı migration'ı uygular, API'yi
+  `ASPNETCORE_ENVIRONMENT=Production` ve `Authentication:Mode=ProductionJwt`
+  ile başlatır, sonra live/ready endpointlerini gerçek HTTP üzerinden kontrol
+  eder.
+- Production Readiness Pass baseline is complete.
+
+---
+
+## Kamil Alignment Backlog ✅ closed
+
+Bu bölüm, `docs/kamil-modular-monolith-comparison.md` karşılaştırmasından çıkan
+uygulama planıdır. API endpoint dağıtım stili ve PostgreSQL/DbUp tercihi
+bilinçli sapma olarak kapsam dışıdır; bu iki başlık için refactor
+planlanmıyor.
+
+### Already Done
+
+- [x] Architecture tests baseline: layer dependency, module boundaries, domain
+  conventions.
+- [x] API -> module facade dispatch: endpoint'ler doğrudan `ISender` kullanmaz.
+- [x] Module startup APIs: host, module wiring detaylarını doğrudan bilmez.
+- [x] Integration event contracts: Games/Players public `IntegrationEvents`
+  assemblies.
+- [x] Outbox -> Stats projection path: producer domain notifications,
+  integration events, Stats projection, idempotency.
+- [x] Stats read surface: player stats and leaderboard.
+- [x] Shared-container hardening: module-owned UnitOfWork/domain dispatcher.
+- [x] Serial integration test runner: `scripts/test.sh`.
+- [x] Central build/package baseline: `Directory.Build.props`,
+  `Directory.Packages.props`.
+- [x] Application convention ArchTests: internal handlers/validators,
+  immutable requests, module handler contracts.
+- [x] CI quality gate: GitHub Actions workflow runs restore, build, DbUp
+  migrations, then `scripts/test.sh`.
+- [x] Auth/authorization baseline: API auth middleware, authenticated-player
+  policy, protected endpoint groups, anonymous register/login lookup exceptions.
+- [x] Outbox scheduling hardening: Quartz hosted scheduler, retry metadata,
+  persisted errors, delayed retry eligibility.
+
+### Slice 8 — CI Quality Gate ✅ done
+
+Goal: local quality gate ile CI aynı şeyi çalıştırsın.
+
+- [x] Add CI workflow.
+- [x] Restore once, then run build/test without accidental parallel integration
+  DB cleanup races.
+- [x] Use `scripts/test.sh --no-restore -v minimal` or an equivalent serialized
+  integration-test sequence.
+- [x] Document required services/secrets/env vars, especially the integration
+  Postgres connection string.
+- [x] CI status should fail on build, ArchTests, unit tests, or integration
+  tests.
+
+Non-goals:
+
+- Do not introduce Nuke yet.
+- Do not turn warnings-as-errors on until known EF materialization warnings are
+  either fixed or intentionally suppressed.
+
+### Slice 9 — Authentication / Authorization Baseline ✅ baseline done
+
+Goal: public API exposure before real auth should not happen.
+
+- [x] Define auth boundary: current baseline accepts `Authorization: Bearer <player-guid>`.
+- [x] Populate `IExecutionContextAccessor.UserId` from authenticated requests.
+- [x] Add API authentication middleware and route protection.
+- [x] Introduce permission/policy model inspired by Kamil's UserAccess module,
+  but keep it minimal for current Players/Games needs.
+- [x] Add API tests for anonymous root access and protected endpoint rejection.
+- [x] Add command-level integration tests for authenticated execution once token
+  issuing/real external auth is introduced.
+- [x] Decide how guest players transition into authenticated players without
+  breaking existing `Players` invariants.
+
+Non-goals:
+
+- Do not add broad role/permission tables before there is a real permission
+  matrix.
+- Do not move player context into Domain unless a domain invariant needs current
+  user state.
+- Do not treat the temporary `Bearer <player-guid>` scheme as production-grade
+  identity verification.
+
+### Slice 10 — Outbox Scheduling And Retry Hardening ✅ done
+
+Goal: replace the simple hosted polling loop with a module-owned durable
+processing model.
+
+- [x] Introduce scheduled outbox processing per producer module.
+- [x] Add retry/backoff metadata or retry policy.
+- [x] Persist processing errors in a queryable form.
+- [x] Keep per-message failure isolation; one bad message must not stop the
+  batch.
+- [x] Add tests for successful batch, partial failure, retryable failure, and
+  poison-message behavior.
+
+Options:
+
+- Quartz-style scheduler, close to Kamil.
+- A lighter scheduler is acceptable only if it provides clear retry/error
+  semantics and can run safely in one API process.
+
+Current status:
+
+- Retry/error tracking is implemented.
+- Hosted polling loop is replaced by Quartz hosted scheduling.
+
+### Slice 11 — Raw Inbox Pattern For Consumers ✅ done
+
+Goal: Stats should be able to store incoming integration events before
+processing, instead of relying only on inline projection idempotency.
+
+- [x] Add serialized `InboxMessages` shape with event type, payload, occurred
+  date, processed date, and error state.
+- [x] Change integration-event consumption path to append inbox messages first.
+- [x] Add inbox processing command/job for Stats.
+- [x] Preserve idempotency by integration event id.
+- [x] Add replay-oriented tests: duplicate event, failed processing then retry,
+  and projection rebuild from inbox.
+
+Non-goal:
+
+- Do not introduce this for every module before there is at least one real
+  consumer path beyond Stats.
+
+Current status:
+
+- Stats integration handlers now append raw serialized inbox messages.
+- API Quartz hosts a Stats inbox processing job next to outbox processing.
+- Duplicate publish and failed-message continuation/retry metadata are covered
+  in Stats integration tests.
+
+### Slice 12 — Internal Commands ✅ done
+
+Goal: support delayed/retried side effects without doing them inside request
+transactions.
+
+- [x] Add module-owned `InternalCommands` storage.
+- [x] Add command scheduler abstraction.
+- [x] Add processing job with retry/error persistence.
+- [x] Wire a small real use case only when one exists, such as notification,
+  token cleanup, or scheduled projection maintenance.
+- [x] Add architecture tests for internal command visibility and constructor
+  conventions once the pattern exists.
+
+Non-goal:
+
+- Do not add internal commands as ceremony without a delayed/retried side effect
+  to host.
+
+Current status:
+
+- Stats owns `stats.InternalCommands`, `IStatsInternalCommandScheduler`, and
+  `IStatsInternalCommandProcessor`.
+- The API Stats inbox Quartz job now schedules `ProcessStatsInboxCommand` and
+  runs the internal command processor instead of calling the inbox processor
+  directly.
+- Stats integration tests cover failed internal command retry metadata and
+  valid command continuation.
+
+### Slice 13 — Event Bus Abstraction ✅ done
+
+Goal: decouple public integration contracts from MediatR so module extraction or
+external broker adoption is possible later.
+
+- [x] Introduce `IEventsBus` or equivalent abstraction.
+- [x] Move integration event publication behind that abstraction.
+- [x] Keep in-process implementation initially.
+- [x] Remove or isolate direct `INotification` coupling from public integration
+  event contracts if external bus readiness becomes a real goal.
+- [x] Add architecture test that IntegrationEvents projects do not depend on
+  in-process transport implementation details.
+
+Non-goal:
+
+- Do not add RabbitMQ/Kafka/Azure Service Bus before process separation is a
+  real requirement.
+
+Current status:
+
+- `IIntegrationEvent` is a transport-neutral contract and no longer inherits
+  MediatR `INotification`.
+- `IEventsBus` + `IIntegrationEventHandler<T>` exist in Common Application, with
+  an in-process `InMemoryEventsBus` implementation in Common Infrastructure.
+- Games/Players integration-event publication now goes through `IEventsBus`;
+  Stats consumers are registered as `IIntegrationEventHandler<T>`.
+
+### Slice 14 — Module Composition Isolation ✅ done
+
+Goal: reduce shared-container coupling if runtime registration conflicts return.
+
+- [x] First document current shared-container tradeoffs and known protected
+  registrations.
+- [x] Prototype per-module composition root or per-execution lifetime scope for
+  one module.
+- [x] Verify command decorators, notification handlers, outbox mapping, and
+  module facade dispatch still behave correctly.
+- [x] Migrate other modules only if the prototype removes real complexity or
+  prevents concrete bugs.
+
+Non-goal:
+
+- Do not rewrite the whole host composition root just to match Kamil
+  aesthetically.
+
+Current status:
+
+- No new runtime registration collision justified a per-module container rewrite.
+- The in-process event bus was changed from singleton to scoped/lifetime-scope
+  so integration-event handlers resolve from the current execution scope.
+- Architecture composition tests now guard that shared container does not expose
+  module-owned `DbContext`, `IUnitOfWork`, domain dispatcher, or outbox services
+  as ambiguous common services.
+- Per-module container extraction remains deferred until a concrete runtime
+  collision returns.
+
+### Slice 15 — Time Abstraction ✅ done
+
+Goal: remove direct `DateTime.UtcNow` from code paths where time is a domain
+decision, not just persistence metadata.
+
+- [x] Inventory `DateTime.UtcNow` usages.
+- [x] Classify each usage as domain decision, application orchestration, or
+  infrastructure timestamp.
+- [x] Introduce a clock abstraction only where tests or domain policy need it.
+- [x] Update tests for time-dependent rules.
+
+Non-goal:
+
+- Do not mechanically replace every timestamp call if it does not improve
+  testability or domain clarity.
+
+Current status:
+
+- `IClock` lives in Common Application and `SystemClock` in Common
+  Infrastructure.
+- Players registration/link command handlers use `IClock` for domain-visible
+  timestamps.
+- Outbox, Stats inbox, and Stats internal-command processors use `IClock` for
+  processing/retry timestamps.
+- Direct production `DateTime.UtcNow` remains only in `SystemClock` and
+  `DomainEvent` occurrence metadata; integration tests still use direct dates
+  to generate test events.
+
+### Planned Kamil Alignment Complete
+
+The remaining differences are deliberate non-actions or need-triggered items,
+not active alignment slices.
+
+### Deliberate Non-Actions
+
+- API endpoint style: keep current Minimal API/module endpoint organization.
+- Database provider/tooling: keep PostgreSQL + DbUp + first-class SQL scripts.
+- Kamil decorator split: do not reintroduce unless Autofac/MediatR resolution
+  path is proven safe in this repo.
+- Event sourcing: not planned unless audit/replay requirements become real.
+- Implicit project references via `Directory.Build.targets`: defer; explicit
+  project references are still easier to audit at current repo size.
+
+---
+
 ## Sprint 1 — Domain Hardening ✅ closed 2026-05-02
 
 Goal: bring the Games module's Domain layer to production-ready quality.

@@ -1,4 +1,3 @@
-using LexiLink.Common.Infrastructure;
 using LexiLink.Modules.Players.Application.Configuration.Commands;
 using LexiLink.Modules.Players.Application.Contracts;
 
@@ -8,11 +7,11 @@ internal class UnitOfWorkCommandHandlerWithResultDecorator<T, TResult> : IComman
     where T : ICommand<TResult>
 {
     private readonly ICommandHandler<T, TResult> _decorated;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly PlayersUnitOfWork _unitOfWork;
 
     public UnitOfWorkCommandHandlerWithResultDecorator(
         ICommandHandler<T, TResult> decorated,
-        IUnitOfWork unitOfWork)
+        PlayersUnitOfWork unitOfWork)
     {
         _decorated = decorated;
         _unitOfWork = unitOfWork;

@@ -1,7 +1,9 @@
 using Autofac;
 using LexiLink.Common.Application;
 using LexiLink.Common.Infrastructure;
+using LexiLink.Common.Infrastructure.DomainEventsDispatching;
 using LexiLink.Modules.Players.Infrastructure.Configuration.Outbox;
+using LexiLink.Modules.Players.Infrastructure.Outbox.DomainEventNotifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +12,21 @@ namespace LexiLink.Modules.Players.Infrastructure.Configuration;
 
 public static class PlayersStartup
 {
-    private static readonly BiDictionary<string, Type> DomainNotificationsMap = new();
+    private static readonly BiDictionary<string, Type> DomainNotificationsMap =
+        LexiLink.Common.Infrastructure.DomainEventsDispatching.DomainNotificationsMap.Instance;
+
+    static PlayersStartup()
+    {
+        DomainNotificationsMap.Add(
+            "Players.PlayerRegisteredDomainEventNotification",
+            typeof(PlayerRegisteredDomainEventNotification));
+        DomainNotificationsMap.Add(
+            "Players.AuthProviderLinkedDomainEventNotification",
+            typeof(AuthProviderLinkedDomainEventNotification));
+        DomainNotificationsMap.Add(
+            "Players.PlayerProfileUpdatedDomainEventNotification",
+            typeof(PlayerProfileUpdatedDomainEventNotification));
+    }
 
     public static void Initialize(IServiceCollection services, string connectionString)
     {

@@ -1,10 +1,14 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using LexiLink.Common.Application;
+using LexiLink.Common.Application.IntegrationEvents;
+using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure;
+using LexiLink.Common.Infrastructure.IntegrationEvents;
+using LexiLink.Common.Infrastructure.Time;
+using LexiLink.Modules.Games.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
-using LexiLink.Modules.Games.Infrastructure.Configuration.Outbox;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -34,6 +38,8 @@ public abstract class TestBase
 
         var services = new ServiceCollection();
         services.AddSingleton<Microsoft.Extensions.Logging.ILoggerFactory>(NullLoggerFactory.Instance);
+        services.AddSingleton<IClock, SystemClock>();
+        services.AddScoped<IEventsBus, InMemoryEventsBus>();
         services.AddDbContext<GamesContext>(opts =>
             opts.UseNpgsql(connectionString)
                 .ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>());
@@ -41,11 +47,13 @@ public abstract class TestBase
         services.AddSingleton<IExecutionContextAccessor>(new TestExecutionContextAccessor());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
+        // Cross-module gateway stub — Games integration tests exercise the Games module
+        // in isolation; the real Energy module is not booted here.
+        services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
+
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
-        containerBuilder.RegisterModule(new GamesAutofacModule(connectionString));
-        var notificationsMap = new BiDictionary<string, Type>();
-        containerBuilder.RegisterModule(new OutboxModule(notificationsMap));
+        GamesStartup.InitializeCompositionRoot(containerBuilder, connectionString);
 
         _container = containerBuilder.Build();
     }
@@ -79,6 +87,12 @@ public abstract class TestBase
 
     protected Task<TResult> ExecuteQueryAsync<TResult>(IRequest<TResult> query) =>
         Sender.Send(query);
+
+    private sealed class AlwaysAllowingEnergyGuard : IEnergyGuard
+    {
+        public Task EnsureCanStartGameAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
 
     private async Task ClearDatabaseAsync()
     {

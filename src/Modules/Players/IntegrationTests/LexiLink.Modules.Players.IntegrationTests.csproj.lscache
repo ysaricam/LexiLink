@@ -64,6 +64,7 @@ Players/
  PlayerHelper.cs
  PlayerIntegrationTests.cs
 SeedWork/
+ CollectingLogEventSink.cs
  TestBase.cs
  TestExecutionContextAccessor.cs
 
@@ -76,6 +77,7 @@ SeedWork/
  Application/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Application.dll
  Domain/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Domain.dll
  Infrastructure/obj/Debug/net10.0/ref/LexiLink.Modules.Players.Infrastructure.dll
+ IntegrationEvents/obj/Debug/net10.0/ref/LexiLink.Modules.Players.IntegrationEvents.dll
 <DOTNET>/packs/Microsoft.NETCore.App.Ref/10.0.2/ref/net10.0/
  Microsoft.CSharp.dll
  Microsoft.VisualBasic.Core.dll
@@ -262,6 +264,9 @@ SeedWork/
  microsoft.extensions.configuration.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.Configuration.Abstractions.dll
  microsoft.extensions.dependencyinjection.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll
  microsoft.extensions.dependencyinjection/10.0.4/lib/net10.0/Microsoft.Extensions.DependencyInjection.dll
+ microsoft.extensions.diagnostics.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Diagnostics.Abstractions.dll
+ microsoft.extensions.fileproviders.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.FileProviders.Abstractions.dll
+ microsoft.extensions.hosting.abstractions/10.0.0/lib/net10.0/Microsoft.Extensions.Hosting.Abstractions.dll
  microsoft.extensions.logging.abstractions/10.0.4/lib/net10.0/Microsoft.Extensions.Logging.Abstractions.dll
  microsoft.extensions.logging/10.0.4/lib/net10.0/Microsoft.Extensions.Logging.dll
  microsoft.extensions.options/10.0.4/lib/net10.0/Microsoft.Extensions.Options.dll

@@ -1,0 +1,5897 @@
+{
+  "$schema": "lexilink/category/v1",
+  "category": {
+    "name": "Spor",
+    "description": "Spor temasında manuel hazırlanmış kelime grafı."
+  },
+  "links": [
+    {
+      "value": "antrenman",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "antrenör",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "asist",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "atak",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "atlama",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "atletizm",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "atıcılık",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "ayakkabı",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "basket",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "basketbol",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "bek",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "beraberlik",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "bisiklet",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "boks",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "buz",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "buz pateni",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "ceza sahası",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "cirit",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "dakika",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "dalış",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "defans",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "denge",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "derbi",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "devre",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "disk",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "dizlik",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "dropshot",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "dövüş sporu",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "düdük",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "dünya kupası",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "ekipman",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "eldiven",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "eskrim",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "esneklik",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "faul",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "file",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "final",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "forma",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "formula 1",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "forvet",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "futbol",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "fırlatma",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "galibiyet",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "gol",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "gülle",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "güreş",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "hakem",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "halter",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "havuz",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "hokey",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "hücum",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "hız",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "jimnastik",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "judo",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kale",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kaleci",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kanat",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kano",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kar",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "karate",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kask",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kayak",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kelebek",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kemer",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kilometre",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kondisyon",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "korner",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kort",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "koşu",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "krampon",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kulvar",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kulüp",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kupa",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kurbağalama",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kuvvet",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kürek",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kırmızı kart",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kızak",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "kış sporu",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "libero",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "lig",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "madalya",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "maraton",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "mağlubiyet",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "mesafe",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "metre",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "milli takım",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "motor sporu",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "müsabaka",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "nakavt",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "ofsayt",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "okçuluk",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "olimpiyat",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "orta saha",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "oyun",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "parke",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "pas",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "penaltı",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "pist",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "pist bisikleti",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "pota",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "premier lig",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "puan",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "raket",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "ralli",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "ribaund",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "ring",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "saha",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "salon",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "saniye",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sarı kart",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "savunma",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sayı",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "serbest vuruş",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "servis",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "set",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "seyirci",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sezon",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "skor",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "slice",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "smaç",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "snowboard",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "spor",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sporcu",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sprint",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "stadyum",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "stoper",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "su sporu",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "su topu",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "süper lig",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sıkı pas",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sıralama",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sırtüstü",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "sıçrama",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "taekwondo",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "taktik",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "takım",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "taraftar",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "tatami",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "taç",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "tenis",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "top",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "transfer",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "tribün",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "uzatma",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "voleybol",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "yarı final",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "yarışma",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "yelken",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "yüzme",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "çember",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "çim",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "çorap",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "üçlük",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "şampiyonlar ligi",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "şampiyonluk",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "şut",
+      "description": "",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    }
+  ],
+  "edges": [
+    {
+      "from": "antrenman",
+      "to": "antrenör"
+    },
+    {
+      "from": "antrenman",
+      "to": "esneklik"
+    },
+    {
+      "from": "antrenman",
+      "to": "kondisyon"
+    },
+    {
+      "from": "antrenman",
+      "to": "spor"
+    },
+    {
+      "from": "antrenman",
+      "to": "sporcu"
+    },
+    {
+      "from": "antrenman",
+      "to": "takım"
+    },
+    {
+      "from": "antrenör",
+      "to": "antrenman"
+    },
+    {
+      "from": "antrenör",
+      "to": "düdük"
+    },
+    {
+      "from": "antrenör",
+      "to": "milli takım"
+    },
+    {
+      "from": "antrenör",
+      "to": "müsabaka"
+    },
+    {
+      "from": "antrenör",
+      "to": "spor"
+    },
+    {
+      "from": "antrenör",
+      "to": "sporcu"
+    },
+    {
+      "from": "antrenör",
+      "to": "taktik"
+    },
+    {
+      "from": "antrenör",
+      "to": "takım"
+    },
+    {
+      "from": "asist",
+      "to": "basketbol"
+    },
+    {
+      "from": "asist",
+      "to": "gol"
+    },
+    {
+      "from": "asist",
+      "to": "pas"
+    },
+    {
+      "from": "asist",
+      "to": "ribaund"
+    },
+    {
+      "from": "asist",
+      "to": "sayı"
+    },
+    {
+      "from": "asist",
+      "to": "sıkı pas"
+    },
+    {
+      "from": "atak",
+      "to": "basketbol"
+    },
+    {
+      "from": "atak",
+      "to": "futbol"
+    },
+    {
+      "from": "atak",
+      "to": "hücum"
+    },
+    {
+      "from": "atak",
+      "to": "hız"
+    },
+    {
+      "from": "atak",
+      "to": "savunma"
+    },
+    {
+      "from": "atak",
+      "to": "taktik"
+    },
+    {
+      "from": "atlama",
+      "to": "atletizm"
+    },
+    {
+      "from": "atlama",
+      "to": "cirit"
+    },
+    {
+      "from": "atlama",
+      "to": "hız"
+    },
+    {
+      "from": "atlama",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "atlama",
+      "to": "sporcu"
+    },
+    {
+      "from": "atlama",
+      "to": "sıçrama"
+    },
+    {
+      "from": "atletizm",
+      "to": "atlama"
+    },
+    {
+      "from": "atletizm",
+      "to": "cirit"
+    },
+    {
+      "from": "atletizm",
+      "to": "disk"
+    },
+    {
+      "from": "atletizm",
+      "to": "fırlatma"
+    },
+    {
+      "from": "atletizm",
+      "to": "gülle"
+    },
+    {
+      "from": "atletizm",
+      "to": "hız"
+    },
+    {
+      "from": "atletizm",
+      "to": "koşu"
+    },
+    {
+      "from": "atletizm",
+      "to": "kuvvet"
+    },
+    {
+      "from": "atletizm",
+      "to": "maraton"
+    },
+    {
+      "from": "atletizm",
+      "to": "mesafe"
+    },
+    {
+      "from": "atletizm",
+      "to": "metre"
+    },
+    {
+      "from": "atletizm",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "atletizm",
+      "to": "pist"
+    },
+    {
+      "from": "atletizm",
+      "to": "spor"
+    },
+    {
+      "from": "atletizm",
+      "to": "sprint"
+    },
+    {
+      "from": "atletizm",
+      "to": "sıçrama"
+    },
+    {
+      "from": "atıcılık",
+      "to": "eskrim"
+    },
+    {
+      "from": "atıcılık",
+      "to": "halter"
+    },
+    {
+      "from": "atıcılık",
+      "to": "jimnastik"
+    },
+    {
+      "from": "atıcılık",
+      "to": "okçuluk"
+    },
+    {
+      "from": "atıcılık",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "atıcılık",
+      "to": "sporcu"
+    },
+    {
+      "from": "ayakkabı",
+      "to": "bisiklet"
+    },
+    {
+      "from": "ayakkabı",
+      "to": "ekipman"
+    },
+    {
+      "from": "ayakkabı",
+      "to": "forma"
+    },
+    {
+      "from": "ayakkabı",
+      "to": "koşu"
+    },
+    {
+      "from": "ayakkabı",
+      "to": "krampon"
+    },
+    {
+      "from": "ayakkabı",
+      "to": "çorap"
+    },
+    {
+      "from": "basket",
+      "to": "ekipman"
+    },
+    {
+      "from": "basket",
+      "to": "pota"
+    },
+    {
+      "from": "basket",
+      "to": "sayı"
+    },
+    {
+      "from": "basket",
+      "to": "takım"
+    },
+    {
+      "from": "basket",
+      "to": "çember"
+    },
+    {
+      "from": "basket",
+      "to": "üçlük"
+    },
+    {
+      "from": "basketbol",
+      "to": "asist"
+    },
+    {
+      "from": "basketbol",
+      "to": "atak"
+    },
+    {
+      "from": "basketbol",
+      "to": "defans"
+    },
+    {
+      "from": "basketbol",
+      "to": "devre"
+    },
+    {
+      "from": "basketbol",
+      "to": "dizlik"
+    },
+    {
+      "from": "basketbol",
+      "to": "hücum"
+    },
+    {
+      "from": "basketbol",
+      "to": "parke"
+    },
+    {
+      "from": "basketbol",
+      "to": "pas"
+    },
+    {
+      "from": "basketbol",
+      "to": "pota"
+    },
+    {
+      "from": "basketbol",
+      "to": "ribaund"
+    },
+    {
+      "from": "basketbol",
+      "to": "salon"
+    },
+    {
+      "from": "basketbol",
+      "to": "savunma"
+    },
+    {
+      "from": "basketbol",
+      "to": "sayı"
+    },
+    {
+      "from": "basketbol",
+      "to": "smaç"
+    },
+    {
+      "from": "basketbol",
+      "to": "sıkı pas"
+    },
+    {
+      "from": "basketbol",
+      "to": "top"
+    },
+    {
+      "from": "basketbol",
+      "to": "üçlük"
+    },
+    {
+      "from": "bek",
+      "to": "defans"
+    },
+    {
+      "from": "bek",
+      "to": "futbol"
+    },
+    {
+      "from": "bek",
+      "to": "kanat"
+    },
+    {
+      "from": "bek",
+      "to": "sporcu"
+    },
+    {
+      "from": "bek",
+      "to": "stoper"
+    },
+    {
+      "from": "bek",
+      "to": "takım"
+    },
+    {
+      "from": "beraberlik",
+      "to": "futbol"
+    },
+    {
+      "from": "beraberlik",
+      "to": "mağlubiyet"
+    },
+    {
+      "from": "beraberlik",
+      "to": "müsabaka"
+    },
+    {
+      "from": "beraberlik",
+      "to": "puan"
+    },
+    {
+      "from": "beraberlik",
+      "to": "skor"
+    },
+    {
+      "from": "beraberlik",
+      "to": "takım"
+    },
+    {
+      "from": "bisiklet",
+      "to": "ayakkabı"
+    },
+    {
+      "from": "bisiklet",
+      "to": "ekipman"
+    },
+    {
+      "from": "bisiklet",
+      "to": "motor sporu"
+    },
+    {
+      "from": "bisiklet",
+      "to": "pist bisikleti"
+    },
+    {
+      "from": "bisiklet",
+      "to": "ralli"
+    },
+    {
+      "from": "bisiklet",
+      "to": "sporcu"
+    },
+    {
+      "from": "boks",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "boks",
+      "to": "eldiven"
+    },
+    {
+      "from": "boks",
+      "to": "kask"
+    },
+    {
+      "from": "boks",
+      "to": "nakavt"
+    },
+    {
+      "from": "boks",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "boks",
+      "to": "ring"
+    },
+    {
+      "from": "buz",
+      "to": "buz pateni"
+    },
+    {
+      "from": "buz",
+      "to": "hokey"
+    },
+    {
+      "from": "buz",
+      "to": "kar"
+    },
+    {
+      "from": "buz",
+      "to": "kayak"
+    },
+    {
+      "from": "buz",
+      "to": "kızak"
+    },
+    {
+      "from": "buz",
+      "to": "kış sporu"
+    },
+    {
+      "from": "buz",
+      "to": "snowboard"
+    },
+    {
+      "from": "buz pateni",
+      "to": "buz"
+    },
+    {
+      "from": "buz pateni",
+      "to": "formula 1"
+    },
+    {
+      "from": "buz pateni",
+      "to": "hokey"
+    },
+    {
+      "from": "buz pateni",
+      "to": "kar"
+    },
+    {
+      "from": "buz pateni",
+      "to": "kayak"
+    },
+    {
+      "from": "buz pateni",
+      "to": "kış sporu"
+    },
+    {
+      "from": "buz pateni",
+      "to": "snowboard"
+    },
+    {
+      "from": "ceza sahası",
+      "to": "futbol"
+    },
+    {
+      "from": "ceza sahası",
+      "to": "kaleci"
+    },
+    {
+      "from": "ceza sahası",
+      "to": "korner"
+    },
+    {
+      "from": "ceza sahası",
+      "to": "penaltı"
+    },
+    {
+      "from": "ceza sahası",
+      "to": "savunma"
+    },
+    {
+      "from": "ceza sahası",
+      "to": "serbest vuruş"
+    },
+    {
+      "from": "ceza sahası",
+      "to": "şut"
+    },
+    {
+      "from": "cirit",
+      "to": "atlama"
+    },
+    {
+      "from": "cirit",
+      "to": "atletizm"
+    },
+    {
+      "from": "cirit",
+      "to": "disk"
+    },
+    {
+      "from": "cirit",
+      "to": "fırlatma"
+    },
+    {
+      "from": "cirit",
+      "to": "gülle"
+    },
+    {
+      "from": "cirit",
+      "to": "sporcu"
+    },
+    {
+      "from": "dakika",
+      "to": "devre"
+    },
+    {
+      "from": "dakika",
+      "to": "müsabaka"
+    },
+    {
+      "from": "dakika",
+      "to": "oyun"
+    },
+    {
+      "from": "dakika",
+      "to": "saniye"
+    },
+    {
+      "from": "dakika",
+      "to": "uzatma"
+    },
+    {
+      "from": "dakika",
+      "to": "yarışma"
+    },
+    {
+      "from": "dalış",
+      "to": "havuz"
+    },
+    {
+      "from": "dalış",
+      "to": "kelebek"
+    },
+    {
+      "from": "dalış",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "dalış",
+      "to": "spor"
+    },
+    {
+      "from": "dalış",
+      "to": "su sporu"
+    },
+    {
+      "from": "dalış",
+      "to": "yüzme"
+    },
+    {
+      "from": "defans",
+      "to": "basketbol"
+    },
+    {
+      "from": "defans",
+      "to": "bek"
+    },
+    {
+      "from": "defans",
+      "to": "kale"
+    },
+    {
+      "from": "defans",
+      "to": "libero"
+    },
+    {
+      "from": "defans",
+      "to": "savunma"
+    },
+    {
+      "from": "defans",
+      "to": "stoper"
+    },
+    {
+      "from": "defans",
+      "to": "takım"
+    },
+    {
+      "from": "denge",
+      "to": "esneklik"
+    },
+    {
+      "from": "denge",
+      "to": "hız"
+    },
+    {
+      "from": "denge",
+      "to": "jimnastik"
+    },
+    {
+      "from": "denge",
+      "to": "kondisyon"
+    },
+    {
+      "from": "denge",
+      "to": "kuvvet"
+    },
+    {
+      "from": "denge",
+      "to": "sporcu"
+    },
+    {
+      "from": "derbi",
+      "to": "futbol"
+    },
+    {
+      "from": "derbi",
+      "to": "müsabaka"
+    },
+    {
+      "from": "derbi",
+      "to": "sezon"
+    },
+    {
+      "from": "derbi",
+      "to": "stadyum"
+    },
+    {
+      "from": "derbi",
+      "to": "süper lig"
+    },
+    {
+      "from": "derbi",
+      "to": "taraftar"
+    },
+    {
+      "from": "devre",
+      "to": "basketbol"
+    },
+    {
+      "from": "devre",
+      "to": "dakika"
+    },
+    {
+      "from": "devre",
+      "to": "futbol"
+    },
+    {
+      "from": "devre",
+      "to": "hakem"
+    },
+    {
+      "from": "devre",
+      "to": "oyun"
+    },
+    {
+      "from": "devre",
+      "to": "uzatma"
+    },
+    {
+      "from": "disk",
+      "to": "atletizm"
+    },
+    {
+      "from": "disk",
+      "to": "cirit"
+    },
+    {
+      "from": "disk",
+      "to": "fırlatma"
+    },
+    {
+      "from": "disk",
+      "to": "gülle"
+    },
+    {
+      "from": "disk",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "disk",
+      "to": "sporcu"
+    },
+    {
+      "from": "dizlik",
+      "to": "basketbol"
+    },
+    {
+      "from": "dizlik",
+      "to": "ekipman"
+    },
+    {
+      "from": "dizlik",
+      "to": "kaleci"
+    },
+    {
+      "from": "dizlik",
+      "to": "krampon"
+    },
+    {
+      "from": "dizlik",
+      "to": "voleybol"
+    },
+    {
+      "from": "dizlik",
+      "to": "çorap"
+    },
+    {
+      "from": "dropshot",
+      "to": "file"
+    },
+    {
+      "from": "dropshot",
+      "to": "kort"
+    },
+    {
+      "from": "dropshot",
+      "to": "oyun"
+    },
+    {
+      "from": "dropshot",
+      "to": "slice"
+    },
+    {
+      "from": "dropshot",
+      "to": "smaç"
+    },
+    {
+      "from": "dropshot",
+      "to": "tenis"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "boks"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "güreş"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "judo"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "karate"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "kemer"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "nakavt"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "ring"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "spor"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "taekwondo"
+    },
+    {
+      "from": "dövüş sporu",
+      "to": "tatami"
+    },
+    {
+      "from": "düdük",
+      "to": "antrenör"
+    },
+    {
+      "from": "düdük",
+      "to": "ekipman"
+    },
+    {
+      "from": "düdük",
+      "to": "faul"
+    },
+    {
+      "from": "düdük",
+      "to": "hakem"
+    },
+    {
+      "from": "düdük",
+      "to": "kaleci"
+    },
+    {
+      "from": "düdük",
+      "to": "kırmızı kart"
+    },
+    {
+      "from": "düdük",
+      "to": "müsabaka"
+    },
+    {
+      "from": "düdük",
+      "to": "sarı kart"
+    },
+    {
+      "from": "dünya kupası",
+      "to": "final"
+    },
+    {
+      "from": "dünya kupası",
+      "to": "futbol"
+    },
+    {
+      "from": "dünya kupası",
+      "to": "kupa"
+    },
+    {
+      "from": "dünya kupası",
+      "to": "milli takım"
+    },
+    {
+      "from": "dünya kupası",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "dünya kupası",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "ekipman",
+      "to": "ayakkabı"
+    },
+    {
+      "from": "ekipman",
+      "to": "basket"
+    },
+    {
+      "from": "ekipman",
+      "to": "bisiklet"
+    },
+    {
+      "from": "ekipman",
+      "to": "dizlik"
+    },
+    {
+      "from": "ekipman",
+      "to": "düdük"
+    },
+    {
+      "from": "ekipman",
+      "to": "eldiven"
+    },
+    {
+      "from": "ekipman",
+      "to": "forma"
+    },
+    {
+      "from": "ekipman",
+      "to": "kask"
+    },
+    {
+      "from": "ekipman",
+      "to": "kayak"
+    },
+    {
+      "from": "ekipman",
+      "to": "krampon"
+    },
+    {
+      "from": "ekipman",
+      "to": "kürek"
+    },
+    {
+      "from": "ekipman",
+      "to": "motor sporu"
+    },
+    {
+      "from": "ekipman",
+      "to": "pist bisikleti"
+    },
+    {
+      "from": "ekipman",
+      "to": "raket"
+    },
+    {
+      "from": "ekipman",
+      "to": "ralli"
+    },
+    {
+      "from": "ekipman",
+      "to": "top"
+    },
+    {
+      "from": "ekipman",
+      "to": "yelken"
+    },
+    {
+      "from": "ekipman",
+      "to": "çorap"
+    },
+    {
+      "from": "eldiven",
+      "to": "boks"
+    },
+    {
+      "from": "eldiven",
+      "to": "ekipman"
+    },
+    {
+      "from": "eldiven",
+      "to": "futbol"
+    },
+    {
+      "from": "eldiven",
+      "to": "kaleci"
+    },
+    {
+      "from": "eldiven",
+      "to": "kask"
+    },
+    {
+      "from": "eldiven",
+      "to": "sporcu"
+    },
+    {
+      "from": "eskrim",
+      "to": "atıcılık"
+    },
+    {
+      "from": "eskrim",
+      "to": "halter"
+    },
+    {
+      "from": "eskrim",
+      "to": "jimnastik"
+    },
+    {
+      "from": "eskrim",
+      "to": "okçuluk"
+    },
+    {
+      "from": "eskrim",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "eskrim",
+      "to": "sporcu"
+    },
+    {
+      "from": "esneklik",
+      "to": "antrenman"
+    },
+    {
+      "from": "esneklik",
+      "to": "denge"
+    },
+    {
+      "from": "esneklik",
+      "to": "jimnastik"
+    },
+    {
+      "from": "esneklik",
+      "to": "kondisyon"
+    },
+    {
+      "from": "esneklik",
+      "to": "kuvvet"
+    },
+    {
+      "from": "esneklik",
+      "to": "sporcu"
+    },
+    {
+      "from": "faul",
+      "to": "düdük"
+    },
+    {
+      "from": "faul",
+      "to": "hakem"
+    },
+    {
+      "from": "faul",
+      "to": "kırmızı kart"
+    },
+    {
+      "from": "faul",
+      "to": "penaltı"
+    },
+    {
+      "from": "faul",
+      "to": "sarı kart"
+    },
+    {
+      "from": "faul",
+      "to": "serbest vuruş"
+    },
+    {
+      "from": "file",
+      "to": "dropshot"
+    },
+    {
+      "from": "file",
+      "to": "kort"
+    },
+    {
+      "from": "file",
+      "to": "raket"
+    },
+    {
+      "from": "file",
+      "to": "set"
+    },
+    {
+      "from": "file",
+      "to": "tenis"
+    },
+    {
+      "from": "file",
+      "to": "voleybol"
+    },
+    {
+      "from": "final",
+      "to": "dünya kupası"
+    },
+    {
+      "from": "final",
+      "to": "kupa"
+    },
+    {
+      "from": "final",
+      "to": "takım"
+    },
+    {
+      "from": "final",
+      "to": "yarı final"
+    },
+    {
+      "from": "final",
+      "to": "yarışma"
+    },
+    {
+      "from": "final",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "forma",
+      "to": "ayakkabı"
+    },
+    {
+      "from": "forma",
+      "to": "ekipman"
+    },
+    {
+      "from": "forma",
+      "to": "milli takım"
+    },
+    {
+      "from": "forma",
+      "to": "sporcu"
+    },
+    {
+      "from": "forma",
+      "to": "takım"
+    },
+    {
+      "from": "forma",
+      "to": "çorap"
+    },
+    {
+      "from": "formula 1",
+      "to": "buz pateni"
+    },
+    {
+      "from": "formula 1",
+      "to": "hız"
+    },
+    {
+      "from": "formula 1",
+      "to": "motor sporu"
+    },
+    {
+      "from": "formula 1",
+      "to": "pist"
+    },
+    {
+      "from": "formula 1",
+      "to": "pist bisikleti"
+    },
+    {
+      "from": "formula 1",
+      "to": "ralli"
+    },
+    {
+      "from": "forvet",
+      "to": "gol"
+    },
+    {
+      "from": "forvet",
+      "to": "hücum"
+    },
+    {
+      "from": "forvet",
+      "to": "kanat"
+    },
+    {
+      "from": "forvet",
+      "to": "ofsayt"
+    },
+    {
+      "from": "forvet",
+      "to": "orta saha"
+    },
+    {
+      "from": "forvet",
+      "to": "takım"
+    },
+    {
+      "from": "futbol",
+      "to": "atak"
+    },
+    {
+      "from": "futbol",
+      "to": "bek"
+    },
+    {
+      "from": "futbol",
+      "to": "beraberlik"
+    },
+    {
+      "from": "futbol",
+      "to": "ceza sahası"
+    },
+    {
+      "from": "futbol",
+      "to": "derbi"
+    },
+    {
+      "from": "futbol",
+      "to": "devre"
+    },
+    {
+      "from": "futbol",
+      "to": "dünya kupası"
+    },
+    {
+      "from": "futbol",
+      "to": "eldiven"
+    },
+    {
+      "from": "futbol",
+      "to": "gol"
+    },
+    {
+      "from": "futbol",
+      "to": "hücum"
+    },
+    {
+      "from": "futbol",
+      "to": "kale"
+    },
+    {
+      "from": "futbol",
+      "to": "kaleci"
+    },
+    {
+      "from": "futbol",
+      "to": "kanat"
+    },
+    {
+      "from": "futbol",
+      "to": "korner"
+    },
+    {
+      "from": "futbol",
+      "to": "krampon"
+    },
+    {
+      "from": "futbol",
+      "to": "kırmızı kart"
+    },
+    {
+      "from": "futbol",
+      "to": "libero"
+    },
+    {
+      "from": "futbol",
+      "to": "milli takım"
+    },
+    {
+      "from": "futbol",
+      "to": "ofsayt"
+    },
+    {
+      "from": "futbol",
+      "to": "orta saha"
+    },
+    {
+      "from": "futbol",
+      "to": "pas"
+    },
+    {
+      "from": "futbol",
+      "to": "premier lig"
+    },
+    {
+      "from": "futbol",
+      "to": "saha"
+    },
+    {
+      "from": "futbol",
+      "to": "sarı kart"
+    },
+    {
+      "from": "futbol",
+      "to": "savunma"
+    },
+    {
+      "from": "futbol",
+      "to": "sezon"
+    },
+    {
+      "from": "futbol",
+      "to": "stadyum"
+    },
+    {
+      "from": "futbol",
+      "to": "stoper"
+    },
+    {
+      "from": "futbol",
+      "to": "süper lig"
+    },
+    {
+      "from": "futbol",
+      "to": "sıkı pas"
+    },
+    {
+      "from": "futbol",
+      "to": "taç"
+    },
+    {
+      "from": "futbol",
+      "to": "top"
+    },
+    {
+      "from": "futbol",
+      "to": "transfer"
+    },
+    {
+      "from": "futbol",
+      "to": "uzatma"
+    },
+    {
+      "from": "futbol",
+      "to": "çim"
+    },
+    {
+      "from": "futbol",
+      "to": "şampiyonlar ligi"
+    },
+    {
+      "from": "fırlatma",
+      "to": "atletizm"
+    },
+    {
+      "from": "fırlatma",
+      "to": "cirit"
+    },
+    {
+      "from": "fırlatma",
+      "to": "disk"
+    },
+    {
+      "from": "fırlatma",
+      "to": "gülle"
+    },
+    {
+      "from": "fırlatma",
+      "to": "kuvvet"
+    },
+    {
+      "from": "fırlatma",
+      "to": "okçuluk"
+    },
+    {
+      "from": "fırlatma",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "galibiyet",
+      "to": "mağlubiyet"
+    },
+    {
+      "from": "galibiyet",
+      "to": "müsabaka"
+    },
+    {
+      "from": "galibiyet",
+      "to": "puan"
+    },
+    {
+      "from": "galibiyet",
+      "to": "skor"
+    },
+    {
+      "from": "galibiyet",
+      "to": "takım"
+    },
+    {
+      "from": "galibiyet",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "gol",
+      "to": "asist"
+    },
+    {
+      "from": "gol",
+      "to": "forvet"
+    },
+    {
+      "from": "gol",
+      "to": "futbol"
+    },
+    {
+      "from": "gol",
+      "to": "kale"
+    },
+    {
+      "from": "gol",
+      "to": "penaltı"
+    },
+    {
+      "from": "gol",
+      "to": "serbest vuruş"
+    },
+    {
+      "from": "gol",
+      "to": "şut"
+    },
+    {
+      "from": "gülle",
+      "to": "atletizm"
+    },
+    {
+      "from": "gülle",
+      "to": "cirit"
+    },
+    {
+      "from": "gülle",
+      "to": "disk"
+    },
+    {
+      "from": "gülle",
+      "to": "fırlatma"
+    },
+    {
+      "from": "gülle",
+      "to": "kuvvet"
+    },
+    {
+      "from": "gülle",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "güreş",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "güreş",
+      "to": "judo"
+    },
+    {
+      "from": "güreş",
+      "to": "kemer"
+    },
+    {
+      "from": "güreş",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "güreş",
+      "to": "salon"
+    },
+    {
+      "from": "güreş",
+      "to": "tatami"
+    },
+    {
+      "from": "hakem",
+      "to": "devre"
+    },
+    {
+      "from": "hakem",
+      "to": "düdük"
+    },
+    {
+      "from": "hakem",
+      "to": "faul"
+    },
+    {
+      "from": "hakem",
+      "to": "kırmızı kart"
+    },
+    {
+      "from": "hakem",
+      "to": "müsabaka"
+    },
+    {
+      "from": "hakem",
+      "to": "ofsayt"
+    },
+    {
+      "from": "hakem",
+      "to": "sarı kart"
+    },
+    {
+      "from": "hakem",
+      "to": "serbest vuruş"
+    },
+    {
+      "from": "hakem",
+      "to": "spor"
+    },
+    {
+      "from": "hakem",
+      "to": "taç"
+    },
+    {
+      "from": "hakem",
+      "to": "uzatma"
+    },
+    {
+      "from": "halter",
+      "to": "atıcılık"
+    },
+    {
+      "from": "halter",
+      "to": "eskrim"
+    },
+    {
+      "from": "halter",
+      "to": "hokey"
+    },
+    {
+      "from": "halter",
+      "to": "jimnastik"
+    },
+    {
+      "from": "halter",
+      "to": "kuvvet"
+    },
+    {
+      "from": "halter",
+      "to": "okçuluk"
+    },
+    {
+      "from": "halter",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "havuz",
+      "to": "dalış"
+    },
+    {
+      "from": "havuz",
+      "to": "kulvar"
+    },
+    {
+      "from": "havuz",
+      "to": "kurbağalama"
+    },
+    {
+      "from": "havuz",
+      "to": "su sporu"
+    },
+    {
+      "from": "havuz",
+      "to": "su topu"
+    },
+    {
+      "from": "havuz",
+      "to": "sırtüstü"
+    },
+    {
+      "from": "havuz",
+      "to": "yüzme"
+    },
+    {
+      "from": "hokey",
+      "to": "buz"
+    },
+    {
+      "from": "hokey",
+      "to": "buz pateni"
+    },
+    {
+      "from": "hokey",
+      "to": "halter"
+    },
+    {
+      "from": "hokey",
+      "to": "kaleci"
+    },
+    {
+      "from": "hokey",
+      "to": "kar"
+    },
+    {
+      "from": "hokey",
+      "to": "kızak"
+    },
+    {
+      "from": "hokey",
+      "to": "kış sporu"
+    },
+    {
+      "from": "hokey",
+      "to": "parke"
+    },
+    {
+      "from": "hücum",
+      "to": "atak"
+    },
+    {
+      "from": "hücum",
+      "to": "basketbol"
+    },
+    {
+      "from": "hücum",
+      "to": "forvet"
+    },
+    {
+      "from": "hücum",
+      "to": "futbol"
+    },
+    {
+      "from": "hücum",
+      "to": "kanat"
+    },
+    {
+      "from": "hücum",
+      "to": "taktik"
+    },
+    {
+      "from": "hız",
+      "to": "atak"
+    },
+    {
+      "from": "hız",
+      "to": "atlama"
+    },
+    {
+      "from": "hız",
+      "to": "atletizm"
+    },
+    {
+      "from": "hız",
+      "to": "denge"
+    },
+    {
+      "from": "hız",
+      "to": "formula 1"
+    },
+    {
+      "from": "hız",
+      "to": "kondisyon"
+    },
+    {
+      "from": "hız",
+      "to": "kuvvet"
+    },
+    {
+      "from": "hız",
+      "to": "motor sporu"
+    },
+    {
+      "from": "hız",
+      "to": "sprint"
+    },
+    {
+      "from": "jimnastik",
+      "to": "atıcılık"
+    },
+    {
+      "from": "jimnastik",
+      "to": "denge"
+    },
+    {
+      "from": "jimnastik",
+      "to": "eskrim"
+    },
+    {
+      "from": "jimnastik",
+      "to": "esneklik"
+    },
+    {
+      "from": "jimnastik",
+      "to": "halter"
+    },
+    {
+      "from": "jimnastik",
+      "to": "okçuluk"
+    },
+    {
+      "from": "jimnastik",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "judo",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "judo",
+      "to": "güreş"
+    },
+    {
+      "from": "judo",
+      "to": "karate"
+    },
+    {
+      "from": "judo",
+      "to": "kemer"
+    },
+    {
+      "from": "judo",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "judo",
+      "to": "tatami"
+    },
+    {
+      "from": "kale",
+      "to": "defans"
+    },
+    {
+      "from": "kale",
+      "to": "futbol"
+    },
+    {
+      "from": "kale",
+      "to": "gol"
+    },
+    {
+      "from": "kale",
+      "to": "kaleci"
+    },
+    {
+      "from": "kale",
+      "to": "serbest vuruş"
+    },
+    {
+      "from": "kale",
+      "to": "şut"
+    },
+    {
+      "from": "kaleci",
+      "to": "ceza sahası"
+    },
+    {
+      "from": "kaleci",
+      "to": "dizlik"
+    },
+    {
+      "from": "kaleci",
+      "to": "düdük"
+    },
+    {
+      "from": "kaleci",
+      "to": "eldiven"
+    },
+    {
+      "from": "kaleci",
+      "to": "futbol"
+    },
+    {
+      "from": "kaleci",
+      "to": "hokey"
+    },
+    {
+      "from": "kaleci",
+      "to": "kale"
+    },
+    {
+      "from": "kaleci",
+      "to": "kask"
+    },
+    {
+      "from": "kaleci",
+      "to": "libero"
+    },
+    {
+      "from": "kaleci",
+      "to": "penaltı"
+    },
+    {
+      "from": "kaleci",
+      "to": "savunma"
+    },
+    {
+      "from": "kaleci",
+      "to": "stoper"
+    },
+    {
+      "from": "kanat",
+      "to": "bek"
+    },
+    {
+      "from": "kanat",
+      "to": "forvet"
+    },
+    {
+      "from": "kanat",
+      "to": "futbol"
+    },
+    {
+      "from": "kanat",
+      "to": "hücum"
+    },
+    {
+      "from": "kanat",
+      "to": "ofsayt"
+    },
+    {
+      "from": "kanat",
+      "to": "orta saha"
+    },
+    {
+      "from": "kanat",
+      "to": "savunma"
+    },
+    {
+      "from": "kano",
+      "to": "kürek"
+    },
+    {
+      "from": "kano",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "kano",
+      "to": "su sporu"
+    },
+    {
+      "from": "kano",
+      "to": "su topu"
+    },
+    {
+      "from": "kano",
+      "to": "yarışma"
+    },
+    {
+      "from": "kano",
+      "to": "yelken"
+    },
+    {
+      "from": "kano",
+      "to": "yüzme"
+    },
+    {
+      "from": "kar",
+      "to": "buz"
+    },
+    {
+      "from": "kar",
+      "to": "buz pateni"
+    },
+    {
+      "from": "kar",
+      "to": "hokey"
+    },
+    {
+      "from": "kar",
+      "to": "kayak"
+    },
+    {
+      "from": "kar",
+      "to": "kızak"
+    },
+    {
+      "from": "kar",
+      "to": "kış sporu"
+    },
+    {
+      "from": "kar",
+      "to": "snowboard"
+    },
+    {
+      "from": "karate",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "karate",
+      "to": "judo"
+    },
+    {
+      "from": "karate",
+      "to": "kemer"
+    },
+    {
+      "from": "karate",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "karate",
+      "to": "taekwondo"
+    },
+    {
+      "from": "karate",
+      "to": "tatami"
+    },
+    {
+      "from": "kask",
+      "to": "boks"
+    },
+    {
+      "from": "kask",
+      "to": "ekipman"
+    },
+    {
+      "from": "kask",
+      "to": "eldiven"
+    },
+    {
+      "from": "kask",
+      "to": "kaleci"
+    },
+    {
+      "from": "kask",
+      "to": "krampon"
+    },
+    {
+      "from": "kask",
+      "to": "sporcu"
+    },
+    {
+      "from": "kayak",
+      "to": "buz"
+    },
+    {
+      "from": "kayak",
+      "to": "buz pateni"
+    },
+    {
+      "from": "kayak",
+      "to": "ekipman"
+    },
+    {
+      "from": "kayak",
+      "to": "kar"
+    },
+    {
+      "from": "kayak",
+      "to": "kış sporu"
+    },
+    {
+      "from": "kayak",
+      "to": "snowboard"
+    },
+    {
+      "from": "kelebek",
+      "to": "dalış"
+    },
+    {
+      "from": "kelebek",
+      "to": "kulvar"
+    },
+    {
+      "from": "kelebek",
+      "to": "kurbağalama"
+    },
+    {
+      "from": "kelebek",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "kelebek",
+      "to": "sırtüstü"
+    },
+    {
+      "from": "kelebek",
+      "to": "yüzme"
+    },
+    {
+      "from": "kemer",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "kemer",
+      "to": "güreş"
+    },
+    {
+      "from": "kemer",
+      "to": "judo"
+    },
+    {
+      "from": "kemer",
+      "to": "karate"
+    },
+    {
+      "from": "kemer",
+      "to": "taekwondo"
+    },
+    {
+      "from": "kemer",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "kilometre",
+      "to": "koşu"
+    },
+    {
+      "from": "kilometre",
+      "to": "maraton"
+    },
+    {
+      "from": "kilometre",
+      "to": "mesafe"
+    },
+    {
+      "from": "kilometre",
+      "to": "metre"
+    },
+    {
+      "from": "kilometre",
+      "to": "pist"
+    },
+    {
+      "from": "kilometre",
+      "to": "sprint"
+    },
+    {
+      "from": "kondisyon",
+      "to": "antrenman"
+    },
+    {
+      "from": "kondisyon",
+      "to": "denge"
+    },
+    {
+      "from": "kondisyon",
+      "to": "esneklik"
+    },
+    {
+      "from": "kondisyon",
+      "to": "hız"
+    },
+    {
+      "from": "kondisyon",
+      "to": "kuvvet"
+    },
+    {
+      "from": "kondisyon",
+      "to": "spor"
+    },
+    {
+      "from": "kondisyon",
+      "to": "sporcu"
+    },
+    {
+      "from": "korner",
+      "to": "ceza sahası"
+    },
+    {
+      "from": "korner",
+      "to": "futbol"
+    },
+    {
+      "from": "korner",
+      "to": "saha"
+    },
+    {
+      "from": "korner",
+      "to": "taç"
+    },
+    {
+      "from": "korner",
+      "to": "top"
+    },
+    {
+      "from": "korner",
+      "to": "şut"
+    },
+    {
+      "from": "kort",
+      "to": "dropshot"
+    },
+    {
+      "from": "kort",
+      "to": "file"
+    },
+    {
+      "from": "kort",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "kort",
+      "to": "raket"
+    },
+    {
+      "from": "kort",
+      "to": "saha"
+    },
+    {
+      "from": "kort",
+      "to": "tenis"
+    },
+    {
+      "from": "kort",
+      "to": "çim"
+    },
+    {
+      "from": "koşu",
+      "to": "atletizm"
+    },
+    {
+      "from": "koşu",
+      "to": "ayakkabı"
+    },
+    {
+      "from": "koşu",
+      "to": "kilometre"
+    },
+    {
+      "from": "koşu",
+      "to": "maraton"
+    },
+    {
+      "from": "koşu",
+      "to": "mesafe"
+    },
+    {
+      "from": "koşu",
+      "to": "metre"
+    },
+    {
+      "from": "koşu",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "koşu",
+      "to": "pist"
+    },
+    {
+      "from": "koşu",
+      "to": "saniye"
+    },
+    {
+      "from": "koşu",
+      "to": "sprint"
+    },
+    {
+      "from": "krampon",
+      "to": "ayakkabı"
+    },
+    {
+      "from": "krampon",
+      "to": "dizlik"
+    },
+    {
+      "from": "krampon",
+      "to": "ekipman"
+    },
+    {
+      "from": "krampon",
+      "to": "futbol"
+    },
+    {
+      "from": "krampon",
+      "to": "kask"
+    },
+    {
+      "from": "krampon",
+      "to": "çorap"
+    },
+    {
+      "from": "kulvar",
+      "to": "havuz"
+    },
+    {
+      "from": "kulvar",
+      "to": "kelebek"
+    },
+    {
+      "from": "kulvar",
+      "to": "kurbağalama"
+    },
+    {
+      "from": "kulvar",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "kulvar",
+      "to": "su sporu"
+    },
+    {
+      "from": "kulvar",
+      "to": "sırtüstü"
+    },
+    {
+      "from": "kulvar",
+      "to": "yüzme"
+    },
+    {
+      "from": "kulüp",
+      "to": "lig"
+    },
+    {
+      "from": "kulüp",
+      "to": "spor"
+    },
+    {
+      "from": "kulüp",
+      "to": "stadyum"
+    },
+    {
+      "from": "kulüp",
+      "to": "takım"
+    },
+    {
+      "from": "kulüp",
+      "to": "taraftar"
+    },
+    {
+      "from": "kulüp",
+      "to": "transfer"
+    },
+    {
+      "from": "kulüp",
+      "to": "çim"
+    },
+    {
+      "from": "kupa",
+      "to": "dünya kupası"
+    },
+    {
+      "from": "kupa",
+      "to": "final"
+    },
+    {
+      "from": "kupa",
+      "to": "madalya"
+    },
+    {
+      "from": "kupa",
+      "to": "müsabaka"
+    },
+    {
+      "from": "kupa",
+      "to": "premier lig"
+    },
+    {
+      "from": "kupa",
+      "to": "yarı final"
+    },
+    {
+      "from": "kupa",
+      "to": "yarışma"
+    },
+    {
+      "from": "kupa",
+      "to": "şampiyonlar ligi"
+    },
+    {
+      "from": "kupa",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "kurbağalama",
+      "to": "havuz"
+    },
+    {
+      "from": "kurbağalama",
+      "to": "kelebek"
+    },
+    {
+      "from": "kurbağalama",
+      "to": "kulvar"
+    },
+    {
+      "from": "kurbağalama",
+      "to": "su sporu"
+    },
+    {
+      "from": "kurbağalama",
+      "to": "sırtüstü"
+    },
+    {
+      "from": "kurbağalama",
+      "to": "yüzme"
+    },
+    {
+      "from": "kuvvet",
+      "to": "atletizm"
+    },
+    {
+      "from": "kuvvet",
+      "to": "denge"
+    },
+    {
+      "from": "kuvvet",
+      "to": "esneklik"
+    },
+    {
+      "from": "kuvvet",
+      "to": "fırlatma"
+    },
+    {
+      "from": "kuvvet",
+      "to": "gülle"
+    },
+    {
+      "from": "kuvvet",
+      "to": "halter"
+    },
+    {
+      "from": "kuvvet",
+      "to": "hız"
+    },
+    {
+      "from": "kuvvet",
+      "to": "kondisyon"
+    },
+    {
+      "from": "kuvvet",
+      "to": "spor"
+    },
+    {
+      "from": "kürek",
+      "to": "ekipman"
+    },
+    {
+      "from": "kürek",
+      "to": "kano"
+    },
+    {
+      "from": "kürek",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "kürek",
+      "to": "sporcu"
+    },
+    {
+      "from": "kürek",
+      "to": "su sporu"
+    },
+    {
+      "from": "kürek",
+      "to": "yelken"
+    },
+    {
+      "from": "kırmızı kart",
+      "to": "düdük"
+    },
+    {
+      "from": "kırmızı kart",
+      "to": "faul"
+    },
+    {
+      "from": "kırmızı kart",
+      "to": "futbol"
+    },
+    {
+      "from": "kırmızı kart",
+      "to": "hakem"
+    },
+    {
+      "from": "kırmızı kart",
+      "to": "müsabaka"
+    },
+    {
+      "from": "kırmızı kart",
+      "to": "sarı kart"
+    },
+    {
+      "from": "kızak",
+      "to": "buz"
+    },
+    {
+      "from": "kızak",
+      "to": "hokey"
+    },
+    {
+      "from": "kızak",
+      "to": "kar"
+    },
+    {
+      "from": "kızak",
+      "to": "kış sporu"
+    },
+    {
+      "from": "kızak",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "kızak",
+      "to": "snowboard"
+    },
+    {
+      "from": "kış sporu",
+      "to": "buz"
+    },
+    {
+      "from": "kış sporu",
+      "to": "buz pateni"
+    },
+    {
+      "from": "kış sporu",
+      "to": "hokey"
+    },
+    {
+      "from": "kış sporu",
+      "to": "kar"
+    },
+    {
+      "from": "kış sporu",
+      "to": "kayak"
+    },
+    {
+      "from": "kış sporu",
+      "to": "kızak"
+    },
+    {
+      "from": "kış sporu",
+      "to": "snowboard"
+    },
+    {
+      "from": "kış sporu",
+      "to": "spor"
+    },
+    {
+      "from": "libero",
+      "to": "defans"
+    },
+    {
+      "from": "libero",
+      "to": "futbol"
+    },
+    {
+      "from": "libero",
+      "to": "kaleci"
+    },
+    {
+      "from": "libero",
+      "to": "savunma"
+    },
+    {
+      "from": "libero",
+      "to": "stoper"
+    },
+    {
+      "from": "libero",
+      "to": "voleybol"
+    },
+    {
+      "from": "lig",
+      "to": "kulüp"
+    },
+    {
+      "from": "lig",
+      "to": "müsabaka"
+    },
+    {
+      "from": "lig",
+      "to": "premier lig"
+    },
+    {
+      "from": "lig",
+      "to": "puan"
+    },
+    {
+      "from": "lig",
+      "to": "sezon"
+    },
+    {
+      "from": "lig",
+      "to": "süper lig"
+    },
+    {
+      "from": "lig",
+      "to": "sıralama"
+    },
+    {
+      "from": "lig",
+      "to": "şampiyonlar ligi"
+    },
+    {
+      "from": "lig",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "madalya",
+      "to": "kupa"
+    },
+    {
+      "from": "madalya",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "madalya",
+      "to": "spor"
+    },
+    {
+      "from": "madalya",
+      "to": "sporcu"
+    },
+    {
+      "from": "madalya",
+      "to": "yarışma"
+    },
+    {
+      "from": "madalya",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "maraton",
+      "to": "atletizm"
+    },
+    {
+      "from": "maraton",
+      "to": "kilometre"
+    },
+    {
+      "from": "maraton",
+      "to": "koşu"
+    },
+    {
+      "from": "maraton",
+      "to": "mesafe"
+    },
+    {
+      "from": "maraton",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "maraton",
+      "to": "pist"
+    },
+    {
+      "from": "mağlubiyet",
+      "to": "beraberlik"
+    },
+    {
+      "from": "mağlubiyet",
+      "to": "galibiyet"
+    },
+    {
+      "from": "mağlubiyet",
+      "to": "müsabaka"
+    },
+    {
+      "from": "mağlubiyet",
+      "to": "skor"
+    },
+    {
+      "from": "mağlubiyet",
+      "to": "sporcu"
+    },
+    {
+      "from": "mağlubiyet",
+      "to": "takım"
+    },
+    {
+      "from": "mesafe",
+      "to": "atletizm"
+    },
+    {
+      "from": "mesafe",
+      "to": "kilometre"
+    },
+    {
+      "from": "mesafe",
+      "to": "koşu"
+    },
+    {
+      "from": "mesafe",
+      "to": "maraton"
+    },
+    {
+      "from": "mesafe",
+      "to": "metre"
+    },
+    {
+      "from": "mesafe",
+      "to": "sprint"
+    },
+    {
+      "from": "metre",
+      "to": "atletizm"
+    },
+    {
+      "from": "metre",
+      "to": "kilometre"
+    },
+    {
+      "from": "metre",
+      "to": "koşu"
+    },
+    {
+      "from": "metre",
+      "to": "mesafe"
+    },
+    {
+      "from": "metre",
+      "to": "saniye"
+    },
+    {
+      "from": "metre",
+      "to": "sprint"
+    },
+    {
+      "from": "milli takım",
+      "to": "antrenör"
+    },
+    {
+      "from": "milli takım",
+      "to": "dünya kupası"
+    },
+    {
+      "from": "milli takım",
+      "to": "forma"
+    },
+    {
+      "from": "milli takım",
+      "to": "futbol"
+    },
+    {
+      "from": "milli takım",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "milli takım",
+      "to": "takım"
+    },
+    {
+      "from": "motor sporu",
+      "to": "bisiklet"
+    },
+    {
+      "from": "motor sporu",
+      "to": "ekipman"
+    },
+    {
+      "from": "motor sporu",
+      "to": "formula 1"
+    },
+    {
+      "from": "motor sporu",
+      "to": "hız"
+    },
+    {
+      "from": "motor sporu",
+      "to": "pist"
+    },
+    {
+      "from": "motor sporu",
+      "to": "ralli"
+    },
+    {
+      "from": "müsabaka",
+      "to": "antrenör"
+    },
+    {
+      "from": "müsabaka",
+      "to": "beraberlik"
+    },
+    {
+      "from": "müsabaka",
+      "to": "dakika"
+    },
+    {
+      "from": "müsabaka",
+      "to": "derbi"
+    },
+    {
+      "from": "müsabaka",
+      "to": "düdük"
+    },
+    {
+      "from": "müsabaka",
+      "to": "galibiyet"
+    },
+    {
+      "from": "müsabaka",
+      "to": "hakem"
+    },
+    {
+      "from": "müsabaka",
+      "to": "kupa"
+    },
+    {
+      "from": "müsabaka",
+      "to": "kırmızı kart"
+    },
+    {
+      "from": "müsabaka",
+      "to": "lig"
+    },
+    {
+      "from": "müsabaka",
+      "to": "mağlubiyet"
+    },
+    {
+      "from": "müsabaka",
+      "to": "nakavt"
+    },
+    {
+      "from": "müsabaka",
+      "to": "oyun"
+    },
+    {
+      "from": "müsabaka",
+      "to": "puan"
+    },
+    {
+      "from": "müsabaka",
+      "to": "ring"
+    },
+    {
+      "from": "müsabaka",
+      "to": "salon"
+    },
+    {
+      "from": "müsabaka",
+      "to": "saniye"
+    },
+    {
+      "from": "müsabaka",
+      "to": "sarı kart"
+    },
+    {
+      "from": "müsabaka",
+      "to": "seyirci"
+    },
+    {
+      "from": "müsabaka",
+      "to": "sezon"
+    },
+    {
+      "from": "müsabaka",
+      "to": "skor"
+    },
+    {
+      "from": "müsabaka",
+      "to": "spor"
+    },
+    {
+      "from": "müsabaka",
+      "to": "sporcu"
+    },
+    {
+      "from": "müsabaka",
+      "to": "sıralama"
+    },
+    {
+      "from": "müsabaka",
+      "to": "taktik"
+    },
+    {
+      "from": "müsabaka",
+      "to": "uzatma"
+    },
+    {
+      "from": "müsabaka",
+      "to": "yarı final"
+    },
+    {
+      "from": "müsabaka",
+      "to": "yarışma"
+    },
+    {
+      "from": "nakavt",
+      "to": "boks"
+    },
+    {
+      "from": "nakavt",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "nakavt",
+      "to": "müsabaka"
+    },
+    {
+      "from": "nakavt",
+      "to": "ring"
+    },
+    {
+      "from": "nakavt",
+      "to": "sporcu"
+    },
+    {
+      "from": "nakavt",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "ofsayt",
+      "to": "forvet"
+    },
+    {
+      "from": "ofsayt",
+      "to": "futbol"
+    },
+    {
+      "from": "ofsayt",
+      "to": "hakem"
+    },
+    {
+      "from": "ofsayt",
+      "to": "kanat"
+    },
+    {
+      "from": "ofsayt",
+      "to": "saha"
+    },
+    {
+      "from": "ofsayt",
+      "to": "taç"
+    },
+    {
+      "from": "okçuluk",
+      "to": "atıcılık"
+    },
+    {
+      "from": "okçuluk",
+      "to": "eskrim"
+    },
+    {
+      "from": "okçuluk",
+      "to": "fırlatma"
+    },
+    {
+      "from": "okçuluk",
+      "to": "halter"
+    },
+    {
+      "from": "okçuluk",
+      "to": "jimnastik"
+    },
+    {
+      "from": "okçuluk",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "atlama"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "atletizm"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "atıcılık"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "boks"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "dalış"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "disk"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "dünya kupası"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "eskrim"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "fırlatma"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "gülle"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "güreş"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "halter"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "jimnastik"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "judo"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "kano"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "karate"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "kelebek"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "kort"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "koşu"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "kulvar"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "kürek"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "kızak"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "madalya"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "maraton"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "milli takım"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "okçuluk"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "spor"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "sporcu"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "su sporu"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "sıçrama"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "taekwondo"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "voleybol"
+    },
+    {
+      "from": "olimpiyat",
+      "to": "yüzme"
+    },
+    {
+      "from": "orta saha",
+      "to": "forvet"
+    },
+    {
+      "from": "orta saha",
+      "to": "futbol"
+    },
+    {
+      "from": "orta saha",
+      "to": "kanat"
+    },
+    {
+      "from": "orta saha",
+      "to": "pas"
+    },
+    {
+      "from": "orta saha",
+      "to": "savunma"
+    },
+    {
+      "from": "orta saha",
+      "to": "sıkı pas"
+    },
+    {
+      "from": "oyun",
+      "to": "dakika"
+    },
+    {
+      "from": "oyun",
+      "to": "devre"
+    },
+    {
+      "from": "oyun",
+      "to": "dropshot"
+    },
+    {
+      "from": "oyun",
+      "to": "müsabaka"
+    },
+    {
+      "from": "oyun",
+      "to": "servis"
+    },
+    {
+      "from": "oyun",
+      "to": "set"
+    },
+    {
+      "from": "oyun",
+      "to": "slice"
+    },
+    {
+      "from": "oyun",
+      "to": "tenis"
+    },
+    {
+      "from": "oyun",
+      "to": "yarışma"
+    },
+    {
+      "from": "parke",
+      "to": "basketbol"
+    },
+    {
+      "from": "parke",
+      "to": "hokey"
+    },
+    {
+      "from": "parke",
+      "to": "salon"
+    },
+    {
+      "from": "parke",
+      "to": "spor"
+    },
+    {
+      "from": "parke",
+      "to": "tribün"
+    },
+    {
+      "from": "parke",
+      "to": "voleybol"
+    },
+    {
+      "from": "pas",
+      "to": "asist"
+    },
+    {
+      "from": "pas",
+      "to": "basketbol"
+    },
+    {
+      "from": "pas",
+      "to": "futbol"
+    },
+    {
+      "from": "pas",
+      "to": "orta saha"
+    },
+    {
+      "from": "pas",
+      "to": "sıkı pas"
+    },
+    {
+      "from": "pas",
+      "to": "top"
+    },
+    {
+      "from": "penaltı",
+      "to": "ceza sahası"
+    },
+    {
+      "from": "penaltı",
+      "to": "faul"
+    },
+    {
+      "from": "penaltı",
+      "to": "gol"
+    },
+    {
+      "from": "penaltı",
+      "to": "kaleci"
+    },
+    {
+      "from": "penaltı",
+      "to": "uzatma"
+    },
+    {
+      "from": "penaltı",
+      "to": "şut"
+    },
+    {
+      "from": "pist",
+      "to": "atletizm"
+    },
+    {
+      "from": "pist",
+      "to": "formula 1"
+    },
+    {
+      "from": "pist",
+      "to": "kilometre"
+    },
+    {
+      "from": "pist",
+      "to": "koşu"
+    },
+    {
+      "from": "pist",
+      "to": "maraton"
+    },
+    {
+      "from": "pist",
+      "to": "motor sporu"
+    },
+    {
+      "from": "pist",
+      "to": "pist bisikleti"
+    },
+    {
+      "from": "pist",
+      "to": "sprint"
+    },
+    {
+      "from": "pist bisikleti",
+      "to": "bisiklet"
+    },
+    {
+      "from": "pist bisikleti",
+      "to": "ekipman"
+    },
+    {
+      "from": "pist bisikleti",
+      "to": "formula 1"
+    },
+    {
+      "from": "pist bisikleti",
+      "to": "pist"
+    },
+    {
+      "from": "pist bisikleti",
+      "to": "ralli"
+    },
+    {
+      "from": "pist bisikleti",
+      "to": "sporcu"
+    },
+    {
+      "from": "pota",
+      "to": "basket"
+    },
+    {
+      "from": "pota",
+      "to": "basketbol"
+    },
+    {
+      "from": "pota",
+      "to": "ribaund"
+    },
+    {
+      "from": "pota",
+      "to": "smaç"
+    },
+    {
+      "from": "pota",
+      "to": "top"
+    },
+    {
+      "from": "pota",
+      "to": "çember"
+    },
+    {
+      "from": "premier lig",
+      "to": "futbol"
+    },
+    {
+      "from": "premier lig",
+      "to": "kupa"
+    },
+    {
+      "from": "premier lig",
+      "to": "lig"
+    },
+    {
+      "from": "premier lig",
+      "to": "süper lig"
+    },
+    {
+      "from": "premier lig",
+      "to": "transfer"
+    },
+    {
+      "from": "premier lig",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "puan",
+      "to": "beraberlik"
+    },
+    {
+      "from": "puan",
+      "to": "galibiyet"
+    },
+    {
+      "from": "puan",
+      "to": "lig"
+    },
+    {
+      "from": "puan",
+      "to": "müsabaka"
+    },
+    {
+      "from": "puan",
+      "to": "set"
+    },
+    {
+      "from": "puan",
+      "to": "skor"
+    },
+    {
+      "from": "puan",
+      "to": "sıralama"
+    },
+    {
+      "from": "raket",
+      "to": "ekipman"
+    },
+    {
+      "from": "raket",
+      "to": "file"
+    },
+    {
+      "from": "raket",
+      "to": "kort"
+    },
+    {
+      "from": "raket",
+      "to": "servis"
+    },
+    {
+      "from": "raket",
+      "to": "slice"
+    },
+    {
+      "from": "raket",
+      "to": "smaç"
+    },
+    {
+      "from": "raket",
+      "to": "sporcu"
+    },
+    {
+      "from": "raket",
+      "to": "tenis"
+    },
+    {
+      "from": "raket",
+      "to": "top"
+    },
+    {
+      "from": "ralli",
+      "to": "bisiklet"
+    },
+    {
+      "from": "ralli",
+      "to": "ekipman"
+    },
+    {
+      "from": "ralli",
+      "to": "formula 1"
+    },
+    {
+      "from": "ralli",
+      "to": "motor sporu"
+    },
+    {
+      "from": "ralli",
+      "to": "pist bisikleti"
+    },
+    {
+      "from": "ralli",
+      "to": "sporcu"
+    },
+    {
+      "from": "ribaund",
+      "to": "asist"
+    },
+    {
+      "from": "ribaund",
+      "to": "basketbol"
+    },
+    {
+      "from": "ribaund",
+      "to": "pota"
+    },
+    {
+      "from": "ribaund",
+      "to": "sıçrama"
+    },
+    {
+      "from": "ribaund",
+      "to": "top"
+    },
+    {
+      "from": "ribaund",
+      "to": "çember"
+    },
+    {
+      "from": "ring",
+      "to": "boks"
+    },
+    {
+      "from": "ring",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "ring",
+      "to": "müsabaka"
+    },
+    {
+      "from": "ring",
+      "to": "nakavt"
+    },
+    {
+      "from": "ring",
+      "to": "seyirci"
+    },
+    {
+      "from": "ring",
+      "to": "sporcu"
+    },
+    {
+      "from": "saha",
+      "to": "futbol"
+    },
+    {
+      "from": "saha",
+      "to": "korner"
+    },
+    {
+      "from": "saha",
+      "to": "kort"
+    },
+    {
+      "from": "saha",
+      "to": "ofsayt"
+    },
+    {
+      "from": "saha",
+      "to": "spor"
+    },
+    {
+      "from": "saha",
+      "to": "stadyum"
+    },
+    {
+      "from": "saha",
+      "to": "taç"
+    },
+    {
+      "from": "saha",
+      "to": "çim"
+    },
+    {
+      "from": "salon",
+      "to": "basketbol"
+    },
+    {
+      "from": "salon",
+      "to": "güreş"
+    },
+    {
+      "from": "salon",
+      "to": "müsabaka"
+    },
+    {
+      "from": "salon",
+      "to": "parke"
+    },
+    {
+      "from": "salon",
+      "to": "spor"
+    },
+    {
+      "from": "salon",
+      "to": "tribün"
+    },
+    {
+      "from": "salon",
+      "to": "voleybol"
+    },
+    {
+      "from": "saniye",
+      "to": "dakika"
+    },
+    {
+      "from": "saniye",
+      "to": "koşu"
+    },
+    {
+      "from": "saniye",
+      "to": "metre"
+    },
+    {
+      "from": "saniye",
+      "to": "müsabaka"
+    },
+    {
+      "from": "saniye",
+      "to": "sprint"
+    },
+    {
+      "from": "saniye",
+      "to": "yarışma"
+    },
+    {
+      "from": "sarı kart",
+      "to": "düdük"
+    },
+    {
+      "from": "sarı kart",
+      "to": "faul"
+    },
+    {
+      "from": "sarı kart",
+      "to": "futbol"
+    },
+    {
+      "from": "sarı kart",
+      "to": "hakem"
+    },
+    {
+      "from": "sarı kart",
+      "to": "kırmızı kart"
+    },
+    {
+      "from": "sarı kart",
+      "to": "müsabaka"
+    },
+    {
+      "from": "savunma",
+      "to": "atak"
+    },
+    {
+      "from": "savunma",
+      "to": "basketbol"
+    },
+    {
+      "from": "savunma",
+      "to": "ceza sahası"
+    },
+    {
+      "from": "savunma",
+      "to": "defans"
+    },
+    {
+      "from": "savunma",
+      "to": "futbol"
+    },
+    {
+      "from": "savunma",
+      "to": "kaleci"
+    },
+    {
+      "from": "savunma",
+      "to": "kanat"
+    },
+    {
+      "from": "savunma",
+      "to": "libero"
+    },
+    {
+      "from": "savunma",
+      "to": "orta saha"
+    },
+    {
+      "from": "savunma",
+      "to": "stoper"
+    },
+    {
+      "from": "savunma",
+      "to": "taktik"
+    },
+    {
+      "from": "sayı",
+      "to": "asist"
+    },
+    {
+      "from": "sayı",
+      "to": "basket"
+    },
+    {
+      "from": "sayı",
+      "to": "basketbol"
+    },
+    {
+      "from": "sayı",
+      "to": "skor"
+    },
+    {
+      "from": "sayı",
+      "to": "takım"
+    },
+    {
+      "from": "sayı",
+      "to": "üçlük"
+    },
+    {
+      "from": "serbest vuruş",
+      "to": "ceza sahası"
+    },
+    {
+      "from": "serbest vuruş",
+      "to": "faul"
+    },
+    {
+      "from": "serbest vuruş",
+      "to": "gol"
+    },
+    {
+      "from": "serbest vuruş",
+      "to": "hakem"
+    },
+    {
+      "from": "serbest vuruş",
+      "to": "kale"
+    },
+    {
+      "from": "serbest vuruş",
+      "to": "top"
+    },
+    {
+      "from": "servis",
+      "to": "oyun"
+    },
+    {
+      "from": "servis",
+      "to": "raket"
+    },
+    {
+      "from": "servis",
+      "to": "set"
+    },
+    {
+      "from": "servis",
+      "to": "slice"
+    },
+    {
+      "from": "servis",
+      "to": "tenis"
+    },
+    {
+      "from": "servis",
+      "to": "voleybol"
+    },
+    {
+      "from": "set",
+      "to": "file"
+    },
+    {
+      "from": "set",
+      "to": "oyun"
+    },
+    {
+      "from": "set",
+      "to": "puan"
+    },
+    {
+      "from": "set",
+      "to": "servis"
+    },
+    {
+      "from": "set",
+      "to": "slice"
+    },
+    {
+      "from": "set",
+      "to": "tenis"
+    },
+    {
+      "from": "set",
+      "to": "voleybol"
+    },
+    {
+      "from": "seyirci",
+      "to": "müsabaka"
+    },
+    {
+      "from": "seyirci",
+      "to": "ring"
+    },
+    {
+      "from": "seyirci",
+      "to": "spor"
+    },
+    {
+      "from": "seyirci",
+      "to": "stadyum"
+    },
+    {
+      "from": "seyirci",
+      "to": "taraftar"
+    },
+    {
+      "from": "seyirci",
+      "to": "tribün"
+    },
+    {
+      "from": "sezon",
+      "to": "derbi"
+    },
+    {
+      "from": "sezon",
+      "to": "futbol"
+    },
+    {
+      "from": "sezon",
+      "to": "lig"
+    },
+    {
+      "from": "sezon",
+      "to": "müsabaka"
+    },
+    {
+      "from": "sezon",
+      "to": "süper lig"
+    },
+    {
+      "from": "sezon",
+      "to": "sıralama"
+    },
+    {
+      "from": "sezon",
+      "to": "transfer"
+    },
+    {
+      "from": "sezon",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "skor",
+      "to": "beraberlik"
+    },
+    {
+      "from": "skor",
+      "to": "galibiyet"
+    },
+    {
+      "from": "skor",
+      "to": "mağlubiyet"
+    },
+    {
+      "from": "skor",
+      "to": "müsabaka"
+    },
+    {
+      "from": "skor",
+      "to": "puan"
+    },
+    {
+      "from": "skor",
+      "to": "sayı"
+    },
+    {
+      "from": "slice",
+      "to": "dropshot"
+    },
+    {
+      "from": "slice",
+      "to": "oyun"
+    },
+    {
+      "from": "slice",
+      "to": "raket"
+    },
+    {
+      "from": "slice",
+      "to": "servis"
+    },
+    {
+      "from": "slice",
+      "to": "set"
+    },
+    {
+      "from": "slice",
+      "to": "tenis"
+    },
+    {
+      "from": "smaç",
+      "to": "basketbol"
+    },
+    {
+      "from": "smaç",
+      "to": "dropshot"
+    },
+    {
+      "from": "smaç",
+      "to": "pota"
+    },
+    {
+      "from": "smaç",
+      "to": "raket"
+    },
+    {
+      "from": "smaç",
+      "to": "sıçrama"
+    },
+    {
+      "from": "smaç",
+      "to": "tenis"
+    },
+    {
+      "from": "smaç",
+      "to": "voleybol"
+    },
+    {
+      "from": "smaç",
+      "to": "çember"
+    },
+    {
+      "from": "smaç",
+      "to": "üçlük"
+    },
+    {
+      "from": "snowboard",
+      "to": "buz"
+    },
+    {
+      "from": "snowboard",
+      "to": "buz pateni"
+    },
+    {
+      "from": "snowboard",
+      "to": "kar"
+    },
+    {
+      "from": "snowboard",
+      "to": "kayak"
+    },
+    {
+      "from": "snowboard",
+      "to": "kızak"
+    },
+    {
+      "from": "snowboard",
+      "to": "kış sporu"
+    },
+    {
+      "from": "spor",
+      "to": "antrenman"
+    },
+    {
+      "from": "spor",
+      "to": "antrenör"
+    },
+    {
+      "from": "spor",
+      "to": "atletizm"
+    },
+    {
+      "from": "spor",
+      "to": "dalış"
+    },
+    {
+      "from": "spor",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "spor",
+      "to": "hakem"
+    },
+    {
+      "from": "spor",
+      "to": "kondisyon"
+    },
+    {
+      "from": "spor",
+      "to": "kulüp"
+    },
+    {
+      "from": "spor",
+      "to": "kuvvet"
+    },
+    {
+      "from": "spor",
+      "to": "kış sporu"
+    },
+    {
+      "from": "spor",
+      "to": "madalya"
+    },
+    {
+      "from": "spor",
+      "to": "müsabaka"
+    },
+    {
+      "from": "spor",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "spor",
+      "to": "parke"
+    },
+    {
+      "from": "spor",
+      "to": "saha"
+    },
+    {
+      "from": "spor",
+      "to": "salon"
+    },
+    {
+      "from": "spor",
+      "to": "seyirci"
+    },
+    {
+      "from": "spor",
+      "to": "sporcu"
+    },
+    {
+      "from": "spor",
+      "to": "su sporu"
+    },
+    {
+      "from": "spor",
+      "to": "taraftar"
+    },
+    {
+      "from": "spor",
+      "to": "tribün"
+    },
+    {
+      "from": "spor",
+      "to": "voleybol"
+    },
+    {
+      "from": "spor",
+      "to": "yelken"
+    },
+    {
+      "from": "sporcu",
+      "to": "antrenman"
+    },
+    {
+      "from": "sporcu",
+      "to": "antrenör"
+    },
+    {
+      "from": "sporcu",
+      "to": "atlama"
+    },
+    {
+      "from": "sporcu",
+      "to": "atıcılık"
+    },
+    {
+      "from": "sporcu",
+      "to": "bek"
+    },
+    {
+      "from": "sporcu",
+      "to": "bisiklet"
+    },
+    {
+      "from": "sporcu",
+      "to": "cirit"
+    },
+    {
+      "from": "sporcu",
+      "to": "denge"
+    },
+    {
+      "from": "sporcu",
+      "to": "disk"
+    },
+    {
+      "from": "sporcu",
+      "to": "eldiven"
+    },
+    {
+      "from": "sporcu",
+      "to": "eskrim"
+    },
+    {
+      "from": "sporcu",
+      "to": "esneklik"
+    },
+    {
+      "from": "sporcu",
+      "to": "forma"
+    },
+    {
+      "from": "sporcu",
+      "to": "kask"
+    },
+    {
+      "from": "sporcu",
+      "to": "kondisyon"
+    },
+    {
+      "from": "sporcu",
+      "to": "kürek"
+    },
+    {
+      "from": "sporcu",
+      "to": "madalya"
+    },
+    {
+      "from": "sporcu",
+      "to": "mağlubiyet"
+    },
+    {
+      "from": "sporcu",
+      "to": "müsabaka"
+    },
+    {
+      "from": "sporcu",
+      "to": "nakavt"
+    },
+    {
+      "from": "sporcu",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "sporcu",
+      "to": "pist bisikleti"
+    },
+    {
+      "from": "sporcu",
+      "to": "raket"
+    },
+    {
+      "from": "sporcu",
+      "to": "ralli"
+    },
+    {
+      "from": "sporcu",
+      "to": "ring"
+    },
+    {
+      "from": "sporcu",
+      "to": "spor"
+    },
+    {
+      "from": "sporcu",
+      "to": "sıçrama"
+    },
+    {
+      "from": "sporcu",
+      "to": "taekwondo"
+    },
+    {
+      "from": "sporcu",
+      "to": "taktik"
+    },
+    {
+      "from": "sporcu",
+      "to": "takım"
+    },
+    {
+      "from": "sporcu",
+      "to": "tatami"
+    },
+    {
+      "from": "sporcu",
+      "to": "transfer"
+    },
+    {
+      "from": "sporcu",
+      "to": "yelken"
+    },
+    {
+      "from": "sporcu",
+      "to": "çorap"
+    },
+    {
+      "from": "sprint",
+      "to": "atletizm"
+    },
+    {
+      "from": "sprint",
+      "to": "hız"
+    },
+    {
+      "from": "sprint",
+      "to": "kilometre"
+    },
+    {
+      "from": "sprint",
+      "to": "koşu"
+    },
+    {
+      "from": "sprint",
+      "to": "mesafe"
+    },
+    {
+      "from": "sprint",
+      "to": "metre"
+    },
+    {
+      "from": "sprint",
+      "to": "pist"
+    },
+    {
+      "from": "sprint",
+      "to": "saniye"
+    },
+    {
+      "from": "stadyum",
+      "to": "derbi"
+    },
+    {
+      "from": "stadyum",
+      "to": "futbol"
+    },
+    {
+      "from": "stadyum",
+      "to": "kulüp"
+    },
+    {
+      "from": "stadyum",
+      "to": "saha"
+    },
+    {
+      "from": "stadyum",
+      "to": "seyirci"
+    },
+    {
+      "from": "stadyum",
+      "to": "taraftar"
+    },
+    {
+      "from": "stadyum",
+      "to": "tribün"
+    },
+    {
+      "from": "stadyum",
+      "to": "çim"
+    },
+    {
+      "from": "stoper",
+      "to": "bek"
+    },
+    {
+      "from": "stoper",
+      "to": "defans"
+    },
+    {
+      "from": "stoper",
+      "to": "futbol"
+    },
+    {
+      "from": "stoper",
+      "to": "kaleci"
+    },
+    {
+      "from": "stoper",
+      "to": "libero"
+    },
+    {
+      "from": "stoper",
+      "to": "savunma"
+    },
+    {
+      "from": "su sporu",
+      "to": "dalış"
+    },
+    {
+      "from": "su sporu",
+      "to": "havuz"
+    },
+    {
+      "from": "su sporu",
+      "to": "kano"
+    },
+    {
+      "from": "su sporu",
+      "to": "kulvar"
+    },
+    {
+      "from": "su sporu",
+      "to": "kurbağalama"
+    },
+    {
+      "from": "su sporu",
+      "to": "kürek"
+    },
+    {
+      "from": "su sporu",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "su sporu",
+      "to": "spor"
+    },
+    {
+      "from": "su sporu",
+      "to": "su topu"
+    },
+    {
+      "from": "su sporu",
+      "to": "sırtüstü"
+    },
+    {
+      "from": "su sporu",
+      "to": "yelken"
+    },
+    {
+      "from": "su sporu",
+      "to": "yüzme"
+    },
+    {
+      "from": "su topu",
+      "to": "havuz"
+    },
+    {
+      "from": "su topu",
+      "to": "kano"
+    },
+    {
+      "from": "su topu",
+      "to": "su sporu"
+    },
+    {
+      "from": "su topu",
+      "to": "takım"
+    },
+    {
+      "from": "su topu",
+      "to": "top"
+    },
+    {
+      "from": "su topu",
+      "to": "yüzme"
+    },
+    {
+      "from": "süper lig",
+      "to": "derbi"
+    },
+    {
+      "from": "süper lig",
+      "to": "futbol"
+    },
+    {
+      "from": "süper lig",
+      "to": "lig"
+    },
+    {
+      "from": "süper lig",
+      "to": "premier lig"
+    },
+    {
+      "from": "süper lig",
+      "to": "sezon"
+    },
+    {
+      "from": "süper lig",
+      "to": "şampiyonlar ligi"
+    },
+    {
+      "from": "sıkı pas",
+      "to": "asist"
+    },
+    {
+      "from": "sıkı pas",
+      "to": "basketbol"
+    },
+    {
+      "from": "sıkı pas",
+      "to": "futbol"
+    },
+    {
+      "from": "sıkı pas",
+      "to": "orta saha"
+    },
+    {
+      "from": "sıkı pas",
+      "to": "pas"
+    },
+    {
+      "from": "sıkı pas",
+      "to": "takım"
+    },
+    {
+      "from": "sıralama",
+      "to": "lig"
+    },
+    {
+      "from": "sıralama",
+      "to": "müsabaka"
+    },
+    {
+      "from": "sıralama",
+      "to": "puan"
+    },
+    {
+      "from": "sıralama",
+      "to": "sezon"
+    },
+    {
+      "from": "sıralama",
+      "to": "yarışma"
+    },
+    {
+      "from": "sıralama",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "sırtüstü",
+      "to": "havuz"
+    },
+    {
+      "from": "sırtüstü",
+      "to": "kelebek"
+    },
+    {
+      "from": "sırtüstü",
+      "to": "kulvar"
+    },
+    {
+      "from": "sırtüstü",
+      "to": "kurbağalama"
+    },
+    {
+      "from": "sırtüstü",
+      "to": "su sporu"
+    },
+    {
+      "from": "sırtüstü",
+      "to": "yüzme"
+    },
+    {
+      "from": "sıçrama",
+      "to": "atlama"
+    },
+    {
+      "from": "sıçrama",
+      "to": "atletizm"
+    },
+    {
+      "from": "sıçrama",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "sıçrama",
+      "to": "ribaund"
+    },
+    {
+      "from": "sıçrama",
+      "to": "smaç"
+    },
+    {
+      "from": "sıçrama",
+      "to": "sporcu"
+    },
+    {
+      "from": "taekwondo",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "taekwondo",
+      "to": "karate"
+    },
+    {
+      "from": "taekwondo",
+      "to": "kemer"
+    },
+    {
+      "from": "taekwondo",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "taekwondo",
+      "to": "sporcu"
+    },
+    {
+      "from": "taekwondo",
+      "to": "tatami"
+    },
+    {
+      "from": "taktik",
+      "to": "antrenör"
+    },
+    {
+      "from": "taktik",
+      "to": "atak"
+    },
+    {
+      "from": "taktik",
+      "to": "hücum"
+    },
+    {
+      "from": "taktik",
+      "to": "müsabaka"
+    },
+    {
+      "from": "taktik",
+      "to": "savunma"
+    },
+    {
+      "from": "taktik",
+      "to": "sporcu"
+    },
+    {
+      "from": "takım",
+      "to": "antrenman"
+    },
+    {
+      "from": "takım",
+      "to": "antrenör"
+    },
+    {
+      "from": "takım",
+      "to": "basket"
+    },
+    {
+      "from": "takım",
+      "to": "bek"
+    },
+    {
+      "from": "takım",
+      "to": "beraberlik"
+    },
+    {
+      "from": "takım",
+      "to": "defans"
+    },
+    {
+      "from": "takım",
+      "to": "final"
+    },
+    {
+      "from": "takım",
+      "to": "forma"
+    },
+    {
+      "from": "takım",
+      "to": "forvet"
+    },
+    {
+      "from": "takım",
+      "to": "galibiyet"
+    },
+    {
+      "from": "takım",
+      "to": "kulüp"
+    },
+    {
+      "from": "takım",
+      "to": "mağlubiyet"
+    },
+    {
+      "from": "takım",
+      "to": "milli takım"
+    },
+    {
+      "from": "takım",
+      "to": "sayı"
+    },
+    {
+      "from": "takım",
+      "to": "sporcu"
+    },
+    {
+      "from": "takım",
+      "to": "su topu"
+    },
+    {
+      "from": "takım",
+      "to": "sıkı pas"
+    },
+    {
+      "from": "takım",
+      "to": "yarı final"
+    },
+    {
+      "from": "takım",
+      "to": "üçlük"
+    },
+    {
+      "from": "taraftar",
+      "to": "derbi"
+    },
+    {
+      "from": "taraftar",
+      "to": "kulüp"
+    },
+    {
+      "from": "taraftar",
+      "to": "seyirci"
+    },
+    {
+      "from": "taraftar",
+      "to": "spor"
+    },
+    {
+      "from": "taraftar",
+      "to": "stadyum"
+    },
+    {
+      "from": "taraftar",
+      "to": "tribün"
+    },
+    {
+      "from": "tatami",
+      "to": "dövüş sporu"
+    },
+    {
+      "from": "tatami",
+      "to": "güreş"
+    },
+    {
+      "from": "tatami",
+      "to": "judo"
+    },
+    {
+      "from": "tatami",
+      "to": "karate"
+    },
+    {
+      "from": "tatami",
+      "to": "sporcu"
+    },
+    {
+      "from": "tatami",
+      "to": "taekwondo"
+    },
+    {
+      "from": "taç",
+      "to": "futbol"
+    },
+    {
+      "from": "taç",
+      "to": "hakem"
+    },
+    {
+      "from": "taç",
+      "to": "korner"
+    },
+    {
+      "from": "taç",
+      "to": "ofsayt"
+    },
+    {
+      "from": "taç",
+      "to": "saha"
+    },
+    {
+      "from": "taç",
+      "to": "top"
+    },
+    {
+      "from": "tenis",
+      "to": "dropshot"
+    },
+    {
+      "from": "tenis",
+      "to": "file"
+    },
+    {
+      "from": "tenis",
+      "to": "kort"
+    },
+    {
+      "from": "tenis",
+      "to": "oyun"
+    },
+    {
+      "from": "tenis",
+      "to": "raket"
+    },
+    {
+      "from": "tenis",
+      "to": "servis"
+    },
+    {
+      "from": "tenis",
+      "to": "set"
+    },
+    {
+      "from": "tenis",
+      "to": "slice"
+    },
+    {
+      "from": "tenis",
+      "to": "smaç"
+    },
+    {
+      "from": "tenis",
+      "to": "top"
+    },
+    {
+      "from": "tenis",
+      "to": "çim"
+    },
+    {
+      "from": "top",
+      "to": "basketbol"
+    },
+    {
+      "from": "top",
+      "to": "ekipman"
+    },
+    {
+      "from": "top",
+      "to": "futbol"
+    },
+    {
+      "from": "top",
+      "to": "korner"
+    },
+    {
+      "from": "top",
+      "to": "pas"
+    },
+    {
+      "from": "top",
+      "to": "pota"
+    },
+    {
+      "from": "top",
+      "to": "raket"
+    },
+    {
+      "from": "top",
+      "to": "ribaund"
+    },
+    {
+      "from": "top",
+      "to": "serbest vuruş"
+    },
+    {
+      "from": "top",
+      "to": "su topu"
+    },
+    {
+      "from": "top",
+      "to": "taç"
+    },
+    {
+      "from": "top",
+      "to": "tenis"
+    },
+    {
+      "from": "top",
+      "to": "voleybol"
+    },
+    {
+      "from": "top",
+      "to": "çember"
+    },
+    {
+      "from": "top",
+      "to": "şut"
+    },
+    {
+      "from": "transfer",
+      "to": "futbol"
+    },
+    {
+      "from": "transfer",
+      "to": "kulüp"
+    },
+    {
+      "from": "transfer",
+      "to": "premier lig"
+    },
+    {
+      "from": "transfer",
+      "to": "sezon"
+    },
+    {
+      "from": "transfer",
+      "to": "sporcu"
+    },
+    {
+      "from": "transfer",
+      "to": "şampiyonlar ligi"
+    },
+    {
+      "from": "tribün",
+      "to": "parke"
+    },
+    {
+      "from": "tribün",
+      "to": "salon"
+    },
+    {
+      "from": "tribün",
+      "to": "seyirci"
+    },
+    {
+      "from": "tribün",
+      "to": "spor"
+    },
+    {
+      "from": "tribün",
+      "to": "stadyum"
+    },
+    {
+      "from": "tribün",
+      "to": "taraftar"
+    },
+    {
+      "from": "uzatma",
+      "to": "dakika"
+    },
+    {
+      "from": "uzatma",
+      "to": "devre"
+    },
+    {
+      "from": "uzatma",
+      "to": "futbol"
+    },
+    {
+      "from": "uzatma",
+      "to": "hakem"
+    },
+    {
+      "from": "uzatma",
+      "to": "müsabaka"
+    },
+    {
+      "from": "uzatma",
+      "to": "penaltı"
+    },
+    {
+      "from": "voleybol",
+      "to": "dizlik"
+    },
+    {
+      "from": "voleybol",
+      "to": "file"
+    },
+    {
+      "from": "voleybol",
+      "to": "libero"
+    },
+    {
+      "from": "voleybol",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "voleybol",
+      "to": "parke"
+    },
+    {
+      "from": "voleybol",
+      "to": "salon"
+    },
+    {
+      "from": "voleybol",
+      "to": "servis"
+    },
+    {
+      "from": "voleybol",
+      "to": "set"
+    },
+    {
+      "from": "voleybol",
+      "to": "smaç"
+    },
+    {
+      "from": "voleybol",
+      "to": "spor"
+    },
+    {
+      "from": "voleybol",
+      "to": "top"
+    },
+    {
+      "from": "yarı final",
+      "to": "final"
+    },
+    {
+      "from": "yarı final",
+      "to": "kupa"
+    },
+    {
+      "from": "yarı final",
+      "to": "müsabaka"
+    },
+    {
+      "from": "yarı final",
+      "to": "takım"
+    },
+    {
+      "from": "yarı final",
+      "to": "yarışma"
+    },
+    {
+      "from": "yarı final",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "yarışma",
+      "to": "dakika"
+    },
+    {
+      "from": "yarışma",
+      "to": "final"
+    },
+    {
+      "from": "yarışma",
+      "to": "kano"
+    },
+    {
+      "from": "yarışma",
+      "to": "kupa"
+    },
+    {
+      "from": "yarışma",
+      "to": "madalya"
+    },
+    {
+      "from": "yarışma",
+      "to": "müsabaka"
+    },
+    {
+      "from": "yarışma",
+      "to": "oyun"
+    },
+    {
+      "from": "yarışma",
+      "to": "saniye"
+    },
+    {
+      "from": "yarışma",
+      "to": "sıralama"
+    },
+    {
+      "from": "yarışma",
+      "to": "yarı final"
+    },
+    {
+      "from": "yelken",
+      "to": "ekipman"
+    },
+    {
+      "from": "yelken",
+      "to": "kano"
+    },
+    {
+      "from": "yelken",
+      "to": "kürek"
+    },
+    {
+      "from": "yelken",
+      "to": "spor"
+    },
+    {
+      "from": "yelken",
+      "to": "sporcu"
+    },
+    {
+      "from": "yelken",
+      "to": "su sporu"
+    },
+    {
+      "from": "yüzme",
+      "to": "dalış"
+    },
+    {
+      "from": "yüzme",
+      "to": "havuz"
+    },
+    {
+      "from": "yüzme",
+      "to": "kano"
+    },
+    {
+      "from": "yüzme",
+      "to": "kelebek"
+    },
+    {
+      "from": "yüzme",
+      "to": "kulvar"
+    },
+    {
+      "from": "yüzme",
+      "to": "kurbağalama"
+    },
+    {
+      "from": "yüzme",
+      "to": "olimpiyat"
+    },
+    {
+      "from": "yüzme",
+      "to": "su sporu"
+    },
+    {
+      "from": "yüzme",
+      "to": "su topu"
+    },
+    {
+      "from": "yüzme",
+      "to": "sırtüstü"
+    },
+    {
+      "from": "çember",
+      "to": "basket"
+    },
+    {
+      "from": "çember",
+      "to": "pota"
+    },
+    {
+      "from": "çember",
+      "to": "ribaund"
+    },
+    {
+      "from": "çember",
+      "to": "smaç"
+    },
+    {
+      "from": "çember",
+      "to": "top"
+    },
+    {
+      "from": "çember",
+      "to": "üçlük"
+    },
+    {
+      "from": "çim",
+      "to": "futbol"
+    },
+    {
+      "from": "çim",
+      "to": "kort"
+    },
+    {
+      "from": "çim",
+      "to": "kulüp"
+    },
+    {
+      "from": "çim",
+      "to": "saha"
+    },
+    {
+      "from": "çim",
+      "to": "stadyum"
+    },
+    {
+      "from": "çim",
+      "to": "tenis"
+    },
+    {
+      "from": "çorap",
+      "to": "ayakkabı"
+    },
+    {
+      "from": "çorap",
+      "to": "dizlik"
+    },
+    {
+      "from": "çorap",
+      "to": "ekipman"
+    },
+    {
+      "from": "çorap",
+      "to": "forma"
+    },
+    {
+      "from": "çorap",
+      "to": "krampon"
+    },
+    {
+      "from": "çorap",
+      "to": "sporcu"
+    },
+    {
+      "from": "üçlük",
+      "to": "basket"
+    },
+    {
+      "from": "üçlük",
+      "to": "basketbol"
+    },
+    {
+      "from": "üçlük",
+      "to": "sayı"
+    },
+    {
+      "from": "üçlük",
+      "to": "smaç"
+    },
+    {
+      "from": "üçlük",
+      "to": "takım"
+    },
+    {
+      "from": "üçlük",
+      "to": "çember"
+    },
+    {
+      "from": "şampiyonlar ligi",
+      "to": "futbol"
+    },
+    {
+      "from": "şampiyonlar ligi",
+      "to": "kupa"
+    },
+    {
+      "from": "şampiyonlar ligi",
+      "to": "lig"
+    },
+    {
+      "from": "şampiyonlar ligi",
+      "to": "süper lig"
+    },
+    {
+      "from": "şampiyonlar ligi",
+      "to": "transfer"
+    },
+    {
+      "from": "şampiyonlar ligi",
+      "to": "şampiyonluk"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "dünya kupası"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "final"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "galibiyet"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "kemer"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "kupa"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "lig"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "madalya"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "nakavt"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "premier lig"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "sezon"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "sıralama"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "yarı final"
+    },
+    {
+      "from": "şampiyonluk",
+      "to": "şampiyonlar ligi"
+    },
+    {
+      "from": "şut",
+      "to": "ceza sahası"
+    },
+    {
+      "from": "şut",
+      "to": "gol"
+    },
+    {
+      "from": "şut",
+      "to": "kale"
+    },
+    {
+      "from": "şut",
+      "to": "korner"
+    },
+    {
+      "from": "şut",
+      "to": "penaltı"
+    },
+    {
+      "from": "şut",
+      "to": "top"
+    }
+  ],
+  "metadata": {
+    "source": "manual",
+    "symmetrized": true,
+    "nodeCount": 157,
+    "edgeCount": 1234,
+    "generatedAt": "2026-05-10T22:30:22Z",
+    "generatorVersion": "manual-1.0.0"
+  }
+}

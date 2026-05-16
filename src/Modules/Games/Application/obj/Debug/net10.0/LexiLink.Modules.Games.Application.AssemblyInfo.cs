@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("LexiLink.Modules.Games.Tests")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("LexiLink.Modules.Games.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+97a1772872e3589f9061c81b099a005023ddac20")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2149630ebfa050be452b506b4d2fb04defbf1296")]
 [assembly: System.Reflection.AssemblyProductAttribute("LexiLink.Modules.Games.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LexiLink.Modules.Games.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

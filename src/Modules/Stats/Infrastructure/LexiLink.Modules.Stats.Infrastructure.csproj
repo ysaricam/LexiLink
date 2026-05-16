@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\LexiLink.Modules.Stats.Application.csproj" />
+    <ProjectReference Include="..\..\..\Common\Infrastructure\LexiLink.Common.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Npgsql" />
+  </ItemGroup>
+
+  </Project>

@@ -45,14 +45,16 @@ public class GameIntegrationTests : TestBase
         var setup = await GameHelper.SetupChainedGameAsync(Sender);
         await ExecuteCommandAsync(new StartGameCommand(setup.GameId));
 
-        // Walk the optimal path by repeatedly using a hint and stepping onto the recommended link.
-        for (var i = 0; i < 20; i++)
-        {
-            var hint = await ExecuteCommandAsync(new UseHintCommand(setup.GameId));
-            await ExecuteCommandAsync(new MakeStepCommand(setup.GameId, hint.RecommendedLinkId));
+        var started = await ExecuteQueryAsync(new GetGameByIdQuery(setup.GameId));
+        var orderedWords = new[] { "cat", "mat", "bat", "bag", "bug", "rug" };
+        var orderedLinkIds = orderedWords.Select(word => setup.LinksByValue[word]).ToArray();
+        var startIndex = Array.IndexOf(orderedLinkIds, started.StartLinkId);
+        var targetIndex = Array.IndexOf(orderedLinkIds, started.TargetLinkId);
+        var direction = startIndex < targetIndex ? 1 : -1;
 
-            var snapshot = await ExecuteQueryAsync(new GetGameByIdQuery(setup.GameId));
-            if (snapshot.State == GameState.Completed) break;
+        for (var index = startIndex + direction; index != targetIndex + direction; index += direction)
+        {
+            await ExecuteCommandAsync(new MakeStepCommand(setup.GameId, orderedLinkIds[index]));
         }
 
         var details = await ExecuteQueryAsync(new GetGameByIdQuery(setup.GameId));

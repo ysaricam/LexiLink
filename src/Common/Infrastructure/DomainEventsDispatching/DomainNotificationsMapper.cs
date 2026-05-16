@@ -9,12 +9,12 @@ public class DomainNotificationsMapper : IDomainNotificationsMapper
         _domainNotificationsMap = domainNotificationMap;
     }
 
-    public string GetName(Type type)
+    public string? GetName(Type type)
     {
         return _domainNotificationsMap.TryGetBySecond(type, out var name) ? name : null;
     }
 
-    public Type GetType(string name)
+    public Type? GetType(string name)
     {
         return _domainNotificationsMap.TryGetByFirst(name, out var type) ? type : null;
     }

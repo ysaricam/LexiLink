@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Application\LexiLink.Common.Application.csproj" />
+    <ProjectReference Include="..\..\Games\IntegrationEvents\LexiLink.Modules.Games.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Players\IntegrationEvents\LexiLink.Modules.Players.IntegrationEvents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+  </ItemGroup>
+
+  </Project>

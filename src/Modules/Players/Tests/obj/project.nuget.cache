@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "5F9kc85QXbQ=",
+  "dgSpecHash": "zzsWrhiuA4Y=",
   "success": true,
   "projectFilePath": "/Users/yasin/Library/Mobile Documents/com~apple~CloudDocs/Documents/LexiLink/src/Modules/Players/Tests/LexiLink.Modules.Players.Tests.csproj",
   "expectedPackageFiles": [
@@ -22,6 +22,9 @@
     "/Users/yasin/.nuget/packages/microsoft.extensions.configuration.abstractions/10.0.4/microsoft.extensions.configuration.abstractions.10.0.4.nupkg.sha512",
     "/Users/yasin/.nuget/packages/microsoft.extensions.dependencyinjection/10.0.4/microsoft.extensions.dependencyinjection.10.0.4.nupkg.sha512",
     "/Users/yasin/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/10.0.4/microsoft.extensions.dependencyinjection.abstractions.10.0.4.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/microsoft.extensions.diagnostics.abstractions/10.0.0/microsoft.extensions.diagnostics.abstractions.10.0.0.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/microsoft.extensions.fileproviders.abstractions/10.0.0/microsoft.extensions.fileproviders.abstractions.10.0.0.nupkg.sha512",
+    "/Users/yasin/.nuget/packages/microsoft.extensions.hosting.abstractions/10.0.0/microsoft.extensions.hosting.abstractions.10.0.0.nupkg.sha512",
     "/Users/yasin/.nuget/packages/microsoft.extensions.logging/10.0.4/microsoft.extensions.logging.10.0.4.nupkg.sha512",
     "/Users/yasin/.nuget/packages/microsoft.extensions.logging.abstractions/10.0.4/microsoft.extensions.logging.abstractions.10.0.4.nupkg.sha512",
     "/Users/yasin/.nuget/packages/microsoft.extensions.options/10.0.4/microsoft.extensions.options.10.0.4.nupkg.sha512",
