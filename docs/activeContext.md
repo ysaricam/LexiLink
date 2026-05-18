@@ -4,13 +4,32 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-17 (frontend Slice 11 closed)
+> Last updated: 2026-05-18 (Administration module sprint planned)
 
 ---
 
 ## Active Sprint
 
-**Production Readiness Pass** baseline tamamlandı.
+**Administration Module** — sixth backend module. Sprint plan locked
+in `ROADMAP.md > Administration Module`. Foundation slice (B1) is the
+next implementation step.
+
+Why now: an admin frontend is on the backlog (quest catalog CRUD,
+per-player energy edits, content management). A real permission model
+finally has a concrete need, so the previous *non-action: broad
+permission/UserAccess module* rule is lifted — but bounded. The new
+module ships a single `Admin` role, no permission matrix, no
+UserAccess-style ceremony.
+
+Kamil discipline carried over: strict module isolation, separate
+schema, per-module Application contracts, sync gateway only for the
+authorization check (`IAdminAuthorizationContext`), reverse-direction
+integration events for the audit trail
+(`AdminActionPerformedIntegrationEvent`). Microservice extraction
+remains a first-class design constraint.
+
+The previously closed **Production Readiness Pass** baseline is intact;
+its closure summary is preserved below for historical reference.
 
 Kamil Architecture Alignment Pass tamamlandı. Ardından public/real usage'a
 yaklaşmak için auth, product-facing Stats derinliği, API contract hardening,
@@ -184,34 +203,31 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-Game Options Selection slice'ı kapandı; **Frontend Slice 11 — Game Screen
-Polish** de aynı gün kapandı (`docs/frontendActiveContext.md` ve
-`docs/frontendProgress.md`). Aktif backend sırası yok; sıradaki faz
-adayları:
+**Administration sprint başladı.** Sırada **Slice B1 — Administration
+module foundation**:
 
-1. **Game Content/Admin Tooling** — backlog'daki ilk backend adayı.
-   Kategori/link dataset'lerinin tekrarlanabilir
-   validation/import/seed iş akışı. `LexiLink.Tools.CategoryImporter`
-   baseline mevcut (`docs/category-spor.json` ile çalıştı); admin UI ve
-   daha geniş content workflow eksik.
-2. **Apple/Google external token verifier** — provider credential'ları
+- Domain (`AdminUser` aggregate, `AdminUserId`, `Email` VO, `Role` VO,
+  status enum, kayıt event'i, base rule'lar).
+- Application contracts (per-module CQRS, `IAdministrationModule`).
+- Infrastructure (`AdministrationContext` schema `administration`,
+  startup, Autofac module, outbox accessor, decorator chain, domain
+  event dispatcher).
+- DbUp scripts (`administration` şeması: `AdminUsers`,
+  `OutboxMessages`, `InboxMessages`).
+- IntegrationEvents projesi (boş, B2/B5 için yer).
+- Composition root (API host'ta `AdministrationStartup` wiring).
+- ArchTests yeni modülün izolasyonunu, naming convention'ı, decorator
+  registration'ı kapsar.
+
+Diğer aktif olmayan adaylar:
+
+1. **Apple/Google external token verifier** — provider credential'ları
    geldiğinde production JWT issuance hattının son parçası tamamlanır.
+2. **Game Content/Admin Tooling (CLI tarafı)** — `CategoryImporter`
+   baseline mevcut; daha geniş import/validation workflow ihtiyaç
+   çıkarsa Administration modülünden sonra.
 
-**2026-05-17 — Game Options Selection mini-slice kapandı.** `GET
-/games/{id}/options` endpoint'i canlı; deterministik greedy
-densest-k-subgraph selector (`OutgoingLinkSelector`) 6'dan fazla outlink
-olduğunda pairwise common-neighbor toplamını maksimize ederek 6'lı alt
-küme seçer. previousLinkId her zaman kilitli; oyuncu daha bir adım
-atmamışsa null, tam 1 adım atmışsa `Game.StartLinkId`, ≥2 adımda
-history[count-2]. Bu sonuncu mantık history'nin start adımını tutmaması
-sebebiyle ilk testte ortaya çıkan bug'ı çözdü.
-
-**2026-05-17 — target reachability revizyonu.** Frontend tarafında Spor
-kategorisiyle test sırasında ortaya çıkan ikinci bug: density-only seçim
-target'a giden tek outlink "izole" konumdaysa atıyordu. Selector ikinci
-bir lock parametresi (`pathToTargetLinkId`) aldı; handler kategori-scoped
-adjacency üzerinde in-memory BFS ile ilk hop'u çözüyor. Test
-(`GetGameOptions_ReachabilityIsolatedLeaf_IsAlwaysIncluded` + 4 selector
-unit) ile kilitli. Detay
-`progress.md > Game Options Selection — target reachability revision
-(2026-05-17)` ve `ROADMAP.md` içindedir. Quality gate 285/285, 0 warning.
+Game Options Selection ve target reachability revizyonu için detaylar
+`progress.md` ve `ROADMAP.md > Game Options Selection ✅ closed
+2026-05-17` içindedir. Quality gate o slice kapanışında 285/285,
+0 warning idi.

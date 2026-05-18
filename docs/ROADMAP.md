@@ -4,6 +4,259 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Administration Module
+
+Goal: ship the sixth backend module — a back-office bounded context that
+owns admin users, their role, and a cross-module audit trail. The
+module is the foundation for the admin frontend (quest catalog CRUD,
+per-player energy edits, content management, etc.). Designed to be
+extractable as a microservice without code changes to other modules.
+
+This sprint lifts the previous **non-action: broad permission/UserAccess
+module** rule (`activeContext.md`) because a real permission model is
+now needed. The lift is bounded: a single `Admin` role, no permission
+matrix, no UserAccess-style multi-tenant ceremony.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Module name | **Administration** — separate bounded context. Schema `administration`. Microservice extraction candidate. |
+| Admin identity | **Separate `AdminUser` aggregate** (not a flag on `Player`). Admins do not need to be players; the two contexts (back-office user vs. game participant) are distinct. |
+| Role model | **Single role: `Admin`** — `AdminUser.Role` is a value object but only one value exists today. Permission matrix is explicitly out of scope; revisit when a real granular permission requirement appears. |
+| Quest catalog | **Data-driven** — hardcoded 4-quest catalog migrated to `quests.QuestDefinitions`. Admin CRUD requires it; hardcoded constants are tech debt under DDD when business reality says they are editable. |
+| Audit log | **Cross-module via integration events** — every admin command in any target module raises `AdminActionPerformedIntegrationEvent`; Administration's inbox projects to `administration.AdminActionAudit`. Module independence preserved; microservice-extractable. |
+| Authorization | **Sync gateway pattern** (same as `IEnergyGuard`) — each consumer module's Application declares `IAdminAuthorizationContext`; API host adapter calls Administration to resolve the current admin's role/identity. |
+| Auth scheme | **JWT-issued admin tokens** — Production `ProductionJwt` with `role=Admin` claim; Development `DevelopmentBearer` recognizes admin GUIDs from the `administration.AdminUsers` table. Admin sign-in path is separate from player sign-in. |
+| Audit content | **Before/after snapshot JSON + actor + target type/id + occurredOn** — granular enough for support work; not an event-sourced reconstruction. |
+
+### Architecture notes
+
+- **Strict module isolation preserved.** No new module references another
+  module's Domain/Application/Infrastructure. Cross-module calls go
+  through:
+  - **Sync gateway** (`IAdminAuthorizationContext`) when an authorization
+    decision must be made before mutating state.
+  - **Integration events** (`AdminActionPerformedIntegrationEvent`,
+    `AdminUserRegisteredIntegrationEvent`) for audit and downstream
+    awareness.
+- **Reverse dependency direction.** Players/Energy/Quests/Games consumer
+  modules MAY reference `LexiLink.Modules.Administration.IntegrationEvents`
+  (granular ArchTest allow), analogous to how Energy already references
+  `Quests.IntegrationEvents`. Administration Domain/Application/Infrastructure
+  remain forbidden in those modules.
+- **Microservice extraction readiness.** Administration owns its own
+  schema, outbox, inbox, repository, and EF context. Audit aggregation
+  happens through the public integration event contract, not direct DB
+  reads. The module can be lifted to a separate process with no
+  changes to other modules.
+- **Each target module owns its admin endpoints.** `/admin/quests/...`
+  lives in `LexiLink.API.Modules.Quests` (or a sibling
+  `AdminQuestEndpoints.cs`), guarded by the new `AuthenticatedAdmin`
+  policy. Admin commands live in the target module's Application
+  (`Quests.Application.Admin.*`). Administration does not orchestrate;
+  it authorizes and audits.
+- **Decorator-based audit emission.** Admin commands implement a marker
+  interface `IAdminCommand`. Each target module's
+  `Infrastructure/Configuration/Processing/` chain gets a new
+  `AdminAuditingCommandHandlerDecorator` that captures actor + before/after
+  + outcome and writes an outbox message for
+  `AdminActionPerformedIntegrationEvent`. Same pattern as the existing
+  `LoggingCommandHandlerDecorator`.
+- **Why not a single shared decorator in Common?** Kamil rule:
+  decorators are per-module to avoid command-handler bypass risk.
+  Each module owns its admin auditing decorator; duplication is
+  intentional.
+
+### Slice plan (10 backend + 6 frontend slices)
+
+Backend slices ship one-at-a-time, each behind its own quality gate
+(`dotnet build LexiLink.sln`, `./scripts/test.sh`, DbUp apply).
+Frontend slices follow once the relevant backend slice is green.
+
+**B1 — Administration module foundation**
+
+- `src/Modules/Administration/{Domain,Application,Infrastructure,IntegrationEvents,Tests,IntegrationTests}/` skeletons.
+- `AdminUser` aggregate (`AdminUserId`, `Email` VO, `Role` VO,
+  `AdminUserStatus` enum, registration event, base rules).
+- Application contracts per-module (`IAdministrationModule`,
+  `ICommand`, `IQuery`, `CommandBase`, `QueryBase`, `ICommandHandler`,
+  `IQueryHandler`).
+- Infrastructure: `AdministrationContext` (schema `administration`),
+  `AdministrationStartup`, `AdministrationModule` (Autofac),
+  `AdministrationAutofacModule`, outbox accessor, SQL connection
+  factory, decorator chain (logging/validation/unit-of-work), domain
+  events dispatcher.
+- DbUp: `administration/Schema/001_CreateSchema.sql`,
+  `administration/Tables/010_AdminUsers.sql`,
+  `administration/Tables/070_OutboxMessages.sql`,
+  `administration/Tables/080_InboxMessages.sql` (for B5 audit ingestion).
+- Composition root: API host wires `AdministrationStartup`.
+- ArchTests: new module covered by isolation, naming, and convention
+  fixtures (matches Energy/Quests scope).
+
+**B2 — Admin registration + bootstrap**
+
+- `RegisterAdminUserCommand` (idempotent on email), email validator,
+  rules (`AdminUserEmailMustBeUniqueRule`,
+  `AdminUserEmailMustBeValidFormatRule`).
+- Local dev seed mechanism (config-driven list of bootstrap admin
+  emails inserted on startup if missing; production-safe by being
+  driven by an environment-supplied list, not hardcoded).
+- `LexiLink.Modules.Administration.IntegrationEvents` —
+  `AdminUserRegisteredIntegrationEvent` (public contract).
+- Unit + integration tests.
+
+**B3 — Admin authentication**
+
+- `POST /auth/admin/token` — external admin sign-in (initially
+  `DevelopmentExternalToken`-style verifier; real provider deferred
+  alongside the existing player Apple/Google deferral).
+- `AuthenticatedAdmin` policy in API host, requires JWT `role=Admin`
+  claim and a resolved active `AdminUser`.
+- `DevelopmentBearer` extension: a bearer GUID matching an active
+  `administration.AdminUsers.Id` resolves as an admin principal.
+- `ExecutionContext`/`IExecutionContextAccessor` extension to carry
+  `IsAdmin` and `AdminUserId` alongside the existing `PlayerId`.
+- API auth smoke tests (admin token accepted, player token rejected
+  for admin endpoints, missing token returns 401).
+
+**B4 — Authorization sync gateway (`IAdminAuthorizationContext`)**
+
+- Contract pattern: each consumer module's Application declares its
+  own `IAdminAuthorizationContext` interface (per-module, like
+  `IEnergyGuard`).
+- API host adapter in `LexiLink.API/CrossModule/AdminAuthorizationContext.cs`
+  resolves the interface by calling Administration's Application.
+- ArchTests prevent cross-module Application/Domain leakage.
+- First wiring exercised by a smoke admin endpoint:
+  `GET /admin/whoami` returns the current admin's email + role.
+
+**B5 — Audit infrastructure**
+
+- `LexiLink.Modules.Administration.IntegrationEvents.AdminActionPerformedIntegrationEvent`
+  (actor admin user id, action type, target type/id, payload JSON,
+  occurred on).
+- `IAdminCommand` marker interface in
+  `Common.Application` (cross-cutting marker; the decorator stays
+  per-module).
+- `AdminAuditingCommandHandlerDecorator<TCommand>` template
+  added per-module under
+  `Modules/{X}/Infrastructure/Configuration/Processing/`.
+  Each captures before/after via a module-specific projection.
+- Administration inbox (`administration.InboxMessages`) +
+  `AdminActionAuditProcessor` Quartz job that projects raw inbox
+  rows into `administration.AdminActionAudit`.
+- `GET /admin/audit` query endpoint (paged, filtered by actor and
+  target).
+- Integration test: an admin command in any target module produces an
+  audit entry visible via the query.
+
+**B6 — Quest catalog data-driven (Quests module)**
+
+- New `QuestDefinition` aggregate in `Quests.Domain` (id, type,
+  cadence, goal, reward amount, prerequisite id, active flag).
+- `quests.QuestDefinitions` table; DbUp seed migrating the existing 4
+  hardcoded definitions.
+- `QuestCatalog` replaced by `IQuestDefinitionRepository`-backed
+  service.
+- All existing Quests behavior preserved by tests; integration tests
+  reseed the same 4 definitions and re-run the existing flows.
+
+**B7 — Quest admin operations (Quests module)**
+
+- Admin commands (all `IAdminCommand`):
+  `CreateQuestDefinitionCommand`,
+  `UpdateQuestDefinitionCommand`,
+  `DeactivateQuestDefinitionCommand`,
+  `IssueQuestToPlayerCommand` (test/support tool),
+  `ResetPlayerQuestCommand`.
+- Endpoints under `/admin/quests/definitions` and
+  `/admin/players/{playerId}/quests` (both `AuthenticatedAdmin`).
+- Each command audited via the B5 decorator chain.
+
+**B8 — Energy admin operations (Energy module)**
+
+- Admin commands: `SetPlayerEnergyCommand` (override current to a
+  specific amount), `GrantBonusEnergyCommand` (admin variant of the
+  existing internal `GrantEnergyCommand`), `ResetPlayerEnergyCommand`
+  (back to default).
+- Endpoints: `POST /admin/players/{playerId}/energy/set`,
+  `POST /admin/players/{playerId}/energy/grant`,
+  `POST /admin/players/{playerId}/energy/reset`.
+- Audited via the Energy admin decorator.
+
+**B9 — Player admin operations (Players module)**
+
+- `Player.Ban(reason, now)` / `Player.Unban(now)` domain methods +
+  `Player.IsBanned` state + ban event.
+- `BanPlayerCommand`, `UnbanPlayerCommand`,
+  `GetPlayerAdminDetailQuery` (rich admin view).
+- Endpoints: `GET /admin/players/search`,
+  `GET /admin/players/{playerId}`,
+  `POST /admin/players/{playerId}/ban`,
+  `POST /admin/players/{playerId}/unban`.
+- Banned players are rejected at the auth boundary
+  (`AuthenticatedPlayer` policy denies tokens that map to banned
+  players).
+
+**B10 — Content admin operations (Games module)**
+
+- The current unauthenticated `POST /categories`,
+  `POST /links`, etc., move to `/admin/...` routes behind
+  `AuthenticatedAdmin`. Their previous unprotected routes are removed.
+- Admin commands for `Category.Update`, `Link.Update`,
+  `Link.Activate`, `Link.Deactivate` (Domain methods exist for the
+  Link lifecycle; new ones added where needed).
+- Audited via the Games admin decorator.
+
+**F1 — Admin login + session segregation (frontend)**
+
+- Separate `/admin/login` route; admin session stored separately from
+  player session to avoid accidental privilege carry-over.
+- `AdminSessionCubit`, `AdminApiClient`.
+
+**F2 — Admin shell + navigation**
+
+- `AppAdminShell` with side nav (Quests, Players, Energy, Content,
+  Audit) and `AuthenticatedAdmin`-gated routes.
+
+**F3 — Quest catalog UI**
+
+- List + create + edit + deactivate quest definitions.
+
+**F4 — Player search + admin detail UI**
+
+- Player search by handle/email, admin detail view with profile +
+  stats + energy + active quests + ban controls.
+
+**F5 — Energy admin UI**
+
+- Set/grant/reset energy on a specific player.
+
+**F6 — Audit view UI**
+
+- Paged audit log with actor + target filters.
+
+### Deliberate non-actions
+
+- **No permission matrix.** Single `Admin` role until a concrete
+  granular need surfaces. Re-evaluation trigger: a second admin
+  responsibility (e.g., "support-only, no content edit") becomes a
+  real ask.
+- **No multi-tenant model.** LexiLink is single-tenant.
+- **No event-sourced admin history.** Audit is a projection table,
+  not a reconstructable event stream.
+- **No admin domain in `Common`.** Module-owned Application/Domain
+  per Kamil; `IAdminCommand` is the only `Common` symbol because it
+  is a cross-cutting marker, not behavior.
+- **No new sync gateway beyond `IAdminAuthorizationContext`.** Audit
+  is event-driven; admin write commands are direct.
+- **No frontend slice until its backend slice is green.** Audit and
+  player ban UIs wait on B5 and B9.
+
+---
+
 ## Game Options Selection ✅ closed 2026-05-17
 
 Goal: oyun ekranı her zaman **tam 6 outgoing link** göstersin. Veritabanında
