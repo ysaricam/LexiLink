@@ -7,6 +7,107 @@ yeniden yazilmaz.
 
 ## Frontend Planning Started (2026-05-13)
 
+### Slice 11 — Game Screen Polish (2026-05-17)
+
+Game ekraninin Slice 10 ile gelen tasarim diline tasinmasi. Backend
+prerequisite (`GET /games/{id}/options`, deterministik 6'li alt küme,
+previousLinkId her zaman kilitli) ayni gun sabah `activeContext.md`'de
+canli oldugu icin slice acildi.
+
+- **Repository migration** — `lib/features/game/data/game_repository.dart`.
+  `getOutgoingLinks(linkId)` legacy yolu silindi; `getOptions(gameId)` tek
+  seçenek kaynagi. Cubit zaten `getOptions` cagiriyordu; method dead code'du.
+- **DTO sertlestirme** — `lib/features/game/data/game_details.dart`.
+  Backend `startLinkId` + `targetLinkId` donduruyordu ama DTO parse
+  etmiyordu. Iki alan eklendi; daha onceden value-eslestirmesi ile yapilan
+  previous-link tespiti artik id eslestirmesiyle yapiliyor.
+- **AppBackBar genisletmesi** — `lib/shared/widgets/app_back_bar.dart`.
+  Opsiyonel `onBack` callback ve `trailing` widget parametreleri eklendi;
+  null default'lar ile mevcut profile/quests/leaderboard kullanimi
+  bozulmadi.
+- **GameScreen tam yeniden yazim** —
+  `lib/features/game/presentation/game_screen.dart`.
+  - `AppBackBar(title: 'Game', onBack: ..., trailing: PopupMenuButton)`.
+    Back basili → "Quit game?" `AlertDialog` (Keep playing / Quit) →
+    confirm ise `GameDetailsCubit.abandon()`. Game `isFinished` iken back
+    direkt `/home`. Overflow popup tek menuy ogesi: "Reset progress (n)"
+    (busy/finished/`resetsLeft==0` iken disabled).
+  - `_StartRailTarget` = Row(`_AnchorChip(start, primarySoft)`,
+    `Expanded(_StepDots)`, `_AnchorChip(target, focusSoft)`). Anchor max
+    120px genislik, `caption + label`. Step dots `LayoutBuilder` ile
+    `maxSteps` adet 10x10 dot; ilk `stepsTaken` tanesi
+    `AppPalette.focus`, kalan `AppPalette.primary.withValues(alpha: 0.18)`.
+  - `_CurrentHero` = gradient `LinearGradient(primary →
+    primaryPressed)` + 20px radius + soft shadow. Etiket "CURRENT" +
+    altinda `FittedBox(BoxFit.scaleDown)` ile `headlineMedium` current
+    word (uzun Turkish word safe).
+  - `_Breadcrumb` = `startWord › … › currentWord` (son 3 kelime,
+    `bodySmall`, muted, ellipsis).
+  - `_StatusRow` = 3 chip: Steps `n/m` (timer icon), Hints `n`
+    (lightbulb), Score `n` (star, sandy gold ton) — Score yalnizca
+    `game.score != null`.
+  - `_OptionsGrid` = `GridView.builder(crossAxisCount: 3,
+    childAspectRatio: 1.6, mainAxis/crossAxis spacing 10)`. Tile state'leri:
+    - normal: light surface, primary 0.28 alpha border;
+    - hint-recommended (`option.id == recommendedLinkId`): focusSoft bg,
+      sandy gold 2px border, w700 weight;
+    - previous (`option.id == previousLinkId`): muted surface + muted
+      border + sag-ust kose `Icons.undo` 14px (geri don rozeti);
+    - disabled: muted (busy / `!isActive` / `isFinished`).
+    Long Turkish word: `FittedBox(BoxFit.scaleDown)`, `maxLines: 2`.
+    Tap → `GameDetailsCubit.makeStep(option.id)`.
+  - `_SecondaryActions` = Row of `Hint (n)` + `Undo (n)` `AppSecondaryButton`
+    (kalan sayilar etikette).
+  - Result `showModalBottomSheet(isScrollControlled: true,
+    backgroundColor: transparent)`. `BlocListener.listenWhen` only fires
+    on `!wasFinished && isFinished`; `_resultShown` flag prevents
+    re-open. Sheet: drag handle + outcome icon/title (Completed
+    `emoji_events_outlined`/success; Failed `do_not_disturb_alt_outlined`
+    /danger; Abandoned `flag_outlined`/muted) + subtitle + 3 summary
+    stats (Score, Steps, Hints used) + Path satiri (full
+    `startWord › … › currentWord`) + `Back to home` primary CTA.
+- **Cleanup** — `widgets/link_tile.dart` ve `widgets/game_info_card.dart`
+  artik kullanilmiyor; silindi. `presentation/widgets/` klasoru bos
+  oldugu icin kaldirildi.
+- **Test guncellemesi** —
+  `test/features/game/data/game_repository_test.dart`: `'gets outgoing
+  links'` test'i `'gets game options'` olarak yeniden yazildi (yeni path:
+  `/games/game-1/options`). `test/features/game/data/game_details_test.dart`
+  fixture `startLinkId`/`targetLinkId` ile guncellendi.
+
+Previous-link tespit kurali (`_previousLinkId(game)`):
+
+- `stepsTaken == 0` → null (henuz adim atilmadi);
+- `stepsTaken == 1` → `game.startLinkId`;
+- `stepsTaken >= 2` → `game.history[stepsTaken - 2].linkId`.
+
+Backend `/games/{id}/options` previousLinkId'yi her zaman alt kümeye dahil
+ediyor; frontend bu tile'i muted + undo rozetiyle isaretler.
+
+Out-of-scope (bilincli):
+
+- "Play again" tek tikla yeni oyun yaratma (sheet'te yok; CTA `/home`'a
+  donuyor, kullanici splash → home akisindan tekrar baslar).
+- Energy badge'ini game ekraninda gostermek (energy oyun basinda
+  harcanmis, oyun ortasinda etkilesimsiz; dikkat dagitir).
+- Sign-out / Reset session UI (token clear; bug raporu sirasinda ortaya
+  cikti — Slice 12+ adayi).
+- Path history persistence (oyun browser refresh sonrasi restore yok).
+
+Verification:
+
+- `flutter analyze` 0 yeni issue (yalnizca Slice 10'dan kalan splash
+  `prefer_int_literals` info: `splash_screen.dart:152`, blocking degil).
+- `flutter test` 45/45 (test sayisi degismedi; bir test fixture'i
+  guncellendi, biri yeniden yazildi).
+- Live API smoke: `POST /players/guest` (SmokePlayer) → `POST /games`
+  → `POST /games/{id}/start` → `GET /games/{id}` (`kış sporu` start, 9
+  step budget) → `GET /games/{id}/options` 6 deterministik secenek
+  (spor, hokey, snowboard, kar, buz, buz pateni) dondu.
+- Browser smoke kullanici tarafindan yapilacak; fresh `flutter run -d
+  web-server --web-port 5173 --dart-define=LEXILINK_API_BASE_URL=
+  http://127.0.0.1:5099` ile sunucu yeniden baslatildi.
+
 ### Slice 10 — Home Landing UX (2026-05-16)
 
 Kullanici-facing girisin tasarim dili polish'i. Eski Bootstrap design-system

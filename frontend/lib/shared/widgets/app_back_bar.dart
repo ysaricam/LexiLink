@@ -5,11 +5,15 @@ class AppBackBar extends StatelessWidget {
   const AppBackBar({
     required this.title,
     this.fallbackRoute = '/home',
+    this.onBack,
+    this.trailing,
     super.key,
   });
 
   final String title;
   final String fallbackRoute;
+  final VoidCallback? onBack;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class AppBackBar extends StatelessWidget {
           elevation: 1,
           child: InkWell(
             customBorder: const CircleBorder(),
-            onTap: () => context.go(fallbackRoute),
+            onTap: onBack ?? () => context.go(fallbackRoute),
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: Icon(
@@ -36,6 +40,7 @@ class AppBackBar extends StatelessWidget {
         Expanded(
           child: Text(title, style: theme.textTheme.titleLarge),
         ),
+        if (trailing != null) trailing!,
       ],
     );
   }

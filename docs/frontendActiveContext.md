@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-16
+> Last updated: 2026-05-17
 
 ---
 
@@ -351,3 +351,41 @@ Verification: `flutter analyze` 0 issue (1 info — `prefer_int_literals`),
 manuel goruldu (splash + carousel swipe + side icon navigation +
 AppBackBar). `/categories` route'u (eski liste ekrani) henuz silinmedi; bir
 sonraki temizlikte ele alinacak.
+
+Tamamlanan slice: **Game Screen Polish (2026-05-17)**.
+
+Slice 10 ile gelen tasarim dili oyun ekranina tasindi. `GameRepository`
+artik tek path olarak `getOptions(gameId)` kullaniyor; legacy
+`getOutgoingLinks(linkId)` silindi. `GameDetails` DTO `startLinkId` +
+`targetLinkId` parse ediyor; previous-link tespiti id-eslestirmesi ile.
+`AppBackBar` opsiyonel `onBack` + `trailing` parametrelerini destekliyor.
+
+Yeni `GameScreen` yapisi: `AppBackBar`(back = "Quit game?" diyalog →
+abandon, trailing = Reset PopupMenu) → start anchor + step dots progress
+rail + target anchor → gradient current hero card → breadcrumb (son 3
+kelime) → Steps/Hints/Score status chips → 2x3 outlink `GridView`
+(hint-recommended sandy gold ring, previous-link muted + `Icons.undo`
+rozeti, long-word `FittedBox`) → Hint/Undo secondary butonlari.
+Completed/Failed/Abandoned sonucu `showModalBottomSheet` ile: outcome
+icon/title + summary stats (Score/Steps/Hints used) + full path + "Back
+to home". Eskimiş `widgets/link_tile.dart` ve `widgets/game_info_card.dart`
+silindi.
+
+Verification: `flutter analyze` 0 yeni issue (yalnizca Slice 10'dan kalan
+splash `prefer_int_literals` info), `flutter test` 45/45. Live API smoke
+Spor kategorisinde 9-step `kış sporu` baslangici icin 6 deterministik
+option dondurdu. Tarayici smoke kullanici tarafinda.
+
+Sıradaki onerilen alt adim somut olarak ilan edilmedi; potansiyel adaylar:
+
+- Sign-out / Reset session UI — Slice 10'da bootstrap reset ekrani
+  kaldirildiginda `SessionCubit.signOut()` UI butonu ile bir baglantisi
+  kalmadi. Profile ekraninda kucuk bir "Reset session" satiri eklemek
+  test/dev rahatligi acisindan en dusuk maliyetli adim.
+- "Play again" tek tikla yeni oyun — Result sheet'inde category id
+  bilindigi icin `POST /games` + `POST /games/{id}/start` ile direkt yeni
+  gameId'ye yonlendirilebilir. Su an sheet sadece `/home`'a donuyor.
+- Energy badge'i oyun ekraninda gosterip kalan enerji ile "Play again"
+  CTA disable'lamak. Su an game ekraninda energy yok (bilincli karar).
+- `/categories` legacy route'unun silinmesi — Slice 10'dan kalan
+  cleanup; route guard ve test temizligi gerektirir.

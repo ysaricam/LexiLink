@@ -39,13 +39,13 @@ void main() {
     expect(requests, ['POST /games', 'POST /games/game-1/start']);
   });
 
-  test('gets outgoing links', () async {
+  test('gets game options', () async {
     final repository = GameRepository(
       apiClient: ApiClient(
         config: const ApiConfig(baseUrl: 'http://localhost:5000'),
         tokenStore: InMemoryTokenStore(),
         httpClient: MockClient((request) async {
-          expect(request.url.path, '/links/link-1/outgoing');
+          expect(request.url.path, '/games/game-1/options');
 
           return http.Response(
             '[{"id":"link-2","value":"basketbol","isActive":true}]',
@@ -55,12 +55,12 @@ void main() {
       ),
     );
 
-    final outgoingLinks = await repository.getOutgoingLinks('link-1');
+    final options = await repository.getOptions('game-1');
 
-    expect(outgoingLinks, hasLength(1));
-    expect(outgoingLinks.single.id, 'link-2');
-    expect(outgoingLinks.single.value, 'basketbol');
-    expect(outgoingLinks.single.isActive, isTrue);
+    expect(options, hasLength(1));
+    expect(options.single.id, 'link-2');
+    expect(options.single.value, 'basketbol');
+    expect(options.single.isActive, isTrue);
   });
 
   test('makes step', () async {

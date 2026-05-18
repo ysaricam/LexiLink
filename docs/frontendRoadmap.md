@@ -323,40 +323,64 @@ Non-goals (Slice 11+):
 
 ---
 
-## Slice 11 — Game Screen Polish (blocked on backend)
-
-**Blocked** — `GET /games/{id}/options` backend slice'ı tamamlanmadan
-basbalamiyor. Detay: `docs/ROADMAP.md > Game Options Selection`. Frontend
-mevcut `GET /links/{id}/outgoing` cagrisi tum outlink'leri donduruyor;
-oyun ekrani 6 outlink ile sinirli oldugu icin once backend deterministik
-6'li alt küme dondurmeli (previousLinkId her zaman kilitli).
+## Slice 11 — Game Screen Polish ✅ done (2026-05-17)
 
 Goal: oyun ekranini Slice 10 ile gelen tasarim diline tasimak —
-`AppBackBar`, daha temiz link tile'lar, score/path history icin daha
-minimal kart yerlesimi, energy/result panelleri. Bu slice'ta ayrica
-`GameRepository.getOutgoing(...)` → `getOptions(gameId)` migration'i
-yapilacak.
+`AppBackBar`, gradient current hero card, start↔dots↔target progress rail,
+2x3 outlink grid, secondary action hierarchy ve `showModalBottomSheet`
+result paneli. Ayrica `GameRepository.getOutgoing(linkId)` legacy yolunu
+emekli edip `getOptions(gameId)` (backend deterministik 6'li alt küme,
+previousLinkId her zaman kilitli) tek seçenek kaynagi yap.
 
-- [ ] Game ekrani ust basligi `AppBackBar` patteri ile (Quit / Resume
-  semantigi netlestirilecek).
-- [ ] Current word + target word card layout yenile.
-- [ ] Outgoing `LinkTile` listesinin sadelestirilmesi (grid vs. liste;
-  selected/hint state).
-- [ ] Score, steps left ve hints sayaclarini home'daki info-card formatina
-  uyarli minimal kart yapisi.
-- [ ] Path history minimal ve scroll edilebilir; gecmis adimlari
-  vurgulama tonu.
-- [ ] Completed / Failed / Abandoned result paneli yeni gradient/CTA
-  diline cevirme; "Play again" → `/home` veya yeniden start.
-- [ ] Hint, Undo, Reset, Abandon butonlarinin yerlesim hierarchy'si
-  netlesir (primary vs. secondary).
+- [x] `GameRepository.getOutgoingLinks(linkId)` silindi; `getOptions(gameId)`
+  cubit'in zaten kullandigi tek path.
+- [x] `GameDetails` DTO `startLinkId` + `targetLinkId` parse ediyor (backend
+  zaten donduruyordu, parse edilmiyordu).
+- [x] `AppBackBar`'a opsiyonel `onBack` callback ve `trailing` widget
+  parametreleri eklendi (geri uyumlu).
+- [x] Game ekrani ust basligi `AppBackBar` + back → "Quit game?" confirm
+  dialog → `abandon` API. Sag tarafta `PopupMenuButton` overflow menu
+  (Reset progress).
+- [x] Start anchor (sol) ─ step dots progress rail (orta) ─ Target anchor
+  (sag). Dots `stepsTaken/maxSteps` orani kadar dolu (sandy gold), kalani
+  primary'nin 0.18 alpha tonu.
+- [x] Gradient current hero card (`primary` → `primaryPressed`,
+  20px radius, soft shadow) + `FittedBox` ile uzun Turkish word safe.
+- [x] Breadcrumb (`startWord › … › currentWord`, son 3 kelime, ellipsis).
+- [x] Status chips: Steps `n/m`, Hints `n`, Score `n` (Score yalnizca
+  `game.score != null` iken).
+- [x] 2x3 `GridView` outlink choices. Tile state'leri: normal,
+  hint-recommended (sandy gold ring, 2px border), previous-link
+  (`option.id == previousLinkId` — start ise `game.startLinkId`, ≥2 ise
+  `history[stepsTaken-2].linkId`, muted ton + `Icons.undo` rozet), disabled.
+- [x] Hint / Undo secondary butonlari (her ikisi de kalan sayaci gosterir).
+- [x] Result paneli `showModalBottomSheet`: outcome icon + title (success
+  yesil / danger kirmizi / abandoned muted), subtitle, summary stats
+  (Score, Steps, Hints used), full path satiri, "Back to home" CTA.
+  `BlocListener.listenWhen` ile yalnizca `isFinished` gecisinde acilir;
+  `_resultShown` flag ile re-build sirasinda tekrar acilmaz.
+- [x] Eskimiş `widgets/link_tile.dart` ve `widgets/game_info_card.dart`
+  silindi; `widgets/` klasoru de bos kaldigi icin kaldirildi.
+- [x] Test: `game_repository_test.dart` `getOptions` cagrisini test eder;
+  `game_details_test.dart` fixture `startLinkId`/`targetLinkId` icerir.
 
 Acceptance:
 
-- Mevcut oyun (ornegin Spor seed'i) `make step` akisi sorunsuz.
-- Result state'ler degisik ekran yerine ayni AppScreen icinde
-  minimal panele donusur.
-- `flutter analyze` 0 issue; mevcut test seti gecmeye devam eder.
+- `make step` akisi sorunsuz (live API smoke: `kış sporu` start, 6
+  deterministik option dondu).
+- Result state'ler degisik ekran yerine ayni AppScreen uzerinde
+  bottom-sheet olarak acilir.
+- `flutter analyze` 0 yeni issue (yalnizca Slice 10'dan kalan splash
+  `prefer_int_literals` info kalir).
+- Mevcut test seti gecmeye devam eder.
+
+Verification:
+
+- `flutter analyze` 0 yeni issue.
+- `flutter test` 45/45.
+- Live API smoke: `POST /games`, `POST /games/{id}/start`,
+  `GET /games/{id}/options` 6 deterministik secenek dondu (Spor:
+  `kış sporu` → spor, hokey, snowboard, kar, buz, buz pateni).
 
 Non-goals:
 
@@ -364,6 +388,8 @@ Non-goals:
 - Real-time multiplayer / score broadcast.
 - Path history persistence (devam eden oyun browser refresh sonrasi
   restore edilmiyor; out-of-scope).
+- "Play again" tek tikla yeni oyun (sheet'te yok; CTA `/home`'a yonlendiriyor).
+- Sign-out / Reset session UI (token clear flow icin slice 12+ adayi).
 
 ---
 

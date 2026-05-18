@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:lexilink_app/app/theme/app_layout.dart';
+import 'package:lexilink_app/app/theme/app_palette.dart';
 import 'package:lexilink_app/features/game/application/game_details_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_details.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/game/data/outgoing_link.dart';
-import 'package:lexilink_app/features/game/presentation/widgets/game_info_card.dart';
-import 'package:lexilink_app/features/game/presentation/widgets/link_tile.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
+import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
 import 'package:lexilink_app/shared/widgets/app_error_state.dart';
 import 'package:lexilink_app/shared/widgets/app_loading_state.dart';
@@ -114,38 +115,68 @@ class _GameProvidersState extends State<_GameProviders> {
   }
 }
 
-class _GameView extends StatelessWidget {
+class _GameView extends StatefulWidget {
   const _GameView({required this.gameId});
 
   final String gameId;
 
   @override
+  State<_GameView> createState() => _GameViewState();
+}
+
+class _GameViewState extends State<_GameView> {
+  bool _resultShown = false;
+
+  @override
   Widget build(BuildContext context) {
-    return AppScreen(
-      size: AppScreenSize.game,
-      child: BlocBuilder<GameDetailsCubit, GameDetailsState>(
-        builder: (context, state) {
-          if (state.status == GameDetailsStatus.loading) {
-            return const AppLoadingState(message: 'Loading game...');
-          }
+    return BlocListener<GameDetailsCubit, GameDetailsState>(
+      listenWhen: (previous, current) {
+        final wasFinished = previous.game?.isFinished ?? false;
+        final isFinished = current.game?.isFinished ?? false;
+        return !wasFinished && isFinished;
+      },
+      listener: (context, state) {
+        final game = state.game;
+        if (game == null || _resultShown) return;
+        _resultShown = true;
+        _showResultSheet(context, game);
+      },
+      child: AppScreen(
+        size: AppScreenSize.game,
+        child: BlocBuilder<GameDetailsCubit, GameDetailsState>(
+          builder: (context, state) {
+            if (state.status == GameDetailsStatus.loading) {
+              return const AppLoadingState(message: 'Loading game...');
+            }
 
-          if (state.status == GameDetailsStatus.failure) {
-            return AppErrorState(
-              title: 'Could not load game',
-              message: state.message ?? 'Try again.',
-              onRetry: () => context.read<GameDetailsCubit>().loadGame(gameId),
+            if (state.status == GameDetailsStatus.failure) {
+              return AppErrorState(
+                title: 'Could not load game',
+                message: state.message ?? 'Try again.',
+                onRetry: () =>
+                    context.read<GameDetailsCubit>().loadGame(widget.gameId),
+              );
+            }
+
+            return _GameContent(
+              game: state.game!,
+              outgoingLinks: state.outgoingLinks,
+              activeAction: state.activeAction,
+              recommendedLinkId: state.recommendedLinkId,
+              message: state.message,
             );
-          }
-
-          return _GameContent(
-            game: state.game!,
-            outgoingLinks: state.outgoingLinks,
-            activeAction: state.activeAction,
-            recommendedLinkId: state.recommendedLinkId,
-            message: state.message,
-          );
-        },
+          },
+        ),
       ),
+    );
+  }
+
+  Future<void> _showResultSheet(BuildContext context, GameDetails game) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) => _ResultSheet(game: game),
     );
   }
 }
@@ -167,118 +198,47 @@ class _GameContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isBusy = activeAction != GameAction.none;
+    final isFinished = game.isFinished;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          'LexiLink',
-          style: Theme.of(context).textTheme.displaySmall,
-          textAlign: TextAlign.center,
+        AppBackBar(
+          title: 'Game',
+          onBack: () => _onBackPressed(context, game, isBusy),
+          trailing: _OverflowMenu(game: game, isBusy: isBusy),
         ),
-        const SizedBox(height: 8),
-        Text(
-          '${game.difficulty} · ${game.state}',
-          style: Theme.of(context).textTheme.bodyLarge,
-          textAlign: TextAlign.center,
-        ),
+        const SizedBox(height: 20),
+        _StartRailTarget(game: game),
         const SizedBox(height: 24),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            LinkTile(label: game.startWord, tone: LinkTileTone.current),
-            LinkTile(label: game.currentWord),
-            LinkTile(label: game.targetWord, tone: LinkTileTone.target),
-          ],
-        ),
+        _CurrentHero(game: game),
+        const SizedBox(height: 10),
+        _Breadcrumb(game: game),
         const SizedBox(height: 24),
-        Row(
-          children: [
-            Expanded(
-              child: GameInfoCard(
-                label: 'Steps left',
-                value: game.stepsLeft.toString(),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: GameInfoCard(
-                label: 'Hints',
-                value: game.hintsLeft.toString(),
-                accented: true,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            Expanded(
-              child: GameInfoCard(
-                label: 'Undo',
-                value: game.undosLeft.toString(),
-              ),
-            ),
-            const SizedBox(width: 8),
-            Expanded(
-              child: GameInfoCard(
-                label: 'Reset',
-                value: game.resetsLeft.toString(),
-              ),
-            ),
-          ],
-        ),
-        if (game.score != null) ...[
-          const SizedBox(height: 8),
-          GameInfoCard(
-            label: 'Score',
-            value: game.score.toString(),
-            accented: true,
+        _StatusRow(game: game),
+        const SizedBox(height: 20),
+        if (!isFinished) ...[
+          Text(
+            'Pick the next word',
+            style: Theme.of(context).textTheme.titleMedium,
+            textAlign: TextAlign.center,
           ),
-        ],
-        if (game.history.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          if (outgoingLinks.isEmpty)
+            const AppErrorState(
+              title: 'No moves available',
+              message: 'This link has no outgoing choices.',
+            )
+          else
+            _OptionsGrid(
+              options: outgoingLinks,
+              recommendedLinkId: recommendedLinkId,
+              previousLinkId: _previousLinkId(game),
+              disabled: isBusy || isFinished,
+            ),
           const SizedBox(height: 16),
-          _PathHistory(game: game),
-        ],
-        const SizedBox(height: 16),
-        _GameActions(game: game, activeAction: activeAction),
-        if (game.isFinished) ...[
-          const SizedBox(height: 16),
-          _GameResult(game: game),
-        ],
-        const SizedBox(height: 24),
-        Text(
-          'Next link',
-          style: Theme.of(context).textTheme.titleMedium,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 12),
-        if (outgoingLinks.isEmpty)
-          const AppErrorState(
-            title: 'No moves available',
-            message: 'This link has no outgoing choices.',
-          )
-        else
-          Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              for (final link in outgoingLinks)
-                _OutgoingLinkChoice(
-                  link: link,
-                  highlighted: link.id == recommendedLinkId,
-                  disabled:
-                      activeAction != GameAction.none ||
-                      !link.isActive ||
-                      game.isFinished,
-                ),
-            ],
-          ),
-        if (activeAction != GameAction.none) ...[
-          const SizedBox(height: 16),
-          AppLoadingState(message: _actionMessage(activeAction), compact: true),
+          _SecondaryActions(game: game, isBusy: isBusy),
         ],
         if (message != null) ...[
           const SizedBox(height: 16),
@@ -287,8 +247,26 @@ class _GameContent extends StatelessWidget {
             message: message!,
           ),
         ],
+        if (isBusy) ...[
+          const SizedBox(height: 16),
+          AppLoadingState(message: _actionMessage(activeAction), compact: true),
+        ],
+        if (isFinished) ...[
+          const SizedBox(height: 24),
+          AppPrimaryButton(
+            label: 'Back to home',
+            onPressed: () => context.go('/home'),
+          ),
+        ],
+        const SizedBox(height: 24),
       ],
     );
+  }
+
+  String? _previousLinkId(GameDetails game) {
+    if (game.stepsTaken == 0) return null;
+    if (game.stepsTaken == 1) return game.startLinkId;
+    return game.history[game.stepsTaken - 2].linkId;
   }
 
   String _actionMessage(GameAction action) {
@@ -301,141 +279,709 @@ class _GameContent extends StatelessWidget {
       GameAction.none => 'Working...',
     };
   }
+
+  Future<void> _onBackPressed(
+    BuildContext context,
+    GameDetails game,
+    bool isBusy,
+  ) async {
+    if (game.isFinished) {
+      context.go('/home');
+      return;
+    }
+    if (isBusy) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Quit game?'),
+        content: const Text(
+          'This will abandon your current game and '
+          'you will not earn any score.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: const Text('Keep playing'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: const Text('Quit'),
+          ),
+        ],
+      ),
+    );
+
+    if ((confirmed ?? false) && context.mounted) {
+      await context.read<GameDetailsCubit>().abandon();
+    }
+  }
 }
 
-class _PathHistory extends StatelessWidget {
-  const _PathHistory({required this.game});
+class _StartRailTarget extends StatelessWidget {
+  const _StartRailTarget({required this.game});
 
   final GameDetails game;
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 8,
-      runSpacing: 8,
+    return Row(
       children: [
-        LinkTile(label: game.startWord, tone: LinkTileTone.current),
-        for (final step in game.history) LinkTile(label: step.linkValue),
+        _AnchorChip(label: game.startWord, kind: _AnchorKind.start),
+        const SizedBox(width: 10),
+        Expanded(
+          child: _StepDots(
+            stepsTaken: game.stepsTaken,
+            maxSteps: game.maxSteps,
+          ),
+        ),
+        const SizedBox(width: 10),
+        _AnchorChip(label: game.targetWord, kind: _AnchorKind.target),
       ],
     );
   }
 }
 
-class _GameActions extends StatelessWidget {
-  const _GameActions({
-    required this.game,
-    required this.activeAction,
+enum _AnchorKind { start, target }
+
+class _AnchorChip extends StatelessWidget {
+  const _AnchorChip({required this.label, required this.kind});
+
+  final String label;
+  final _AnchorKind kind;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final background = kind == _AnchorKind.start
+        ? AppPalette.primarySoft
+        : AppPalette.focusSoft;
+    final foreground = kind == _AnchorKind.start
+        ? AppPalette.primary
+        : AppPalette.focus;
+    final caption = kind == _AnchorKind.start ? 'Start' : 'Target';
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 120),
+      child: Column(
+        children: [
+          Text(
+            caption,
+            style: textTheme.labelSmall?.copyWith(color: foreground),
+          ),
+          const SizedBox(height: 4),
+          DecoratedBox(
+            decoration: BoxDecoration(
+              color: background,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: foreground.withValues(alpha: 0.4)),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 6,
+              ),
+              child: Text(
+                label,
+                style: textTheme.titleSmall?.copyWith(color: foreground),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StepDots extends StatelessWidget {
+  const _StepDots({required this.stepsTaken, required this.maxSteps});
+
+  final int stepsTaken;
+  final int maxSteps;
+
+  @override
+  Widget build(BuildContext context) {
+    if (maxSteps <= 0) return const SizedBox.shrink();
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const dotSize = 10.0;
+        final spacing = maxSteps > 1
+            ? (constraints.maxWidth - dotSize * maxSteps) / (maxSteps - 1)
+            : 0.0;
+        final safeSpacing = spacing.isFinite && spacing > 0 ? spacing : 4.0;
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List<Widget>.generate(maxSteps, (index) {
+            final filled = index < stepsTaken;
+            return Padding(
+              padding: EdgeInsets.only(
+                right: index == maxSteps - 1 ? 0 : safeSpacing / 2,
+                left: index == 0 ? 0 : safeSpacing / 2,
+              ),
+              child: Container(
+                width: dotSize,
+                height: dotSize,
+                decoration: BoxDecoration(
+                  color: filled
+                      ? AppPalette.focus
+                      : AppPalette.primary.withValues(alpha: 0.18),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            );
+          }),
+        );
+      },
+    );
+  }
+}
+
+class _CurrentHero extends StatelessWidget {
+  const _CurrentHero({required this.game});
+
+  final GameDetails game;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 360),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [AppPalette.primary, AppPalette.primaryPressed],
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: AppPalette.primary.withValues(alpha: 0.22),
+                blurRadius: 14,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Text(
+                'Current',
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: Colors.white70,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const SizedBox(height: 6),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  game.currentWord,
+                  style: theme.textTheme.headlineMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Breadcrumb extends StatelessWidget {
+  const _Breadcrumb({required this.game});
+
+  final GameDetails game;
+
+  @override
+  Widget build(BuildContext context) {
+    final words = <String>[
+      game.startWord,
+      ...game.history.map((h) => h.linkValue),
+    ];
+    final tail = words.length <= 3 ? words : words.sublist(words.length - 3);
+
+    final theme = Theme.of(context);
+    return Center(
+      child: Text(
+        tail.join(' › '),
+        style: theme.textTheme.bodySmall?.copyWith(
+          color: AppPalette.lightTextMuted,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+  }
+}
+
+class _StatusRow extends StatelessWidget {
+  const _StatusRow({required this.game});
+
+  final GameDetails game;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _StatusChip(
+          icon: Icons.timer_outlined,
+          label: 'Steps ${game.stepsTaken}/${game.maxSteps}',
+        ),
+        const SizedBox(width: 10),
+        _StatusChip(
+          icon: Icons.lightbulb_outline,
+          label: 'Hints ${game.hintsLeft}',
+        ),
+        if (game.score != null) ...[
+          const SizedBox(width: 10),
+          _StatusChip(
+            icon: Icons.star_outline,
+            label: 'Score ${game.score}',
+            tone: _StatusChipTone.accent,
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+enum _StatusChipTone { neutral, accent }
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({
+    required this.icon,
+    required this.label,
+    this.tone = _StatusChipTone.neutral,
   });
 
-  final GameDetails game;
-  final GameAction activeAction;
+  final IconData icon;
+  final String label;
+  final _StatusChipTone tone;
 
   @override
   Widget build(BuildContext context) {
-    final isBusy = activeAction != GameAction.none;
-    final isFinished = game.isFinished;
+    final isAccent = tone == _StatusChipTone.accent;
+    final background = isAccent ? AppPalette.focusSoft : AppPalette.primarySoft;
+    final foreground = isAccent ? AppPalette.focus : AppPalette.primary;
 
-    return Wrap(
-      alignment: WrapAlignment.center,
-      spacing: 8,
-      runSpacing: 8,
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, size: 14, color: foreground),
+          const SizedBox(width: 6),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: foreground,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _OptionsGrid extends StatelessWidget {
+  const _OptionsGrid({
+    required this.options,
+    required this.recommendedLinkId,
+    required this.previousLinkId,
+    required this.disabled,
+  });
+
+  final List<OutgoingLink> options;
+  final String? recommendedLinkId;
+  final String? previousLinkId;
+  final bool disabled;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 10,
+        childAspectRatio: 1.6,
+      ),
+      itemCount: options.length,
+      itemBuilder: (context, index) {
+        final option = options[index];
+        final isRecommended = option.id == recommendedLinkId;
+        final isPrevious =
+            previousLinkId != null && option.id == previousLinkId;
+        final tileDisabled = disabled || !option.isActive;
+        return _OptionTile(
+          option: option,
+          highlighted: isRecommended,
+          isPrevious: isPrevious,
+          disabled: tileDisabled,
+        );
+      },
+    );
+  }
+}
+
+class _OptionTile extends StatelessWidget {
+  const _OptionTile({
+    required this.option,
+    required this.highlighted,
+    required this.isPrevious,
+    required this.disabled,
+  });
+
+  final OutgoingLink option;
+  final bool highlighted;
+  final bool isPrevious;
+  final bool disabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final Color background;
+    final Color foreground;
+    final Color border;
+    final double borderWidth;
+
+    if (disabled) {
+      background = AppPalette.lightSurfaceMuted;
+      foreground = AppPalette.lightTextMuted;
+      border = AppPalette.primary.withValues(alpha: 0.18);
+      borderWidth = 1;
+    } else if (highlighted) {
+      background = AppPalette.focusSoft;
+      foreground = AppPalette.focus;
+      border = AppPalette.focus;
+      borderWidth = 2;
+    } else if (isPrevious) {
+      background = AppPalette.lightSurfaceMuted;
+      foreground = AppPalette.lightTextMuted;
+      border = AppPalette.primary.withValues(alpha: 0.24);
+      borderWidth = 1;
+    } else {
+      background = AppPalette.lightSurface;
+      foreground = AppPalette.lightText;
+      border = AppPalette.primary.withValues(alpha: 0.28);
+      borderWidth = 1;
+    }
+
+    return Material(
+      color: background,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
+        onTap: disabled
+            ? null
+            : () => context.read<GameDetailsCubit>().makeStep(option.id),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(color: border, width: borderWidth),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            child: Stack(
+              children: [
+                if (isPrevious)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Icon(
+                      Icons.undo,
+                      size: 14,
+                      color: foreground.withValues(alpha: 0.6),
+                    ),
+                  ),
+                Center(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      option.value,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: foreground,
+                        fontWeight: highlighted
+                            ? FontWeight.w700
+                            : FontWeight.w500,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 2,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SecondaryActions extends StatelessWidget {
+  const _SecondaryActions({required this.game, required this.isBusy});
+
+  final GameDetails game;
+  final bool isBusy;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
       children: [
-        AppSecondaryButton(
-          label: 'Hint',
-          onPressed: isBusy || isFinished || game.hintsLeft <= 0
-              ? null
-              : () => context.read<GameDetailsCubit>().useHint(),
+        Expanded(
+          child: AppSecondaryButton(
+            label: 'Hint (${game.hintsLeft})',
+            onPressed: isBusy || game.hintsLeft <= 0
+                ? null
+                : () => context.read<GameDetailsCubit>().useHint(),
+          ),
         ),
-        AppSecondaryButton(
-          label: 'Undo',
-          onPressed: isBusy || isFinished || game.undosLeft <= 0
-              ? null
-              : () => context.read<GameDetailsCubit>().undo(),
-        ),
-        AppSecondaryButton(
-          label: 'Reset',
-          onPressed: isBusy || isFinished || game.resetsLeft <= 0
-              ? null
-              : () => context.read<GameDetailsCubit>().reset(),
-        ),
-        AppDangerButton(
-          label: 'Abandon',
-          onPressed: isBusy || isFinished
-              ? null
-              : () => context.read<GameDetailsCubit>().abandon(),
+        const SizedBox(width: 10),
+        Expanded(
+          child: AppSecondaryButton(
+            label: 'Undo (${game.undosLeft})',
+            onPressed: isBusy || game.undosLeft <= 0
+                ? null
+                : () => context.read<GameDetailsCubit>().undo(),
+          ),
         ),
       ],
     );
   }
 }
 
-class _GameResult extends StatelessWidget {
-  const _GameResult({required this.game});
+class _OverflowMenu extends StatelessWidget {
+  const _OverflowMenu({required this.game, required this.isBusy});
+
+  final GameDetails game;
+  final bool isBusy;
+
+  @override
+  Widget build(BuildContext context) {
+    final resetEnabled =
+        !game.isFinished && !isBusy && game.resetsLeft > 0;
+
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_vert),
+      tooltip: 'More actions',
+      onSelected: (value) {
+        if (value == 'reset') {
+          context.read<GameDetailsCubit>().reset();
+        }
+      },
+      itemBuilder: (popupContext) => [
+        PopupMenuItem<String>(
+          value: 'reset',
+          enabled: resetEnabled,
+          child: Text('Reset progress (${game.resetsLeft})'),
+        ),
+      ],
+    );
+  }
+}
+
+class _ResultSheet extends StatelessWidget {
+  const _ResultSheet({required this.game});
 
   final GameDetails game;
 
   @override
   Widget build(BuildContext context) {
-    final title = switch (game.state) {
-      'Completed' => 'Completed',
-      'Failed' => 'Failed',
-      'Abandoned' => 'Abandoned',
-      _ => game.state,
-    };
-    final message = switch (game.state) {
-      'Completed' => 'You reached ${game.targetWord}.',
-      'Failed' => 'No steps left.',
-      'Abandoned' => 'This game was abandoned.',
-      _ => 'Game ended.',
-    };
+    final theme = Theme.of(context);
+    final outcome = _outcomeFor(game.state);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.secondaryContainer,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
+    return SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppPalette.lightSurface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.08),
+              blurRadius: 18,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(title, style: Theme.of(context).textTheme.titleMedium),
+            Center(
+              child: Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: AppPalette.lightSurfaceMuted,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Icon(outcome.icon, color: outcome.color, size: 28),
+                const SizedBox(width: 10),
+                Text(
+                  outcome.title,
+                  style: theme.textTheme.headlineSmall?.copyWith(
+                    color: outcome.color,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 6),
             Text(
-              message,
-              style: Theme.of(context).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
+              outcome.subtitle(game),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppPalette.lightTextMuted,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Row(
+              children: [
+                Expanded(
+                  child: _SummaryStat(
+                    label: 'Score',
+                    value: game.score?.toString() ?? '—',
+                  ),
+                ),
+                Expanded(
+                  child: _SummaryStat(
+                    label: 'Steps',
+                    value: '${game.stepsTaken}/${game.maxSteps}',
+                  ),
+                ),
+                Expanded(
+                  child: _SummaryStat(
+                    label: 'Hints used',
+                    value: '${game.hintsUsed}',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 18),
+            Text(
+              'Path',
+              style: theme.textTheme.titleSmall,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              _pathFor(game),
+              style: theme.textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 22),
+            AppPrimaryButton(
+              label: 'Back to home',
+              onPressed: () {
+                Navigator.of(context).pop();
+                context.go('/home');
+              },
             ),
           ],
         ),
       ),
     );
   }
+
+  String _pathFor(GameDetails game) {
+    final words = <String>[
+      game.startWord,
+      ...game.history.map((h) => h.linkValue),
+    ];
+    return words.join(' › ');
+  }
+
+  _Outcome _outcomeFor(String state) {
+    return switch (state) {
+      'Completed' => _Outcome(
+          icon: Icons.emoji_events_outlined,
+          color: AppPalette.success,
+          title: 'Completed',
+          subtitle: (g) => 'You reached ${g.targetWord}.',
+        ),
+      'Failed' => _Outcome(
+          icon: Icons.do_not_disturb_alt_outlined,
+          color: AppPalette.danger,
+          title: 'No steps left',
+          subtitle: (g) =>
+              'You ran out of steps before reaching ${g.targetWord}.',
+        ),
+      'Abandoned' => _Outcome(
+          icon: Icons.flag_outlined,
+          color: AppPalette.lightTextMuted,
+          title: 'Abandoned',
+          subtitle: (_) => 'This game was abandoned.',
+        ),
+      _ => _Outcome(
+          icon: Icons.help_outline,
+          color: AppPalette.lightTextMuted,
+          title: state,
+          subtitle: (_) => 'Game ended.',
+        ),
+    };
+  }
 }
 
-class _OutgoingLinkChoice extends StatelessWidget {
-  const _OutgoingLinkChoice({
-    required this.link,
-    required this.highlighted,
-    required this.disabled,
+class _Outcome {
+  const _Outcome({
+    required this.icon,
+    required this.color,
+    required this.title,
+    required this.subtitle,
   });
 
-  final OutgoingLink link;
-  final bool highlighted;
-  final bool disabled;
+  final IconData icon;
+  final Color color;
+  final String title;
+  final String Function(GameDetails) subtitle;
+}
+
+class _SummaryStat extends StatelessWidget {
+  const _SummaryStat({required this.label, required this.value});
+
+  final String label;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
-    return LinkTile(
-      label: link.value,
-      tone: disabled
-          ? LinkTileTone.disabled
-          : highlighted
-          ? LinkTileTone.target
-          : LinkTileTone.normal,
-      onPressed: disabled
-          ? null
-          : () => context.read<GameDetailsCubit>().makeStep(link.id),
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: AppPalette.lightTextMuted,
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          value,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ],
     );
   }
 }

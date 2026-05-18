@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-17
+> Last updated: 2026-05-17 (frontend Slice 11 closed)
 
 ---
 
@@ -184,19 +184,17 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-Game Options Selection slice'ı kapandı. Aktif sıra yok; sıradaki faz adayları:
+Game Options Selection slice'ı kapandı; **Frontend Slice 11 — Game Screen
+Polish** de aynı gün kapandı (`docs/frontendActiveContext.md` ve
+`docs/frontendProgress.md`). Aktif backend sırası yok; sıradaki faz
+adayları:
 
-1. **Frontend Slice 11 — Game Screen Polish** — yeni
-   `GET /games/{id}/options` endpoint'i hazır. Flutter tarafında
-   `GameRepository.getOptions(gameId)` ile mevcut
-   `getOutgoing(...)` çağrısı değiştirilecek. Detay
-   `docs/frontendActiveContext.md`.
-2. **Game Content/Admin Tooling** — backlog'daki ilk backend adayı.
+1. **Game Content/Admin Tooling** — backlog'daki ilk backend adayı.
    Kategori/link dataset'lerinin tekrarlanabilir
    validation/import/seed iş akışı. `LexiLink.Tools.CategoryImporter`
    baseline mevcut (`docs/category-spor.json` ile çalıştı); admin UI ve
    daha geniş content workflow eksik.
-3. **Apple/Google external token verifier** — provider credential'ları
+2. **Apple/Google external token verifier** — provider credential'ları
    geldiğinde production JWT issuance hattının son parçası tamamlanır.
 
 **2026-05-17 — Game Options Selection mini-slice kapandı.** `GET

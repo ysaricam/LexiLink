@@ -41,20 +41,6 @@ class GameRepository {
     return GameDetails.fromJson(response);
   }
 
-  Future<List<OutgoingLink>> getOutgoingLinks(String linkId) async {
-    final response = await _apiClient.getJsonList('/links/$linkId/outgoing');
-
-    return response
-        .map((item) {
-          if (item is Map<String, dynamic>) {
-            return OutgoingLink.fromJson(item);
-          }
-
-          throw StateError('Outgoing link response contains an invalid item.');
-        })
-        .toList(growable: false);
-  }
-
   Future<List<OutgoingLink>> getOptions(String gameId) async {
     final response = await _apiClient.getJsonList('/games/$gameId/options');
 

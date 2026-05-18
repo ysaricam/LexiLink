@@ -6,7 +6,9 @@ class GameDetails extends Equatable {
     required this.playerId,
     required this.categoryId,
     required this.difficulty,
+    required this.startLinkId,
     required this.startWord,
+    required this.targetLinkId,
     required this.targetWord,
     required this.currentLinkId,
     required this.currentWord,
@@ -28,7 +30,9 @@ class GameDetails extends Equatable {
     final playerId = json['playerId'];
     final categoryId = json['categoryId'];
     final difficulty = json['difficulty'];
+    final startLinkId = json['startLinkId'];
     final startWord = json['startWord'];
+    final targetLinkId = json['targetLinkId'];
     final targetWord = json['targetWord'];
     final currentLinkId = json['currentLinkId'];
     final currentWord = json['currentWord'];
@@ -48,7 +52,9 @@ class GameDetails extends Equatable {
         playerId is! String ||
         categoryId is! String ||
         difficulty is! String ||
+        startLinkId is! String ||
         startWord is! String ||
+        targetLinkId is! String ||
         targetWord is! String ||
         currentLinkId is! String ||
         currentWord is! String ||
@@ -71,7 +77,9 @@ class GameDetails extends Equatable {
       playerId: playerId,
       categoryId: categoryId,
       difficulty: difficulty,
+      startLinkId: startLinkId,
       startWord: startWord,
+      targetLinkId: targetLinkId,
       targetWord: targetWord,
       currentLinkId: currentLinkId,
       currentWord: currentWord,
@@ -101,7 +109,9 @@ class GameDetails extends Equatable {
   final String playerId;
   final String categoryId;
   final String difficulty;
+  final String startLinkId;
   final String startWord;
+  final String targetLinkId;
   final String targetWord;
   final String currentLinkId;
   final String currentWord;
@@ -130,7 +140,9 @@ class GameDetails extends Equatable {
     playerId,
     categoryId,
     difficulty,
+    startLinkId,
     startWord,
+    targetLinkId,
     targetWord,
     currentLinkId,
     currentWord,
