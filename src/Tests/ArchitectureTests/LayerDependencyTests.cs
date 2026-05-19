@@ -18,7 +18,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Stats.Infrastructure",
                 "LexiLink.Modules.Energy.Infrastructure",
-                "LexiLink.Modules.Quests.Infrastructure")
+                "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Administration.Infrastructure")
             .GetResult();
 
         AssertArchTestResult(result);
@@ -34,10 +35,12 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Energy.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Quests.Infrastructure.Configuration.Outbox",
+                "LexiLink.Modules.Administration.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Games.Infrastructure.GamesContext",
                 "LexiLink.Modules.Players.Infrastructure.PlayersContext",
                 "LexiLink.Modules.Energy.Infrastructure.EnergyContext",
                 "LexiLink.Modules.Quests.Infrastructure.QuestsContext",
+                "LexiLink.Modules.Administration.Infrastructure.AdministrationContext",
                 "Microsoft.EntityFrameworkCore")
             .GetResult();
 
@@ -73,6 +76,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Dapper",
@@ -92,6 +96,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Dapper",
@@ -112,6 +117,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Energy.Application",
                 "LexiLink.Modules.Energy.Infrastructure",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Npgsql"
@@ -129,6 +135,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Npgsql"
@@ -145,6 +152,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API"
             });
 
@@ -159,6 +167,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API"
             });
 
@@ -176,6 +185,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Npgsql"
@@ -194,6 +204,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API"
             });
 
@@ -208,6 +219,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players",
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Dapper",
@@ -234,6 +246,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Quests.Domain",
                 "LexiLink.Modules.Quests.Application",
                 "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Npgsql"
@@ -252,6 +265,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API"
             });
 
@@ -266,6 +280,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players",
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Dapper",
@@ -289,6 +304,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
                 "Npgsql"
@@ -307,6 +323,58 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Administration",
+                "LexiLink.API"
+            });
+
+        // Administration.Domain is fully isolated; no other module's namespace allowed.
+        yield return new TestCaseData(
+            "Administration.Domain",
+            AdministrationDomainAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Dapper",
+                "Npgsql"
+            });
+
+        // Administration.Application owns admin user/role/audit Application contracts.
+        // No cross-module integration-event consumption yet; B5 may add granular
+        // allows (e.g. Players.IntegrationEvents) when audit projection arrives.
+        yield return new TestCaseData(
+            "Administration.Application",
+            AdministrationApplicationAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Administration.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Npgsql"
+            });
+
+        yield return new TestCaseData(
+            "Administration.Infrastructure",
+            AdministrationInfrastructureAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
                 "LexiLink.API"
             });
     }
@@ -317,7 +385,8 @@ public class LayerDependencyTests : ArchitectureTestBase
         var result = Types.InAssemblies([
                 GamesIntegrationEventsAssembly,
                 PlayersIntegrationEventsAssembly,
-                QuestsIntegrationEventsAssembly
+                QuestsIntegrationEventsAssembly,
+                AdministrationIntegrationEventsAssembly
             ])
             .Should()
             .NotHaveDependencyOnAny(
@@ -332,6 +401,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Quests.Domain",
                 "LexiLink.Modules.Quests.Application",
                 "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
                 "LexiLink.API",
                 "MediatR",
                 "Microsoft.EntityFrameworkCore",

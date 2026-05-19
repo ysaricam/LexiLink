@@ -34,6 +34,11 @@ public abstract class ArchitectureTestBase
     protected static readonly Assembly QuestsApplicationAssembly = typeof(Modules.Quests.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly QuestsInfrastructureAssembly = typeof(Modules.Quests.Infrastructure.QuestsContext).Assembly;
 
+    protected static readonly Assembly AdministrationDomainAssembly = typeof(Modules.Administration.Domain.AdminUsers.AdminUser).Assembly;
+    protected static readonly Assembly AdministrationIntegrationEventsAssembly = typeof(Modules.Administration.IntegrationEvents.AdminUserRegisteredIntegrationEvent).Assembly;
+    protected static readonly Assembly AdministrationApplicationAssembly = typeof(Modules.Administration.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly AdministrationInfrastructureAssembly = typeof(Modules.Administration.Infrastructure.AdministrationContext).Assembly;
+
     protected static readonly Assembly[] ModuleAssemblies =
     [
         GamesDomainAssembly,
@@ -49,7 +54,10 @@ public abstract class ArchitectureTestBase
         EnergyInfrastructureAssembly,
         QuestsDomainAssembly,
         QuestsApplicationAssembly,
-        QuestsInfrastructureAssembly
+        QuestsInfrastructureAssembly,
+        AdministrationDomainAssembly,
+        AdministrationApplicationAssembly,
+        AdministrationInfrastructureAssembly
     ];
 
     protected static void AssertArchTestResult(TestResult result)

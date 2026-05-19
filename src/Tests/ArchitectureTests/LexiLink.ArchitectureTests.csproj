@@ -39,6 +39,10 @@
     <ProjectReference Include="..\..\Modules\Quests\IntegrationEvents\LexiLink.Modules.Quests.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\Modules\Quests\Application\LexiLink.Modules.Quests.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Quests\Infrastructure\LexiLink.Modules.Quests.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Administration\Domain\LexiLink.Modules.Administration.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Administration\IntegrationEvents\LexiLink.Modules.Administration.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Modules\Administration\Application\LexiLink.Modules.Administration.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Administration\Infrastructure\LexiLink.Modules.Administration.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

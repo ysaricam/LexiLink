@@ -22,6 +22,7 @@ using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
+using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Energy.Infrastructure.Configuration;
 using LexiLink.Modules.Games.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
@@ -69,6 +70,7 @@ PlayersStartup.Initialize(builder.Services, connectionString);
 StatsStartup.Initialize(builder.Services, connectionString);
 EnergyStartup.Initialize(builder.Services, connectionString);
 QuestsStartup.Initialize(builder.Services, connectionString);
+AdministrationStartup.Initialize(builder.Services, connectionString);
 builder.Services
     .AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy(), tags: ["live"])
@@ -184,6 +186,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     StatsStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     EnergyStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     QuestsStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+    AdministrationStartup.InitializeCompositionRoot(containerBuilder, connectionString);
 
     containerBuilder.RegisterType<EnergyGuard>()
         .As<IEnergyGuard>()
@@ -196,6 +199,7 @@ GamesStartup.CheckMappings();
 PlayersStartup.CheckMappings();
 EnergyStartup.CheckMappings();
 QuestsStartup.CheckMappings();
+AdministrationStartup.CheckMappings();
 
 if (app.Environment.IsDevelopment())
 {

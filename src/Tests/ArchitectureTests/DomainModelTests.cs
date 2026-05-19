@@ -41,7 +41,8 @@ public class DomainModelTests : ArchitectureTestBase
             "Category",
             "Link",
             "Game",
-            "Player"
+            "Player",
+            "AdminUser"
         };
 
         var failingTypes = ModuleAssemblies

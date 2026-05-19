@@ -70,6 +70,7 @@ public class ApplicationConventionTests : ArchitectureTestBase
         yield return GamesApplicationAssembly;
         yield return PlayersApplicationAssembly;
         yield return StatsApplicationAssembly;
+        yield return AdministrationApplicationAssembly;
     }
 
     private static bool IsCommandOrQuery(Type type) =>

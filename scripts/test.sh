@@ -13,6 +13,7 @@ db_free_projects=(
   "src/Modules/Players/Tests/LexiLink.Modules.Players.Tests.csproj"
   "src/Modules/Energy/Tests/LexiLink.Modules.Energy.Tests.csproj"
   "src/Modules/Quests/Tests/LexiLink.Modules.Quests.Tests.csproj"
+  "src/Modules/Administration/Tests/LexiLink.Modules.Administration.Tests.csproj"
   "src/Tests/ArchitectureTests/LexiLink.ArchitectureTests.csproj"
 )
 
@@ -22,6 +23,7 @@ integration_projects=(
   "src/Modules/Stats/IntegrationTests/LexiLink.Modules.Stats.IntegrationTests.csproj"
   "src/Modules/Energy/IntegrationTests/LexiLink.Modules.Energy.IntegrationTests.csproj"
   "src/Modules/Quests/IntegrationTests/LexiLink.Modules.Quests.IntegrationTests.csproj"
+  "src/Modules/Administration/IntegrationTests/LexiLink.Modules.Administration.IntegrationTests.csproj"
 )
 
 echo "Running DB-free test projects..."
