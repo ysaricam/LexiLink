@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using LexiLink.API.Configuration.Authentication;
+using LexiLink.API.Configuration.Bootstrap;
 using LexiLink.API.Configuration.ExceptionHandling;
 using LexiLink.API.Configuration.ExecutionContext;
 using LexiLink.API.Configuration.Health;
@@ -71,6 +72,9 @@ StatsStartup.Initialize(builder.Services, connectionString);
 EnergyStartup.Initialize(builder.Services, connectionString);
 QuestsStartup.Initialize(builder.Services, connectionString);
 AdministrationStartup.Initialize(builder.Services, connectionString);
+builder.Services.Configure<AdministrationBootstrapOptions>(
+    builder.Configuration.GetSection(AdministrationBootstrapOptions.SectionName));
+builder.Services.AddHostedService<AdministrationBootstrapHostedService>();
 builder.Services
     .AddHealthChecks()
     .AddCheck("self", () => HealthCheckResult.Healthy(), tags: ["live"])

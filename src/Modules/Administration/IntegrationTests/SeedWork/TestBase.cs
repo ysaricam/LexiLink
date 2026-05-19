@@ -8,6 +8,7 @@ using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Common.Infrastructure.Time;
 using LexiLink.Modules.Administration.Infrastructure.Configuration;
+using LexiLink.Modules.Administration.IntegrationEvents;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,7 @@ public abstract class TestBase
     protected ISender Sender { get; private set; } = null!;
     protected IEventsBus EventsBus { get; private set; } = null!;
     protected IReadOnlyCollection<IOutboxProcessor> OutboxProcessors { get; private set; } = null!;
+    protected CapturingIntegrationEventHandler<AdminUserRegisteredIntegrationEvent> AdminUserRegisteredEvents { get; private set; } = null!;
     protected string ConnectionString => _connectionString;
 
     [OneTimeSetUp]
@@ -44,6 +46,9 @@ public abstract class TestBase
         services.AddSingleton<IClock, SystemClock>();
         services.AddScoped<IEventsBus, InMemoryEventsBus>();
         services.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build());
+        services.AddSingleton<CapturingIntegrationEventHandler<AdminUserRegisteredIntegrationEvent>>();
+        services.AddSingleton<IIntegrationEventHandler<AdminUserRegisteredIntegrationEvent>>(sp =>
+            sp.GetRequiredService<CapturingIntegrationEventHandler<AdminUserRegisteredIntegrationEvent>>());
         AdministrationStartup.Initialize(services, _connectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
         services.AddSingleton<IExecutionContextAccessor>(new TestExecutionContextAccessor());
@@ -63,6 +68,9 @@ public abstract class TestBase
         Sender = Scope.Resolve<ISender>();
         EventsBus = Scope.Resolve<IEventsBus>();
         OutboxProcessors = Scope.Resolve<IEnumerable<IOutboxProcessor>>().ToArray();
+        AdminUserRegisteredEvents =
+            Scope.Resolve<CapturingIntegrationEventHandler<AdminUserRegisteredIntegrationEvent>>();
+        AdminUserRegisteredEvents.Clear();
 
         await ClearDatabaseAsync();
     }

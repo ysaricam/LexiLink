@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-18 (Administration module sprint planned)
+> Last updated: 2026-05-19 (Administration Slice B2 closed)
 
 ---
 
@@ -203,21 +203,26 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint başladı.** Sırada **Slice B1 — Administration
-module foundation**:
+**Administration sprint devam ediyor — B1 ve B2 kapandı.** B1 modül
+foundation (Domain/Application/Infrastructure/DbUp/ArchTests) shipped
+2026-05-18, B2 admin registration + outbox publish + bootstrap seed
+shipped 2026-05-19.
 
-- Domain (`AdminUser` aggregate, `AdminUserId`, `Email` VO, `Role` VO,
-  status enum, kayıt event'i, base rule'lar).
-- Application contracts (per-module CQRS, `IAdministrationModule`).
-- Infrastructure (`AdministrationContext` schema `administration`,
-  startup, Autofac module, outbox accessor, decorator chain, domain
-  event dispatcher).
-- DbUp scripts (`administration` şeması: `AdminUsers`,
-  `OutboxMessages`, `InboxMessages`).
-- IntegrationEvents projesi (boş, B2/B5 için yer).
-- Composition root (API host'ta `AdministrationStartup` wiring).
-- ArchTests yeni modülün izolasyonunu, naming convention'ı, decorator
-  registration'ı kapsar.
+Sırada **Slice B3 — Admin authentication**:
+
+- `POST /auth/admin/token` — external admin sign-in (initially
+  `DevelopmentExternalToken`-style verifier).
+- `AuthenticatedAdmin` policy in API host, requires JWT `role=Admin`
+  claim and a resolved active `AdminUser`.
+- `DevelopmentBearer` extension: a bearer GUID matching an active
+  `administration.AdminUsers.Id` resolves as an admin principal.
+- `ExecutionContext`/`IExecutionContextAccessor` carries `IsAdmin` +
+  `AdminUserId` alongside the existing `PlayerId`.
+- API auth smoke tests.
+
+Sonra B4 (`IAdminAuthorizationContext` sync gateway + `GET /admin/whoami`),
+B5 (audit infrastructure), B6 (Quest catalog data-driven), B7-B10
+(her hedef modülün admin operasyonları).
 
 Diğer aktif olmayan adaylar:
 

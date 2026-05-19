@@ -53,6 +53,32 @@ Authentication__TokenExchange__Mode=DevelopmentExternalToken
 `DevelopmentBearer` accepts `Authorization: Bearer <player-guid>` and exists
 only as a local/test convenience. Do not use it for production traffic.
 
+## Administration Module Settings
+
+| Setting | Default | Notes |
+| --- | --- | --- |
+| `Administration:Bootstrap:AdminEmails` | empty | String array of admin emails ensured on every API start. Idempotent: each email is normalized to lowercase and registered once. Production must supply this via env/secret store (no hardcoded admins in code or appsettings.json). |
+
+Environment variable form (PascalCase double-underscore + zero-based index):
+
+```bash
+Administration__Bootstrap__AdminEmails__0='ops@lexilink.example'
+Administration__Bootstrap__AdminEmails__1='admin@lexilink.example'
+```
+
+Bootstrap behavior:
+
+- An `IHostedService` runs once on API start and calls
+  `RegisterAdminUserCommand` per email. The command handler is idempotent
+  on email (case-insensitive); duplicates short-circuit to the existing
+  admin's id.
+- One scope per email so each command owns a fresh DbContext (avoids EF
+  OwnsOne shadow-FK conflicts when seeding multiple admins).
+- Failures are logged and the API still starts — fix config and restart.
+- Each new registration writes an `AdminUserRegisteredIntegrationEvent`
+  to `administration.OutboxMessages`. The shared outbox processor
+  publishes it via `IEventsBus`.
+
 ## Energy Module Settings
 
 | Setting | Default | Notes |

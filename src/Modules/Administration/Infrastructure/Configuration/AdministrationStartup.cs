@@ -2,6 +2,7 @@ using Autofac;
 using LexiLink.Common.Infrastructure;
 using LexiLink.Common.Infrastructure.DomainEventsDispatching;
 using LexiLink.Modules.Administration.Infrastructure.Configuration.Outbox;
+using LexiLink.Modules.Administration.Infrastructure.Outbox.DomainEventNotifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,13 @@ public static class AdministrationStartup
 {
     private static readonly BiDictionary<string, Type> DomainNotificationsMap =
         LexiLink.Common.Infrastructure.DomainEventsDispatching.DomainNotificationsMap.Instance;
+
+    static AdministrationStartup()
+    {
+        DomainNotificationsMap.Add(
+            "Administration.AdminUserRegisteredDomainEventNotification",
+            typeof(AdminUserRegisteredDomainEventNotification));
+    }
 
     public static void Initialize(IServiceCollection services, string connectionString)
     {
