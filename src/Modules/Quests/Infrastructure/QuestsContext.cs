@@ -11,6 +11,8 @@ public class QuestsContext : DbContext
 {
     public DbSet<PlayerQuest> PlayerQuests { get; set; } = null!;
 
+    public DbSet<QuestDefinition> QuestDefinitions { get; set; } = null!;
+
     public DbSet<OutboxMessage> OutboxMessages { get; set; } = null!;
 
     private readonly ILoggerFactory _loggerFactory;

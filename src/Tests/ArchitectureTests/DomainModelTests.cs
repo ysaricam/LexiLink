@@ -42,7 +42,8 @@ public class DomainModelTests : ArchitectureTestBase
             "Link",
             "Game",
             "Player",
-            "AdminUser"
+            "AdminUser",
+            "QuestDefinition"
         };
 
         var failingTypes = ModuleAssemblies

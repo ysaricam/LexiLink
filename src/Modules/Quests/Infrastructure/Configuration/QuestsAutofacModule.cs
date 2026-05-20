@@ -78,9 +78,18 @@ public class QuestsAutofacModule : Autofac.Module
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
 
+        builder.RegisterType<QuestDefinitionRepository>()
+            .As<IQuestDefinitionRepository>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        // Catalog now reads from QuestDefinitionRepository instead of
+        // holding hardcoded constants. Scoped to share the DbContext that
+        // backs the repository within a single request/command scope.
         builder.RegisterType<QuestCatalog>()
             .As<IQuestCatalog>()
-            .SingleInstance();
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
 
         builder.RegisterAssemblyTypes(applicationAssembly)
             .AsClosedTypesOf(typeof(ICommandHandler<>))

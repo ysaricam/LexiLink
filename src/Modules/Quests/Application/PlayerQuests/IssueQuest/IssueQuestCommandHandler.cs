@@ -22,7 +22,15 @@ internal class IssueQuestCommandHandler : ICommandHandler<IssueQuestCommand>
 
     public async Task Handle(IssueQuestCommand request, CancellationToken cancellationToken)
     {
-        var definition = _questCatalog.Resolve(request.QuestType);
+        var definition = await _questCatalog.ResolveAsync(request.QuestType, cancellationToken);
+
+        // No active definition for this type — quest was deactivated or
+        // never seeded. Issuance is a no-op (existing PlayerQuest rows
+        // are untouched).
+        if (definition is null)
+        {
+            return;
+        }
 
         if (definition.PrerequisiteQuestType is { } prereq)
         {

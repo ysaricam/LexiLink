@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-20 (Administration Slice B5 closed)
+> Last updated: 2026-05-20 (Administration Slice B6 closed)
 
 ---
 
@@ -203,11 +203,12 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1–B5 kapandı.**
+**Administration sprint devam ediyor — B1–B6 kapandı.**
 B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +
 bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20, B4
 admin authorization cross-cut 2026-05-20, B5 audit projection +
-`/admin/audit` endpoint 2026-05-20.
+`/admin/audit` endpoint 2026-05-20, B6 Quests catalog data-driven
+2026-05-20.
 
 B3 ile birlikte:
 - `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
@@ -276,14 +277,50 @@ B5 deferred (her hedef modülün admin slice'ında geliyor): producer-side
 command'ı yakalar, actor + serialized payload ile event'i modülün
 outbox'ına yazar.
 
-Sırada **Slice B6 — Quest catalog data-driven**:
-- Hardcoded 4 quest catalog'unu `quests.QuestDefinitions` tablosuna
-  taşı. `QuestDefinition` aggregate (Quests.Domain).
-- DbUp script + seed migration ile mevcut 4 tanımı yerleştir.
-- `IQuestCatalog` → `IQuestDefinitionRepository`-backed
-  service'e geçir. Mevcut quest davranışı testlerle koru.
+B6 ile birlikte:
+- `QuestDefinition` artık aggregate (Entity + IAggregateRoot,
+  `QuestDefinitionId` typed id). Static `Create`, `Update`,
+  `Deactivate`, `Reactivate` davranışları + 3 domain event
+  (Created/Updated/ActivationChanged). Goal/Reward kuralları mevcut
+  `QuestGoalMustBePositiveRule` / `QuestRewardAmountMustBePositiveRule`
+  ile re-used.
+- `IQuestDefinitionRepository` (Quests.Domain): GetById /
+  GetByQuestType / GetAll / Add. EF-backed.
+- `IQuestCatalog` async'e geçti — `ResolveAsync` + `GetAllActiveAsync`,
+  Active filtre catalog seviyesinde. Deaktif quest → `null` döner,
+  `IssueQuestCommandHandler` no-op'a düşer (mevcut PlayerQuest
+  history bozulmaz).
+- `quests.QuestDefinitions` tablosu (UX QuestType, IsActive index) +
+  `021_SeedQuestDefinitions.sql` ile mevcut 4 tanım deterministic
+  UUID'lerle (`11111111-0000-0000-0000-00000000000{1..4}`) seed'lendi.
+  ON CONFLICT DO NOTHING ile idempotent.
+- Mevcut 23 Quests.Tests + 5 Quests.IT seed sayesinde hâlâ yeşil;
+  9 yeni QuestDefinition unit test eklendi (Create happy + rule
+  ihlalleri, Update tunable fields, Deactivate/Reactivate
+  idempotency).
+- ArchTests `AggregateRoots_Should_ImplementIAggregateRoot`
+  listesinde `QuestDefinition` artık var.
 
-Sonra B7-B10 (her hedef modülün admin operasyonları + decorator wiring).
+Bilinçli karar: mevcut 4 seed tanım `QuestDefinition.Create` çağırmadan
+SQL ile insert edildi. Domain aggregate'in factory'sini bypass eder
+ama bu dört tanım known-good ve aggregate'ten önce vardı; production
+seed'in bypass'ı SQL idempotency garantisinin tek noktada kalmasını
+sağlıyor. Admin command'larıyla (B7) eklenecek yeni tanımlar
+`QuestDefinition.Create` üzerinden geçecek.
+
+Sırada **Slice B7 — Quest admin operations**:
+- Admin command'lar (`IAdminCommand`): `CreateQuestDefinitionCommand`,
+  `UpdateQuestDefinitionCommand`, `DeactivateQuestDefinitionCommand`,
+  `IssueQuestToPlayerCommand` (test/support), `ResetPlayerQuestCommand`.
+- `/admin/quests/definitions` + `/admin/players/{playerId}/quests`
+  endpoint'leri (`AuthenticatedAdmin`).
+- Quests modülüne ilk `AdminAuditingCommandHandlerDecorator<TCommand>`
+  (per-module, decorator-per-module Kamil rule); `IAdminCommand` marker'lı
+  command'lar için actor + serialized payload ile
+  `AdminActionPerformedIntegrationEvent` outbox'a yazılır.
+
+Sonra B8 (Energy admin), B9 (Players admin ban/unban), B10 (content
+admin endpoint'lerinin auth guard'a alınması).
 
 Diğer aktif olmayan adaylar:
 
