@@ -124,6 +124,18 @@ public class EnergyAutofacModule : Autofac.Module
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
 
+        // AdminAuditing must be the INNERMOST decorator (registered first
+        // = wrapped first = innermost). UnitOfWork wraps it so the outbox
+        // row enqueued for IAdminCommand commits in the same SaveChangesAsync
+        // as the command's domain changes. See B7 commit for the design.
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerDecorator<>),
+            typeof(IRequestHandler<>));
+
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerWithResultDecorator<,>),
+            typeof(IRequestHandler<,>));
+
         builder.RegisterGenericDecorator(
             typeof(UnitOfWorkCommandHandlerDecorator<>),
             typeof(IRequestHandler<>));

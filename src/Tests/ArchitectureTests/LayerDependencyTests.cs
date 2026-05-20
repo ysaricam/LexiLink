@@ -252,6 +252,10 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "Npgsql"
             });
 
+        // Energy.Infrastructure MAY reference Administration.IntegrationEvents
+        // (public contract assembly) — the AdminAuditing decorator publishes
+        // AdminActionPerformedIntegrationEvent. Administration.Domain /
+        // Application / Infrastructure remain forbidden.
         yield return new TestCaseData(
             "Energy.Infrastructure",
             EnergyInfrastructureAssembly,
@@ -265,7 +269,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Quests",
-                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
                 "LexiLink.API"
             });
 

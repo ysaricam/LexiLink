@@ -2,6 +2,7 @@ using Autofac;
 using LexiLink.Common.Infrastructure;
 using LexiLink.Common.Infrastructure.DomainEventsDispatching;
 using LexiLink.Modules.Energy.Infrastructure.Configuration.Outbox;
+using LexiLink.Modules.Energy.Infrastructure.Outbox.DomainEventNotifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,13 @@ public static class EnergyStartup
 {
     private static readonly BiDictionary<string, Type> DomainNotificationsMap =
         LexiLink.Common.Infrastructure.DomainEventsDispatching.DomainNotificationsMap.Instance;
+
+    static EnergyStartup()
+    {
+        DomainNotificationsMap.Add(
+            "Energy.AdminActionPerformedNotification",
+            typeof(EnergyAdminActionPerformedNotification));
+    }
 
     public static void Initialize(IServiceCollection services, string connectionString)
     {

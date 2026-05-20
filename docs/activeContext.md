@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-20 (Administration Slice B7 closed)
+> Last updated: 2026-05-20 (Administration Slice B8 closed)
 
 ---
 
@@ -203,13 +203,14 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1–B7 kapandı.**
+**Administration sprint devam ediyor — B1–B8 kapandı.**
 B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +
 bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20, B4
 admin authorization cross-cut 2026-05-20, B5 audit projection +
 `/admin/audit` endpoint 2026-05-20, B6 Quests catalog data-driven
 2026-05-20, B7 quest admin operations + first per-module
-AdminAuditing decorator 2026-05-20.
+AdminAuditing decorator 2026-05-20, B8 energy admin operations
+2026-05-20.
 
 B3 ile birlikte:
 - `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
@@ -353,17 +354,42 @@ Quests.IT'ye eklenen test stub: `TestAdminAuthorizationContext`
 (mutable, LoginAs/Logout). Non-admin testler default'ta. Admin tests
 [SetUp] sonrası `AdminContext.LoginAs(adminId)` çağırır.
 
-Sırada **Slice B8 — Energy admin operations**:
+B8 ile birlikte:
+- `PlayerEnergy.AdminSet(newAmount, now)` — 0..max range'inde set
+  (over-max yasak; `GrantBonus` zaten over-max'a izin veriyor).
+  At/above max → below max geçişinde recharge timer rearm edilir.
+- `PlayerEnergy.AdminReset(now)` — current=max, lastRefilledOn=now.
+- 2 yeni event: `PlayerEnergyAdminSetDomainEvent`,
+  `PlayerEnergyAdminResetDomainEvent`.
 - `Energy.Application/Admin/`: `SetPlayerEnergyCommand`,
-  `GrantBonusEnergyCommand` (admin variant), `ResetPlayerEnergyCommand`.
-- `PlayerEnergy.AdminSet(amount, now)` + `AdminReset(now)` domain
-  methods.
-- `Energy.Infrastructure` audit decorator + notification + handler
-  (B7 template'inin Energy-private kopyası — Kamil decorator-per-module
-  rule).
-- API `POST /admin/players/{playerId}/energy/set|grant|reset`.
+  `GrantBonusEnergyCommand` (internal `GrantEnergyCommand`'ı wrap;
+  bonus path tek noktada kalır), `ResetPlayerEnergyCommand`.
+  Validator + handler + 3 endpoint.
+- `Energy.Infrastructure/Configuration/Processing/AdminAuditingCommandHandlerDecorator`
+  Quests B7 template'inin Energy-private kopyası
+  (decorator-per-module Kamil rule).
+- `EnergyAdminActionPerformedNotification` + handler;
+  `EnergyStartup` static ctor DomainNotificationsMap registration.
+- `Energy.Infrastructure` → `Administration.IntegrationEvents` project
+  reference (ArchTest granular allow eklendi).
+- API: `POST /admin/players/{playerId}/energy/set|grant|reset`
+  (`AuthenticatedAdmin`).
+- Energy.IT 4→8: non-admin → AdminAuthorizationException;
+  Set 1 (snap), Grant (+3 → over-max), Reset (current=max). Hepsi
+  audit row roundtrip ile.
 
-Sonra B9 (Players ban/unban) ve B10 (content admin guard).
+Sırada **Slice B9 — Players admin operations (ban/unban)**:
+- `Player.Ban(reason, now)` + `Player.Unban(now)` domain methods +
+  state flag + ban event.
+- `BanPlayerCommand`, `UnbanPlayerCommand`,
+  `GetPlayerAdminDetailQuery` (rich admin view).
+- `AuthenticatedPlayer` policy banned tokens'ı reddetsin (login
+  boundary).
+- API: `GET /admin/players/search`, `GET /admin/players/{id}`,
+  `POST /admin/players/{id}/ban`, `POST /admin/players/{id}/unban`.
+
+Sonra B10 (content admin guard — mevcut anonim `POST /categories`
+endpoint'leri `/admin/...` altına geçer).
 
 Diğer aktif olmayan adaylar:
 

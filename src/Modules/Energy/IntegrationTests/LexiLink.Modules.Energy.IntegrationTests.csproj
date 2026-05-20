@@ -35,6 +35,9 @@
     <ProjectReference Include="..\Infrastructure\LexiLink.Modules.Energy.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Players\Application\LexiLink.Modules.Players.Application.csproj" />
     <ProjectReference Include="..\..\Players\Infrastructure\LexiLink.Modules.Players.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Administration\Application\LexiLink.Modules.Administration.Application.csproj" />
+    <ProjectReference Include="..\..\Administration\Infrastructure\LexiLink.Modules.Administration.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Administration\IntegrationEvents\LexiLink.Modules.Administration.IntegrationEvents.csproj" />
   </ItemGroup>
 
 </Project>

@@ -104,4 +104,38 @@ public class PlayerEnergy : Entity, IAggregateRoot
         // stays idle while the over-max balance is drained back down.
         _currentAmount += amount;
     }
+
+    /// <summary>
+    /// Admin override: snap the current amount to a specific value. Must
+    /// be within [0, maxAmount] — over-max writes are not permitted via
+    /// this path (use <see cref="GrantBonus"/> for the intentional
+    /// over-max bonus path). The recharge timer is rearmed when the
+    /// override drops the bucket below max from at/above max.
+    /// </summary>
+    public void AdminSet(int newAmount, DateTime now)
+    {
+        CheckRule(new EnergyAmountCannotBeNegativeRule(newAmount));
+        CheckRule(new EnergyAmountCannotExceedMaximumRule(newAmount, _maximumAmount));
+
+        var wasAtOrAboveMaximum = _currentAmount >= _maximumAmount;
+        _currentAmount = newAmount;
+
+        if (wasAtOrAboveMaximum && _currentAmount < _maximumAmount)
+        {
+            _lastRefilledOn = now;
+        }
+
+        AddDomainEvent(new Events.PlayerEnergyAdminSetDomainEvent(Id.Value, _currentAmount, _maximumAmount));
+    }
+
+    /// <summary>
+    /// Admin override: restore the player to a fully-charged state.
+    /// </summary>
+    public void AdminReset(DateTime now)
+    {
+        _currentAmount = _maximumAmount;
+        _lastRefilledOn = now;
+
+        AddDomainEvent(new Events.PlayerEnergyAdminResetDomainEvent(Id.Value, _maximumAmount));
+    }
 }

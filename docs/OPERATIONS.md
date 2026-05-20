@@ -129,6 +129,9 @@ Processor logs include structured fields for operational search:
 | `POST /admin/quests/definitions/{id:guid}/deactivate` | `AuthenticatedAdmin` | Soft-deactivate the definition. Existing PlayerQuests are untouched; new issuances stop. |
 | `POST /admin/quests/players/{playerId:guid}/issue` | `AuthenticatedAdmin` | Force-issue a quest to a player. Wraps the internal `IssueQuestCommand` — same prerequisite / cadence / idempotency rules. |
 | `POST /admin/quests/players/{playerId:guid}/{playerQuestId:guid}/reset` | `AuthenticatedAdmin` | Reset progress + state of a PlayerQuest to Active. Daily quests get a fresh "next UTC midnight" window; OneTime stays open-ended. 404 when the playerQuestId is unknown. |
+| `POST /admin/players/{playerId:guid}/energy/set` | `AuthenticatedAdmin` | Snap a player's energy to a specific amount (`{ amount }`, 0 ≤ amount ≤ max). 404 when the player has no energy aggregate yet. |
+| `POST /admin/players/{playerId:guid}/energy/grant` | `AuthenticatedAdmin` | Grant bonus energy (`{ amount }`, > 0). Wraps the internal `GrantEnergyCommand` — intentionally permits over-max balance. |
+| `POST /admin/players/{playerId:guid}/energy/reset` | `AuthenticatedAdmin` | Restore current to maximum and rearm the recharge timestamp. |
 
 `/operations/processors` returns unprocessed, ready, scheduled retry, poisoned,
 failed counts, oldest unprocessed timestamp, and a small error sample per queue.

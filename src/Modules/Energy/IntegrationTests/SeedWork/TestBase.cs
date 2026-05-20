@@ -2,11 +2,13 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Dapper;
 using LexiLink.Common.Application;
+using LexiLink.Common.Application.Admin;
 using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Common.Infrastructure.Time;
+using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Energy.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
 using MediatR;
@@ -30,6 +32,7 @@ public abstract class TestBase
     protected ISender Sender { get; private set; } = null!;
     protected IEventsBus EventsBus { get; private set; } = null!;
     protected IReadOnlyCollection<IOutboxProcessor> OutboxProcessors { get; private set; } = null!;
+    protected TestAdminAuthorizationContext AdminContext { get; private set; } = null!;
     protected string ConnectionString => _connectionString;
 
     [OneTimeSetUp]
@@ -47,14 +50,19 @@ public abstract class TestBase
         services.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build());
         PlayersStartup.Initialize(services, _connectionString);
         EnergyStartup.Initialize(services, _connectionString);
+        AdministrationStartup.Initialize(services, _connectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
         services.AddSingleton<IExecutionContextAccessor>(new TestExecutionContextAccessor());
+        services.AddSingleton<TestAdminAuthorizationContext>();
+        services.AddSingleton<IAdminAuthorizationContext>(sp =>
+            sp.GetRequiredService<TestAdminAuthorizationContext>());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
         PlayersStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
         EnergyStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
+        AdministrationStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
 
         _container = containerBuilder.Build();
     }
@@ -66,6 +74,8 @@ public abstract class TestBase
         Sender = Scope.Resolve<ISender>();
         EventsBus = Scope.Resolve<IEventsBus>();
         OutboxProcessors = Scope.Resolve<IEnumerable<IOutboxProcessor>>().ToArray();
+        AdminContext = Scope.Resolve<TestAdminAuthorizationContext>();
+        AdminContext.Logout();
 
         await ClearDatabaseAsync();
     }
@@ -108,6 +118,7 @@ public abstract class TestBase
         await connection.OpenAsync();
 
         await connection.ExecuteAsync("""
+            DELETE FROM "administration"."AdminActionAudit";
             DELETE FROM "energy"."OutboxMessages";
             DELETE FROM "energy"."PlayerEnergies";
             DELETE FROM "players"."PlayerAuthIdentities";
