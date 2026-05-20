@@ -19,6 +19,9 @@ public static class QuestsStartup
         DomainNotificationsMap.Add(
             "Quests.PlayerQuestClaimedDomainEventNotification",
             typeof(PlayerQuestClaimedDomainEventNotification));
+        DomainNotificationsMap.Add(
+            "Quests.AdminActionPerformedNotification",
+            typeof(QuestsAdminActionPerformedNotification));
     }
 
     public static void Initialize(IServiceCollection services, string connectionString)

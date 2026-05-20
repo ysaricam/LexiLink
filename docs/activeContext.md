@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-20 (Administration Slice B6 closed)
+> Last updated: 2026-05-20 (Administration Slice B7 closed)
 
 ---
 
@@ -203,12 +203,13 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1–B6 kapandı.**
+**Administration sprint devam ediyor — B1–B7 kapandı.**
 B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +
 bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20, B4
 admin authorization cross-cut 2026-05-20, B5 audit projection +
 `/admin/audit` endpoint 2026-05-20, B6 Quests catalog data-driven
-2026-05-20.
+2026-05-20, B7 quest admin operations + first per-module
+AdminAuditing decorator 2026-05-20.
 
 B3 ile birlikte:
 - `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
@@ -308,19 +309,61 @@ seed'in bypass'ı SQL idempotency garantisinin tek noktada kalmasını
 sağlıyor. Admin command'larıyla (B7) eklenecek yeni tanımlar
 `QuestDefinition.Create` üzerinden geçecek.
 
-Sırada **Slice B7 — Quest admin operations**:
-- Admin command'lar (`IAdminCommand`): `CreateQuestDefinitionCommand`,
-  `UpdateQuestDefinitionCommand`, `DeactivateQuestDefinitionCommand`,
-  `IssueQuestToPlayerCommand` (test/support), `ResetPlayerQuestCommand`.
-- `/admin/quests/definitions` + `/admin/players/{playerId}/quests`
-  endpoint'leri (`AuthenticatedAdmin`).
-- Quests modülüne ilk `AdminAuditingCommandHandlerDecorator<TCommand>`
-  (per-module, decorator-per-module Kamil rule); `IAdminCommand` marker'lı
-  command'lar için actor + serialized payload ile
-  `AdminActionPerformedIntegrationEvent` outbox'a yazılır.
+B7 ile birlikte:
+- `IAdminCommand` artık `AuditTargetType` ve `AuditTargetId` taşıyor
+  (mandatory). Audit decorator bunları kullanarak target metadata
+  doldurur. Mevcut implementasyon yoktu, breaking değil.
+- `Quests.Application/Admin/` altında 5 admin command + 1 admin query:
+  Create/Update/Deactivate QuestDefinition, IssueQuestToPlayer (internal
+  `IssueQuestCommand`'ı sarar — idempotency aynı), ResetPlayerQuest,
+  GetQuestDefinitions (Active+Inactive listesi).
+- `PlayerQuest.AdminReset(now, newExpiresAt)` domain method +
+  `PlayerQuestAdminResetDomainEvent`. Caller cadence'a göre yeni expiry
+  hesaplar.
+- `Quests.Infrastructure/Configuration/Processing/AdminAuditingCommandHandlerDecorator`
+  ilk per-module audit template: `IAdminCommand`'lı command'ları yakalar,
+  `IAdminAuthorizationContext.RequireAdminUserId()` ile fail-fast 403,
+  inner handler başarılıysa actor + serialized payload ile
+  `QuestsAdminActionPerformedNotification` outbox'a yazar. RegisterGenericDecorator
+  INNERMOST sırada — UoW commit aynı tx'te outbox row'unu saklar.
+- `QuestsAdminActionPerformedNotificationHandler` outbox processor
+  drain edince `AdminActionPerformedIntegrationEvent`'i IEventsBus'ta
+  yayınlar; Administration consumer'ı `administration.AdminActionAudit`'e
+  yazar.
+- `Quests.Infrastructure` → `Administration.IntegrationEvents` project
+  reference (granular ArchTest allow eklendi —
+  Administration.Domain/Application/Infrastructure hâlâ forbidden).
+- API host `AdminQuestEndpoints`: `GET /admin/quests/definitions`,
+  `POST /admin/quests/definitions` (201 + id), `PUT /admin/quests/definitions/{id}`,
+  `POST /admin/quests/definitions/{id}/deactivate`,
+  `POST /admin/quests/players/{playerId}/issue`,
+  `POST /admin/quests/players/{playerId}/{playerQuestId}/reset`. Hepsi
+  `AuthenticatedAdmin`.
 
-Sonra B8 (Energy admin), B9 (Players admin ban/unban), B10 (content
-admin endpoint'lerinin auth guard'a alınması).
+B7 IT (Quests.IT 5→11): non-admin command admin endpoint'inde
+`AdminAuthorizationException`; admin login → command çalışır →
+DB state değişir → ProcessOutboxAsync sonrası
+`administration.AdminActionAudit`'te actor + TargetType +
+TargetId ile audit row görünür. Create duplicate type → 400, audit row
+YOK (UoW rollback nedeniyle outbox commit edilmemiş). Quests.IT
+TestBase artık Administration modülünü de boot ediyor —
+end-to-end audit roundtrip için.
+
+Quests.IT'ye eklenen test stub: `TestAdminAuthorizationContext`
+(mutable, LoginAs/Logout). Non-admin testler default'ta. Admin tests
+[SetUp] sonrası `AdminContext.LoginAs(adminId)` çağırır.
+
+Sırada **Slice B8 — Energy admin operations**:
+- `Energy.Application/Admin/`: `SetPlayerEnergyCommand`,
+  `GrantBonusEnergyCommand` (admin variant), `ResetPlayerEnergyCommand`.
+- `PlayerEnergy.AdminSet(amount, now)` + `AdminReset(now)` domain
+  methods.
+- `Energy.Infrastructure` audit decorator + notification + handler
+  (B7 template'inin Energy-private kopyası — Kamil decorator-per-module
+  rule).
+- API `POST /admin/players/{playerId}/energy/set|grant|reset`.
+
+Sonra B9 (Players ban/unban) ve B10 (content admin guard).
 
 Diğer aktif olmayan adaylar:
 

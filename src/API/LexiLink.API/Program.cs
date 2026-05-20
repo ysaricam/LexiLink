@@ -253,6 +253,7 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 app.MapAuthEndpoints();
 app.MapAdminAuthEndpoints();
 app.MapAdminAuditEndpoints();
+app.MapAdminQuestEndpoints();
 app.MapCategoryEndpoints();
 app.MapLinkEndpoints();
 app.MapGameEndpoints();

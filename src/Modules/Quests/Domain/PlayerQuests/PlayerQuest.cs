@@ -134,4 +134,25 @@ public class PlayerQuest : Entity, IAggregateRoot
 
         _state = QuestState.Expired;
     }
+
+    /// <summary>
+    /// Admin-only force-reset: clears progress, re-arms the quest as
+    /// Active, drops completed/claimed timestamps, and refreshes the
+    /// expiry. The caller computes <paramref name="newExpiresAt"/>
+    /// from the current definition's cadence (null for OneTime, next
+    /// UTC midnight for Daily). Support tooling only — the regular
+    /// issuance / progress / claim flow is unaffected by this method
+    /// existing.
+    /// </summary>
+    public void AdminReset(DateTime now, DateTime? newExpiresAt)
+    {
+        _progress = 0;
+        _state = QuestState.Active;
+        _completedAt = null;
+        _claimedAt = null;
+        _issuedAt = now;
+        _expiresAt = newExpiresAt;
+
+        AddDomainEvent(new PlayerQuestAdminResetDomainEvent(Id, _playerId, _questType));
+    }
 }

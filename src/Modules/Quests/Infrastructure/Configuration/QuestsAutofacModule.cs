@@ -132,6 +132,20 @@ public class QuestsAutofacModule : Autofac.Module
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
 
+        // AdminAuditing must be the INNERMOST decorator. RegisterGenericDecorator
+        // wraps in registration order (first registered = innermost), so this
+        // pair sits closest to the actual handler. The UnitOfWork decorator
+        // wraps it, which means the audit OutboxMessage added inside
+        // AdminAuditing.Handle is committed in the same SaveChangesAsync as
+        // the command's domain changes — no separate transaction.
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerDecorator<>),
+            typeof(IRequestHandler<>));
+
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerWithResultDecorator<,>),
+            typeof(IRequestHandler<,>));
+
         builder.RegisterGenericDecorator(
             typeof(UnitOfWorkCommandHandlerDecorator<>),
             typeof(IRequestHandler<>));

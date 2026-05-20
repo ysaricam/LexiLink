@@ -2,11 +2,13 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Dapper;
 using LexiLink.Common.Application;
+using LexiLink.Common.Application.Admin;
 using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Common.Infrastructure.Time;
+using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Games.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
@@ -34,6 +36,7 @@ public abstract class TestBase
     protected IEventsBus EventsBus { get; private set; } = null!;
     protected IQuestsModule QuestsModule { get; private set; } = null!;
     protected IReadOnlyCollection<IOutboxProcessor> OutboxProcessors { get; private set; } = null!;
+    protected TestAdminAuthorizationContext AdminContext { get; private set; } = null!;
     protected string ConnectionString => _connectionString;
 
     [OneTimeSetUp]
@@ -52,8 +55,12 @@ public abstract class TestBase
         GamesStartup.Initialize(services, _connectionString);
         PlayersStartup.Initialize(services, _connectionString);
         QuestsStartup.Initialize(services, _connectionString);
+        AdministrationStartup.Initialize(services, _connectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
         services.AddSingleton<IExecutionContextAccessor>(new TestExecutionContextAccessor());
+        services.AddSingleton<TestAdminAuthorizationContext>();
+        services.AddSingleton<IAdminAuthorizationContext>(sp =>
+            sp.GetRequiredService<TestAdminAuthorizationContext>());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
         // Cross-module gateway stub — Quests integration tests don't boot Energy.
@@ -64,6 +71,7 @@ public abstract class TestBase
         GamesStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
         PlayersStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
         QuestsStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
+        AdministrationStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
 
         _container = containerBuilder.Build();
     }
@@ -75,6 +83,8 @@ public abstract class TestBase
         Sender = Scope.Resolve<ISender>();
         EventsBus = Scope.Resolve<IEventsBus>();
         QuestsModule = Scope.Resolve<IQuestsModule>();
+        AdminContext = Scope.Resolve<TestAdminAuthorizationContext>();
+        AdminContext.Logout();
         OutboxProcessors = Scope.Resolve<IEnumerable<IOutboxProcessor>>().ToArray();
 
         await ClearDatabaseAsync();
@@ -131,8 +141,32 @@ public abstract class TestBase
         await connection.OpenAsync();
 
         await connection.ExecuteAsync("""
+            DELETE FROM "administration"."AdminActionAudit";
             DELETE FROM "quests"."OutboxMessages";
-            DELETE FROM "quests"."PlayerQuests";
+            -- QuestDefinitions seeded via DbUp; not deleted between tests.
+            -- Admin IT tests rely on the four seed rows being present.
+            DELETE FROM "quests"."PlayerQuests" WHERE TRUE;
+            -- Remove admin-created definitions (those NOT in the seed range).
+            DELETE FROM "quests"."QuestDefinitions"
+                WHERE "Id" NOT IN (
+                    '11111111-0000-0000-0000-000000000001',
+                    '11111111-0000-0000-0000-000000000002',
+                    '11111111-0000-0000-0000-000000000003',
+                    '11111111-0000-0000-0000-000000000004'
+                );
+            -- Reset seed rows to original IsActive / Goal / Reward / Prereq.
+            UPDATE "quests"."QuestDefinitions"
+                SET "IsActive" = TRUE, "Goal" = 1, "RewardAmount" = 3, "PrerequisiteQuestType" = NULL
+                WHERE "Id" = '11111111-0000-0000-0000-000000000001';
+            UPDATE "quests"."QuestDefinitions"
+                SET "IsActive" = TRUE, "Goal" = 3, "RewardAmount" = 5, "PrerequisiteQuestType" = NULL
+                WHERE "Id" = '11111111-0000-0000-0000-000000000002';
+            UPDATE "quests"."QuestDefinitions"
+                SET "IsActive" = TRUE, "Goal" = 1, "RewardAmount" = 5, "PrerequisiteQuestType" = 'ThreeGamesCompleted'
+                WHERE "Id" = '11111111-0000-0000-0000-000000000003';
+            UPDATE "quests"."QuestDefinitions"
+                SET "IsActive" = TRUE, "Goal" = 3, "RewardAmount" = 5, "PrerequisiteQuestType" = NULL
+                WHERE "Id" = '11111111-0000-0000-0000-000000000004';
             DELETE FROM "games"."GameHistory";
             DELETE FROM "games"."GameOptimalPath";
             DELETE FROM "games"."Games";
