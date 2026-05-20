@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-20 (Administration Slice B4 closed)
+> Last updated: 2026-05-20 (Administration Slice B5 closed)
 
 ---
 
@@ -203,10 +203,11 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1, B2, B3 ve B4 kapandı.**
+**Administration sprint devam ediyor — B1–B5 kapandı.**
 B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +
 bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20, B4
-admin authorization cross-cut 2026-05-20.
+admin authorization cross-cut 2026-05-20, B5 audit projection +
+`/admin/audit` endpoint 2026-05-20.
 
 B3 ile birlikte:
 - `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
@@ -248,20 +249,41 @@ B4 ile birlikte:
   yaslanır. `ExceptionHandlingMiddleware` artık
   `AdminAuthorizationException`'ı 403 ProblemDetails'e çeviriyor.
 
-Sırada **Slice B5 — Audit infrastructure**:
-- `AdminActionPerformedIntegrationEvent` (Administration.IntegrationEvents).
-- Her hedef modülün decorator chain'ine
-  `AdminAuditingCommandHandlerDecorator<TCommand>` (modül-içi);
-  `IAdminCommand` implementasyonu olan command'lar için actor +
-  before/after JSON capture eder, outbox üzerinden integration event
-  yayınlar.
-- Administration inbox tablosu (`administration.InboxMessages` zaten
-  B1'de hazır) + Quartz job + `administration.AdminActionAudit`
-  projeksiyon tablosu.
-- `GET /admin/audit` query endpoint'i.
+B5 ile birlikte (consumer-side):
+- `Administration.IntegrationEvents/AdminActionPerformedIntegrationEvent`
+  public contract (Id, OccurredOn, AdminUserId, ActionType, TargetType,
+  TargetId, PayloadJson). PayloadJson kasıtlı olarak opak — her modülün
+  command'ı farklı şekilli, merkezi audit storage bu varyansı encode
+  etmemeli.
+- `administration.AdminActionAudit` tablosu (PK Id, indexes on
+  Actor/OccurredOn, Target/OccurredOn, OccurredOn).
+- `IAdminActionAuditWriter` (Administration.Application interface) →
+  `AdminActionAuditWriter` (Administration.Infrastructure Dapper impl,
+  INSERT ... ON CONFLICT DO NOTHING ile idempotent).
+- `AdminActionPerformedIntegrationEventHandler` (Administration.Application
+  IIntegrationEventHandler) writer'ı çağırır.
+- `GetAdminActionsQuery` + handler + `AdminActionDto` —
+  filtered (adminUserId / targetType / targetId) + paged (default 50,
+  max 200).
+- `GET /admin/audit` endpoint (`AuthenticatedAdmin` policy).
+- 4 IT (synthetic publish → projection / republish idempotent /
+  filter by target / OccurredOn DESC) + 4 API.Tests (401 anon, 403
+  player, 200 admin + filter).
 
-Sonra B6 (Quest catalog data-driven), B7-B10 (her hedef modülün admin
-operasyonları).
+B5 deferred (her hedef modülün admin slice'ında geliyor): producer-side
+`AdminAuditingCommandHandlerDecorator<TCommand>` per-module
+(Kamil decorator-per-module rule); decorator `IAdminCommand` marker'lı
+command'ı yakalar, actor + serialized payload ile event'i modülün
+outbox'ına yazar.
+
+Sırada **Slice B6 — Quest catalog data-driven**:
+- Hardcoded 4 quest catalog'unu `quests.QuestDefinitions` tablosuna
+  taşı. `QuestDefinition` aggregate (Quests.Domain).
+- DbUp script + seed migration ile mevcut 4 tanımı yerleştir.
+- `IQuestCatalog` → `IQuestDefinitionRepository`-backed
+  service'e geçir. Mevcut quest davranışı testlerle koru.
+
+Sonra B7-B10 (her hedef modülün admin operasyonları + decorator wiring).
 
 Diğer aktif olmayan adaylar:
 

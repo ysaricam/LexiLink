@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\LexiLink.Modules.Administration.Domain.csproj" />
+    <ProjectReference Include="..\IntegrationEvents\LexiLink.Modules.Administration.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\..\Common\Application\LexiLink.Common.Application.csproj" />
   </ItemGroup>
 

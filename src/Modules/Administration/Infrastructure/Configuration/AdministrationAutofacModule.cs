@@ -8,10 +8,12 @@ using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure;
 using LexiLink.Common.Infrastructure.DomainEventsDispatching;
 using LexiLink.Common.Infrastructure.Outbox;
+using LexiLink.Modules.Administration.Application.AdminActions.Projection;
 using LexiLink.Modules.Administration.Application.Configuration.Commands;
 using LexiLink.Modules.Administration.Application.Configuration.Queries;
 using LexiLink.Modules.Administration.Application.Contracts;
 using LexiLink.Modules.Administration.Domain.AdminUsers;
+using LexiLink.Modules.Administration.Infrastructure.AdminActions;
 using LexiLink.Modules.Administration.Infrastructure.Configuration.Processing;
 using LexiLink.Modules.Administration.Infrastructure.Domain;
 using LexiLink.Modules.Administration.Infrastructure.Domain.AdminUsers;
@@ -75,6 +77,11 @@ public class AdministrationAutofacModule : Autofac.Module
 
         builder.RegisterType<AdminUserRepository>()
             .As<IAdminUserRepository>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
+        builder.RegisterType<AdminActionAuditWriter>()
+            .As<IAdminActionAuditWriter>()
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
 
