@@ -14,10 +14,23 @@ public class Player : Entity, IAggregateRoot
     private string _locale;
     private DateTime _createdAt;
     private bool _isGuest;
+    private bool _isBanned;
+    private string? _bannedReason;
+    private DateTime? _bannedAt;
 
     private readonly List<AuthIdentity> _authIdentities;
 
     public IReadOnlyCollection<AuthIdentity> AuthIdentities => _authIdentities.AsReadOnly();
+
+    public string DisplayName => _displayName;
+    public Discriminator Discriminator => _discriminator;
+    public string? AvatarUrl => _avatarUrl;
+    public string Locale => _locale;
+    public DateTime CreatedAt => _createdAt;
+    public bool IsGuest => _isGuest;
+    public bool IsBanned => _isBanned;
+    public string? BannedReason => _bannedReason;
+    public DateTime? BannedAt => _bannedAt;
 
     private Player()
     {
@@ -85,5 +98,44 @@ public class Player : Entity, IAggregateRoot
         _locale = locale;
 
         AddDomainEvent(new PlayerProfileUpdatedDomainEvent(Id, _avatarUrl, _locale));
+    }
+
+    /// <summary>
+    /// Admin force-ban. Reason is mandatory so audit log entries are
+    /// meaningful. Idempotent — re-banning an already-banned player is
+    /// a no-op (no second event). To change the reason, unban then ban.
+    /// The auth boundary refuses tokens that map to a banned player.
+    /// </summary>
+    public void Ban(string reason, DateTime now)
+    {
+        CheckRule(new BanReasonMustNotBeEmptyRule(reason));
+
+        if (_isBanned)
+        {
+            return;
+        }
+
+        _isBanned = true;
+        _bannedReason = reason.Trim();
+        _bannedAt = now;
+
+        AddDomainEvent(new PlayerBannedDomainEvent(Id, _bannedReason));
+    }
+
+    /// <summary>
+    /// Admin lift-ban. Idempotent for already-unbanned players.
+    /// </summary>
+    public void Unban(DateTime now)
+    {
+        if (!_isBanned)
+        {
+            return;
+        }
+
+        _isBanned = false;
+        _bannedReason = null;
+        _bannedAt = null;
+
+        AddDomainEvent(new PlayerUnbannedDomainEvent(Id));
     }
 }

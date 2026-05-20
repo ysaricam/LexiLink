@@ -212,6 +212,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         .As<IAdminLookup>()
         .InstancePerLifetimeScope();
 
+    containerBuilder.RegisterType<PlayerStatusLookup>()
+        .As<IPlayerStatusLookup>()
+        .InstancePerLifetimeScope();
+
     containerBuilder.RegisterType<AdminAuthorizationContext>()
         .As<IAdminAuthorizationContext>()
         .InstancePerLifetimeScope();
@@ -255,6 +259,7 @@ app.MapAdminAuthEndpoints();
 app.MapAdminAuditEndpoints();
 app.MapAdminQuestEndpoints();
 app.MapAdminEnergyEndpoints();
+app.MapAdminPlayerEndpoints();
 app.MapCategoryEndpoints();
 app.MapLinkEndpoints();
 app.MapGameEndpoints();

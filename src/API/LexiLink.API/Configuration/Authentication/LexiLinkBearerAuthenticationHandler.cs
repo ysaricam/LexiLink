@@ -13,6 +13,7 @@ public sealed class LexiLinkBearerAuthenticationHandler : AuthenticationHandler<
 {
     private readonly LexiLinkAuthOptions _authOptions;
     private readonly IAdminLookup _adminLookup;
+    private readonly IPlayerStatusLookup _playerStatusLookup;
     private readonly JsonWebTokenHandler _jsonWebTokenHandler = new();
 
     public LexiLinkBearerAuthenticationHandler(
@@ -20,11 +21,13 @@ public sealed class LexiLinkBearerAuthenticationHandler : AuthenticationHandler<
         ILoggerFactory logger,
         UrlEncoder encoder,
         LexiLinkAuthOptions authOptions,
-        IAdminLookup adminLookup)
+        IAdminLookup adminLookup,
+        IPlayerStatusLookup playerStatusLookup)
         : base(options, logger, encoder)
     {
         _authOptions = authOptions;
         _adminLookup = adminLookup;
+        _playerStatusLookup = playerStatusLookup;
     }
 
     protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
@@ -59,11 +62,23 @@ public sealed class LexiLinkBearerAuthenticationHandler : AuthenticationHandler<
             return AuthenticateResult.Fail("Bearer token must be a player or admin id.");
         }
 
+        // Banned players are refused at the auth boundary so they cannot
+        // continue to invoke gameplay endpoints. Admin tokens are exempt —
+        // an admin can be banned as a player but still log in as admin.
+        var admin = await _adminLookup.FindActiveByIdAsync(principalId, cancellationToken);
+        if (admin is null)
+        {
+            var isBanned = await _playerStatusLookup.IsPlayerBannedAsync(principalId, cancellationToken);
+            if (isBanned)
+            {
+                return AuthenticateResult.Fail("Player is banned.");
+            }
+        }
+
         // Dev mode trusts any well-formed GUID as a player principal. If the
         // same GUID also matches an active admin in the Administration module
         // we attach the admin role claim so AuthenticatedAdmin endpoints
         // authorize the same token.
-        var admin = await _adminLookup.FindActiveByIdAsync(principalId, cancellationToken);
         var adminClaims = admin is null
             ? []
             : (IEnumerable<Claim>)
@@ -128,6 +143,15 @@ public sealed class LexiLinkBearerAuthenticationHandler : AuthenticationHandler<
             if (admin is null)
             {
                 return AuthenticateResult.Fail("Admin account is disabled or missing.");
+            }
+        }
+        else
+        {
+            // Non-admin JWT — refuse if the subject is a banned player.
+            var isBanned = await _playerStatusLookup.IsPlayerBannedAsync(principalId, cancellationToken);
+            if (isBanned)
+            {
+                return AuthenticateResult.Fail("Player is banned.");
             }
         }
 

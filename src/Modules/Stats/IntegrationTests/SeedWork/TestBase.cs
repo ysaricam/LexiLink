@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Dapper;
 using LexiLink.Common.Application;
+using LexiLink.Common.Application.Admin;
 using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
@@ -56,6 +57,7 @@ public abstract class TestBase
         StatsStartup.Initialize(services, _connectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
         services.AddSingleton<IExecutionContextAccessor>(new TestExecutionContextAccessor());
+        services.AddSingleton<IAdminAuthorizationContext>(new NoAdminAuthorizationContext());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
         // Cross-module gateway stub — Stats integration tests exercise the producer-side

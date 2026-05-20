@@ -26,6 +26,9 @@ public static class PlayersStartup
         DomainNotificationsMap.Add(
             "Players.PlayerProfileUpdatedDomainEventNotification",
             typeof(PlayerProfileUpdatedDomainEventNotification));
+        DomainNotificationsMap.Add(
+            "Players.AdminActionPerformedNotification",
+            typeof(PlayersAdminActionPerformedNotification));
     }
 
     public static void Initialize(IServiceCollection services, string connectionString)

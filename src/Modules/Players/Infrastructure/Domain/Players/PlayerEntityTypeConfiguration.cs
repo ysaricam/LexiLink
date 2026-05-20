@@ -22,6 +22,9 @@ internal class PlayerEntityTypeConfiguration : IEntityTypeConfiguration<Player>
         builder.Property<string>("_locale").HasColumnName("Locale");
         builder.Property<DateTime>("_createdAt").HasColumnName("CreatedAt");
         builder.Property<bool>("_isGuest").HasColumnName("IsGuest");
+        builder.Property<bool>("_isBanned").HasColumnName("IsBanned");
+        builder.Property<string?>("_bannedReason").HasColumnName("BannedReason");
+        builder.Property<DateTime?>("_bannedAt").HasColumnName("BannedAt");
 
         builder.OwnsOne<Discriminator>("_discriminator", d =>
         {

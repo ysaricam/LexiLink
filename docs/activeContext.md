@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-20 (Administration Slice B8 closed)
+> Last updated: 2026-05-20 (Administration Slice B9 closed)
 
 ---
 
@@ -203,14 +203,14 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1–B8 kapandı.**
+**Administration sprint devam ediyor — B1–B9 kapandı.**
 B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +
 bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20, B4
 admin authorization cross-cut 2026-05-20, B5 audit projection +
 `/admin/audit` endpoint 2026-05-20, B6 Quests catalog data-driven
 2026-05-20, B7 quest admin operations + first per-module
 AdminAuditing decorator 2026-05-20, B8 energy admin operations
-2026-05-20.
+2026-05-20, B9 players ban/unban + auth boundary 2026-05-20.
 
 B3 ile birlikte:
 - `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
@@ -378,18 +378,59 @@ B8 ile birlikte:
   Set 1 (snap), Grant (+3 → over-max), Reset (current=max). Hepsi
   audit row roundtrip ile.
 
-Sırada **Slice B9 — Players admin operations (ban/unban)**:
-- `Player.Ban(reason, now)` + `Player.Unban(now)` domain methods +
-  state flag + ban event.
-- `BanPlayerCommand`, `UnbanPlayerCommand`,
-  `GetPlayerAdminDetailQuery` (rich admin view).
-- `AuthenticatedPlayer` policy banned tokens'ı reddetsin (login
-  boundary).
-- API: `GET /admin/players/search`, `GET /admin/players/{id}`,
+B9 ile birlikte:
+- `Player.Ban(reason, now)` / `Player.Unban(now)` domain methods
+  (idempotent). `_isBanned/_bannedReason/_bannedAt` fields,
+  `BanReasonMustNotBeEmptyRule`, `PlayerBannedDomainEvent` +
+  `PlayerUnbannedDomainEvent`. Player aggregate'in public read
+  properties'leri (DisplayName, IsGuest, IsBanned vb.) admin detail
+  query'si için açıldı.
+- `players.Players` tablosuna `IsBanned/BannedReason/BannedAt`
+  kolonları (`030_AddPlayerBanColumns.sql`, ALTER TABLE idempotent +
+  partial index on banned).
+- `Players.Application/Admin/`: `BanPlayerCommand` (Reason mandatory,
+  max 500), `UnbanPlayerCommand`, `GetPlayerAdminDetailQuery` +
+  `PlayerAdminDetailDto` (handle, providers count, ban state),
+  `GetPlayerBanStatusQuery` (auth boundary için ucuz lookup).
+- `Players.Infrastructure` per-module audit decorator + notification
+  +handler (B7 template). PlayersStartup DomainNotificationsMap
+  registration. Autofac decorator chain innermost.
+- API host `IPlayerStatusLookup` + `PlayerStatusLookup` adapter
+  (`IPlayersModule` üzerinden query). `LexiLinkBearerAuthenticationHandler`
+  hem dev bearer hem production JWT path'inde ban check yapıyor —
+  banned player → `AuthenticateResult.Fail` (401). Admin tokens
+  ban check'ten exempt (admin hesabı banned player olabilir ama
+  yine de admin olarak login olabilir). Bilinmeyen GUID'ler
+  reddedilmez (fresh device registration için).
+- `AdminPlayerEndpoints`: `GET /admin/players/{id}`,
   `POST /admin/players/{id}/ban`, `POST /admin/players/{id}/unban`.
+- ArchTests: Players.Infrastructure → Administration.IntegrationEvents
+  granular allow.
 
-Sonra B10 (content admin guard — mevcut anonim `POST /categories`
-endpoint'leri `/admin/...` altına geçer).
+Tests:
+- Players.IT 7→14 (+7): non-admin → AdminAuthorizationException;
+  Ban happy path → DB flag + audit; Unban → DB clear + audit;
+  Ban empty reason → 400; GetPlayerAdminDetail rich payload + null
+  for missing; GetPlayerBanStatus false for unknown id (auth
+  boundary safety).
+- API.Tests 49→51 (+2): unknown GUID dev bearer → 200 (registration
+  path); banned player dev bearer → 401.
+
+Bootstrap admin SQL seed bypass'i artık aynı testte 2'inci slice'a
+geliyor — Stats.IT TestBase de `NoAdminAuthorizationContext` stub'ı
+kazandı (decorator activation için).
+
+Sırada **Slice B10 — Content admin guard**:
+- Mevcut anonim `POST /categories`, `POST /links`, edge endpoint'leri
+  `/admin/...` altına taşınıyor; eski anonim route'lar siliniyor.
+- Domain'de `Category.Update/Deactivate`, `Link.Activate/Deactivate`
+  zaten var; gerekiyorsa eksiklikler eklenecek.
+- Games.Infrastructure'da per-module audit decorator + notification
+  (B7 template'in son kopyası).
+- Games.IT'de admin command + audit IT senaryoları.
+
+Bu sprint'in **backend** son slice'ı. Sonra F1-F6 frontend slice'ları
+gelecek (admin login + shell + quest/player/energy/audit UI).
 
 Diğer aktif olmayan adaylar:
 

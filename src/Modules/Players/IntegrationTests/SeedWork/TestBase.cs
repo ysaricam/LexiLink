@@ -1,13 +1,18 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Dapper;
 using LexiLink.Common.Application;
+using LexiLink.Common.Application.Admin;
 using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
+using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Common.Infrastructure.Time;
+using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
+using Npgsql;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -26,17 +31,21 @@ public abstract class TestBase
     private static readonly TestExecutionContextAccessor ExecutionContextAccessor = new();
     private static readonly CollectingLogEventSink LogSink = new();
     private static IContainer _container = null!;
+    private static string _connectionString = null!;
 
     protected ILifetimeScope Scope { get; private set; } = null!;
     protected ISender Sender { get; private set; } = null!;
     protected PlayersContext DbContext { get; private set; } = null!;
+    protected IReadOnlyCollection<IOutboxProcessor> OutboxProcessors { get; private set; } = null!;
+    protected TestAdminAuthorizationContext AdminContext { get; private set; } = null!;
     protected TestExecutionContextAccessor ExecutionContext => ExecutionContextAccessor;
     protected CollectingLogEventSink CapturedLogs => LogSink;
+    protected string ConnectionString => _connectionString;
 
     [OneTimeSetUp]
     public void OneTimeSetUp()
     {
-        var connectionString =
+        _connectionString =
             Environment.GetEnvironmentVariable("ASPNETCORE_LexiLink_IntegrationTests_ConnectionString")
             ?? DefaultConnectionString;
 
@@ -45,10 +54,14 @@ public abstract class TestBase
         services.AddSingleton<IClock, SystemClock>();
         services.AddScoped<IEventsBus, InMemoryEventsBus>();
         services.AddDbContext<PlayersContext>(opts =>
-            opts.UseNpgsql(connectionString)
+            opts.UseNpgsql(_connectionString)
                 .ReplaceService<IValueConverterSelector, StronglyTypedIdValueConverterSelector>());
+        AdministrationStartup.Initialize(services, _connectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
         services.AddSingleton<IExecutionContextAccessor>(ExecutionContextAccessor);
+        services.AddSingleton<TestAdminAuthorizationContext>();
+        services.AddSingleton<IAdminAuthorizationContext>(sp =>
+            sp.GetRequiredService<TestAdminAuthorizationContext>());
         services.AddSingleton<Serilog.ILogger>(
             new LoggerConfiguration()
                 .MinimumLevel.Debug()
@@ -58,7 +71,8 @@ public abstract class TestBase
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
-        PlayersStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+        PlayersStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
+        AdministrationStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
 
         _container = containerBuilder.Build();
     }
@@ -69,9 +83,27 @@ public abstract class TestBase
         Scope = _container.BeginLifetimeScope();
         Sender = Scope.Resolve<ISender>();
         DbContext = Scope.Resolve<PlayersContext>();
+        OutboxProcessors = Scope.Resolve<IEnumerable<IOutboxProcessor>>().ToArray();
+        AdminContext = Scope.Resolve<TestAdminAuthorizationContext>();
+        AdminContext.Logout();
 
         LogSink.Clear();
         await ClearDatabaseAsync();
+    }
+
+    protected async Task ProcessOutboxAsync()
+    {
+        foreach (var processor in OutboxProcessors)
+        {
+            await processor.ProcessAsync();
+        }
+    }
+
+    protected async Task<T?> QuerySingleOrDefaultAsync<T>(string sql, object? parameters = null)
+    {
+        await using var connection = new NpgsqlConnection(_connectionString);
+        await connection.OpenAsync();
+        return await connection.QuerySingleOrDefaultAsync<T>(sql, parameters);
     }
 
     [TearDown]
@@ -97,6 +129,7 @@ public abstract class TestBase
     private async Task ClearDatabaseAsync()
     {
         await DbContext.Database.ExecuteSqlRawAsync("""
+            DELETE FROM "administration"."AdminActionAudit";
             DELETE FROM "players"."PlayerAuthIdentities";
             DELETE FROM "players"."Players";
             DELETE FROM "players"."OutboxMessages";
