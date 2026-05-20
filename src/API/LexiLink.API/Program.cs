@@ -11,6 +11,7 @@ using LexiLink.API.Configuration.OpenApi;
 using LexiLink.API.Configuration.Operations;
 using LexiLink.API.Configuration.Outbox;
 using LexiLink.API.CrossModule;
+using LexiLink.API.Modules.Admin;
 using LexiLink.API.Modules.Auth;
 using LexiLink.API.Modules.Energy;
 using LexiLink.API.Modules.Games;
@@ -165,11 +166,21 @@ builder.Services.AddSingleton<IExternalIdentityVerifier>(
     authOptions.TokenExchange.Mode == ExternalIdentityValidationMode.DevelopmentExternalToken
         ? new DevelopmentExternalIdentityVerifier()
         : new DisabledExternalIdentityVerifier());
+builder.Services.AddSingleton<IExternalAdminIdentityVerifier>(
+    authOptions.AdminTokenExchange.Mode == ExternalIdentityValidationMode.DevelopmentExternalToken
+        ? new DevelopmentExternalAdminIdentityVerifier()
+        : new DisabledExternalAdminIdentityVerifier());
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(AuthConstants.AuthenticatedPlayerPolicy, policy =>
     {
         policy.AuthenticationSchemes.Add(AuthConstants.Scheme);
         policy.RequireAuthenticatedUser();
+    })
+    .AddPolicy(AuthConstants.AuthenticatedAdminPolicy, policy =>
+    {
+        policy.AuthenticationSchemes.Add(AuthConstants.Scheme);
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim(AuthConstants.RoleClaimType, AuthConstants.AdminRoleValue);
     });
 
 builder.Services.ConfigureHttpJsonOptions(opts =>
@@ -194,6 +205,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
     containerBuilder.RegisterType<EnergyGuard>()
         .As<IEnergyGuard>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<AdminLookup>()
+        .As<IAdminLookup>()
         .InstancePerLifetimeScope();
 });
 
@@ -231,6 +246,7 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 }).AllowAnonymous();
 
 app.MapAuthEndpoints();
+app.MapAdminAuthEndpoints();
 app.MapCategoryEndpoints();
 app.MapLinkEndpoints();
 app.MapGameEndpoints();

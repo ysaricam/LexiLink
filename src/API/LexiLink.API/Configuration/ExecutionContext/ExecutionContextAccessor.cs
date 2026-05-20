@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using LexiLink.API.Configuration.Authentication;
 using LexiLink.Common.Application;
 
 namespace LexiLink.API.Configuration.ExecutionContext;
@@ -47,4 +48,20 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
     }
 
     public bool IsAvailable => _httpContextAccessor.HttpContext != null;
+
+    public bool IsAdmin =>
+        _httpContextAccessor.HttpContext?.User?.Claims
+            .Any(c => c.Type == AuthConstants.RoleClaimType && c.Value == AuthConstants.AdminRoleValue)
+        ?? false;
+
+    public Guid? AdminUserId
+    {
+        get
+        {
+            var raw = _httpContextAccessor.HttpContext?.User?.Claims
+                .SingleOrDefault(c => c.Type == AuthConstants.AdminUserIdClaimType)?.Value;
+
+            return Guid.TryParse(raw, out var id) ? id : null;
+        }
+    }
 }

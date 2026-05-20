@@ -87,5 +87,9 @@ public class CompositionIsolationTests
         public Guid CorrelationId => Guid.Empty;
 
         public bool IsAvailable => false;
+
+        public bool IsAdmin => false;
+
+        public Guid? AdminUserId => null;
     }
 }

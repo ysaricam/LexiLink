@@ -27,6 +27,7 @@ unsafe development mode is enabled.
 | `Authentication__Jwt__SigningKey` | Yes for `ProductionJwt` | empty | HMAC signing key. Must be at least 32 characters. Treat as a secret. |
 | `Authentication__Jwt__AccessTokenLifetimeMinutes` | No | `60` | First-party access token lifetime. |
 | `Authentication__TokenExchange__Mode` | No | `Disabled` | `DevelopmentExternalToken` is allowed only outside `Production`. |
+| `Authentication__AdminTokenExchange__Mode` | No | `Disabled` | Controls `POST /auth/admin/token`. `DevelopmentExternalToken` is allowed only outside `Production`. |
 
 Production baseline:
 
@@ -119,6 +120,8 @@ Processor logs include structured fields for operational search:
 | `GET /energy/me` | `AuthenticatedPlayer` | Current player's energy snapshot: `currentAmount`, `maximumAmount`, `isFull`, `rechargeIntervalSeconds`, `lastRefilledOn`, `secondsUntilNextRefill`, `fullyRefilledAt`. Returns 404 ProblemDetails when the energy aggregate hasn't been initialized yet (normally a brief race after registration before the outbox processes `PlayerRegisteredIntegrationEvent`). |
 | `GET /quests/me` | `AuthenticatedPlayer` | Current player's quests (`Active`, `ReadyToClaim`, `Claimed`, `Expired`) as a `PlayerQuestDto[]`. Lazy expiry projection is applied at read time. |
 | `POST /quests/{id:guid}/claim` | `AuthenticatedPlayer` | Marks a `ReadyToClaim` quest as `Claimed`. Returns 204 NoContent. Cross-player or missing ids return 404 ProblemDetails (no id-leakage). Triggers `QuestClaimedIntegrationEvent` via the Quests outbox, which Energy consumes to grant the reward via `PlayerEnergy.GrantBonus`. |
+| `POST /auth/admin/token` | anonymous | Exchanges an external admin identity (currently `dev:admin:{email}` development verifier) for a first-party admin JWT (subject = AdminUserId, claims `role=Admin` + `admin_id`). 400 on missing fields, 401 on bad external token, 404 when email is not a registered active admin. `Authentication:AdminTokenExchange:Mode` controls the verifier; `DevelopmentExternalToken` is rejected in Production. |
+| `GET /admin/whoami` | `AuthenticatedAdmin` | Returns `{ adminUserId, role }` for the current admin. 401 anonymous, 403 player-only token. In dev-bearer mode any GUID that matches an Active `administration.AdminUsers.Id` is recognized; in production-JWT mode the role and admin_id claims are required and the AdminUser is re-checked for Active status (revoked tokens fail with 401). |
 
 `/operations/processors` returns unprocessed, ready, scheduled retry, poisoned,
 failed counts, oldest unprocessed timestamp, and a small error sample per queue.

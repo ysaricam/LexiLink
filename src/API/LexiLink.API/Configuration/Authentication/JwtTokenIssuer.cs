@@ -17,16 +17,35 @@ public sealed class JwtTokenIssuer : IJwtTokenIssuer
         _clock = clock;
     }
 
-    public IssuedToken Issue(Guid playerId)
+    public IssuedToken Issue(Guid playerId) =>
+        CreateToken(subject: playerId, extraClaims: []);
+
+    public IssuedToken IssueAdmin(Guid adminUserId) =>
+        CreateToken(
+            subject: adminUserId,
+            extraClaims:
+            [
+                new Claim(AuthConstants.RoleClaimType, AuthConstants.AdminRoleValue),
+                new Claim(AuthConstants.AdminUserIdClaimType, adminUserId.ToString())
+            ]);
+
+    private IssuedToken CreateToken(Guid subject, IEnumerable<Claim> extraClaims)
     {
         var now = _clock.UtcNow;
         var expiresAt = now.AddMinutes(_authOptions.Jwt.AccessTokenLifetimeMinutes);
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authOptions.Jwt.SigningKey!));
+
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.Sub, subject.ToString())
+        };
+        claims.AddRange(extraClaims);
+
         var descriptor = new SecurityTokenDescriptor
         {
             Issuer = _authOptions.Jwt.Issuer,
             Audience = _authOptions.Jwt.Audience,
-            Subject = new ClaimsIdentity([new Claim(JwtRegisteredClaimNames.Sub, playerId.ToString())]),
+            Subject = new ClaimsIdentity(claims),
             NotBefore = now,
             IssuedAt = now,
             Expires = expiresAt,

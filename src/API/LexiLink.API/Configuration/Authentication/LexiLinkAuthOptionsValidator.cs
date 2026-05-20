@@ -41,5 +41,12 @@ public static class LexiLinkAuthOptionsValidator
             throw new InvalidOperationException(
                 "Development external identity validation is not allowed in Production.");
         }
+
+        if (options.AdminTokenExchange.Mode == ExternalIdentityValidationMode.DevelopmentExternalToken
+            && environment.IsProduction())
+        {
+            throw new InvalidOperationException(
+                "Development external admin identity validation is not allowed in Production.");
+        }
     }
 }

@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-19 (Administration Slice B2 closed)
+> Last updated: 2026-05-20 (Administration Slice B3 closed)
 
 ---
 
@@ -203,26 +203,42 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1 ve B2 kapandı.** B1 modül
-foundation (Domain/Application/Infrastructure/DbUp/ArchTests) shipped
-2026-05-18, B2 admin registration + outbox publish + bootstrap seed
-shipped 2026-05-19.
+**Administration sprint devam ediyor — B1, B2 ve B3 kapandı.** B1
+modül foundation 2026-05-18, B2 admin registration + outbox publish +
+bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20.
 
-Sırada **Slice B3 — Admin authentication**:
+B3 ile birlikte:
+- `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
+  (her modülün `TestExecutionContextAccessor`'ı güncellendi).
+- `AuthenticatedAdmin` policy + `role=Admin` claim + `admin_id`
+  claim — `RoleClaimType`/`AdminUserIdClaimType` `AuthConstants`'ta.
+- `LexiLinkBearerAuthenticationHandler` admin lookup yapıyor: dev
+  modda bearer GUID `administration.AdminUsers`'ta Active'se claim'ler
+  eklenir; production JWT'de admin role claim varsa Active doğrulaması
+  yapılır (revoke edilmiş admin token çürür).
+- `IAdminLookup` API host adapter (`AdminLookup` → `IAdministrationModule`
+  query). Kamil `IEnergyGuard` pattern'inin aynısı.
+- `Administration.Application` iki query: `GetActiveAdminUserByIdQuery`,
+  `GetActiveAdminUserByEmailQuery` + `AdminUserDto`.
+- `JwtTokenIssuer.IssueAdmin(adminUserId)` admin JWT üretir (sub + role +
+  admin_id claim).
+- `POST /auth/admin/token` — `DevelopmentExternalAdminIdentityVerifier`
+  ile e-mail bazlı doğrulama; başarılıysa admin JWT döner.
+- `GET /admin/whoami` — `AuthenticatedAdmin` policy korumalı, current
+  admin'i döner. 401/403/Active-doğrulama 8 API.Tests ile kilitli.
+- `Authentication:AdminTokenExchange:Mode` config bölümü;
+  `LexiLinkAuthOptionsValidator` production'da
+  `DevelopmentExternalToken`'ı reddediyor.
 
-- `POST /auth/admin/token` — external admin sign-in (initially
-  `DevelopmentExternalToken`-style verifier).
-- `AuthenticatedAdmin` policy in API host, requires JWT `role=Admin`
-  claim and a resolved active `AdminUser`.
-- `DevelopmentBearer` extension: a bearer GUID matching an active
-  `administration.AdminUsers.Id` resolves as an admin principal.
-- `ExecutionContext`/`IExecutionContextAccessor` carries `IsAdmin` +
-  `AdminUserId` alongside the existing `PlayerId`.
-- API auth smoke tests.
+Sırada **Slice B4 — `IAdminAuthorizationContext` sync gateway**:
+B3'te API host kendi yetki kontrolünü (`AuthenticatedAdmin` policy +
+`IsAdmin`) yapıyor. B4 her hedef modülün Application'ında kendi
+`IAdminAuthorizationContext` interface'ini açar (Energy'nin
+`IEnergyGuard` pattern'i); B5 audit infrastructure bu interface
+üzerinden actor adminId'sini güvenli şekilde toplar.
 
-Sonra B4 (`IAdminAuthorizationContext` sync gateway + `GET /admin/whoami`),
-B5 (audit infrastructure), B6 (Quest catalog data-driven), B7-B10
-(her hedef modülün admin operasyonları).
+Sonra B5 (audit), B6 (Quest catalog data-driven), B7-B10 (her hedef
+modülün admin operasyonları).
 
 Diğer aktif olmayan adaylar:
 

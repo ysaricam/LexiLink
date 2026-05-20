@@ -7,6 +7,8 @@ public sealed class LexiLinkAuthOptions
     public JwtAuthOptions Jwt { get; set; } = new();
 
     public TokenExchangeOptions TokenExchange { get; set; } = new();
+
+    public AdminTokenExchangeOptions AdminTokenExchange { get; set; } = new();
 }
 
 public sealed class JwtAuthOptions
@@ -21,6 +23,11 @@ public sealed class JwtAuthOptions
 }
 
 public sealed class TokenExchangeOptions
+{
+    public ExternalIdentityValidationMode Mode { get; set; } = ExternalIdentityValidationMode.Disabled;
+}
+
+public sealed class AdminTokenExchangeOptions
 {
     public ExternalIdentityValidationMode Mode { get; set; } = ExternalIdentityValidationMode.Disabled;
 }
