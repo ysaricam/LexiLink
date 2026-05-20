@@ -20,6 +20,7 @@ using LexiLink.API.Modules.Players;
 using LexiLink.API.Modules.Quests;
 using LexiLink.API.Modules.Stats;
 using LexiLink.Common.Application;
+using LexiLink.Common.Application.Admin;
 using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
@@ -209,6 +210,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
     containerBuilder.RegisterType<AdminLookup>()
         .As<IAdminLookup>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<AdminAuthorizationContext>()
+        .As<IAdminAuthorizationContext>()
         .InstancePerLifetimeScope();
 });
 

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using LexiLink.Common.Application.Admin;
 using LexiLink.Common.Application.Exceptions;
 using LexiLink.Common.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,17 @@ public class ExceptionHandlingMiddleware
                 Title = "Validation failed",
                 Detail = "One or more validation errors occurred.",
                 Type = "https://httpstatuses.com/400",
+                Instance = context.Request.Path
+            });
+        }
+        catch (AdminAuthorizationException ex)
+        {
+            await WriteProblemDetailsAsync(context, new ProblemDetails
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Title = "Admin authorization required",
+                Detail = ex.Message,
+                Type = "https://httpstatuses.com/403",
                 Instance = context.Request.Path
             });
         }

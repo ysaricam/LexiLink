@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-20 (Administration Slice B3 closed)
+> Last updated: 2026-05-20 (Administration Slice B4 closed)
 
 ---
 
@@ -203,9 +203,10 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1, B2 ve B3 kapandı.** B1
-modül foundation 2026-05-18, B2 admin registration + outbox publish +
-bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20.
+**Administration sprint devam ediyor — B1, B2, B3 ve B4 kapandı.**
+B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +
+bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20, B4
+admin authorization cross-cut 2026-05-20.
 
 B3 ile birlikte:
 - `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
@@ -230,15 +231,37 @@ B3 ile birlikte:
   `LexiLinkAuthOptionsValidator` production'da
   `DevelopmentExternalToken`'ı reddediyor.
 
-Sırada **Slice B4 — `IAdminAuthorizationContext` sync gateway**:
-B3'te API host kendi yetki kontrolünü (`AuthenticatedAdmin` policy +
-`IsAdmin`) yapıyor. B4 her hedef modülün Application'ında kendi
-`IAdminAuthorizationContext` interface'ini açar (Energy'nin
-`IEnergyGuard` pattern'i); B5 audit infrastructure bu interface
-üzerinden actor adminId'sini güvenli şekilde toplar.
+B4 ile birlikte:
+- `Common.Application.Admin/IAdminCommand` marker — B5 audit
+  decorator admin command'larını bu marker üzerinden keşfedecek.
+- `Common.Application.Admin/IAdminAuthorizationContext` interface —
+  `IsAdmin`, `AdminUserId`, `RequireAdminUserId()`,
+  `EnsureAuthorized()`. Per-module re-deklare etmek yerine
+  Common'a koyuldu (Kamil disiplini gerekçesi:
+  `IExecutionContextAccessor` zaten Common'da, admin context aynı
+  cross-cutting kategoriden — tek role/no permission matrix
+  varsayımıyla per-module interface gereksiz tekrar olur).
+- `Common.Application.Admin/AdminAuthorizationException` — yetkisiz
+  admin akışında fırlatılır.
+- `LexiLink.API/CrossModule/AdminAuthorizationContext` adapter —
+  `IExecutionContextAccessor`'dan okur, B3'te stamp'lenen claim'lere
+  yaslanır. `ExceptionHandlingMiddleware` artık
+  `AdminAuthorizationException`'ı 403 ProblemDetails'e çeviriyor.
 
-Sonra B5 (audit), B6 (Quest catalog data-driven), B7-B10 (her hedef
-modülün admin operasyonları).
+Sırada **Slice B5 — Audit infrastructure**:
+- `AdminActionPerformedIntegrationEvent` (Administration.IntegrationEvents).
+- Her hedef modülün decorator chain'ine
+  `AdminAuditingCommandHandlerDecorator<TCommand>` (modül-içi);
+  `IAdminCommand` implementasyonu olan command'lar için actor +
+  before/after JSON capture eder, outbox üzerinden integration event
+  yayınlar.
+- Administration inbox tablosu (`administration.InboxMessages` zaten
+  B1'de hazır) + Quartz job + `administration.AdminActionAudit`
+  projeksiyon tablosu.
+- `GET /admin/audit` query endpoint'i.
+
+Sonra B6 (Quest catalog data-driven), B7-B10 (her hedef modülün admin
+operasyonları).
 
 Diğer aktif olmayan adaylar:
 
