@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-17
+> Last updated: 2026-05-22 (Admin F1 closed)
 
 ---
 
@@ -389,3 +389,49 @@ Sıradaki onerilen alt adim somut olarak ilan edilmedi; potansiyel adaylar:
   CTA disable'lamak. Su an game ekraninda energy yok (bilincli karar).
 - `/categories` legacy route'unun silinmesi — Slice 10'dan kalan
   cleanup; route guard ve test temizligi gerektirir.
+
+---
+
+## Admin frontend sprint (F1-F6)
+
+Backend Administration sprint kapandı (B1-B10). Frontend tarafında
+admin shell'i 6 slice halinde geliyor.
+
+Tamamlanan: **Slice F1 — Admin login + ayrı session (2026-05-22)**.
+
+- `features/admin_auth/` yeni feature klasoru:
+  - `data/admin_session.dart` — AdminSession DTO (adminUserId, email,
+    role, accessToken, expiresAt).
+  - `data/admin_token_store.dart` — SharedPreferencesAdminTokenStore,
+    key 'lexilink.admin.accessToken'. Player session ile orthogonal.
+  - `data/admin_auth_repository.dart` — `POST /auth/admin/token` çağrısı.
+    Yanıt validate edip AdminSession döner; backend kontratina sıkı bağlı.
+  - `application/admin_session_cubit.dart` — checking / unauthenticated /
+    authenticating / authenticated / failure state machine. checkSession
+    persisted token'ı restore eder; signIn happy path token store + state
+    yazar; 401/404/400 için friendly error message.
+  - `presentation/admin_login_screen.dart` — `/admin/login` route.
+    AppScreenSize.compact, email + external token inputs (development
+    verifier `dev:admin:{email}`), submit / loading / error UX. Successful
+    sign-in → `context.go('/admin')`.
+  - `presentation/admin_home_screen.dart` — placeholder `/admin` route.
+    Token store'dan kontrol eder; admin token yoksa /admin/login'e redirect.
+    Sign-out butonu token'ı temizler. F2-F6 bu yerini AppAdminShell ile
+    alacak.
+- Router: `/admin/login` ve `/admin` route'ları eklendi.
+
+Tests (53 → +8 = 53/53 toplam pass, mevcut 45 + 8 yeni):
+- admin_auth_repository_test: happy path payload + 401 → ApiException.
+- admin_session_cubit_test: checkSession unauthenticated/restored,
+  signIn happy path, 401/404 friendly messages, signOut clears.
+
+Quality gate:
+- flutter analyze: 0 error (5 info — line length + comment ref).
+- flutter test: 53/53 passed.
+- flutter build web: başarılı.
+
+Sırada **Slice F2 — Admin shell + nav**:
+- `AppAdminShell` (side nav + AppBackBar entegre).
+- Nav items: Quests (catalog), Players (search/detail), Energy
+  (per-player), Audit (filterable log).
+- `/admin/login` zaten F1'de var; F2 shell'i F1 sonrası açılacak.

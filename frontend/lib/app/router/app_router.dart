@@ -1,4 +1,6 @@
 import 'package:go_router/go_router.dart';
+import 'package:lexilink_app/features/admin_auth/presentation/admin_home_screen.dart';
+import 'package:lexilink_app/features/admin_auth/presentation/admin_login_screen.dart';
 import 'package:lexilink_app/features/categories/presentation/category_selection_screen.dart';
 import 'package:lexilink_app/features/game/presentation/game_screen.dart';
 import 'package:lexilink_app/features/home/presentation/home_screen.dart';
@@ -37,6 +39,14 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/quests',
       builder: (context, state) => const QuestsScreen(),
+    ),
+    GoRoute(
+      path: '/admin/login',
+      builder: (context, state) => const AdminLoginScreen(),
+    ),
+    GoRoute(
+      path: '/admin',
+      builder: (context, state) => const AdminHomeScreen(),
     ),
   ],
 );
