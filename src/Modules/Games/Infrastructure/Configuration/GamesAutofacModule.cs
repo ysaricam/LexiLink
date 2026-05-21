@@ -167,7 +167,18 @@ public class GamesAutofacModule : Autofac.Module
         // `ICommandHandler<T> decorated` constructor slot via runtime cast.
         // Constraint `where T : ICommand[<TResult>]` filters queries out — query handlers
         // pass through the bare IRequestHandler<,> registration unchanged.
-        // Order: innermost first, outermost last → at runtime Logging → Validation → UoW → handler.
+        // Order: innermost first, outermost last → at runtime Logging → Validation → UoW → AdminAuditing → handler.
+        // AdminAuditing must be the INNERMOST decorator so the audit
+        // outbox row commits in the same SaveChangesAsync as the
+        // command's domain changes. See B7 commit for design rationale.
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerDecorator<>),
+            typeof(IRequestHandler<>));
+
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerWithResultDecorator<,>),
+            typeof(IRequestHandler<,>));
+
         builder.RegisterGenericDecorator(
             typeof(UnitOfWorkCommandHandlerDecorator<>),
             typeof(IRequestHandler<>));

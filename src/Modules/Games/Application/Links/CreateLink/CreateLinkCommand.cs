@@ -1,8 +1,9 @@
+using LexiLink.Common.Application.Admin;
 using LexiLink.Modules.Games.Application.Contracts;
 
 namespace LexiLink.Modules.Games.Application.Links.CreateLink;
 
-public class CreateLinkCommand : CommandBase<Guid>
+public class CreateLinkCommand : CommandBase<Guid>, IAdminCommand
 {
     public CreateLinkCommand(
         Guid categoryId,
@@ -22,4 +23,6 @@ public class CreateLinkCommand : CommandBase<Guid>
     public string Description { get; }
     public bool IsActive { get; }
 
+    public string AuditTargetType => "Games.Link";
+    public string? AuditTargetId => null;
 }

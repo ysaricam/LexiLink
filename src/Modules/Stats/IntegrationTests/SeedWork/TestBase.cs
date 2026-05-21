@@ -128,6 +128,7 @@ public abstract class TestBase
         await connection.OpenAsync();
 
         await connection.ExecuteAsync("""
+            DELETE FROM "administration"."AdminActionAudit";
             DELETE FROM "stats"."InternalCommands";
             DELETE FROM "stats"."InboxMessages";
             DELETE FROM "stats"."PlayerPeriodStats";

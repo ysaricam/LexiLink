@@ -2,10 +2,12 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Dapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Npgsql;
 
 namespace LexiLink.API.Tests.ApiContract;
 
@@ -40,12 +42,19 @@ public sealed class ValidationProblemDetailsTests
     [Test]
     public async Task CommandValidationFailure_ReturnsValidationProblemDetails()
     {
+        // /categories POST moved under /admin/content/categories in B10,
+        // behind AuthenticatedAdmin. Seed an admin GUID so the bearer
+        // handler accepts the token as an admin principal, then exercise
+        // the validation pipeline on the admin endpoint.
+        var adminId = Guid.NewGuid();
+        await SeedAdminAsync(adminId, $"validation-{adminId}@lexilink.test");
+
         using var client = _factory.CreateClient();
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Bearer",
-            Guid.NewGuid().ToString());
+            adminId.ToString());
 
-        var response = await client.PostAsJsonAsync("/categories", new
+        var response = await client.PostAsJsonAsync("/admin/content/categories", new
         {
             name = "",
             description = "Valid description"
@@ -109,5 +118,22 @@ public sealed class ValidationProblemDetailsTests
         body.RootElement.GetProperty("detail").GetString().Should().Contain("Locale");
         body.RootElement.GetProperty("rule").GetString().Should().Be("LocaleMustBeValidFormatRule");
         body.RootElement.GetProperty("traceId").GetString().Should().NotBeNullOrWhiteSpace();
+    }
+
+    private const string ConnectionString =
+        "Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852";
+
+    private static async Task SeedAdminAsync(Guid adminId, string email)
+    {
+        await using var conn = new NpgsqlConnection(ConnectionString);
+        await conn.OpenAsync();
+        await conn.ExecuteAsync(
+            """
+            INSERT INTO "administration"."AdminUsers"
+                ("Id", "Email", "Role", "Status", "RegisteredOn", "DisabledOn")
+            VALUES (@Id, @Email, 'Admin', 'Active', @Now, NULL)
+            ON CONFLICT ("Id") DO NOTHING;
+            """,
+            new { Id = adminId, Email = email.ToLowerInvariant(), Now = DateTime.UtcNow });
     }
 }

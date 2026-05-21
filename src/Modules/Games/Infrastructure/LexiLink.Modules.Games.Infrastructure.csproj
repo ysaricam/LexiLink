@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Application\LexiLink.Modules.Games.Application.csproj" />
     <ProjectReference Include="..\IntegrationEvents\LexiLink.Modules.Games.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Administration\IntegrationEvents\LexiLink.Modules.Administration.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\..\Common\Infrastructure\LexiLink.Common.Infrastructure.csproj" />
   </ItemGroup>
 

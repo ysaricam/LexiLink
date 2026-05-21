@@ -141,6 +141,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "Npgsql"
             });
 
+        // Games.Infrastructure MAY reference Administration.IntegrationEvents
+        // for the AdminAuditing decorator (granular allow).
         yield return new TestCaseData(
             "Games.Infrastructure",
             GamesInfrastructureAssembly,
@@ -152,7 +154,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
-                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
                 "LexiLink.API"
             });
 

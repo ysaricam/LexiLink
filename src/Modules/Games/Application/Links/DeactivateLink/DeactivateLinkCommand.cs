@@ -1,8 +1,9 @@
+using LexiLink.Common.Application.Admin;
 using LexiLink.Modules.Games.Application.Contracts;
 
 namespace LexiLink.Modules.Games.Application.Links.DeactivateLink;
 
-public class DeactivateLinkCommand : CommandBase
+public class DeactivateLinkCommand : CommandBase, IAdminCommand
 {
     public Guid LinkId { get; }
 
@@ -10,4 +11,7 @@ public class DeactivateLinkCommand : CommandBase
     {
         LinkId = linkId;
     }
+
+    public string AuditTargetType => "Games.Link";
+    public string? AuditTargetId => LinkId.ToString();
 }

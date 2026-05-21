@@ -135,6 +135,13 @@ Processor logs include structured fields for operational search:
 | `GET /admin/players/{playerId:guid}` | `AuthenticatedAdmin` | Returns `PlayerAdminDetailDto` (id, displayName, discriminator, handle, avatarUrl, locale, isGuest, isBanned, bannedReason, bannedAt, createdAt, authProvidersLinked). 404 when the player is unknown. |
 | `POST /admin/players/{playerId:guid}/ban` | `AuthenticatedAdmin` | Mark a player banned (`{ reason }`, NotEmpty, max 500). Idempotent: re-banning the same player is a no-op. Banned tokens are refused at the auth boundary with 401. |
 | `POST /admin/players/{playerId:guid}/unban` | `AuthenticatedAdmin` | Lift the ban. Idempotent. |
+| `POST /admin/content/categories` | `AuthenticatedAdmin` | Create a new category (`{ name, description }`). Returns 201 with new id. Audited under `Games.Category`. |
+| `PATCH /admin/content/categories/{id:guid}` | `AuthenticatedAdmin` | Edit category name/description. Audited. |
+| `POST /admin/content/links` | `AuthenticatedAdmin` | Create a new link (`{ categoryId, value, description, isActive }`). Returns 201 with new id. Audited under `Games.Link`. |
+| `POST /admin/content/links/{linkId:guid}/outgoing/{outgoingLinkId:guid}` | `AuthenticatedAdmin` | Add an outgoing edge between two links. Audited. |
+| `DELETE /admin/content/links/{linkId:guid}/outgoing/{outgoingLinkId:guid}` | `AuthenticatedAdmin` | Remove an outgoing edge. Audited. |
+| `POST /admin/content/links/{id:guid}/activate` | `AuthenticatedAdmin` | Re-activate a soft-deactivated link. Audited. |
+| `POST /admin/content/links/{id:guid}/deactivate` | `AuthenticatedAdmin` | Soft-deactivate a link (kept for history). Audited. |
 
 `/operations/processors` returns unprocessed, ready, scheduled retry, poisoned,
 failed counts, oldest unprocessed timestamp, and a small error sample per queue.

@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-20 (Administration Slice B9 closed)
+> Last updated: 2026-05-21 (Administration backend sprint closed — B10)
 
 ---
 
@@ -203,14 +203,17 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Administration sprint devam ediyor — B1–B9 kapandı.**
+**Administration backend sprint — B1–B10 kapandı.**
 B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +
 bootstrap seed 2026-05-19, B3 admin authentication 2026-05-20, B4
 admin authorization cross-cut 2026-05-20, B5 audit projection +
 `/admin/audit` endpoint 2026-05-20, B6 Quests catalog data-driven
 2026-05-20, B7 quest admin operations + first per-module
 AdminAuditing decorator 2026-05-20, B8 energy admin operations
-2026-05-20, B9 players ban/unban + auth boundary 2026-05-20.
+2026-05-20, B9 players ban/unban + auth boundary 2026-05-20,
+B10 content admin guard 2026-05-21.
+
+Backend tarafı tamam. F1-F6 frontend slice'ları sıraya alındı.
 
 B3 ile birlikte:
 - `IExecutionContextAccessor` artık `IsAdmin` + `AdminUserId` taşıyor
@@ -420,17 +423,57 @@ Bootstrap admin SQL seed bypass'i artık aynı testte 2'inci slice'a
 geliyor — Stats.IT TestBase de `NoAdminAuthorizationContext` stub'ı
 kazandı (decorator activation için).
 
-Sırada **Slice B10 — Content admin guard**:
-- Mevcut anonim `POST /categories`, `POST /links`, edge endpoint'leri
-  `/admin/...` altına taşınıyor; eski anonim route'lar siliniyor.
-- Domain'de `Category.Update/Deactivate`, `Link.Activate/Deactivate`
-  zaten var; gerekiyorsa eksiklikler eklenecek.
-- Games.Infrastructure'da per-module audit decorator + notification
-  (B7 template'in son kopyası).
-- Games.IT'de admin command + audit IT senaryoları.
+B10 ile birlikte:
+- 7 Games command'ı `IAdminCommand`'a dönüştürüldü (Create/Edit
+  Category, Create/Activate/Deactivate Link, Add/Remove Outgoing).
+  `AuditTargetType` `"Games.Category"` veya `"Games.Link"`. Player
+  gameplay command'ları (CreateGame, StartGame, MakeStep vb.) admin
+  değil.
+- `GamesAdminActionPerformedNotification` + handler +
+  `AdminAuditingCommandHandlerDecorator` Games.Infrastructure'a
+  eklendi (4'üncü ve son per-module template kopyası).
+  `GamesStartup` DomainNotificationsMap kaydı.
+- Games.Infrastructure → Administration.IntegrationEvents project
+  reference + ArchTest granular allow.
+- Yeni `AdminContentEndpoints`: POST `/admin/content/categories`,
+  PATCH `/admin/content/categories/{id}`, POST `/admin/content/links`,
+  POST/DELETE `/admin/content/links/{linkId}/outgoing/{outgoingLinkId}`,
+  POST `/admin/content/links/{id}/activate|deactivate`. Tümü
+  `AuthenticatedAdmin`.
+- Eski `POST /categories`, `PATCH /categories/{id}`, `POST /links/*`
+  silindi. GET `/categories`, GET `/links/{id}`, GET
+  `/links/{id}/outgoing`, GET `/categories/{id}` player akışı için
+  `AuthenticatedPlayer` policy'sinde kaldı.
+- Games.IT TestBase Administration'ı da boot ediyor ve default'ta
+  bir synthetic admin login eder; mevcut testler content command'larını
+  seed amaçlı kullandığı için. ContentAdminCommandTests non-admin
+  path için `Logout` çağırır.
+- Stats.IT'nin `NoAdminAuthorizationContext` stub'ı artık always-
+  logged-in synthetic admin döner — Games + Players cross-module
+  decorator zincirini activate etmek için. Audit row'lar test
+  arrangement by-product'ı olarak görülür ve tests arası silinir.
+- API.Tests `ValidationProblemDetailsTests.CommandValidationFailure`
+  testi `/admin/content/categories` endpoint'ine taşındı + admin
+  seed.
+- 4 yeni Games.IT (non-admin reject, CreateCategory audit, Edit
+  category audit target id, Link activate/deactivate çift audit).
 
-Bu sprint'in **backend** son slice'ı. Sonra F1-F6 frontend slice'ları
-gelecek (admin login + shell + quest/player/energy/audit UI).
+Backend sprint kapandı. **Toplam 368/368 test pass.** Modüler
+monolith Kamil disiplini ile yazılmış audit edilebilir admin altyapısı
+production-ready.
+
+Sırada **Frontend F1-F6** slice'ları:
+- F1: Admin login + ayrı session (`/admin/login`, `AdminSessionCubit`,
+  ayrı `AdminApiClient`).
+- F2: Admin shell + side nav (`AppAdminShell`).
+- F3: Quest catalog UI (list + create + edit + deactivate).
+- F4: Player search + admin detail + ban/unban UI.
+- F5: Energy admin UI (set/grant/reset).
+- F6: Audit view UI (paged + filter).
+
+Veya alternatif olarak **Apple/Google external token verifier**
+provider credential'ları gelirse backend production auth hattını
+kapatmak da gündeme alınabilir.
 
 Diğer aktif olmayan adaylar:
 

@@ -260,6 +260,7 @@ app.MapAdminAuditEndpoints();
 app.MapAdminQuestEndpoints();
 app.MapAdminEnergyEndpoints();
 app.MapAdminPlayerEndpoints();
+app.MapAdminContentEndpoints();
 app.MapCategoryEndpoints();
 app.MapLinkEndpoints();
 app.MapGameEndpoints();

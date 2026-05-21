@@ -20,6 +20,9 @@ public static class GamesStartup
         DomainNotificationsMap.Add(
             "Games.GameCompletedDomainEventNotification",
             typeof(GameCompletedDomainEventNotification));
+        DomainNotificationsMap.Add(
+            "Games.AdminActionPerformedNotification",
+            typeof(GamesAdminActionPerformedNotification));
     }
 
     public static void Initialize(IServiceCollection services, string connectionString)
