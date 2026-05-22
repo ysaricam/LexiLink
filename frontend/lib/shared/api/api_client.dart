@@ -64,6 +64,22 @@ class ApiClient {
     return _decodeObject(response.body);
   }
 
+  Future<Map<String, dynamic>> putJson(
+    String path, {
+    Map<String, dynamic>? body,
+  }) async {
+    final headers = await _headers();
+    final response = await _send(
+      () => _httpClient.put(
+        _config.uri(path),
+        headers: headers,
+        body: body == null ? null : jsonEncode(body),
+      ),
+    );
+
+    return _decodeObject(response.body);
+  }
+
   Future<http.Response> _send(Future<http.Response> Function() request) async {
     final response = await request().timeout(_config.timeout);
 

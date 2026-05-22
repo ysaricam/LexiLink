@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
 
 /// Shared placeholder rendered by each admin destination until its
 /// real implementation lands in F3-F6.
@@ -48,18 +49,7 @@ class AdminQuestsPage extends StatelessWidget {
   const AdminQuestsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const AdminPlaceholderPage(
-      title: 'Quests',
-      slice: 'F3',
-      bulletPoints: [
-        'List quest definitions (active + deactivated).',
-        'Create a new quest definition.',
-        'Edit goal / reward / prerequisite.',
-        'Deactivate quest definition.',
-      ],
-    );
-  }
+  Widget build(BuildContext context) => const AdminQuestsScreen();
 }
 
 class AdminPlayersPage extends StatelessWidget {

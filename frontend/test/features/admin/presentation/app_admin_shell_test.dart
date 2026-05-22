@@ -69,9 +69,12 @@ Future<void> _pumpShell(
 void main() {
   group('AppAdminShell', () {
     testWidgets('renders NavigationRail on wide viewports', (tester) async {
+      // Start at a still-placeholder destination so the wide-layout
+      // assertions don't accidentally exercise AdminQuestsScreen's
+      // SharedPreferences plumbing.
       await _pumpShell(
         tester,
-        initialLocation: '/admin/quests',
+        initialLocation: '/admin/players',
         tokenStore: InMemoryTokenStore(),
       );
 
@@ -100,16 +103,16 @@ void main() {
         (tester) async {
       await _pumpShell(
         tester,
-        initialLocation: '/admin/quests',
+        initialLocation: '/admin/players',
         tokenStore: InMemoryTokenStore(),
       );
 
-      expect(find.text('Coming in F3'), findsOneWidget);
+      expect(find.text('Coming in F4'), findsOneWidget);
 
-      await tester.tap(find.text('Energy').first);
+      await tester.tap(find.text('Audit').first);
       await tester.pumpAndSettle();
 
-      expect(find.text('Coming in F5'), findsOneWidget);
+      expect(find.text('Coming in F6'), findsOneWidget);
     });
 
     testWidgets('sign-out clears token store and routes to /admin/login',
@@ -119,7 +122,7 @@ void main() {
 
       await _pumpShell(
         tester,
-        initialLocation: '/admin/quests',
+        initialLocation: '/admin/players',
         tokenStore: store,
       );
       // Give the shell's _resolveStore future a chance to land.
