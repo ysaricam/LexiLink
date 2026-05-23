@@ -1285,6 +1285,248 @@ Goal: ship the second module to validate the modular monolith pattern. Scope: mi
 
 ---
 
+## Sprint Q1 — Quests Module Redesign (data-driven, lazy, chain-aware)
+
+Goal: replace the fixed-enum, hardcoded-behavior quest catalog with a
+fully data-driven model where every quest definition carries its own
+trigger + threshold + reward + prerequisite. PlayerQuest rows are
+**not** materialized at admin-create time; they are issued lazily when
+the player opens the app (splash sync) or the quest page. This keeps
+DB row growth bounded to actually-engaged players and removes the need
+for hardcoded `QuestType` event handlers.
+
+### Why now
+
+Manual testing of the closed Administration backend + admin frontend
+F1–F6 surfaced three real product gaps:
+
+1. **Closed catalog.** `QuestType` is a fixed enum (4 known values, all
+   seeded). Admin "Create quest" is functionally inert — every
+   selectable type already has a definition, so the only useful
+   actions are Edit / Deactivate / Reactivate. Adding new quest types
+   was a code+seed change, not an admin-runtime action.
+2. **Hardcoded behavior.** `GameCompletedIntegrationEventHandler` and
+   `AuthProviderLinkedIntegrationEventHandler` enumerate three known
+   types each. New types (even if the enum had `Custom1/2/3` slots)
+   never fire automatic issuance/progress because no handler knows
+   about them.
+3. **Eager broadcast cost.** The latest B15 slice (Quests listens to
+   `PlayerRegisteredIntegrationEvent` → issue all active definitions)
+   correctly auto-issues quests at register time, but every new admin
+   `CreateQuestDefinition` call would need an N-player broadcast to be
+   useful for existing players. At any non-trivial player count this
+   is wasteful for inactive accounts.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Quest identity | `QuestDefinition.Id` (Guid). `QuestType` enum **removed**. |
+| Definition shape | `Id`, `Name`, `Description`, `Trigger`, `Threshold`, `Reward`, `PrerequisiteQuestDefinitionId?`, `ProgressBaseline`, `IsActive`. |
+| Trigger | Enum: `GameCompletedTotal`, `GameCompletedDaily`, `AuthProviderLinked`. Fixed at 3 — extending requires a domain + handler change. |
+| Threshold | Positive int. Validated by `CreateQuestDefinitionCommandValidator`. |
+| Progress baseline | Enum: `FromSnapshot` (count starts at 0 from the player's counter snapshot at issuance) or `FromExistingTotal` (count from absolute counter, useful for retroactive milestones). Admin picks per definition. Only meaningful for `GameCompletedTotal`; ignored for Daily/AuthLinked. |
+| Prerequisite | Single FK to another `QuestDefinition`. Cycles rejected by validator. Deactivated prerequisites break the chain (downstream quests never issue). |
+| Issuance strategy | **Lazy / pull-based.** `GET /quests/me` performs a sync pass that issues missing eligible PlayerQuests and deletes expired Daily rows in one round-trip. No broadcast on admin create. No `PlayerRegisteredIntegrationEvent` handler. |
+| Progress storage | **Not stored.** `PlayerQuests.Progress` column removed. Progress is computed at read time as `min(player_counter - baseline_snapshot, threshold)` where `player_counter` comes from Stats. |
+| Daily expiry | Expired-and-unclaimed Daily PlayerQuest rows are **deleted** at every sync, not preserved. Stats / leaderboard already tracks long-term game-completion data; quest expiry rows have no audit value. |
+| Counter source | Cross-module read via `IQuestCounterReader` (Application contract, API host adapter). Reads `stats.PlayerStats.GamesCompleted` (Total), `stats.PlayerPeriodStats` (Daily, `PeriodType='Daily' + PeriodStartDate=today UTC`), and `players.PlayerAuthIdentities` (count > 0 = linked). |
+| Admin manual issue | **Removed.** `POST /admin/quests/players/{id}/issue` and `IssueQuestToPlayerCommand` deleted. With lazy issuance + chain prereq, an admin "force-issue" path has no remaining use case. |
+| Hardcoded event handlers | **Removed.** `GameCompletedIntegrationEventHandler` and `AuthProviderLinkedIntegrationEventHandler` deleted. Stats module already maintains the counters Quests projects from; Quests no longer needs to participate in real-time event processing. |
+
+### Architecture notes
+
+- **Counter ownership stays in Stats.** Quests becomes a pure consumer:
+  it reads from Stats' projection tables on every quest list query.
+  Module isolation preserved — Quests holds no real-time counter
+  state.
+- **No scheduler needed for Daily reset.** Lazy issuance + delete-
+  expired-on-sync means a player who returns after a week sees today's
+  Daily quest issued on the next `GET /quests/me`, and never sees the
+  stale week-old rows.
+- **Microservice extraction unaffected.** `IQuestCounterReader` is the
+  same sync-gateway pattern as `IEnergyGuard` and `IAdminLookup` — a
+  Quests.Application contract with the implementation in the API
+  composition root. Quests module remains structurally isolated.
+- **Schema migration is destructive.** Existing PlayerQuests and
+  QuestDefinitions rows are dropped and recreated. There are no
+  production players today, so no data preservation is required.
+  Recreated schema seeds zero rows; admin must define quests via the
+  admin panel (or DbUp seeds a fresh chain — TBD per Q1.2).
+
+### Slice plan
+
+#### Q1.1 — Domain reshape (target: 30 min)
+
+- Remove `QuestType.cs` enum. Add `QuestTrigger.cs` (3 values) and
+  `ProgressBaseline.cs` (2 values).
+- `QuestDefinition`: replace `QuestType`, `Goal`, `RewardAmount`,
+  `PrerequisiteQuestType` with new fields. `Name` (non-empty, ≤ 64),
+  `Description` (≤ 256), `Trigger`, `Threshold` (> 0), `Reward` (> 0),
+  `PrerequisiteQuestDefinitionId` (nullable Guid), `ProgressBaseline`.
+  `Activate` / `Deactivate` / `Update` mutators stay.
+- `PlayerQuest`: identity by `QuestDefinitionId` (FK), drop `QuestType`
+  + `Progress` columns from the aggregate, add
+  `ProgressBaselineSnapshot` (int) captured at issuance.
+- Domain events updated: `PlayerQuestIssuedDomainEvent`,
+  `PlayerQuestClaimedDomainEvent`, etc. carry
+  `QuestDefinitionId` instead of `QuestType`.
+- Domain rules updated: prerequisite chain cycle check (recursive
+  pre-check on Create / Update).
+
+#### Q1.2 — Schema migration via DbUp (target: 30 min)
+
+- `quests/Tables/010_PlayerQuests.sql` rewrite: drop `QuestType`,
+  `Progress` columns; add `QuestDefinitionId` FK + index +
+  `ProgressBaselineSnapshot`. Unique constraint
+  `UX_PlayerQuests_PlayerId_QuestDefinitionId` for idempotent
+  issuance.
+- `quests/Tables/020_QuestDefinitions.sql` rewrite: add `Name`,
+  `Description`, `Trigger`, `ProgressBaseline`,
+  `PrerequisiteQuestDefinitionId` FK; drop `QuestType` column +
+  unique index; drop `Goal`/`RewardAmount` rename to
+  `Threshold`/`Reward` (or keep column names — decide at slice time).
+- `quests/Tables/021_SeedQuestDefinitions.sql` rewrite: optional —
+  either seed zero rows (admin creates everything) or seed a default
+  6-step game-completion chain (1 → 3 → 5 → 10 → 50 → 100). Decide
+  with user at slice start.
+- View `v_PlayerQuests` updated to expose `QuestDefinitionId`.
+
+#### Q1.3 — Application reshape (target: 1.5 h)
+
+- `IssueQuestCommand` takes `QuestDefinitionId`. Handler reads the
+  current counter (Total or Daily, depending on definition's
+  `Trigger`) from the new `IQuestCounterReader`, captures the
+  baseline snapshot, persists PlayerQuest. Prereq check stays.
+- `GetActiveQuestsQueryHandler` rewritten as a two-pass operation:
+  - **Sync pass:** iterate active definitions; for each eligible
+    (prereq null or prereq claimed by this player) definition, insert
+    missing PlayerQuest with baseline snapshot. Delete expired
+    Daily rows.
+  - **Read pass:** join definitions + player counters + PlayerQuests;
+    compute `progress = min(counter - baseline, threshold)` and
+    `state` (Active / ReadyToClaim / Claimed). Return DTOs.
+- Remove `RecordQuestProgressCommand` + handler + validator
+  (progress is computed, never written).
+- Remove `GameCompletedIntegrationEventHandler`,
+  `AuthProviderLinkedIntegrationEventHandler`,
+  `PlayerRegisteredIntegrationEventHandler` (all hardcode quest
+  types and / or eager-issue; no longer needed).
+- Remove `IssueQuestToPlayerCommand` + handler + endpoint.
+- New `IQuestCounterReader` contract under
+  `Application/Configuration/CrossModule/` with three reads.
+- `IQuestCatalog` shrinks to definition lookup by id;
+  `ResolveAsync(QuestType)` removed.
+
+#### Q1.4 — Cross-module counter reader (target: 30 min – 1 h)
+
+- API host adapter `QuestCounterReader : IQuestCounterReader` in
+  `LexiLink.API/CrossModule/`. Uses `ISqlConnectionFactory` + Dapper
+  to query `stats.*` and `players.*` directly (analogous to how
+  `EnergyGuard` calls into Energy via the events bus, but here we
+  query view tables directly because the read is hot-path and
+  trivial).
+- Autofac registration in API composition root.
+- Quests.Application contract sits in
+  `Configuration/CrossModule/IQuestCounterReader.cs`.
+
+#### Q1.5 — API endpoints reshape (target: 20 min)
+
+- `AdminQuestEndpoints`: `Create` body becomes `{ name, description,
+  trigger, threshold, reward, prerequisiteQuestDefinitionId,
+  progressBaseline }`. `Update` body same minus name/trigger
+  (trigger and name immutable post-create per Q1.1 decision; revisit
+  if user wants editable names). `Reactivate` / `Deactivate` /
+  `Get` paths unchanged in shape.
+- Remove `POST /admin/quests/players/{playerId}/issue` and
+  `POST /admin/quests/players/{playerId}/{playerQuestId}/reset`
+  (admin manual-issue removed entirely per locked decisions).
+- `GET /quests/me` unchanged externally; internally now runs the
+  lazy sync.
+
+#### Q1.6 — Frontend reshape (target: 1 h)
+
+- Frontend `AdminQuestType` enum **removed**. Quest type is now a
+  `QuestTrigger` enum (3 values) shipped with the AdminQuestsRepository.
+- Admin create form fields:
+  - `Name` text
+  - `Description` multi-line text
+  - `Trigger` dropdown (3 fixed)
+  - `Threshold` numeric input
+  - `Reward` numeric input
+  - `Progress baseline` dropdown (visible only when
+    `Trigger=GameCompletedTotal`)
+  - `Prerequisite` dropdown — populated from other active definitions
+    (excludes self in Edit mode); "None" option present
+- Admin row UI: shows `Name` + `Trigger.Threshold` (e.g. "Bronz —
+  3 oyun") + reward badge. Active/Inactive badge. Edit / Deactivate
+  / Reactivate icons (existing). No type/cadence column anymore.
+- Player `/quests` screen: definition `Name` + `Description` displayed;
+  progress bar + threshold; existing Claim button.
+- Frontend roadmap doc reference: see `frontendRoadmap.md > Slice
+  Q1.6`.
+
+#### Q1.7 — Tests (target: 1.5 h)
+
+- Replace all `QuestType.*` references in tests with
+  `QuestDefinitionId` (Guid) or trigger constants.
+- Domain unit tests: chain prereq cycle rejection; daily expire
+  computation; issue idempotency on unique constraint;
+  baseline-snapshot correctness.
+- Application unit tests: `IssueQuestCommandHandler` (baseline
+  capture, prereq honor), `GetActiveQuestsQueryHandler` (sync pass
+  insert + delete-expired; read pass projection math).
+- Integration tests: full chain scenario — admin creates chain
+  (threshold 1 → 3 → 5), player registers, plays 1 game → quest 1
+  ReadyToClaim, claims → quest 2 appears on next sync, plays 3 games
+  → quest 2 ReadyToClaim. Daily quest expiry happens at midnight.
+- API tests: validation problem details for invalid Create payloads.
+- Frontend tests: admin form behaviors; player screen rendering of
+  computed progress.
+
+#### Q1.8 — Manual sync + commit (target: 30 min)
+
+- Stack restart with the new schema.
+- Admin creates a chain via UI (1, 3, 5, 10 GameCompletedTotal).
+- Open guest player; quests page shows only quest 1 active.
+- Play 1 game; refresh quests → quest 1 ReadyToClaim; claim;
+  refresh → quest 2 appears with progress 0.
+- Repeat through chain; verify Daily creation/expiry.
+- Commit per-slice (Q1.1 ... Q1.8 — eight commits).
+- Update `progress.md`, `activeContext.md`, `frontendActiveContext.md`,
+  `frontendProgress.md`, `GLOSSARY.md` (new terms: Trigger, Threshold,
+  ProgressBaseline, lazy issuance, counter reader).
+
+### Risk / open questions
+
+- **Default seed?** If we ship zero seeded quests, the player onboarding
+  experience starts with an empty quest list — fine for development,
+  but production launch should ship a meaningful default chain via
+  DbUp. Decide at Q1.2 start.
+- **Trigger extensibility.** Adding a new trigger (e.g. "category Spor
+  completed 10 times") requires a domain + counter reader extension.
+  Not a Q1 concern — design keeps the path open by isolating reads
+  behind `IQuestCounterReader`.
+- **Editing immutable fields.** Per Q1.5, `Name` and `Trigger` are
+  fixed after Create. If the user wants editable names later, the
+  decision is reversible — just expand the Update contract.
+
+### Acceptance
+
+- Admin can create a new quest definition via the admin panel with a
+  custom name and arbitrary threshold; the definition is visible to
+  every eligible player on their next `GET /quests/me` call without
+  any background processing.
+- Player quest list reflects real-time game-completion progress
+  computed from Stats counters; no manual progress recording is
+  required anywhere in the codebase.
+- All 368+ tests pass after Q1.7 with the new identity model.
+- Frontend admin form lets the operator build a 6-step chain
+  (1 → 3 → 5 → 10 → 50 → 100) end-to-end and verify the chain
+  unlocks step by step via manual play.
+
+---
+
 ## Beyond Sprint 7
 
 - **Architecture alignment pass (current)** — Kamil comparison sonrası eksikler sırayla kapatılıyor. Slice 1 ArchTests baseline, Slice 2 API module facade, Slice 3 module startup APIs ve Slice 4 no-repeat completed start-target pairs tamamlandı.

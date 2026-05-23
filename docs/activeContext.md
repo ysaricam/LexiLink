@@ -4,15 +4,124 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-21 (Administration backend sprint closed — B10)
+> Last updated: 2026-05-23 (Administration backend B1–B10 + admin frontend F1–F6 closed; Sprint Q1 Quests Redesign **planned, not yet started**).
 
 ---
 
 ## Active Sprint
 
+**Sprint Q1 — Quests Module Redesign (data-driven, lazy, chain-aware).**
+Sprint plan locked in `ROADMAP.md > Sprint Q1 — Quests Module Redesign`.
+Eight slices (Q1.1 → Q1.8). Implementation pending operator approval
+per slice — only documentation has been written.
+
+Goal: replace the fixed-enum `QuestType` catalog with a fully
+data-driven `QuestDefinition` shape carrying `Name`, `Description`,
+`Trigger`, `Threshold`, `Reward`, `PrerequisiteQuestDefinitionId`,
+`ProgressBaseline`. Players see new admin-defined quests **lazily**:
+the next `GET /quests/me` call (splash sync or quest page open)
+performs eligibility check + missing-row insertion + expired-daily
+cleanup in one round-trip. PlayerQuest progress is **computed** from
+Stats counters at read time, never written. Eager broadcast +
+`PlayerRegisteredIntegrationEventHandler` + the hardcoded
+`GameCompletedIntegrationEventHandler` /
+`AuthProviderLinkedIntegrationEventHandler` all delete in Q1.3.
+
+Why now: manual testing of the closed admin frontend (F1–F6) exposed
+three product gaps — closed catalog (enum-fixed), hardcoded behavior
+(handlers know only 4 quest types), and eager broadcast cost (B15
+auto-issuance scales poorly with player count). Operator preference
+(2026-05-23) for "lazy, pull-based" issuance triggered on splash + quest
+page open is the architectural commitment.
+
+Tracked carefully because schema migration is **destructive** (drop
+`QuestType` column from PlayerQuests + QuestDefinitions). No
+production data exists yet, so no migration path; existing local test
+PlayerQuests rows will be lost on first run after Q1.2.
+
+### Recently closed (this session, 2026-05-22…23)
+
+- **Backend B11 — admin energy GET.** `GET /admin/players/{playerId}/energy`
+  passthrough reusing `GetPlayerEnergyQuery` under `AuthenticatedAdmin`.
+  Unblocks the admin energy console UI.
+- **Backend B12 — Reactivate quest definition.** Mirror of Deactivate;
+  `POST /admin/quests/definitions/{id}/reactivate`. Domain method already
+  existed. Will be preserved in Q1 — Reactivate stays meaningful in the
+  new model.
+- **Backend B15 — Quests listens to `PlayerRegisteredIntegrationEvent`.**
+  New guest player gets all active QuestDefinitions issued (idempotent,
+  prereq-respecting). **Will be deleted in Q1.3** — lazy issuance
+  replaces eager-on-register issuance.
+- **Backend Npgsql fix — `EnableLegacyTimestampBehavior=true`.** Was
+  silently converting `DateTime.UtcNow` → local-shifted value when
+  writing to `timestamp without time zone` columns, then reading back +
+  re-tagging as UTC. Net effect: 7-hour shift on Mac dev box → energy
+  refill projection returned a fully-refilled bucket. AppContext switch
+  in `Program.cs` line 1 is the cleanest fix; columns stay as-is.
+- **Backend Player /quests/me filter.** Join with `QuestDefinitions` +
+  `WHERE IsActive=TRUE`; deactivated definitions hide their PlayerQuests
+  immediately from the player view without deleting the rows (claim
+  history intact). Reactivate brings them back.
+- **Backend QuestType.Custom1/2/3 placeholder slots.** Added to the
+  enum to let the admin Create flow be exercised against types that
+  don't already have a definition. Behaviorally inert (no event handler
+  triggers issuance/progress). **Will be deleted with the enum itself
+  in Q1.1.**
+- **Backend ProductionJwt dev preset.** API now runs in
+  `Authentication__Mode=ProductionJwt` with a 32+ char dev signing key
+  so admin JWTs roundtrip correctly (`DevelopmentBearer` only accepts
+  raw GUIDs, which broke admin endpoint auth after F1 admin login
+  started returning a real JWT).
+- **Admin frontend F1–F6 closed** (2026-05-22…23). See
+  `frontendActiveContext.md > Admin frontend sprint (F1–F6)` for slice
+  shape detail.
+- **Frontend player guest flow now exchanges a JWT.** Pre-existing
+  anti-pattern (store `playerId` as the bearer) worked only in
+  `DevelopmentBearer` mode and broke under `ProductionJwt`.
+  `GuestPlayerRepository.registerGuest` now also calls `POST /auth/token`
+  (provider=Guest, externalToken=`dev:Guest:{deviceId}`) and stores the
+  returned JWT. `TokenStore` extended with `readPlayerId` /
+  `savePlayerId` so cubits that need the player's identity stop reading
+  it from the access token field.
+- **Frontend Flutter web path strategy.** `usePathUrlStrategy()` in
+  `lib/main.dart` so address-bar `/admin/login` resolves directly
+  instead of falling into the splash redirect. `flutter_web_plugins`
+  added to pubspec.
+- **Frontend admin dialogs use `useRootNavigator: false`.** go_router
+  16 + `ShellRoute` + default `showDialog` trips a "popped last page"
+  assertion that blanks the shell. Every admin showDialog call now
+  bypasses the root navigator.
+- **Frontend admin energy card stays visible during saving.** Earlier
+  the whole card was replaced by a spinner; the new value flip was
+  invisible to the operator. Now the card stays mounted with a dimmed
+  overlay + small spinner during saving.
+
+### Lessons captured this session (intentional patterns)
+
+- **Npgsql 6+ `timestamp without time zone` requires `Kind=Local` /
+  `Unspecified`.** Passing `Kind=Utc` silently shifts. We chose the
+  AppContext legacy switch over a `timestamptz` column-level migration
+  because the legacy behavior is correct for our UTC-everywhere code
+  and column migration adds churn without architectural benefit.
+- **go_router + `showDialog` in a ShellRoute requires
+  `useRootNavigator: false`.** Default makes Navigator.pop bubble up
+  to the delegate and trip the "popped last page" assertion. Every
+  admin dialog needs the explicit override.
+- **Player token store separation.** Treating the bearer token as a
+  player ID is a category error. `TokenStore` now persists both
+  values; cubits use the dedicated `readPlayerId` API.
+- **Quest catalog limitations exposed.** The current enum-based
+  catalog is unfit for the product: admin can't introduce new quests
+  without a code+seed change, and seeded types are all "taken" so
+  Create is functionally inert. Q1 redesign is the response.
+
+---
+
+## Last sprint closure (kept for context)
+
 **Administration Module** — sixth backend module. Sprint plan locked
-in `ROADMAP.md > Administration Module`. Foundation slice (B1) is the
-next implementation step.
+in `ROADMAP.md > Administration Module`. All ten slices (B1–B10)
+shipped 2026-05-21.
 
 Why now: an admin frontend is on the backlog (quest catalog CRUD,
 per-player energy edits, content management). A real permission model

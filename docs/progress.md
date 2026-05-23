@@ -4,6 +4,216 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Administration Module + admin frontend session (2026-05-21 to 2026-05-23)
+
+The sixth backend module (Administration) and the six-slice admin
+frontend (F1–F6) shipped together. Mid-session manual testing surfaced
+follow-on backend fixes (B11/B12/B15, Npgsql timestamp behavior,
+ProductionJwt dev preset). Frontend session details live in
+`frontendProgress.md > Admin frontend sprint (F1–F6)`.
+
+### Slice B1 — Administration module foundation (2026-05-21, commit 4164868)
+
+- New module `LexiLink.Modules.Administration` with Domain /
+  Application / Infrastructure / IntegrationEvents / Tests /
+  IntegrationTests projects. Schema `administration`.
+- `AdminUser` aggregate (`Id`, `Email` VO, `Role` VO with single
+  `Admin` value, `CreatedAt`, `IsActive`, `DisabledAt?`).
+  `RegisterAdminUserCommand` idempotent on email.
+- Per-module CQRS contracts + outbox + decorator chain copied from
+  Players module template (Kamil-faithful, no shared Common contract).
+- DbUp scripts: `administration` schema, `AdminUsers`,
+  `OutboxMessages`, `InboxMessages`, `AdminActionAudit`.
+
+### Slice B2 — Admin registration + bootstrap seed + outbox publish (2026-05-21, 91312da)
+
+- `AdminUserRegisteredIntegrationEvent` published from outbox.
+- `AdministrationBootstrapHostedService` reads
+  `Administration:Bootstrap:AdminEmails` list and issues
+  `RegisterAdminUserCommand` per email on every API start. One DI
+  scope per email to avoid EF OwnsOne shadow-FK conflicts when
+  seeding multiple admins. Failures logged and skipped — API still
+  starts; operator fixes config and restarts.
+
+### Slice B3 — Admin authentication (2026-05-21, efadd26)
+
+- `POST /auth/admin/token` endpoint. Body: `{email, externalToken}`.
+- `IExternalAdminIdentityVerifier`: dev impl checks
+  `externalToken == "dev:admin:{email}"`. Production impl deferred.
+- `JwtTokenIssuer.IssueAdmin(adminUserId)` adds `role=Admin` +
+  `admin_id` claim alongside the standard subject claim.
+- `AuthConstants`: `AdminRoleValue`, `AdminUserIdClaimType`,
+  `AuthenticatedAdminPolicy`.
+- `LexiLinkBearerAuthenticationHandler` (both modes) checks the
+  Administration module for a matching active admin and stamps the
+  role claim onto the principal.
+
+### Slice B4 — Admin authorization cross-cut (2026-05-21, 4e9385b)
+
+- `IAdminAuthorizationContext` contract in `Common.Application.Admin`.
+- API host adapter `AdminAuthorizationContext` reads the JWT claims
+  and exposes `IsAdmin` / `AdminUserId` to consumer modules.
+- `IExecutionContextAccessor` extended with `IsAdmin` /
+  `AdminUserId`.
+- `IAdminCommand` marker interface (`AuditTargetType`,
+  `AuditTargetId`).
+- `AdminAuthorizationException` for non-admin attempts on admin
+  commands.
+
+### Slice B5 — Admin audit projection (2026-05-21, 18baf2f)
+
+- `AdminActionPerformedIntegrationEvent` (cross-module).
+- `administration.AdminActionAudit` table + inbox projection handler.
+- `GetAdminActionsQuery` with offset/limit + adminUserId/targetType/
+  targetId filters. Default limit 50, max 200.
+- `GET /admin/audit/` endpoint.
+
+### Slice B6 — Quests catalog data-driven (2026-05-21, 007098d)
+
+- Quests' `QuestDefinition` promoted from a record to an aggregate
+  with `Create / Update / Deactivate / Reactivate` and per-action
+  domain events.
+- `quests.QuestDefinitions` table + DbUp seed (4 rows for the existing
+  quest types).
+- `QuestCatalog` infra delegates to `IQuestDefinitionRepository`.
+- Existing hardcoded `QuestDefinitionEntry` constants deleted.
+- Note: predecessor to the broader Q1 redesign — see
+  `ROADMAP.md > Sprint Q1 — Quests Module Redesign` for the full
+  data-driven shape, which also removes the `QuestType` enum and
+  switches issuance to lazy / pull-based.
+
+### Slice B7 — Quest admin operations + first per-module audit decorator (2026-05-21, ba09c55)
+
+- `Application/Admin/QuestDefinitions/{Create, Update, Deactivate}` +
+  `Application/Admin/PlayerQuests/{IssueQuestToPlayer, ResetPlayerQuest}`.
+- `Application/Admin/QuestDefinitions/GetQuestDefinitions` query
+  returning `QuestDefinitionDto`.
+- Audit decorator template introduced **per-module** (not in Common):
+  `AdminAuditingCommandHandlerDecorator<T>` in
+  `Quests.Infrastructure/Configuration/Processing/`. Same chain is
+  copied to Energy / Players / Games infrastructures in later slices
+  rather than shared (per Kamil "decorator-per-module" pattern saved
+  in operator memory).
+- `QuestsAdminActionPerformedNotification` +
+  `DomainNotificationsMap.Instance` wiring routes the audit through
+  the existing outbox.
+
+### Slice B8 — Energy admin operations (2026-05-21, 7ed6a60)
+
+- `Application/Admin/{SetPlayerEnergy, GrantBonusEnergy, ResetPlayerEnergy}`.
+- `PlayerEnergy.AdminSet` / `AdminReset` raise dedicated domain
+  events; `GrantBonus` is the existing public domain method (over-max
+  permitted).
+- Energy module gets its own
+  `AdminAuditingCommandHandlerDecorator` (4th per-module template
+  copy by slice end).
+
+### Slice B9 — Players admin ban/unban + auth boundary refusal (2026-05-21, 33c8cb4)
+
+- `Player` aggregate: `Ban(reason)` / `Unban()` + ban state fields
+  (`IsBanned`, `BannedReason`, `BannedAt`).
+- DbUp `030_AddPlayerBanColumns.sql`.
+- `Application/Admin/{BanPlayer, UnbanPlayer, GetPlayerAdminDetail}`.
+- `IPlayerStatusLookup` cross-module contract; auth handler refuses
+  banned tokens at the boundary (admin tokens are exempt — a banned
+  player who is also an admin can still authenticate as admin).
+- `GET /admin/players/{playerId}` + `POST /ban` + `POST /unban`.
+
+### Slice B10 — Content admin guard (2026-05-21, 3bc4dde)
+
+- Games' write commands (`Create/EditCategory`,
+  `Create/Activate/Deactivate/AddOutgoingLink/RemoveOutgoingLink Link`)
+  promoted to `IAdminCommand`. Player-facing read endpoints stay on
+  `AuthenticatedPlayer` policy.
+- New `/admin/content/...` endpoint group, behind `AuthenticatedAdmin`.
+- Games module gets the per-module audit decorator (final template
+  copy of B-series).
+- Games.IT TestBase boots Administration and default-logs-in a
+  synthetic admin so existing content-seeding tests keep passing.
+- `ValidationProblemDetailsTests.CommandValidationFailure` retargeted
+  from `/categories` to `/admin/content/categories`.
+- **Backend sprint closed:** 368/368 tests pass.
+
+### Mid-test follow-ons (2026-05-22…23)
+
+These shipped after F1–F6 manual testing surfaced gaps. None changes
+the closed B1–B10 contract; all are additive or environmental.
+
+**Slice B11 — Admin energy GET endpoint** (commit 45f8ac0, also
+covers frontend F5).
+
+- `GET /admin/players/{playerId}/energy` returning
+  `PlayerEnergySnapshotDto`. Reuses the existing
+  `GetPlayerEnergyQuery` handler under `AuthenticatedAdmin`.
+- Tiny passthrough; the query is auth-agnostic (no
+  `IExecutionContextAccessor` dependency), so reuse is direct.
+- Unblocks the F5 admin energy console UI.
+
+**Slice B12 — Reactivate quest definition** (uncommitted at doc time;
+will ship with Q1 commit prep).
+
+- `Application/Admin/QuestDefinitions/ReactivateQuestDefinition/`
+  command + handler mirrors Deactivate.
+- `POST /admin/quests/definitions/{id}/reactivate` endpoint.
+- Domain `QuestDefinition.Reactivate()` already existed; this slice
+  exposes it via the Admin pipeline + audit decorator.
+
+**Slice B15 — Quests listens to `PlayerRegisteredIntegrationEvent`**
+(uncommitted; **will be deleted in Q1.3**).
+
+- `PlayerRegisteredIntegrationEventHandler` issues all active
+  QuestDefinitions to a newly registered player (idempotent,
+  prereq-respecting).
+- Worked locally for the new-player flow but does not address
+  existing players when an admin creates a new definition. Lazy
+  issuance (Q1) is the long-term answer.
+
+**Npgsql timestamp behavior fix** (uncommitted).
+
+- `AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true)`
+  in `Program.cs` (before `WebApplication.CreateBuilder`).
+- Root cause: Npgsql 6+ converts `Kind=Utc` `DateTime` values into
+  the session's local timezone when writing to `timestamp without
+  time zone`. Reads round-trip the local-shifted value, and consumers
+  (e.g. `EnergyRefillCalculator`) call `DateTime.SpecifyKind(..., Utc)`
+  → treats the local-time value as UTC → 7-hour drift on the dev
+  Mac. Energy projection then computed 24 refill intervals and
+  always returned a fully-refilled bucket.
+- Legacy switch writes UTC values verbatim into `timestamp` columns
+  (the behavior the codebase assumes everywhere). One-liner; column
+  type migration not required.
+
+**ProductionJwt dev preset** (env-only, not committed code).
+
+- Local dev now runs API with `Authentication__Mode=ProductionJwt` +
+  a 32+ char dev signing key + matching issuer/audience. Reason:
+  `DevelopmentBearer` only accepts raw GUIDs as bearer tokens, but
+  the admin login flow returns a real JWT (Slice B3). Player flow
+  updated correspondingly on the frontend
+  (`GuestPlayerRepository` now calls `/auth/token` after
+  `/players/guest`).
+- Operator-level configuration only; no code change in this
+  session. Production already required these env vars per
+  `OPERATIONS.md`.
+
+**Backend Player /quests/me filter for deactivated definitions**
+(uncommitted).
+
+- `GetActiveQuestsQueryHandler` SQL joins with `quests.QuestDefinitions`
+  and filters `qd.IsActive = TRUE`. Deactivating a definition hides
+  its rows from the player immediately; reactivating brings them
+  back. Rows stay in the DB (claim history preserved).
+
+**Backend QuestType.Custom1/2/3 placeholder slots** (uncommitted;
+**will be deleted with the enum in Q1.1**).
+
+- 3 placeholder values added to the enum so the admin Create flow
+  can be exercised end-to-end against types that don't already have
+  a definition. Behaviorally inert — no event handler triggers
+  issuance / progress for these types.
+
+---
+
 ## Game Options Selection — target reachability revision (2026-05-17)
 
 İlk teslimat sırasında gözden kaçan bug: density-only seçimde target'a giden

@@ -5,6 +5,166 @@ yeniden yazilmaz.
 
 ---
 
+## Admin frontend sprint (F1–F6) ✅ closed (2026-05-22…23)
+
+Backend Administration sprint (B1–B10) kapandıktan sonra altı slice'lık
+admin shell. Sprint kapanışında 103/103 test pass, flutter analyze 5
+pre-existing info, flutter build web ok.
+
+### Slice F1 — Admin login + ayrı session (2026-05-22, commit 70031bf)
+
+- `features/admin_auth/` yeni feature klasörü:
+  - `data/admin_session.dart` — AdminSession DTO (adminUserId, email,
+    role, accessToken, expiresAt).
+  - `data/admin_token_store.dart` — `SharedPreferencesAdminTokenStore`,
+    key `lexilink.admin.accessToken`. Player session ile orthogonal —
+    her ikisi farklı `TokenStore` impl'ine sahip.
+  - `data/admin_auth_repository.dart` — `POST /auth/admin/token` çağrısı.
+  - `application/admin_session_cubit.dart` — checking / unauthenticated
+    / authenticating / authenticated / failure state machine.
+  - `presentation/admin_login_screen.dart` — `/admin/login` route. Email
+    + external token form, dev verifier `dev:admin:{email}`. Success →
+    `context.go('/admin')`.
+- Router: `/admin/login` + `/admin` rotaları eklendi.
+- Tests: admin_auth_repository (happy + 401) + admin_session_cubit
+  (checkSession, signIn, signOut, 401/404 friendly messages). 53/53.
+
+### Slice F2 — Admin shell + ShellRoute nav (2026-05-22, commit f57cede)
+
+- `features/admin/presentation/app_admin_shell.dart` — NavigationRail
+  (>= 600 px) / NavigationDrawer (mobile) ile dört destination
+  (Quests / Players / Energy / Audit). Sign-out admin token store'unu
+  temizler ve `/admin/login`'e gider; player session etkilenmez.
+- Router refactor: `/admin/{quests,players,energy,audit}` ShellRoute
+  altında. `/admin` → `/admin/quests` default redirect. Router-level
+  guard: `/admin/*` için token persistsiz ise login'e.
+- F1'in geçici `AdminHomeScreen` placeholder'ı silindi.
+- Tests: 4 widget smoke (wide rail, narrow drawer, destination
+  navigation, sign-out flow). 57/57.
+
+### Slice F3 — Admin quest catalog CRUD (2026-05-22, commit c7847ae)
+
+- `features/admin_quests/`:
+  - `data/quest_definition.dart` + `quest_enums.dart` — DTO + wire-form
+    enum (`AdminQuestType.firstGameCompleted('FirstGameCompleted')`,
+    vb.) server'ın `JsonStringEnumConverter` formatıyla eşleşiyor.
+  - `data/admin_quests_repository.dart` — fetch / create / update /
+    deactivate.
+  - `application/admin_quests_cubit.dart` — load + create / update /
+    deactivate, her mutation sonrası reload.
+  - `presentation/admin_quests_screen.dart` + `quest_definition_form.dart`
+    — Card-list (her satırda cadence + inactive badge), FAB → form
+    dialog (Create), per-row Edit + Deactivate.
+- `ApiClient.putJson` eklendi.
+- Tests: repository (4 endpoint), cubit (load happy/failure + 3
+  mutation), screen smoke (list + FAB + empty state).
+- F2 shell testleri retargeted: gerçek admin sayfaları yerine stub
+  `Scaffold` destination'ları (her slice'ta yeniden hedeflemeden
+  kurtarır). 68/68.
+
+### Slice F4 — Admin player console (2026-05-22, commit a31622b)
+
+- `features/admin_players/`:
+  - `data/player_admin_detail.dart` — DTO mirror.
+  - `data/admin_players_repository.dart` — fetchDetail / ban / unban.
+  - `application/admin_players_cubit.dart` — lookup → detail; 404 ayrı
+    `notFound` status; mutation sonrası reload.
+  - `presentation/admin_players_screen.dart` — GUID input + Look-up
+    button; detail card (avatar, handle#discriminator selectable,
+    banned/guest badges); contextual primary action (Ban / Unban) +
+    confirmation dialogs.
+- Kapsam notu: search-by-handle yok — Players modülünde
+  `GET /admin/players/{id}` dışında query yok. Backend slice (B-X)
+  olarak ayrı tutuldu, frontend-only filtreyle örtülmedi.
+- Tests: repository (4 path), cubit (5 senaryo), screen smoke (initial
+  / lookup / notFound). 80/80.
+
+### Slice F5 + B11 — Admin energy console (2026-05-22, commit 45f8ac0)
+
+- Backend B11: `GET /admin/players/{playerId}/energy` — passthrough
+  endpoint reusing `GetPlayerEnergyQuery` under `AuthenticatedAdmin`.
+- Frontend:
+  - `features/admin_energy/`:
+    - `data/player_energy_snapshot.dart` — PlayerEnergySnapshotDto
+      mirror.
+    - `data/admin_energy_repository.dart` — fetch / setAmount / grant /
+      reset.
+    - `application/admin_energy_cubit.dart` — lookup, set / grant /
+      reset (her birinde snapshot reload). 404 → `notFound`.
+    - `presentation/admin_energy_screen.dart` — GUID lookup, energy
+      card (current / max, Full / Over max badge, regen info), Set /
+      Grant / Reset butonları + int-input dialogs. Grant copy
+      over-max'in kasıtlı olduğunu açıkça yazıyor
+      (`PlayerEnergy.GrantBonus` semantiğiyle hizalı).
+- Tests: 93/93.
+
+### Slice F6 — Admin audit log (2026-05-23, commit 5d8e75b)
+
+- `features/admin_audit/`:
+  - `data/admin_action.dart` — AdminActionDto mirror.
+  - `data/admin_audit_repository.dart` — `fetch(adminUserId?, targetType?,
+    targetId?, offset, limit)`; null/empty filter key'leri query
+    string'den çıkarılır (server'ın string.IsNullOrWhiteSpace
+    coalescing davranışıyla hizalı).
+  - `application/admin_audit_cubit.dart` — load / applyFilter (offset
+    sıfırlar) / nextPage / prevPage. `hasMore` server'da total-count
+    olmadığı için `returned.length == pageSize` yaklaşımıyla
+    çıkarılır.
+  - `presentation/admin_audit_screen.dart` — filter row (admin id /
+    target type / target id) + Apply / Clear. Card list (action type,
+    occurred-on, target type/id, admin id). Per-row "View payload"
+    pretty-printed JSON dialog.
+- Shared `AdminPlaceholderPage` kaldırıldı — dört destination da artık
+  gerçek ekranlara çözülüyor. Route-target wrapper'ları
+  `admin_placeholder_page.dart`'da kalır.
+- Tests: 103/103.
+
+### Manual-test follow-on fixes (2026-05-22…23, uncommitted at doc time)
+
+These addressed real bugs / gaps surfaced during end-to-end manual
+testing of F1–F6. They ship either as an interim "frontend stabilization"
+commit or get absorbed into Sprint Q1.6.
+
+- **Splash deep-link fix** — `usePathUrlStrategy()` in `lib/main.dart`
+  before `runApp`. `flutter_web_plugins` added to pubspec. Address-bar
+  `/admin/login` now resolves directly; previously bounced through
+  splash → `/home`.
+- **Player guest flow JWT exchange** —
+  `GuestPlayerRepository.registerGuest` now also calls
+  `POST /auth/token` after `POST /players/guest`, returning
+  `GuestSession(playerId, accessToken)`. `GuestEntryCubit` and
+  `SessionCubit.setAuthenticated` updated to carry both. Pre-existing
+  anti-pattern (use `playerId` as the bearer) only worked in
+  `DevelopmentBearer` mode and silently broke under `ProductionJwt`.
+- **TokenStore.savePlayerId / readPlayerId** — separate persisted
+  key `lexilink.playerId`. `GameStartCubit` and
+  `ProfileSummaryCubit` now read `playerId` from the dedicated API
+  (no longer mis-read the access token as the player ID).
+- **`useRootNavigator: false` on every admin showDialog** — go_router
+  16 + ShellRoute makes default `Navigator.pop` trip a "popped last
+  page" assertion that blanks the shell. Override applied across
+  quests / players / energy / audit dialogs.
+- **Admin energy card stays visible during saving** — Old behavior
+  replaced the entire card with a spinner so the operator never saw
+  the value flip; new build keeps the card mounted with a dimmed
+  Stack + small spinner during the saving state.
+- **Quest create dropdown "(exists)" + disabled** — taken types
+  shown but disabled; if all types are taken (which is the case with
+  the seeded 4 + Custom1/2/3 enum), an inline message points the
+  operator to Edit / Deactivate / Reactivate.
+- **`AdminQuestType.custom1/2/3` mirror values** — corresponds to
+  backend `QuestType.Custom1/2/3` placeholder enum values. Both will
+  be removed in Q1.1 / Q1.6.
+- **Quest reactivate icon** — inactive rows show a power-icon
+  reactivate button; wired to backend B12
+  (`POST /admin/quests/definitions/{id}/reactivate`).
+- **Player /quests/me deactivated filter** (backend) makes
+  deactivated definitions disappear from the player view without
+  deleting the underlying PlayerQuests rows. Reactivate brings them
+  back. Existing claim history is preserved.
+
+---
+
 ## Frontend Planning Started (2026-05-13)
 
 ### Slice 11 — Game Screen Polish (2026-05-17)

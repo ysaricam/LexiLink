@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-22 (Admin F1 closed)
+> Last updated: 2026-05-23 (Admin F1–F6 closed; manual-test stack stabilized; Sprint Q1 frontend reshape **planned, not yet started**)
 
 ---
 
@@ -392,46 +392,92 @@ Sıradaki onerilen alt adim somut olarak ilan edilmedi; potansiyel adaylar:
 
 ---
 
-## Admin frontend sprint (F1-F6)
+## Admin frontend sprint (F1–F6) ✅ closed (2026-05-22…23)
 
-Backend Administration sprint kapandı (B1-B10). Frontend tarafında
-admin shell'i 6 slice halinde geliyor.
+Backend Administration sprint (B1–B10) kapandıktan sonra 6 slice'lık
+admin shell. Tüm slice'lar kapandı; teslimat detayı
+`frontendProgress.md > Admin frontend sprint (F1–F6)` içinde.
 
-Tamamlanan: **Slice F1 — Admin login + ayrı session (2026-05-22)**.
+Özet:
 
-- `features/admin_auth/` yeni feature klasoru:
-  - `data/admin_session.dart` — AdminSession DTO (adminUserId, email,
-    role, accessToken, expiresAt).
-  - `data/admin_token_store.dart` — SharedPreferencesAdminTokenStore,
-    key 'lexilink.admin.accessToken'. Player session ile orthogonal.
-  - `data/admin_auth_repository.dart` — `POST /auth/admin/token` çağrısı.
-    Yanıt validate edip AdminSession döner; backend kontratina sıkı bağlı.
-  - `application/admin_session_cubit.dart` — checking / unauthenticated /
-    authenticating / authenticated / failure state machine. checkSession
-    persisted token'ı restore eder; signIn happy path token store + state
-    yazar; 401/404/400 için friendly error message.
-  - `presentation/admin_login_screen.dart` — `/admin/login` route.
-    AppScreenSize.compact, email + external token inputs (development
-    verifier `dev:admin:{email}`), submit / loading / error UX. Successful
-    sign-in → `context.go('/admin')`.
-  - `presentation/admin_home_screen.dart` — placeholder `/admin` route.
-    Token store'dan kontrol eder; admin token yoksa /admin/login'e redirect.
-    Sign-out butonu token'ı temizler. F2-F6 bu yerini AppAdminShell ile
-    alacak.
-- Router: `/admin/login` ve `/admin` route'ları eklendi.
+- **F1** — Admin login + ayrı session (commit 70031bf). `admin_auth`
+  feature, `SharedPreferencesAdminTokenStore` (key
+  `lexilink.admin.accessToken`, player session ile orthogonal),
+  `AdminSessionCubit` state machine, `/admin/login` route.
+- **F2** — Admin shell + ShellRoute nav (commit f57cede). `AppAdminShell`
+  NavigationRail / NavigationDrawer + sign-out. `/admin` →
+  `/admin/quests` redirect + router-level admin auth guard.
+- **F3** — Admin quests catalog CRUD (commit c7847ae). List / create /
+  edit (form dialog) / deactivate. `ApiClient.putJson` eklendi.
+- **F4** — Admin player console (commit a31622b). Lookup-by-GUID +
+  detail card + ban dialog (reason) + unban confirm. Search-by-handle
+  is a backend follow-up, intentionally not smuggled into frontend.
+- **F5** + **B11** — Admin energy console (commit 45f8ac0). Snapshot
+  lookup + Set / Grant / Reset action dialogs. B11 backend GET added
+  by reusing existing query handler.
+- **F6** — Admin audit log (commit 5d8e75b). Filter row + paged list +
+  payload JSON dialog.
 
-Tests (53 → +8 = 53/53 toplam pass, mevcut 45 + 8 yeni):
-- admin_auth_repository_test: happy path payload + 401 → ApiException.
-- admin_session_cubit_test: checkSession unauthenticated/restored,
-  signIn happy path, 401/404 friendly messages, signOut clears.
+Quality gate at sprint close: 103/103 frontend tests pass, flutter
+analyze 5 pre-existing infos, flutter build web ok.
 
-Quality gate:
-- flutter analyze: 0 error (5 info — line length + comment ref).
-- flutter test: 53/53 passed.
-- flutter build web: başarılı.
+### Manual-test follow-on fixes (2026-05-22…23, uncommitted at doc time)
 
-Sırada **Slice F2 — Admin shell + nav**:
-- `AppAdminShell` (side nav + AppBackBar entegre).
-- Nav items: Quests (catalog), Players (search/detail), Energy
-  (per-player), Audit (filterable log).
-- `/admin/login` zaten F1'de var; F2 shell'i F1 sonrası açılacak.
+These ship as part of an upcoming "frontend stabilization" commit OR
+get absorbed into Sprint Q1 if the change is structural enough:
+
+- **Splash deep-link fix.** `usePathUrlStrategy()` added in
+  `lib/main.dart` so address-bar `/admin/login` resolves directly
+  instead of bouncing through splash → `/home`. `flutter_web_plugins`
+  added to pubspec.
+- **Player guest flow now exchanges a JWT.**
+  `GuestPlayerRepository.registerGuest` now calls
+  `POST /auth/token` after `POST /players/guest` (provider=Guest,
+  externalToken=`dev:Guest:{deviceId}`) and returns
+  `GuestSession(playerId, accessToken)`. `SessionCubit.setAuthenticated`
+  takes both and persists separately. This unblocks the API running in
+  `ProductionJwt` mode.
+- **TokenStore.savePlayerId / readPlayerId.** Separate persisted key
+  `lexilink.playerId`. `GameStartCubit` and `ProfileSummaryCubit` now
+  read `playerId` from the dedicated API; the prior anti-pattern of
+  reading the access token as the player ID worked only in
+  `DevelopmentBearer` mode and silently broke in `ProductionJwt`.
+- **`useRootNavigator: false` on every admin showDialog.** go_router
+  16 + `ShellRoute` makes `Navigator.pop` from a root-navigator dialog
+  trip the "popped last page" assertion → blank shell. Override
+  applied across quests / players / energy / audit.
+- **Admin energy card stays visible during saving.** Old behavior
+  replaced the entire card with a CircularProgressIndicator so the
+  operator never saw the value flip; the new build keeps the card and
+  overlays a dimmed Stack + spinner during `saving`.
+- **Quest create dropdown shows "(exists)" for taken types.** Type
+  dropdown disables types that already have a definition; if all are
+  taken, an inline message points the operator to Edit / Deactivate /
+  Reactivate instead. Will be moot in Q1 once `QuestType` enum is
+  replaced by free-text `Name` (admin invents the identity).
+- **`QuestType.Custom1/2/3` placeholder slots** (backend) +
+  corresponding `AdminQuestType.custom1/2/3` (frontend) added so the
+  Create flow can be exercised against types that don't already have
+  a definition. Will be removed with the enum itself in Q1.1 / Q1.6.
+- **Quest reactivate button.** Inactive rows now show a power-icon
+  reactivate button instead of a disabled deactivate button. Wired to
+  backend B12 (`POST /admin/quests/definitions/{id}/reactivate`).
+
+---
+
+## Next planned — Sprint Q1.6 (Quests redesign — frontend reshape)
+
+Frontend leg of the data-driven Quests redesign documented in
+`ROADMAP.md > Sprint Q1 — Quests Module Redesign`. Q1.6 details
+copied into `frontendRoadmap.md > Slice Q1.6 — Quests redesign
+(frontend reshape)`.
+
+Briefly: remove `AdminQuestType` enum, replace with free-text `Name`
++ `QuestTrigger` enum (3 values). Admin form gains `Name`,
+`Description`, `Trigger`, `Threshold`, `Reward`, `ProgressBaseline`,
+`Prerequisite` (dropdown of other definitions). Player quest screen
+renders `Name` + `Description` + computed progress.
+
+Pre-Q1 the operator may choose to ship the in-progress fixes above as
+an interim commit (small "frontend stabilization" bundle). Otherwise
+those fixes merge into the Q1.6 commit naturally.

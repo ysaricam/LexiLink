@@ -433,6 +433,115 @@ Non-goals:
 
 ---
 
+## Admin frontend sprint (F1–F6) ✅ closed (2026-05-22…23)
+
+Backend Administration sprint (B1–B10) kapandıktan sonra, admin shell'i
+altı slice halinde shipping edildi. Teslimat detayları
+`frontendProgress.md > Admin frontend sprint (F1–F6)` içinde.
+
+- **F1** — Admin login + ayrı session (commit 70031bf).
+- **F2** — Admin shell + ShellRoute nav (commit f57cede).
+- **F3** — Admin quest catalog CRUD (commit c7847ae).
+- **F4** — Admin player console — lookup + ban/unban (commit a31622b).
+- **F5** + **B11** — Admin energy console + GET endpoint (commit 45f8ac0).
+- **F6** — Admin audit log — filter + paging + payload view (commit 5d8e75b).
+
+Sprint close: 103/103 frontend tests pass, flutter analyze 5
+pre-existing infos, flutter build web ok.
+
+Post-sprint manual-test fixes (path strategy, player JWT exchange,
+TokenStore.playerId, dialog rootNavigator, energy saving overlay,
+quest reactivate UI, quest dropdown taken-types treatment) listed in
+`frontendProgress.md > Manual-test follow-on fixes (2026-05-22…23)`.
+
+---
+
+## Slice Q1.6 — Quests redesign (frontend reshape)
+
+Frontend leg of the data-driven Quests redesign documented in
+`ROADMAP.md > Sprint Q1 — Quests Module Redesign`. Operator-locked
+decisions repeated below for the frontend perspective; the
+authoritative spec lives in `ROADMAP.md`.
+
+Goal: drop the fixed `AdminQuestType` enum on the frontend, mirror the
+new backend shape — every quest definition has free-text `Name` +
+`Description`, a fixed `Trigger` enum (3 values), `Threshold` int,
+`Reward` int, optional `PrerequisiteQuestDefinitionId`, and
+`ProgressBaseline` (only meaningful for `GameCompletedTotal`). Player
+quest screen renders `Name` + `Description` + computed progress with
+no hardcoded knowledge of the catalog.
+
+### Data layer
+
+- `quest_enums.dart`:
+  - Remove `AdminQuestType` (currently 7 values including Custom1/2/3).
+  - Add `QuestTrigger { gameCompletedTotal, gameCompletedDaily,
+    authProviderLinked }`.
+  - Add `ProgressBaseline { fromSnapshot, fromExistingTotal }`.
+  - Both enums get the same wire-string pattern as the existing
+    `AdminQuestCadence` ([wire('PascalCase')]).
+- `quest_definition.dart` reshape: `id`, `name`, `description`,
+  `trigger`, `threshold`, `reward`, `prerequisiteQuestDefinitionId`,
+  `progressBaseline`, `isActive`. The old `cadence` field stays only
+  if backend keeps a Daily flag separate — final shape per Q1.1.
+- `player_quest.dart` reshape: id, definitionId, definitionName,
+  description, threshold, reward, progress, state, expiresAt. No
+  cadence-derived ordering on the client; backend sends a stable
+  order.
+- `admin_quests_repository.dart`: Create body becomes
+  `{ name, description, trigger, threshold, reward,
+  prerequisiteQuestDefinitionId, progressBaseline }`. Update body
+  drops trigger/name (per Q1.5 — those fixed at Create). Reactivate /
+  Deactivate paths unchanged.
+
+### Application layer
+
+- `admin_quests_cubit.dart` — `create` / `update` signatures change to
+  the new fields. Reload-after-mutation pattern stays.
+- `quests_cubit.dart` (player) — no structural change; just consume
+  the new DTO fields. Claim flow unchanged.
+
+### Presentation layer
+
+- `quest_definition_form.dart`:
+  - Add `Name` text field (required, ≤ 64).
+  - Add `Description` multi-line text field (optional, ≤ 256).
+  - Replace QuestType dropdown with `Trigger` dropdown (3 fixed).
+  - Replace `Goal` with `Threshold` numeric input.
+  - Replace `RewardAmount` with `Reward` numeric input.
+  - Add `ProgressBaseline` dropdown (visible / enabled only when
+    `Trigger == gameCompletedTotal`).
+  - Prerequisite dropdown switches from `AdminQuestType` values to
+    other-definitions list (populated by the cubit's current state).
+  - Edit mode: Name + Trigger read-only (per Q1.5 immutability rule);
+    Threshold / Reward / Description / Prerequisite / ProgressBaseline
+    editable.
+- `admin_quests_screen.dart`:
+  - Row renders `Name + (Trigger.Threshold)` (e.g. "Bronz — 3 oyun")
+    + reward badge. No cadence column.
+  - Active / Inactive badge stays.
+  - Edit / Deactivate / Reactivate actions stay.
+- Player `quests_screen.dart`:
+  - Row renders `definition.name` (bold) + `definition.description`
+    (subtitle). Progress bar `progress/threshold`. Claim button on
+    `ReadyToClaim`. No QuestType-specific copy anywhere.
+
+### Tests
+
+- Replace all `AdminQuestType` references.
+- New widget tests: form Trigger-changes-toggles-baseline; prereq
+  dropdown excludes self in Edit; admin row label format.
+
+### Goals (acceptance, frontend perspective)
+
+- Admin operator can compose a chain (Name="İlk oyun" / Threshold 1,
+  Name="Bronz" / Threshold 3 / Prereq=İlk oyun, etc.) entirely from
+  the UI, save, then sign in as a fresh guest player and watch the
+  chain unlock step by step via manual gameplay.
+- Player quest screen no longer references any fixed quest type.
+
+---
+
 ## Deferred
 
 - Apple/Google native sign-in UI: backend provider verifier credential'lari ve
