@@ -1,52 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lexilink_app/features/admin_audit/presentation/admin_audit_screen.dart';
 import 'package:lexilink_app/features/admin_energy/presentation/admin_energy_screen.dart';
 import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
 
-/// Shared placeholder rendered by each admin destination until its
-/// real implementation lands in F3-F6.
-class AdminPlaceholderPage extends StatelessWidget {
-  const AdminPlaceholderPage({
-    required this.title,
-    required this.slice,
-    required this.bulletPoints,
-    super.key,
-  });
-
-  final String title;
-  final String slice;
-  final List<String> bulletPoints;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: Theme.of(context).textTheme.headlineMedium),
-          const SizedBox(height: 4),
-          Text(
-            'Coming in $slice',
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          const SizedBox(height: 16),
-          for (final point in bulletPoints) ...[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('• '),
-                Expanded(child: Text(point)),
-              ],
-            ),
-            const SizedBox(height: 4),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
+/// Thin route-target wrappers consumed by the admin ShellRoute. Each
+/// returns the feature's real screen; this layer exists so the router
+/// only imports a single file regardless of how many feature folders
+/// the destinations live in.
 class AdminQuestsPage extends StatelessWidget {
   const AdminQuestsPage({super.key});
 
@@ -72,15 +33,5 @@ class AdminAuditPage extends StatelessWidget {
   const AdminAuditPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const AdminPlaceholderPage(
-      title: 'Audit',
-      slice: 'F6',
-      bulletPoints: [
-        'Paged audit log, newest first.',
-        'Filter by admin, target type, target id.',
-        'Inspect raw payload JSON.',
-      ],
-    );
-  }
+  Widget build(BuildContext context) => const AdminAuditScreen();
 }
