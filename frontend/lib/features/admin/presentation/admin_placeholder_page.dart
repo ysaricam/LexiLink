@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lexilink_app/features/admin_energy/presentation/admin_energy_screen.dart';
 import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
 
@@ -64,17 +65,7 @@ class AdminEnergyPage extends StatelessWidget {
   const AdminEnergyPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const AdminPlaceholderPage(
-      title: 'Energy',
-      slice: 'F5',
-      bulletPoints: [
-        'Snap a player energy to a specific value.',
-        'Grant bonus energy (over-max allowed).',
-        'Reset to full.',
-      ],
-    );
-  }
+  Widget build(BuildContext context) => const AdminEnergyScreen();
 }
 
 class AdminAuditPage extends StatelessWidget {

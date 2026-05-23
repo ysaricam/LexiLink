@@ -3,6 +3,7 @@ using LexiLink.Modules.Energy.Application.Admin.GrantBonusEnergy;
 using LexiLink.Modules.Energy.Application.Admin.ResetPlayerEnergy;
 using LexiLink.Modules.Energy.Application.Admin.SetPlayerEnergy;
 using LexiLink.Modules.Energy.Application.Contracts;
+using LexiLink.Modules.Energy.Application.PlayerEnergies.GetPlayerEnergy;
 
 namespace LexiLink.API.Modules.Admin;
 
@@ -13,6 +14,18 @@ public static class AdminEnergyEndpoints
         var group = app.MapGroup("/admin/players/{playerId:guid}/energy")
             .WithTags("Admin")
             .RequireAuthorization(AuthConstants.AuthenticatedAdminPolicy);
+
+        group.MapGet(
+            "",
+            async (IEnergyModule energy, Guid playerId, CancellationToken ct) =>
+            {
+                var snapshot = await energy.ExecuteQueryAsync(
+                    new GetPlayerEnergyQuery(playerId),
+                    ct);
+                return Results.Ok(snapshot);
+            })
+            .Produces<PlayerEnergySnapshotDto>()
+            .ProducesProblem(StatusCodes.Status404NotFound);
 
         group.MapPost(
             "/set",
