@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lexilink_app/features/admin/presentation/admin_placeholder_page.dart';
 import 'package:lexilink_app/features/admin/presentation/app_admin_shell.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
+
+/// Stub destination pages keep the shell widget test focused on
+/// shell behavior (nav, sign-out) — the real admin destination pages
+/// mount cubits that resolve SharedPreferences, which is not wired up
+/// in widget tests.
+Widget _stubPage(String marker) =>
+    Scaffold(body: Center(child: Text(marker)));
 
 GoRouter _buildRouter({
   required String initialLocation,
@@ -25,19 +31,19 @@ GoRouter _buildRouter({
         routes: [
           GoRoute(
             path: '/admin/quests',
-            builder: (_, _) => const AdminQuestsPage(),
+            builder: (_, _) => _stubPage('PAGE_QUESTS'),
           ),
           GoRoute(
             path: '/admin/players',
-            builder: (_, _) => const AdminPlayersPage(),
+            builder: (_, _) => _stubPage('PAGE_PLAYERS'),
           ),
           GoRoute(
             path: '/admin/energy',
-            builder: (_, _) => const AdminEnergyPage(),
+            builder: (_, _) => _stubPage('PAGE_ENERGY'),
           ),
           GoRoute(
             path: '/admin/audit',
-            builder: (_, _) => const AdminAuditPage(),
+            builder: (_, _) => _stubPage('PAGE_AUDIT'),
           ),
         ],
       ),
@@ -69,12 +75,9 @@ Future<void> _pumpShell(
 void main() {
   group('AppAdminShell', () {
     testWidgets('renders NavigationRail on wide viewports', (tester) async {
-      // Start at a still-placeholder destination so the wide-layout
-      // assertions don't accidentally exercise AdminQuestsScreen's
-      // SharedPreferences plumbing.
       await _pumpShell(
         tester,
-        initialLocation: '/admin/players',
+        initialLocation: '/admin/quests',
         tokenStore: InMemoryTokenStore(),
       );
 
@@ -84,6 +87,7 @@ void main() {
       expect(find.text('Players'), findsWidgets);
       expect(find.text('Energy'), findsWidgets);
       expect(find.text('Audit'), findsWidgets);
+      expect(find.text('PAGE_QUESTS'), findsOneWidget);
     });
 
     testWidgets('renders AppBar on narrow viewports', (tester) async {
@@ -103,16 +107,16 @@ void main() {
         (tester) async {
       await _pumpShell(
         tester,
-        initialLocation: '/admin/players',
+        initialLocation: '/admin/quests',
         tokenStore: InMemoryTokenStore(),
       );
 
-      expect(find.text('Coming in F4'), findsOneWidget);
+      expect(find.text('PAGE_QUESTS'), findsOneWidget);
 
-      await tester.tap(find.text('Audit').first);
+      await tester.tap(find.text('Energy').first);
       await tester.pumpAndSettle();
 
-      expect(find.text('Coming in F6'), findsOneWidget);
+      expect(find.text('PAGE_ENERGY'), findsOneWidget);
     });
 
     testWidgets('sign-out clears token store and routes to /admin/login',
@@ -122,7 +126,7 @@ void main() {
 
       await _pumpShell(
         tester,
-        initialLocation: '/admin/players',
+        initialLocation: '/admin/quests',
         tokenStore: store,
       );
       // Give the shell's _resolveStore future a chance to land.

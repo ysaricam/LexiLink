@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
 
 /// Shared placeholder rendered by each admin destination until its
@@ -56,17 +57,7 @@ class AdminPlayersPage extends StatelessWidget {
   const AdminPlayersPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const AdminPlaceholderPage(
-      title: 'Players',
-      slice: 'F4',
-      bulletPoints: [
-        'Search players by handle or email.',
-        'View player admin detail (handle, providers, ban state).',
-        'Ban / unban with reason capture.',
-      ],
-    );
-  }
+  Widget build(BuildContext context) => const AdminPlayersScreen();
 }
 
 class AdminEnergyPage extends StatelessWidget {
