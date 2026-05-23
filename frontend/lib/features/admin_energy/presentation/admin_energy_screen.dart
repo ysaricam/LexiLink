@@ -164,14 +164,31 @@ class _AdminEnergyViewState extends State<_AdminEnergyView> {
   }
 
   Widget _buildBody(BuildContext context, AdminEnergyState state) {
+    // Keep the card visible across saving transitions so the user can
+    // watch the value flip from old to new. Only show a full-screen
+    // spinner before any snapshot has loaded (initial lookup).
+    if (state.snapshot != null) {
+      return Stack(
+        children: [
+          _EnergyCard(snapshot: state.snapshot!),
+          if (state.status == AdminEnergyStatus.saving)
+            const Positioned.fill(
+              child: ColoredBox(
+                color: Color(0x33000000),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+            ),
+        ],
+      );
+    }
     return switch (state.status) {
       AdminEnergyStatus.initial => const SizedBox.shrink(),
-      AdminEnergyStatus.loading ||
-      AdminEnergyStatus.saving =>
-        const Center(child: Padding(
-          padding: EdgeInsets.all(24),
-          child: CircularProgressIndicator(),
-        )),
+      AdminEnergyStatus.loading => const Center(
+          child: Padding(
+            padding: EdgeInsets.all(24),
+            child: CircularProgressIndicator(),
+          ),
+        ),
       AdminEnergyStatus.notFound => Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
@@ -179,15 +196,13 @@ class _AdminEnergyViewState extends State<_AdminEnergyView> {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
-      AdminEnergyStatus.failure when state.snapshot == null => Padding(
+      _ => Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
             state.errorMessage ?? 'Lookup failed.',
             style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
         ),
-      AdminEnergyStatus.failure || AdminEnergyStatus.loaded =>
-        _EnergyCard(snapshot: state.snapshot!),
     };
   }
 
@@ -335,6 +350,7 @@ class _EnergyCard extends StatelessWidget {
     final cubit = context.read<AdminEnergyCubit>();
     final confirmed = await showDialog<bool>(
       context: context,
+      useRootNavigator: false,
       builder: (_) => AlertDialog(
         title: const Text('Reset energy?'),
         content: const Text('Resets the player to maximum energy.'),
@@ -383,6 +399,7 @@ Future<int?> _intDialog(
   final formKey = GlobalKey<FormState>();
   return showDialog<int>(
     context: context,
+    useRootNavigator: false,
     builder: (_) => AlertDialog(
       title: Text(title),
       content: Form(

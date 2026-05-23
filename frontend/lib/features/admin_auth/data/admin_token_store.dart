@@ -45,6 +45,16 @@ class SharedPreferencesAdminTokenStore implements TokenStore {
     _accessToken = token;
   }
 
+  /// Admin sessions don't carry a player id — admin operations are
+  /// authorized by the admin role claim on the JWT, not by mirroring a
+  /// player identity. These methods exist solely to satisfy the
+  /// [TokenStore] contract.
+  @override
+  Future<String?> readPlayerId() async => null;
+
+  @override
+  Future<void> savePlayerId(String playerId) async {}
+
   @override
   Future<void> clear() async {
     await _preferences.remove(_adminAccessTokenKey);

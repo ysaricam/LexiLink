@@ -61,4 +61,8 @@ class AdminQuestsRepository {
   Future<void> deactivateDefinition(String id) async {
     await _apiClient.postJson('/admin/quests/definitions/$id/deactivate');
   }
+
+  Future<void> reactivateDefinition(String id) async {
+    await _apiClient.postJson('/admin/quests/definitions/$id/reactivate');
+  }
 }

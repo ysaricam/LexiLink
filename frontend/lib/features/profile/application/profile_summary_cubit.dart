@@ -27,7 +27,7 @@ class ProfileSummaryCubit extends Cubit<ProfileSummaryState> {
     emit(const ProfileSummaryState.loading());
 
     try {
-      final playerId = await _tokenStore.readAccessToken();
+      final playerId = await _tokenStore.readPlayerId();
       if (playerId == null || playerId.isEmpty) {
         emit(
           const ProfileSummaryState.failure(

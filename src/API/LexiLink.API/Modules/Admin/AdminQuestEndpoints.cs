@@ -4,6 +4,7 @@ using LexiLink.Modules.Quests.Application.Admin.PlayerQuests.ResetPlayerQuest;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.CreateQuestDefinition;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.DeactivateQuestDefinition;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.GetQuestDefinitions;
+using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.ReactivateQuestDefinition;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.UpdateQuestDefinition;
 using LexiLink.Modules.Quests.Application.Contracts;
 using LexiLink.Modules.Quests.Domain.PlayerQuests;
@@ -66,6 +67,16 @@ public static class AdminQuestEndpoints
             async (IQuestsModule quests, Guid id, CancellationToken ct) =>
             {
                 await quests.ExecuteCommandAsync(new DeactivateQuestDefinitionCommand(id), ct);
+                return Results.NoContent();
+            })
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status404NotFound);
+
+        group.MapPost(
+            "/definitions/{id:guid}/reactivate",
+            async (IQuestsModule quests, Guid id, CancellationToken ct) =>
+            {
+                await quests.ExecuteCommandAsync(new ReactivateQuestDefinitionCommand(id), ct);
                 return Results.NoContent();
             })
             .Produces(StatusCodes.Status204NoContent)

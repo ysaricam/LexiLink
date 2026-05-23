@@ -42,6 +42,16 @@ using Scalar.AspNetCore;
 using Serilog;
 using ILogger = Serilog.ILogger;
 
+// Npgsql 6+ defaults to converting Kind=Utc DateTime values into the
+// session's local timezone when writing to a "timestamp without time
+// zone" column. Our schema uses that column type but the application
+// writes DateTime.UtcNow everywhere, so the round-trip silently
+// shifts timestamps by the local offset. This breaks consumers that
+// re-tag the read value as UTC (e.g. EnergyRefillCalculator), making
+// the bucket appear fully refilled after one offset's worth of time.
+// The legacy behavior writes UTC values verbatim into the column.
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 ILogger logger = new LoggerConfiguration()

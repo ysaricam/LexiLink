@@ -28,7 +28,7 @@ class GameStartCubit extends Cubit<GameStartState> {
     emit(const GameStartState.submitting());
 
     try {
-      final playerId = await _tokenStore.readAccessToken();
+      final playerId = await _tokenStore.readPlayerId();
       if (playerId == null || playerId.isEmpty) {
         emit(
           const GameStartState.failure(message: 'Guest session is missing.'),

@@ -23,22 +23,29 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
+        // Filter out PlayerQuests whose definition has been deactivated
+        // — the row stays in DB (so admin audit + claim history remain
+        // intact) but the player no longer sees it. Admins reactivate
+        // the definition to bring affected quests back into the list.
         const string sql = """
             SELECT
-                "Id"            AS "Id",
-                "PlayerId"      AS "PlayerId",
-                "QuestType"     AS "QuestType",
-                "State"         AS "State",
-                "Progress"      AS "Progress",
-                "Goal"          AS "Goal",
-                "RewardAmount"  AS "RewardAmount",
-                "IssuedAt"      AS "IssuedAt",
-                "CompletedAt"   AS "CompletedAt",
-                "ClaimedAt"     AS "ClaimedAt",
-                "ExpiresAt"     AS "ExpiresAt"
-            FROM "quests"."v_PlayerQuests"
-            WHERE "PlayerId" = @PlayerId
-            ORDER BY "IssuedAt" DESC;
+                pq."Id"            AS "Id",
+                pq."PlayerId"      AS "PlayerId",
+                pq."QuestType"     AS "QuestType",
+                pq."State"         AS "State",
+                pq."Progress"      AS "Progress",
+                pq."Goal"          AS "Goal",
+                pq."RewardAmount"  AS "RewardAmount",
+                pq."IssuedAt"      AS "IssuedAt",
+                pq."CompletedAt"   AS "CompletedAt",
+                pq."ClaimedAt"     AS "ClaimedAt",
+                pq."ExpiresAt"     AS "ExpiresAt"
+            FROM "quests"."v_PlayerQuests" AS pq
+            INNER JOIN "quests"."QuestDefinitions" AS qd
+                ON qd."QuestType" = pq."QuestType"
+            WHERE pq."PlayerId" = @PlayerId
+              AND qd."IsActive" = TRUE
+            ORDER BY pq."IssuedAt" DESC;
         """;
 
         var rows = await connection.QueryAsync<RawPlayerQuestRow>(

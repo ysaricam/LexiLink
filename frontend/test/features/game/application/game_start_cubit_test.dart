@@ -13,7 +13,9 @@ void main() {
     blocTest<GameStartCubit, GameStartState>(
       'creates and starts game',
       build: () {
-        final tokenStore = InMemoryTokenStore()..saveAccessToken('player-1');
+        final tokenStore = InMemoryTokenStore()
+          ..saveAccessToken('jwt-player-1')
+          ..savePlayerId('player-1');
 
         return GameStartCubit(
           tokenStore: tokenStore,

@@ -331,6 +331,7 @@ class _PlayerDetailCard extends StatelessWidget {
     final cubit = context.read<AdminPlayersCubit>();
     final reason = await showDialog<String>(
       context: context,
+      useRootNavigator: false,
       builder: (_) => const _BanReasonDialog(),
     );
     if (reason == null || reason.trim().isEmpty) return;
@@ -341,6 +342,7 @@ class _PlayerDetailCard extends StatelessWidget {
     final cubit = context.read<AdminPlayersCubit>();
     final confirmed = await showDialog<bool>(
       context: context,
+      useRootNavigator: false,
       builder: (_) => AlertDialog(
         title: const Text('Unban player?'),
         content: Text(

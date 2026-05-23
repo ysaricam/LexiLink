@@ -26,8 +26,14 @@ class SessionCubit extends Cubit<SessionState> {
     emit(SessionState.authenticated(accessToken: token));
   }
 
-  Future<void> setAuthenticated(String accessToken) async {
+  Future<void> setAuthenticated(
+    String accessToken, {
+    String? playerId,
+  }) async {
     await _tokenStore.saveAccessToken(accessToken);
+    if (playerId != null && playerId.isNotEmpty) {
+      await _tokenStore.savePlayerId(playerId);
+    }
     emit(SessionState.authenticated(accessToken: accessToken));
   }
 

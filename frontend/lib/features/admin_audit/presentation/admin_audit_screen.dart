@@ -338,6 +338,7 @@ class _AuditRow extends StatelessWidget {
     final pretty = _prettyJson(action.payloadJson);
     await showDialog<void>(
       context: context,
+      useRootNavigator: false,
       builder: (_) => AlertDialog(
         title: Text(action.actionType),
         content: ConstrainedBox(

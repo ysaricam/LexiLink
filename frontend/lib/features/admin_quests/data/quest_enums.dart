@@ -5,7 +5,12 @@ enum AdminQuestType {
   firstGameCompleted('FirstGameCompleted'),
   threeGamesCompleted('ThreeGamesCompleted'),
   accountLinked('AccountLinked'),
-  dailyThreeGames('DailyThreeGames');
+  dailyThreeGames('DailyThreeGames'),
+  // Placeholder slots. No automatic event-handler behavior on the
+  // server — admin manually issues + claims for these.
+  custom1('Custom1'),
+  custom2('Custom2'),
+  custom3('Custom3');
 
   const AdminQuestType(this.wire);
 

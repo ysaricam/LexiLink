@@ -48,7 +48,9 @@ void main() {
     blocTest<ProfileSummaryCubit, ProfileSummaryState>(
       'loads player stats from session player id',
       build: () {
-        final tokenStore = InMemoryTokenStore()..saveAccessToken('player-1');
+        final tokenStore = InMemoryTokenStore()
+          ..saveAccessToken('jwt-player-1')
+          ..savePlayerId('player-1');
 
         return _buildCubit(
           tokenStore: tokenStore,
@@ -84,7 +86,9 @@ void main() {
     blocTest<ProfileSummaryCubit, ProfileSummaryState>(
       'maps ApiException to failure message',
       build: () {
-        final tokenStore = InMemoryTokenStore()..saveAccessToken('player-1');
+        final tokenStore = InMemoryTokenStore()
+          ..saveAccessToken('jwt-player-1')
+          ..savePlayerId('player-1');
 
         return _buildCubit(
           tokenStore: tokenStore,

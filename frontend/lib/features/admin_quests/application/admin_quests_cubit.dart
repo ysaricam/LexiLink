@@ -91,6 +91,19 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
     }
   }
 
+  Future<void> reactivate(String id) async {
+    emit(state.copyWith(status: AdminQuestsStatus.saving, clearError: true));
+    try {
+      await _repository.reactivateDefinition(id);
+      await _reload();
+    } on ApiException catch (e) {
+      emit(state.copyWith(
+        status: AdminQuestsStatus.failure,
+        errorMessage: e.message,
+      ));
+    }
+  }
+
   Future<void> _reload() async {
     final defs = await _repository.fetchDefinitions();
     emit(state.copyWith(

@@ -34,13 +34,16 @@ class GuestEntryCubit extends Cubit<GuestEntryState> {
     emit(const GuestEntryState.submitting());
 
     try {
-      final playerId = await _guestPlayerRepository.registerGuest(
+      final session = await _guestPlayerRepository.registerGuest(
         deviceId: deviceId,
         displayName: displayName,
         locale: locale,
       );
-      await _sessionCubit.setAuthenticated(playerId);
-      emit(GuestEntryState.success(playerId: playerId));
+      await _sessionCubit.setAuthenticated(
+        session.accessToken,
+        playerId: session.playerId,
+      );
+      emit(GuestEntryState.success(playerId: session.playerId));
     } on ApiException catch (error) {
       emit(GuestEntryState.failure(message: error.message));
     } on Exception {

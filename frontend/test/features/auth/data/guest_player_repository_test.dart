@@ -7,28 +7,50 @@ import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 void main() {
-  test('posts guest registration request', () async {
+  test('registers guest then exchanges identity for an access token',
+      () async {
+    final calls = <String>[];
     final repository = GuestPlayerRepository(
       apiClient: ApiClient(
         config: const ApiConfig(baseUrl: 'http://localhost:5000'),
         tokenStore: InMemoryTokenStore(),
         httpClient: MockClient((request) async {
-          expect(request.url.path, '/players/guest');
-          expect(request.body, contains('"deviceId":"device-1"'));
-          expect(request.body, contains('"displayName":"Guest Player"'));
-          expect(request.body, contains('"locale":"en-US"'));
-
-          return http.Response('{"id":"player-1"}', 201);
+          calls.add('${request.method} ${request.url.path}');
+          if (request.url.path == '/players/guest') {
+            expect(request.body, contains('"deviceId":"device-1"'));
+            expect(request.body, contains('"displayName":"Guest Player"'));
+            expect(request.body, contains('"locale":"en-US"'));
+            return http.Response('{"id":"player-1"}', 201);
+          }
+          if (request.url.path == '/auth/token') {
+            expect(request.body, contains('"provider":"Guest"'));
+            expect(request.body, contains('"externalId":"device-1"'));
+            expect(
+              request.body,
+              contains('"externalToken":"dev:Guest:device-1"'),
+            );
+            return http.Response(
+              '{'
+              '"accessToken":"jwt-player-1",'
+              '"expiresAt":"2026-05-23T12:00:00Z",'
+              '"playerId":"player-1"'
+              '}',
+              200,
+            );
+          }
+          fail('Unexpected request: ${request.method} ${request.url.path}');
         }),
       ),
     );
 
-    final playerId = await repository.registerGuest(
+    final session = await repository.registerGuest(
       deviceId: 'device-1',
       displayName: 'Guest Player',
       locale: 'en-US',
     );
 
-    expect(playerId, 'player-1');
+    expect(session.playerId, 'player-1');
+    expect(session.accessToken, 'jwt-player-1');
+    expect(calls, ['POST /players/guest', 'POST /auth/token']);
   });
 }

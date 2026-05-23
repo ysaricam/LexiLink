@@ -1,5 +1,12 @@
 import 'package:lexilink_app/shared/api/api_client.dart';
 
+class GuestSession {
+  const GuestSession({required this.playerId, required this.accessToken});
+
+  final String playerId;
+  final String accessToken;
+}
+
 class GuestPlayerRepository {
   const GuestPlayerRepository({
     required ApiClient apiClient,
@@ -7,12 +14,17 @@ class GuestPlayerRepository {
 
   final ApiClient _apiClient;
 
-  Future<String> registerGuest({
+  /// Registers (or rehydrates) a guest player and exchanges the
+  /// returned identity for a first-party JWT. In DevelopmentBearer
+  /// mode the JWT is unused — the auth handler accepts any GUID — but
+  /// keeping the round-trip uniform means ProductionJwt deployments
+  /// work without a separate code path.
+  Future<GuestSession> registerGuest({
     required String deviceId,
     required String displayName,
     required String locale,
   }) async {
-    final response = await _apiClient.postJson(
+    final registerResponse = await _apiClient.postJson(
       '/players/guest',
       body: {
         'deviceId': deviceId,
@@ -21,11 +33,25 @@ class GuestPlayerRepository {
       },
     );
 
-    final id = response['id'];
-    if (id is String && id.isNotEmpty) {
-      return id;
+    final playerId = registerResponse['id'];
+    if (playerId is! String || playerId.isEmpty) {
+      throw StateError('Guest registration did not return a player id.');
     }
 
-    throw StateError('Guest registration did not return a player id.');
+    final tokenResponse = await _apiClient.postJson(
+      '/auth/token',
+      body: {
+        'provider': 'Guest',
+        'externalId': deviceId,
+        'externalToken': 'dev:Guest:$deviceId',
+      },
+    );
+
+    final accessToken = tokenResponse['accessToken'];
+    if (accessToken is! String || accessToken.isEmpty) {
+      throw StateError('Token exchange did not return an access token.');
+    }
+
+    return GuestSession(playerId: playerId, accessToken: accessToken);
   }
 }

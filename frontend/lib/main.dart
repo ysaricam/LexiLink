@@ -1,6 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:lexilink_app/app/app.dart';
 
 void main() {
+  // Default hash URLs (e.g. /#/admin/login) hide deep links behind a
+  // fragment, which breaks address-bar navigation to /admin/login and
+  // forces the splash → /home flow to swallow the requested path.
+  usePathUrlStrategy();
   runApp(const LexiLinkApp());
 }

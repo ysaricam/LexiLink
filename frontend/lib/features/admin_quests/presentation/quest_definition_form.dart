@@ -23,11 +23,20 @@ class QuestDefinitionFormResult {
 }
 
 class QuestDefinitionFormDialog extends StatefulWidget {
-  const QuestDefinitionFormDialog({super.key, this.initial});
+  const QuestDefinitionFormDialog({
+    super.key,
+    this.initial,
+    this.takenTypes = const {},
+  });
 
   /// When non-null the dialog is in Edit mode — type/cadence fields
   /// are read-only.
   final QuestDefinition? initial;
+
+  /// Quest types that already have a definition in the catalog. In
+  /// create mode these are removed from the type dropdown so the
+  /// admin can't trigger the server's "already exists" 400.
+  final Set<AdminQuestType> takenTypes;
 
   @override
   State<QuestDefinitionFormDialog> createState() =>
@@ -84,7 +93,16 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                 ),
                 items: [
                   for (final t in AdminQuestType.values)
-                    DropdownMenuItem(value: t, child: Text(t.wire)),
+                    DropdownMenuItem(
+                      value: t,
+                      enabled:
+                          _isEdit || !widget.takenTypes.contains(t),
+                      child: Text(
+                        widget.takenTypes.contains(t) && !_isEdit
+                            ? '${t.wire}  (exists)'
+                            : t.wire,
+                      ),
+                    ),
                 ],
                 onChanged: _isEdit
                     ? null
@@ -92,6 +110,18 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                 validator: (v) =>
                     v == null ? 'Quest type is required' : null,
               ),
+              if (!_isEdit &&
+                  widget.takenTypes.length ==
+                      AdminQuestType.values.length) ...[
+                const SizedBox(height: 8),
+                Text(
+                  'All quest types already have a definition. Edit or '
+                  'deactivate an existing one instead.',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.error,
+                      ),
+                ),
+              ],
               const SizedBox(height: 12),
               DropdownButtonFormField<AdminQuestCadence>(
                 initialValue: _cadence,

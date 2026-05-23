@@ -178,9 +178,13 @@ class _AdminQuestsView extends StatelessWidget {
 
   Future<void> _showCreateDialog(BuildContext context) async {
     final cubit = context.read<AdminQuestsCubit>();
+    final takenTypes = {
+      for (final d in cubit.state.definitions) d.questType,
+    };
     final result = await showDialog<QuestDefinitionFormResult>(
       context: context,
-      builder: (_) => const QuestDefinitionFormDialog(),
+      useRootNavigator: false,
+      builder: (_) => QuestDefinitionFormDialog(takenTypes: takenTypes),
     );
     if (result == null) return;
     await cubit.create(
@@ -224,11 +228,18 @@ class _QuestRow extends StatelessWidget {
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => _edit(context),
           ),
-          IconButton(
-            tooltip: definition.isActive ? 'Deactivate' : 'Already inactive',
-            icon: const Icon(Icons.block_flipped),
-            onPressed: definition.isActive ? () => _deactivate(context) : null,
-          ),
+          if (definition.isActive)
+            IconButton(
+              tooltip: 'Deactivate',
+              icon: const Icon(Icons.block_flipped),
+              onPressed: () => _deactivate(context),
+            )
+          else
+            IconButton(
+              tooltip: 'Reactivate',
+              icon: const Icon(Icons.power_settings_new),
+              onPressed: () => _reactivate(context),
+            ),
         ],
       ),
     );
@@ -238,6 +249,7 @@ class _QuestRow extends StatelessWidget {
     final cubit = context.read<AdminQuestsCubit>();
     final result = await showDialog<QuestDefinitionFormResult>(
       context: context,
+      useRootNavigator: false,
       builder: (_) => QuestDefinitionFormDialog(
         initial: definition,
       ),
@@ -255,6 +267,7 @@ class _QuestRow extends StatelessWidget {
     final cubit = context.read<AdminQuestsCubit>();
     final confirmed = await showDialog<bool>(
       context: context,
+      useRootNavigator: false,
       builder: (_) => AlertDialog(
         title: const Text('Deactivate quest definition?'),
         content: Text(
@@ -275,6 +288,10 @@ class _QuestRow extends StatelessWidget {
     );
     if (confirmed != true) return;
     await cubit.deactivate(definition.id);
+  }
+
+  Future<void> _reactivate(BuildContext context) async {
+    await context.read<AdminQuestsCubit>().reactivate(definition.id);
   }
 }
 

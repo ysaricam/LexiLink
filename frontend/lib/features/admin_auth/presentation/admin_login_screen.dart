@@ -165,5 +165,9 @@ class _AnonymousTokenStore implements TokenStore {
   @override
   Future<void> saveAccessToken(String token) async {}
   @override
+  Future<String?> readPlayerId() async => null;
+  @override
+  Future<void> savePlayerId(String playerId) async {}
+  @override
   Future<void> clear() async {}
 }

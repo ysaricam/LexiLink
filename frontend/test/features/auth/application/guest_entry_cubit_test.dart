@@ -9,6 +9,23 @@ import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
+MockClient _guestFlowMockClient() => MockClient((request) async {
+      if (request.url.path == '/players/guest') {
+        return http.Response('{"id":"player-1"}', 201);
+      }
+      if (request.url.path == '/auth/token') {
+        return http.Response(
+          '{'
+          '"accessToken":"jwt-player-1",'
+          '"expiresAt":"2026-05-23T12:00:00Z",'
+          '"playerId":"player-1"'
+          '}',
+          200,
+        );
+      }
+      fail('Unexpected request: ${request.method} ${request.url.path}');
+    });
+
 void main() {
   group('GuestEntryCubit', () {
     blocTest<GuestEntryCubit, GuestEntryState>(
@@ -19,9 +36,7 @@ void main() {
         final apiClient = ApiClient(
           config: const ApiConfig(baseUrl: 'http://localhost:5000'),
           tokenStore: tokenStore,
-          httpClient: MockClient(
-            (request) async => http.Response('{"id":"player-1"}', 201),
-          ),
+          httpClient: _guestFlowMockClient(),
         );
 
         return GuestEntryCubit(
@@ -48,9 +63,7 @@ void main() {
         final apiClient = ApiClient(
           config: const ApiConfig(baseUrl: 'http://localhost:5000'),
           tokenStore: tokenStore,
-          httpClient: MockClient(
-            (request) async => http.Response('{"id":"player-1"}', 201),
-          ),
+          httpClient: _guestFlowMockClient(),
         );
 
         return GuestEntryCubit(
@@ -63,15 +76,13 @@ void main() {
       expect: () => [const GuestEntryState.idle()],
     );
 
-    test('writes player id to session token store', () async {
+    test('writes JWT access token to session token store', () async {
       final tokenStore = InMemoryTokenStore();
       final sessionCubit = SessionCubit(tokenStore: tokenStore);
       final apiClient = ApiClient(
         config: const ApiConfig(baseUrl: 'http://localhost:5000'),
         tokenStore: tokenStore,
-        httpClient: MockClient(
-          (request) async => http.Response('{"id":"player-1"}', 201),
-        ),
+        httpClient: _guestFlowMockClient(),
       );
       final cubit = GuestEntryCubit(
         guestPlayerRepository: GuestPlayerRepository(apiClient: apiClient),
@@ -84,7 +95,7 @@ void main() {
         locale: 'en-US',
       );
 
-      expect(tokenStore.accessToken, 'player-1');
+      expect(tokenStore.accessToken, 'jwt-player-1');
       expect(sessionCubit.state.status, SessionStatus.authenticated);
     });
   });
