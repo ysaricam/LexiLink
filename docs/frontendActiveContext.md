@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-23 (Admin F1–F6 closed; manual-test stack stabilized; Sprint Q1 frontend reshape **planned, not yet started**)
+> Last updated: 2026-05-24 (Sprint Q1 frontend reshape Q1.6 closed; only Q1.8 operator-level manual verification remains)
 
 ---
 
@@ -465,19 +465,77 @@ get absorbed into Sprint Q1 if the change is structural enough:
 
 ---
 
-## Next planned — Sprint Q1.6 (Quests redesign — frontend reshape)
+## Sprint Q1.6 — Quests redesign (frontend reshape) ✅ closed 2026-05-24
 
-Frontend leg of the data-driven Quests redesign documented in
-`ROADMAP.md > Sprint Q1 — Quests Module Redesign`. Q1.6 details
-copied into `frontendRoadmap.md > Slice Q1.6 — Quests redesign
-(frontend reshape)`.
+Shipped in commit `a754301` on 2026-05-24 as a single bundled
+slice (per operator preference — backend was already in 6 separate
+commits so frontend stayed coherent as one). Quality gate at sprint
+close: **103/103 Flutter tests pass**, `flutter analyze` only
+pre-existing info-level warnings.
 
-Briefly: remove `AdminQuestType` enum, replace with free-text `Name`
-+ `QuestTrigger` enum (3 values). Admin form gains `Name`,
-`Description`, `Trigger`, `Threshold`, `Reward`, `ProgressBaseline`,
-`Prerequisite` (dropdown of other definitions). Player quest screen
-renders `Name` + `Description` + computed progress.
+### Data layer
 
-Pre-Q1 the operator may choose to ship the in-progress fixes above as
-an interim commit (small "frontend stabilization" bundle). Otherwise
-those fixes merge into the Q1.6 commit naturally.
+- `quest_enums.dart` — `AdminQuestType` (7 values incl Custom1/2/3) +
+  `AdminQuestCadence` (OneTime/Daily) **deleted**. Replaced by
+  `QuestTrigger` (`gameCompletedTotal`, `gameCompletedDaily`,
+  `authProviderLinked`) + `ProgressBaseline` (`fromSnapshot`,
+  `fromExistingTotal`). Both enums expose Turkish `displayLabel`
+  ("Toplam oyun", "Günlük oyun", "Hesap bağlandı" / "Bu noktadan
+  sonra", "Tüm zamanlar") for operator-facing menus while wire format
+  stays the .NET PascalCase string.
+- `quest_definition.dart` — fields: `id`, `name`, `description`,
+  `trigger`, `threshold`, `reward`, `prerequisiteQuestDefinitionId`
+  (Guid string nullable), `progressBaseline`, `isActive`.
+- `admin_quests_repository.dart` — Create body sends the full set;
+  Update body drops `name` + `trigger` (server rejects changes per
+  Q1.5 immutability rule).
+- `player_quest.dart` — fields: `id`, `playerId`, `questDefinitionId`,
+  `name`, `description`, `trigger` (string wire), `state` (from
+  `displayState` server field), `progress`, `threshold`, `reward`,
+  `issuedAt`, `claimedAt?`, `expiresAt?`. Dropped: `goal`,
+  `rewardAmount`, `completedAt`, `questType`. `QuestState` shrunk
+  from 5 to 4 values — `expired` removed because the backend deletes
+  expired daily rows on sync rather than transitioning them.
+
+### Application layer
+
+- `admin_quests_cubit.dart` — `create` takes `name`, `description`,
+  `trigger`, `threshold`, `reward`, `progressBaseline`,
+  `prerequisiteQuestDefinitionId?`. `update` same minus
+  `name`/`trigger`.
+- `quests_cubit.dart` — no structural change; just consumes the new
+  DTO fields transparently. State / claim flow unchanged.
+
+### Presentation layer
+
+- `quest_definition_form.dart` — Name + Description text inputs,
+  Trigger dropdown (disabled in Edit), Threshold + Reward numeric
+  inputs, ProgressBaseline dropdown (visible only when trigger ==
+  `gameCompletedTotal`), Prerequisite picker populated from other
+  active definitions and self-filtered in Edit mode.
+- `admin_quests_screen.dart` — row renders `name` + trigger
+  displayLabel + `threshold` in subtitle, `+reward⚡` badge, prereq
+  name lookup, description line. Edit/Deactivate/Reactivate row
+  actions unchanged.
+- `quests_screen.dart` — tile uses `quest.name` (title) +
+  `quest.description` (subtitle). The hardcoded `_humanQuestType`
+  switch — which knew the four legacy types by name — is gone.
+  State badge labels Türkçe ("Hazır", "Aktif", "Alındı").
+
+### Tests
+
+- 5 quest-area test files reshaped (`admin_quests_repository_test`,
+  `admin_quests_cubit_test`, `admin_quests_screen_test`,
+  `quest_repository_test`, `quests_cubit_test`). All Turkish
+  characters in JSON fixtures replaced with ASCII because
+  `http.Response` defaults to Latin-1 encoding and `İ` (U+0130)
+  doesn't fit. Production wire stays UTF-8.
+
+### Manual-test follow-on fixes carried into Q1.6
+
+The Q1.6 commit also carries the small fixes that were "pending an
+interim stabilization commit" in the previous note (splash deep-link,
+guest JWT exchange, TokenStore separation, useRootNavigator, energy
+card overlay). All of them shipped in the Administration session's
+final commit (`22134ea`) before Sprint Q1 started; nothing new in
+Q1.6.

@@ -4,28 +4,36 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-23 (Administration backend B1–B10 + admin frontend F1–F6 closed; Sprint Q1 Quests Redesign **planned, not yet started**).
+> Last updated: 2026-05-24 (Sprint Q1 backend Q1.1–Q1.5 + Q1.7 and frontend Q1.6 closed; only Q1.8 manual stack verification + docs polish remains).
 
 ---
 
 ## Active Sprint
 
-**Sprint Q1 — Quests Module Redesign (data-driven, lazy, chain-aware).**
-Sprint plan locked in `ROADMAP.md > Sprint Q1 — Quests Module Redesign`.
-Eight slices (Q1.1 → Q1.8). Implementation pending operator approval
-per slice — only documentation has been written.
+**Sprint Q1 — Quests Module Redesign — backend + frontend closed.**
+Backend slices Q1.1 → Q1.5 + tests Q1.7 shipped on 2026-05-24. The
+frontend slice Q1.6 (Flutter admin + player UI) shipped the same
+session. Q1.8 remains: operator runs the stack, builds a chain via
+the admin UI, verifies the lazy chain unlocks via guest gameplay,
+then declares the sprint done.
 
-Goal: replace the fixed-enum `QuestType` catalog with a fully
-data-driven `QuestDefinition` shape carrying `Name`, `Description`,
-`Trigger`, `Threshold`, `Reward`, `PrerequisiteQuestDefinitionId`,
-`ProgressBaseline`. Players see new admin-defined quests **lazily**:
-the next `GET /quests/me` call (splash sync or quest page open)
-performs eligibility check + missing-row insertion + expired-daily
-cleanup in one round-trip. PlayerQuest progress is **computed** from
-Stats counters at read time, never written. Eager broadcast +
-`PlayerRegisteredIntegrationEventHandler` + the hardcoded
-`GameCompletedIntegrationEventHandler` /
-`AuthProviderLinkedIntegrationEventHandler` all delete in Q1.3.
+Final quality gate: **361/361 .NET tests + 103/103 Flutter tests
+green**. Detailed slice plan in `ROADMAP.md > Sprint Q1 — Quests
+Module Redesign`; per-slice delivery notes in `progress.md > Sprint
+Q1` and `frontendProgress.md > Slice Q1.6`.
+
+Goal (delivered): replaced the fixed-enum `QuestType` catalog with a
+fully data-driven `QuestDefinition` shape carrying `Name`,
+`Description`, `Trigger`, `Threshold`, `Reward`,
+`PrerequisiteQuestDefinitionId`, `ProgressBaseline`. Players see new
+admin-defined quests **lazily**: the next `GET /quests/me` call
+(splash sync or quest page open) deletes expired daily rows, inserts
+missing eligible PlayerQuests with baseline snapshots, then projects
+progress + DisplayState from Stats counters in memory. PlayerQuest
+progress is **computed** from Stats counters at read time, never
+written. Eager broadcast + `PlayerRegisteredIntegrationEventHandler`
++ the hardcoded `GameCompletedIntegrationEventHandler` /
+`AuthProviderLinkedIntegrationEventHandler` were deleted in Q1.3.
 
 Why now: manual testing of the closed admin frontend (F1–F6) exposed
 three product gaps — closed catalog (enum-fixed), hardcoded behavior
@@ -34,12 +42,44 @@ auto-issuance scales poorly with player count). Operator preference
 (2026-05-23) for "lazy, pull-based" issuance triggered on splash + quest
 page open is the architectural commitment.
 
-Tracked carefully because schema migration is **destructive** (drop
-`QuestType` column from PlayerQuests + QuestDefinitions). No
-production data exists yet, so no migration path; existing local test
-PlayerQuests rows will be lost on first run after Q1.2.
+Schema migration was **destructive** (dropped `QuestType` column from
+PlayerQuests + QuestDefinitions). No production data existed, so no
+migration path was needed; existing local test PlayerQuests rows
+were dropped on the Q1.2 migration. The destructive script
+(`030_ReshapeQuestsForSprintQ1.sql`) is idempotent so re-running
+`scripts/smoke.sh` / DbUp on a fresh DB stays a no-op after first
+apply.
 
-### Recently closed (this session, 2026-05-22…23)
+### Recently closed (Sprint Q1 session, 2026-05-24)
+
+- **Backend Q1.1–Q1.5 + Q1.7 — Quests redesign shipped.** All six
+  per-slice commits land on `main`; 361/361 .NET tests green. See
+  `progress.md > Sprint Q1` for slice-level detail.
+- **Frontend Q1.6 — Flutter reshape shipped.** Admin form pivoted
+  to free-text Name + Description + QuestTrigger dropdown +
+  Threshold/Reward inputs + ProgressBaseline (visible only when
+  trigger is GameCompletedTotal) + Prereq picker populated from
+  other active definitions. Player tile renders the admin-defined
+  Name + Description; the hardcoded QuestType → human-copy mapping
+  is gone. 103/103 Flutter tests green.
+- **Q1.3 bug found + fixed.** `GetActiveQuestsQueryHandler`
+  originally Sync→Delete; expired Daily rows looked "existing" to
+  Sync (no insert) and then got deleted, leaving the player with
+  zero rows. Order swapped (Delete first, then Sync). Comment
+  added.
+- **Energy consumer ripple.** `QuestClaimedIntegrationEvent` now
+  carries `QuestDefinitionId` + `Reward` (was `QuestType` +
+  `RewardAmount`); `Energy.Application/
+  QuestClaimedIntegrationEventHandler` reads the new field. Bonus
+  delivery stays event-driven.
+- **IntegrationTests stub `MutableQuestCounterReader`.** Quests.IT
+  doesn't boot Stats/Players; the stub satisfies
+  `IQuestCounterReader` resolution and lets each test set
+  counters explicitly. Production reader (`API/CrossModule/
+  QuestCounterReader`) hits stats.PlayerStats +
+  stats.PlayerPeriodStats + players.PlayerAuthIdentities directly.
+
+### Recently closed (Administration session, 2026-05-22…23)
 
 - **Backend B11 — admin energy GET.** `GET /admin/players/{playerId}/energy`
   passthrough reusing `GetPlayerEnergyQuery` under `AuthenticatedAdmin`.
@@ -114,6 +154,39 @@ PlayerQuests rows will be lost on first run after Q1.2.
   catalog is unfit for the product: admin can't introduce new quests
   without a code+seed change, and seeded types are all "taken" so
   Create is functionally inert. Q1 redesign is the response.
+
+### Lessons captured this session (Sprint Q1, 2026-05-24)
+
+- **Two-pass `GET /quests/me` order matters.** Delete expired daily
+  rows BEFORE the sync pass — otherwise an expired row counts as
+  "already issued" and the slot is empty until next sync. Cheap fix,
+  expensive to debug. Comment in the handler explains the why.
+- **Query handlers can mutate.** The Kamil convention says no, but
+  Q1's lazy-sync semantics need it: a separate sync-then-query call
+  pattern is more chatty and races between the two calls would
+  leave a window where the player sees no quests. The mutation is
+  pure SQL with `ON CONFLICT DO NOTHING`; no UoW needed because the
+  query handler is outside the decorator stack.
+- **Reward flows through the domain event, not the aggregate.**
+  PlayerQuest doesn't know its definition's reward; the handler
+  reads it from the catalog and passes it into `Claim`. The
+  resulting `PlayerQuestClaimedDomainEvent` carries `Reward` so
+  Energy's outbox consumer stays event-driven and doesn't need a
+  cross-module gateway back to Quests.
+- **`http.Response` in Flutter tests defaults to Latin-1.** Test
+  fixtures using `'İ'` (U+0130) blow up with
+  `Invalid argument: Contains invalid characters`. Easy fix: keep
+  test JSON ASCII (`'First Game'`); production payloads stay UTF-8
+  via the framework's content-type negotiation. Codified in the
+  Q1.6 test files.
+- **Cross-module reads don't need a module facade.** `EnergyGuard`
+  and `AdminLookup` use module facades because they call commands;
+  `QuestCounterReader` reads three counters across two modules and
+  doesn't fit that shape. Going straight to SQL from the API host
+  composition root keeps Quests structurally isolated and is faster
+  than wrapping each read in a Query+QueryHandler+IModuleFacade
+  bounce. Granted only because the read targets are stable
+  projection tables.
 
 ---
 
@@ -284,6 +357,20 @@ içindedir. Önemli mimari değişiklikler:
 - Quests'te raw inbox pattern *bilinçli olarak yok* — Energy gibi inline.
   Gerçek duplicate/retry sorunu çıkana kadar Stats-style raw inbox
   eklenmeyecek.
+- **Sprint Q1 sonrası**: Quests artık Game/Auth integration event'lerini
+  *dinlemiyor*. `GameCompletedIntegrationEvent` ve
+  `AuthProviderLinkedIntegrationEvent` *yalnız* Stats tarafından
+  tüketiliyor (counter projection). Quests counter'ları Stats'ten
+  `IQuestCounterReader` sync gateway'i üzerinden lazy okuyor.
+- **Sprint Q1 sonrası**: Quest progress *persist edilmiyor* — read
+  time'da Stats counter - PlayerQuest.ProgressBaselineSnapshot ile
+  hesaplanıyor. `PlayerQuest.RecordProgress` ve `ExpireIfPast`
+  Domain'den silindi. Daily quest expiry row-deletion ile yönetiliyor.
+- **Sprint Q1 sonrası**: `QuestDefinition.Name` ve `QuestDefinition.Trigger`
+  oluşturulduktan sonra immutable; Update yalnız Description/Threshold/
+  Reward/Prereq/ProgressBaseline değiştirir. Name değişikliği PlayerQuest
+  history'sini bozardı (snapshots eski threshold'la boyutlandırılmıştır);
+  Trigger değişikliği baseline'i invalidate ederdi.
 - `LexiLinkBearer`/`DevelopmentBearer` şimdilik baseline/test scheme'idir.
   `Authentication:Mode=DevelopmentBearer` production'da startup fail eder.
 - `Authentication:Mode=ProductionJwt` issuer, audience, lifetime, HMAC signature
@@ -311,6 +398,38 @@ içindedir. Önemli mimari değişiklikler:
 ---
 
 ## Next Action
+
+**Sprint Q1 backend Q1.1–Q1.5+Q1.7 + frontend Q1.6 kapandı.**
+Tüm slice'lar commit'lendi (7 ardışık commit: Q1.1, Q1.2, Q1.3,
+Q1.4, Q1.5, Q1.7, Q1.6). Quality gate 361/361 .NET + 103/103 Flutter.
+
+Kalan tek iş **Q1.8 — operator workflow**:
+
+1. Stack ayağa kalkmış (Q1.6 commit sonrası):
+   - API: `http://127.0.0.1:5000`, `Authentication__Mode=ProductionJwt`,
+     bootstrap admin `yasin.srcmm@gmail.com` (dev verifier:
+     `dev:admin:yasin.srcmm@gmail.com`).
+   - Flutter web: `http://127.0.0.1:5173` (Chrome).
+2. Admin UI'dan chain kur: Bronz (Total/1/+3) → Gümüş
+   (Total/3/+5/prereq=Bronz) → Altın (Total/10/+10/prereq=Gümüş).
+3. Guest player ile splash → quests sekmesi → ilk açılışta sadece
+   Daily seed + chain'in başı (Bronz) görünmeli (lazy issuance
+   + prereq honor).
+4. Bir oyun bitir → quest sayfasına dön → Bronz "Hazır" olur (Stats
+   counter via IQuestCounterReader → progress 1/1).
+5. Claim → enerji +3⚡ (outbox roundtrip), sonraki sync'te Gümüş
+   görünür.
+6. Daily expiry doğrula: DB'den manuel `UPDATE quests."PlayerQuests"
+   SET "ExpiresAt"='2025-01-01' WHERE ...` ile expired'a çek, quests
+   sayfasını refresh et → row silinip yeniden issue edilmeli.
+
+Q1.8 doğrulandıktan sonra Sprint Q1 tamamen kapanır. Sonraki sprint
+aday listesi `ROADMAP.md > Beyond Sprint 7` ve aşağıdaki "diğer
+aktif olmayan adaylar" bölümünde.
+
+---
+
+## Last sprint closure (kept for context)
 
 **Administration backend sprint — B1–B10 kapandı.**
 B1 modül foundation 2026-05-18, B2 admin registration + outbox publish +

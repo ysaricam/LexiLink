@@ -19,7 +19,10 @@ A single player's session solving one Puzzle. Aggregate root. The most complex a
 A player's energy account in the Energy module. Aggregate root, identified by `PlayerEnergyId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Holds `_currentAmount`, `_maximumAmount`, `_rechargeIntervalSeconds`, and `_lastRefilledOn`. Lifecycle: `InitializeFor(playerId, max, intervalSeconds, initializedAt)` (called by `EnsurePlayerEnergyExistsCommand` after a `PlayerRegisteredIntegrationEvent`). Behavior: `Consume(amount, now)` recharges first via `RechargeBasedOnElapsedTime(now)`, then checks `EnergyMustBeSufficientToConsumeRule`, then debits; the refill timer is armed **only when consume crosses the bucket from at/above max to below max** (so 10/5 → 9/5 and 6/5 → 5/5 leave the timer idle, while 5/5 → 4/5 sets it). `GrantBonus(amount, now)` adds `amount` without checking max — it is the reward path invoked by `QuestClaimedIntegrationEvent`; over-max balance is preserved and the timer stays idle until the bucket drains back below max. Emits `PlayerEnergyConsumedDomainEvent` and `PlayerEnergyRefilledDomainEvent`.
 
 ### PlayerQuest — `Modules/Quests/Domain/PlayerQuests/PlayerQuest.cs`
-A single quest assignment to a single player. Aggregate root, identified by `PlayerQuestId` (its own Guid, unrelated to `PlayerId`). Holds `_playerId`, `_questType`, `_progress`, `_goal`, `_rewardAmount`, `_state`, `_issuedAt`, `_completedAt`, `_claimedAt`, and `_expiresAt`. Lifecycle: `IssueFor(playerId, questType, goal, rewardAmount, issuedAt, expiresAt?)` (creates in `Active` state). Behavior: `RecordProgress(delta, now)` first calls `ExpireIfPast(now)`, then advances `_progress` (clamped at `_goal`); when progress reaches `_goal` the state flips to `ReadyToClaim`. `Claim(now)` calls `ExpireIfPast(now)`, then flips `ReadyToClaim → Claimed`. `ExpireIfPast(now)` transitions `Active`/`ReadyToClaim` → `Expired` when `_expiresAt` has passed. Emits `PlayerQuestIssuedDomainEvent`, `PlayerQuestCompletedDomainEvent`, `PlayerQuestClaimedDomainEvent`.
+A single quest assignment to a single player. Aggregate root, identified by `PlayerQuestId` (its own Guid, unrelated to `PlayerId`). Holds `_playerId`, `_questDefinitionId`, `_progressBaselineSnapshot`, `_state`, `_issuedAt`, `_claimedAt`, and `_expiresAt`. Post Sprint Q1 progress is **computed at read time** from Stats counters; the aggregate doesn't persist `Progress`/`Goal`/`Reward` — those live on the linked `QuestDefinition`. Lifecycle: `IssueFor(playerId, questDefinitionId, baselineSnapshot, issuedAt, expiresAt?)` (creates in `Active` state). Behavior: `Claim(now, isReadyToClaim, reward)` — the handler passes `isReadyToClaim` (computed from current Stats counter minus baseline ≥ definition's threshold, and not past `_expiresAt`) and the catalog's `reward`; aggregate flips `Active → Claimed` and emits `PlayerQuestClaimedDomainEvent` carrying the reward so Energy's outbox consumer can grant the bonus event-driven. Expired daily rows are DELETEd by `GetActiveQuestsQueryHandler` on the next sync, not transitioned. Emits `PlayerQuestIssuedDomainEvent`, `PlayerQuestClaimedDomainEvent`.
+
+### QuestDefinition — `Modules/Quests/Domain/PlayerQuests/QuestDefinition.cs`
+Catalog entry describing how a quest is issued and rewarded. Aggregate root identified by `QuestDefinitionId`. Holds `_name` (≤64 chars), `_description` (≤256 chars), `_trigger`, `_threshold`, `_reward`, `_prerequisiteQuestDefinitionId?` (FK to another definition or null), `_progressBaseline`, `_isActive`. Lifecycle: `Create(name, description, trigger, threshold, reward, prereqId?, progressBaseline, prerequisiteWouldCreateCycle)` — handler walks the prereq chain ahead of time and passes the boolean. `Update(description, threshold, reward, prereqId?, progressBaseline, prerequisiteWouldCreateCycle)` — Name and Trigger are immutable post-create (changing them would re-key PlayerQuest history). `Deactivate` / `Reactivate` idempotent; deactivated definitions disappear from `/quests/me` listings (claim history rows stay intact). Emits `QuestDefinitionCreatedDomainEvent`, `QuestDefinitionUpdatedDomainEvent`, `QuestDefinitionActivationChangedDomainEvent`.
 
 ---
 
@@ -40,17 +43,17 @@ Enum: `Easy`, `Medium`, `Hard`. Drives `IGameConfigurationService.ResolveDepthRa
 ### GameState — `Games/GameState.cs`
 Enum: `Initial`, `InProgress`, `LastStepWarning`, `Completed`, `Failed`, `Abandoned`. Drives the state machine — see below.
 
-### QuestType — `Quests/PlayerQuests/QuestType.cs`
-Enum identifying which quest. MVP catalog: `FirstGameCompleted`, `ThreeGamesCompleted`, `AccountLinked`, `DailyThreeGames`. Persisted to `quests.PlayerQuests.QuestType` as `varchar(64)` via EF `HasConversion<string>()` so DB rows stay self-describing.
+### QuestTrigger — `Quests/PlayerQuests/QuestTrigger.cs`
+Enum: `GameCompletedTotal`, `GameCompletedDaily`, `AuthProviderLinked`. Tells `IQuestCounterReader` which player counter the quest tracks. Fixed at three values — extending requires a Domain change AND a matching counter read in the API host adapter. Persisted to `quests.QuestDefinitions.Trigger` as `varchar(32)` via EF `HasConversion<string>()`.
+
+### ProgressBaseline — `Quests/PlayerQuests/ProgressBaseline.cs`
+Enum: `FromSnapshot` (default — capture player's counter at issuance, measure delta from there) or `FromExistingTotal` (snapshot = 0, measure absolute counter — for retroactive milestones like "you've completed 50 games" that should reward longtime players on first sync). Only meaningful for `GameCompletedTotal`; Daily and AuthProviderLinked ignore the value because their counters already start at the relevant zero.
 
 ### QuestState — `Quests/PlayerQuests/QuestState.cs`
-Enum: `Active`, `ReadyToClaim`, `Claimed`, `Expired`. State machine: `Active → ReadyToClaim` on progress completion; `ReadyToClaim → Claimed` on explicit `Claim()` (player taps claim); `Active`/`ReadyToClaim → Expired` lazily via `ExpireIfPast(now)`. Persisted as `varchar(32)` via `HasConversion<string>()`.
+Enum: `Active`, `Claimed`. Persisted state shrunk in Sprint Q1 — `ReadyToClaim` is computed at read time (`counter - baseline ≥ threshold`) and `Expired` was replaced by row deletion in the sync pass. Persisted as `varchar(32)` via `HasConversion<string>()`. The API's `PlayerQuestDto.DisplayState` carries the read-time projection (one of "Active" / "ReadyToClaim" / "Claimed") as a string.
 
-### QuestCadence — `Quests/PlayerQuests/QuestCadence.cs`
-Enum: `OneTime` or `Daily`. Used in `QuestDefinition` to decide whether `IssueQuestCommand` should set `_expiresAt = NextUtcMidnight(now)` (Daily) or leave it null (OneTime). Daily expiry is checked lazily on read/progress; the next event after expiry re-issues a fresh daily quest.
-
-### QuestDefinition — `Quests/PlayerQuests/QuestDefinition.cs`
-Sealed record `QuestDefinition(QuestType, QuestCadence, int Goal, int RewardAmount, QuestType? PrerequisiteQuestType)`. The catalog entry for one quest. `PrerequisiteQuestType` gates issuance — `AccountLinked` requires `ThreeGamesCompleted` to be **claimed** before it can be issued. MVP catalog: `FirstGameCompleted` (OneTime, 1, +3⚡), `ThreeGamesCompleted` (OneTime, 3, +5⚡), `AccountLinked` (OneTime, 1, +5⚡, prereq=ThreeGamesCompleted), `DailyThreeGames` (Daily, 3, +5⚡).
+### QuestCounters — `Quests/Application/Configuration/CrossModule/IQuestCounterReader.cs`
+Record `QuestCounters(int GamesCompletedTotal, int GamesCompletedToday, bool AuthProviderLinked)`. Returned by `IQuestCounterReader.ReadAsync(playerId, nowUtc)` in a single call. Owned by Stats (Total/Daily) and Players (AuthLinked); read through the sync gateway whose implementation lives in `LexiLink.API/CrossModule/QuestCounterReader.cs`.
 
 ### HintAllowance, UndoAllowance, ResetAllowance — `Games/Allowances/`
 Three immutable VOs sharing the same shape: `Of(int total)` factory, `Remaining` and `Used` getters, `Consume()` returning a new instance after `CheckRule(*MustHaveRemainingRule)`. Three separate types instead of one generic — semantic distinction is preserved in the type system. Game uses field reassignment: `_hintAllowance = _hintAllowance.Consume();`.
@@ -113,16 +116,18 @@ Every transition is guarded by `CheckRule(...)` and emits a `*DomainEvent`. `Ini
 - `PlayerEnergyConsumedDomainEvent` — emitted by `Consume()` with `PlayerId`, `Amount`, `RemainingAmount`.
 - `PlayerEnergyRefilledDomainEvent` — emitted by `RechargeBasedOnElapsedTime()` only when at least one tick is gained; carries `PlayerId`, `GainedAmount`, `CurrentAmount`.
 
-### PlayerQuest (3) — `Quests/Domain/PlayerQuests/Events/`
-- `PlayerQuestIssuedDomainEvent` — emitted by `IssueFor(...)`; carries `PlayerQuestId`, `PlayerId`, `QuestType`.
-- `PlayerQuestCompletedDomainEvent` — emitted by `RecordProgress(...)` when progress reaches goal.
-- `PlayerQuestClaimedDomainEvent` — emitted by `Claim(now)`; mapped to `QuestClaimedIntegrationEvent` via outbox so Energy can grant the reward.
+### PlayerQuest (2) + QuestDefinition (3) — `Quests/Domain/PlayerQuests/Events/`
+- `PlayerQuestIssuedDomainEvent` — emitted by `IssueFor(...)`; carries `PlayerQuestId`, `PlayerId`, `QuestDefinitionId`.
+- `PlayerQuestClaimedDomainEvent` — emitted by `Claim(now, isReady, reward)`; carries `PlayerQuestId`, `PlayerId`, `QuestDefinitionId`, `Reward`. Mapped to `QuestClaimedIntegrationEvent` via outbox so Energy can grant the bonus event-driven.
+- `QuestDefinitionCreatedDomainEvent` — emitted by `Create(...)`; carries `QuestDefinitionId`, `Name`, `Trigger` (string), `Threshold`, `Reward`, `PrerequisiteQuestDefinitionId?`, `ProgressBaseline` (string).
+- `QuestDefinitionUpdatedDomainEvent` — emitted by `Update(...)`; same minus `Name` (immutable) and `Trigger` (immutable).
+- `QuestDefinitionActivationChangedDomainEvent` — emitted by `Deactivate()` / `Reactivate()`; carries `QuestDefinitionId`, `IsActive`.
 
 All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which extends `IDomainEvent : INotification` — so they're MediatR-compatible without further wiring.
 
 ---
 
-## Business Rules (24 total)
+## Business Rules (26 total)
 
 ### Category (3) — `Categories/Rules/`
 - `CategoryNameMustNotBeEmptyRule`
@@ -157,12 +162,13 @@ All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which exte
 - `EnergyMustBeSufficientToConsumeRule` — `_currentAmount >= requestedAmount`; the rule whose violation propagates as `BusinessRuleValidationException` and is what blocks a `StartGameCommand` when energy is empty.
 - `BonusAmountMustBePositiveRule` — `GrantBonus(amount, now)` requires `amount > 0` (zero or negative bonuses are nonsensical).
 
-### PlayerQuest (5) — `Quests/Domain/PlayerQuests/Rules/`
-- `QuestGoalMustBePositiveRule` — `IssueFor(...)` requires `goal > 0`.
-- `QuestRewardAmountMustBePositiveRule` — `IssueFor(...)` requires `rewardAmount > 0`.
-- `QuestProgressDeltaMustBePositiveRule` — `RecordProgress(delta, now)` requires `delta > 0`.
-- `QuestMustBeActiveToProgressRule` — `RecordProgress` requires `_state == Active`.
-- `QuestMustBeReadyToBeClaimedRule` — `Claim(now)` requires `_state == ReadyToClaim`.
+### PlayerQuest (1) + QuestDefinition (5) — `Quests/Domain/PlayerQuests/Rules/`
+- `QuestMustBeReadyToBeClaimedRule` — `Claim(now, isReadyToClaim, reward)` requires `_state == Active && isReadyToClaim` (caller-supplied flag computed from Stats counter vs threshold + not past expiry).
+- `QuestThresholdMustBePositiveRule` — `QuestDefinition.Create` / `Update` require `threshold > 0`.
+- `QuestRewardMustBePositiveRule` — `QuestDefinition.Create` / `Update` require `reward > 0`.
+- `QuestNameMustNotBeEmptyRule` — `Create` requires non-empty trimmed name.
+- `QuestNameMustNotExceedMaxLengthRule` (≤ 64) and `QuestDescriptionMustNotExceedMaxLengthRule` (≤ 256) — Create/Update bounds checks.
+- `QuestPrerequisiteMustNotCreateCycleRule` — parametric on a boolean. The command handler walks the prereq chain via `IQuestDefinitionRepository` before invoking `Create`/`Update` and passes `true` if the proposed prereq points (eventually) back at the definition being created/updated.
 
 All are `IBusinessRule` and dispatch through `CheckRule(...)`, throwing `BusinessRuleValidationException` on failure.
 
@@ -191,10 +197,13 @@ Domain services are received as method parameters — never stored on aggregates
 The first synchronous cross-module gateway in LexiLink. Contract lives in **Games.Application** so Games depends only on its own surface (`EnsureCanStartGameAsync(playerId, ct)`). The adapter (`LexiLink.API/CrossModule/EnergyGuard.cs`) is composed in the API host and translates the call into `IEnergyModule.ExecuteCommandAsync(new ConsumePlayerEnergyCommand(playerId, _energyConfiguration.GameStartCost))`. `StartGameCommandHandler` invokes the guard **before** `game.Start()`: insufficient energy throws `BusinessRuleValidationException` and the game state never advances from `Initial`. Residual dual-write risk (energy debited but `game.Start()` throws on a duplicate call) is accepted for MVP. Documented as the intentional deviation in `kamil-modular-monolith-comparison.md`; architecture tests forbid Games.Application from depending on any Energy namespace.
 
 ### IQuestCatalog — `Modules/Quests/Domain/PlayerQuests/IQuestCatalog.cs`
-Resolves a `QuestType` to its `QuestDefinition`. Implementation in Quests.Infrastructure (`QuestCatalog`) is hardcoded for the MVP; future iterations may load from configuration or a content service. Registered as a singleton in `QuestsAutofacModule`.
+Resolves a `QuestDefinitionId` to its `QuestDefinition` (returns null for deactivated entries so issuance/claim handlers can no-op). Implementation in Quests.Infrastructure (`QuestCatalog`) reads through `IQuestDefinitionRepository`. Registered scoped in `QuestsAutofacModule`.
+
+### IQuestCounterReader — `Modules/Quests/Application/Configuration/CrossModule/IQuestCounterReader.cs`
+The Sprint Q1 sync gateway. Contract lives in **Quests.Application** so Quests depends only on its own surface (`ReadAsync(playerId, nowUtc, ct) -> QuestCounters`). The adapter (`LexiLink.API/CrossModule/QuestCounterReader.cs`) is composed in the API host and queries `stats.PlayerStats.GamesCompleted` (Total), `stats.PlayerPeriodStats` (Daily for today UTC), and `players.PlayerAuthIdentities` (AuthLinked existence) via Dapper against a fresh `NpgsqlConnection`. Consumed by `IssueQuestCommandHandler` (baseline snapshot), `ClaimQuestCommandHandler` (ready-to-claim check), and `GetActiveQuestsQueryHandler` (read-time progress projection). Module isolation is preserved by keeping the SQL in the composition root — Quests has no structural reference to Stats or Players.
 
 ### QuestClaimedIntegrationEvent — `Modules/Quests/IntegrationEvents/QuestClaimedIntegrationEvent.cs`
-Public contract emitted by Quests' outbox after `PlayerQuestClaimedDomainEvent` lands. Carries `PlayerId`, `PlayerQuestId`, `QuestType` (string), and `RewardAmount`. Consumed by Energy.Application's `QuestClaimedIntegrationEventHandler`, which idempotently ensures the energy aggregate exists and then dispatches `GrantEnergyCommand`. This is LexiLink's **first reverse cross-module event dependency**: Energy.Application references `Quests.IntegrationEvents` (granular allow), analogous to how Stats references Games/Players IntegrationEvents. ArchTests enforce that the dependency stays public-contract-only — Quests.Domain/Application/Infrastructure remain forbidden from any consumer module.
+Public contract emitted by Quests' outbox after `PlayerQuestClaimedDomainEvent` lands. Carries `PlayerId`, `PlayerQuestId`, `QuestDefinitionId` (Guid), and `Reward`. Consumed by Energy.Application's `QuestClaimedIntegrationEventHandler`, which idempotently ensures the energy aggregate exists and then dispatches `GrantEnergyCommand`. This is LexiLink's **first reverse cross-module event dependency**: Energy.Application references `Quests.IntegrationEvents` (granular allow), analogous to how Stats references Games/Players IntegrationEvents. ArchTests enforce that the dependency stays public-contract-only — Quests.Domain/Application/Infrastructure remain forbidden from any consumer module.
 
 ---
 
@@ -206,7 +215,8 @@ Public contract emitted by Quests' outbox after `PlayerQuestClaimedDomainEvent` 
 | `ILinkRepository` | `Link` | `GetByIdAsync`, `GetIdsByCategoryAsync`, `AddAsync` |
 | `IGameRepository` | `Game` | `GetByIdAsync`, `AddAsync` |
 | `IPlayerEnergyRepository` | `PlayerEnergy` | `GetByIdAsync`, `AddAsync` |
-| `IPlayerQuestRepository` | `PlayerQuest` | `GetByIdAsync`, `GetActiveOrReadyByPlayerAndTypeAsync`, `GetByPlayerAsync`, `HasClaimedAsync`, `AddAsync` |
+| `IPlayerQuestRepository` | `PlayerQuest` | `GetByIdAsync`, `GetActiveOrClaimedByPlayerAndDefinitionAsync`, `GetByPlayerAsync`, `HasClaimedAsync(QuestDefinitionId)`, `AddAsync` |
+| `IQuestDefinitionRepository` | `QuestDefinition` | `GetByIdAsync`, `GetAllAsync`, `AddAsync` |
 
 No `Update` / `Delete` methods — aggregates mutate in place; `IUnitOfWork.CommitAsync()` persists changes through EF Core's change tracker. Soft-delete uses state methods on the aggregate (see SKILLS.md rule #12).
 

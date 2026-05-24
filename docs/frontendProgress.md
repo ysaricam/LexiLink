@@ -5,6 +5,40 @@ yeniden yazilmaz.
 
 ---
 
+## Slice Q1.6 — Quests redesign frontend reshape ✅ closed (2026-05-24, commit a754301)
+
+Frontend leg of the Sprint Q1 redesign. Shipped as a single bundled
+commit covering data + application + presentation + tests across both
+the admin quest catalog screen and the player quest list. Quality
+gate: **103/103 Flutter tests pass**, `flutter analyze` only
+pre-existing info-level warnings.
+
+The closed `AdminQuestType` catalog (7 values incl Custom1/2/3) is
+gone. The admin form now collects free-text Name + Description, a
+fixed Trigger dropdown (3 values), Threshold + Reward numeric inputs,
+a Prerequisite dropdown populated from other active definitions, and
+a ProgressBaseline dropdown that surfaces only when the trigger is
+`gameCompletedTotal`. Name + Trigger are read-only in Edit mode
+(server rejects changes per Q1.5 immutability rule).
+
+Player quest tile renders the admin-defined `Name` (title) +
+`Description` (subtitle) with no hardcoded quest-type → human-copy
+mapping. State badge labels switched to Türkçe ("Hazır", "Aktif",
+"Alındı"). `QuestState` shrunk to 4 values — `expired` removed
+because the Q1.3 backend deletes expired daily rows on sync rather
+than transitioning them.
+
+5 quest-area test files reshaped. Turkish characters in JSON test
+fixtures (`'İlk Oyun'`) were replaced with ASCII because
+`http.Response` in Flutter test defaults to Latin-1 encoding and
+`İ` (U+0130) blows up there. Production wire format stays UTF-8.
+
+Detailed Q1.6 shape and decision rationale live in
+`frontendActiveContext.md > Sprint Q1.6 — Quests redesign (frontend
+reshape)`.
+
+---
+
 ## Admin frontend sprint (F1–F6) ✅ closed (2026-05-22…23)
 
 Backend Administration sprint (B1–B10) kapandıktan sonra altı slice'lık

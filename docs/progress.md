@@ -4,6 +4,141 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Sprint Q1 — Quests Module redesign (2026-05-24)
+
+Backend Q1.1–Q1.5 + Q1.7 and frontend Q1.6 shipped in a single
+session. The closed-enum `QuestType` catalog is gone; quest
+definitions now carry free-text `Name` + `Description`, a fixed
+`QuestTrigger`, `Threshold`, `Reward`, optional
+`PrerequisiteQuestDefinitionId`, and `ProgressBaseline`. PlayerQuests
+are issued lazily on `GET /quests/me` and progress is computed at read
+time from Stats counters. Final quality gate: **361/361 .NET tests +
+103/103 Flutter tests green**.
+
+Detailed slice plan + decisions live in
+`ROADMAP.md > Sprint Q1 — Quests Module Redesign`. Frontend slice
+detail in `frontendProgress.md > Slice Q1.6`.
+
+### Slice Q1.1 — Domain reshape (2026-05-24, 9f8face)
+
+- Drop `QuestType`, `QuestCadence`, all four progress-tracking rules
+  and the `PlayerQuestCompleted` / `PlayerQuestAdminReset` events.
+  `QuestState` shrinks to `Active|Claimed`.
+- Add `QuestTrigger` (3 values), `ProgressBaseline` (2 values), six
+  new rules (Threshold/Reward/Name length/Description length/Cycle).
+- `QuestDefinition.Create` / `Update` take the new field set.
+  `Update` excludes Name + Trigger (immutable post-create per Q1.5).
+  Cycle check is parametric on a boolean computed by the handler.
+- `PlayerQuest.IssueFor(playerId, questDefinitionId, baselineSnapshot,
+  issuedAt, expiresAt?)`. `Claim(now, isReadyToClaim, reward)` —
+  caller computes readiness from Stats counters; reward flows through
+  to the domain event so Energy bonus delivery stays event-driven.
+
+### Slice Q1.2 — DbUp schema rewrite (2026-05-24, a094219)
+
+- Rewrite `quests.PlayerQuests` (QuestDefinitionId FK +
+  ProgressBaselineSnapshot; no Progress/Goal/RewardAmount/CompletedAt)
+  + `quests.QuestDefinitions` (Name/Description/Trigger/Threshold/
+  Reward/PrerequisiteQuestDefinitionId/ProgressBaseline) + view
+  `v_PlayerQuests`.
+- `UX_PlayerQuests_PlayerId_QuestDefinitionId` for idempotent lazy
+  issuance under concurrent calls.
+- Seed shrinks to a single `'Günlük 3 Oyun'` daily quest
+  (`11111111-0000-0000-0000-000000000010`); the Total chain is left to
+  admin tooling so the chain-building UX is exercised end-to-end.
+- `030_ReshapeQuestsForSprintQ1.sql` ships as an idempotent
+  destructive migration so existing local databases drop the old
+  shape and rebuild — no production data yet, so no preservation.
+
+### Slice Q1.3 — Application reshape (2026-05-24, 5087205)
+
+- Delete `GameCompleted` / `AuthProviderLinked` / `PlayerRegistered`
+  integration event handlers and `RecordQuestProgressCommand`. All
+  three were tied to hardcoded QuestType; lazy issuance makes them
+  unnecessary. Admin `IssueQuestToPlayer` and `ResetPlayerQuest` also
+  removed — chain-aware lazy issuance leaves no use case for either.
+- New `IQuestCounterReader` contract in
+  `Application/Configuration/CrossModule/`. Returns
+  `QuestCounters(GamesCompletedTotal, GamesCompletedToday,
+  AuthProviderLinked)` in a single call.
+- `IssueQuestCommandHandler` reads counters via the gateway,
+  computes baseline (FromSnapshot → counter, FromExistingTotal → 0
+  for Total; 0 for Daily/Auth), and persists PlayerQuest with
+  expiresAt = next UTC midnight for daily.
+- `ClaimQuestCommandHandler` reads counters, computes
+  `isReadyToClaim = (counter - baseline) >= threshold AND not past
+  expiry`, passes that + `definition.Reward` into `Claim`. Claiming
+  a deactivated definition's row is still allowed — deactivation
+  hides future issuance but does not void earned rewards.
+- `GetActiveQuestsQueryHandler` is now a two-pass Dapper handler:
+  DELETE expired daily rows first (so the slot can be re-issued),
+  then INSERT missing eligible PlayerQuests with `ON CONFLICT DO
+  NOTHING`, then SELECT-with-join + in-memory projection of progress
+  and DisplayState (`Active` / `ReadyToClaim` / `Claimed`).
+- `QuestClaimedIntegrationEvent` now carries `QuestDefinitionId` +
+  `Reward` (was `QuestType` + `RewardAmount`).
+- `Energy.Application/QuestClaimedIntegrationEventHandler` reads the
+  new `Reward` field — forced cross-module ripple from the contract
+  reshape.
+
+### Slice Q1.4 — Cross-module counter reader (2026-05-24, 318e1b3)
+
+- `LexiLink.API/CrossModule/QuestCounterReader.cs` implements
+  `IQuestCounterReader` against `stats.PlayerStats` (Total),
+  `stats.PlayerPeriodStats` (Daily for today UTC), and
+  `players.PlayerAuthIdentities` (AuthLinked existence) via Dapper.
+- Fresh `NpgsqlConnection` per call (`await using`) so the adapter
+  doesn't share lifetimes with any module's `SqlConnectionFactory`.
+- Three small queries instead of a UNION ALL — readable; profile-
+  driven optimization can collapse it later.
+- Registered in `Program.cs` next to `EnergyGuard` /
+  `AdminLookup` / `PlayerStatusLookup`.
+
+### Slice Q1.5 — API endpoints reshape (2026-05-24, 6f0ecca)
+
+- `AdminQuestEndpoints` request DTOs: `CreateQuestDefinitionRequest`
+  (Name + Description + Trigger + Threshold + Reward +
+  PrerequisiteQuestDefinitionId + ProgressBaseline) and
+  `UpdateQuestDefinitionRequest` (same minus Name/Trigger per Q1.5
+  immutability).
+- Drop `POST /admin/quests/players/{playerId}/issue` and
+  `POST /admin/quests/players/{playerId}/{playerQuestId}/reset` along
+  with their request types.
+- `GET /quests/me` external shape unchanged; internally now runs the
+  Q1.3 two-pass handler.
+
+### Slice Q1.7 — Tests reshape (2026-05-24, 85803d7)
+
+- Delete `PlayerQuestExpireTests` and `PlayerQuestRecordProgressTests`
+  (the underlying methods are gone). Reshape `PlayerQuestIssueTests`,
+  `PlayerQuestClaimTests`, `QuestDefinitionTests`,
+  `PlayerQuestTestsBase` to the new signatures.
+- Quests.IT TestBase: seed-reset SQL leaves only the daily definition;
+  `MutableQuestCounterReader` stub wired into the container so
+  handlers can resolve `IQuestCounterReader` without booting Stats /
+  Players. New `QuestAdminCommandTests` covers audit-target wiring
+  for the new commands plus the direct self-reference cycle case.
+- `QuestIntegrationEventTests` is rewritten end-to-end — no more
+  Game/Auth event handlers, so the suite verifies lazy issuance,
+  sync idempotency, prereq honoring, baseline-snapshot behaviour,
+  delete-then-reissue daily flow, claim outbox roundtrip, and
+  threshold-not-met claim rejection.
+- `Energy.IT/QuestRewardDeliveryTests` + `API.Tests/QuestEndpointsTests`
+  pick up the new `QuestClaimedIntegrationEvent` and PlayerQuests
+  column shape.
+- Final quality gate: **361/361 .NET tests green** (4 progress/expire
+  tests + obsolete IT cases dropped; net -7 from previous 368).
+
+### Bug fixed during Q1.7
+
+- `GetActiveQuestsQueryHandler` originally ran `Sync` before `Delete
+  expired`. An expired Daily row looked "existing" to the sync pass
+  (no insert), then was deleted, leaving the player with zero rows
+  for the day. Order swapped: Delete expired first, then Sync
+  missing. Comment added explaining the why.
+
+---
+
 ## Administration Module + admin frontend session (2026-05-21 to 2026-05-23)
 
 The sixth backend module (Administration) and the six-slice admin

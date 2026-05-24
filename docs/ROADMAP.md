@@ -1285,7 +1285,17 @@ Goal: ship the second module to validate the modular monolith pattern. Scope: mi
 
 ---
 
-## Sprint Q1 — Quests Module Redesign (data-driven, lazy, chain-aware)
+## Sprint Q1 — Quests Module Redesign (data-driven, lazy, chain-aware) ✅ Q1.1–Q1.7 closed 2026-05-24
+
+**Status:** Backend slices Q1.1–Q1.5 + Q1.7 and frontend slice Q1.6
+shipped on 2026-05-24 as seven sequential commits on `main`. Final
+quality gate: **361/361 .NET tests + 103/103 Flutter tests green**.
+Only Q1.8 (operator-level manual verification — admin builds a chain
+via the UI and a guest player runs through it) remains.
+
+Per-slice delivery detail in `progress.md > Sprint Q1` and
+`frontendProgress.md > Slice Q1.6`. The full original plan + locked
+decisions are preserved below for reference.
 
 Goal: replace the fixed-enum, hardcoded-behavior quest catalog with a
 fully data-driven model where every quest definition carries its own
