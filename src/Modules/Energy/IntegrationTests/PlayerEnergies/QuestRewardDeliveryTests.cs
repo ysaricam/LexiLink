@@ -24,8 +24,8 @@ public class QuestRewardDeliveryTests : TestBase
             OccurredOn: DateTime.UtcNow,
             PlayerId: playerId,
             PlayerQuestId: Guid.NewGuid(),
-            QuestType: "FirstGameCompleted",
-            RewardAmount: 3));
+            QuestDefinitionId: Guid.NewGuid(),
+            Reward: 3));
 
         var after = await QuerySingleOrDefaultAsync<int>("""
             SELECT "CurrentAmount" FROM "energy"."PlayerEnergies" WHERE "PlayerId" = @PlayerId;
@@ -46,8 +46,8 @@ public class QuestRewardDeliveryTests : TestBase
             OccurredOn: DateTime.UtcNow,
             PlayerId: playerId,
             PlayerQuestId: Guid.NewGuid(),
-            QuestType: "ThreeGamesCompleted",
-            RewardAmount: 5));
+            QuestDefinitionId: Guid.NewGuid(),
+            Reward: 5));
 
         var snapshot = await QuerySingleOrDefaultAsync<EnergySnapshot>("""
             SELECT "CurrentAmount" AS "CurrentAmount", "MaximumAmount" AS "MaximumAmount"

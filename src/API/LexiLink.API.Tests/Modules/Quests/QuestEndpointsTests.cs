@@ -14,6 +14,10 @@ public sealed class QuestEndpointsTests
     private const string ConnectionString =
         "Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852";
 
+    // Daily seed from 021_SeedQuestDefinitions.sql.
+    private static readonly Guid SeedDailyQuestDefinitionId =
+        Guid.Parse("11111111-0000-0000-0000-000000000010");
+
     private WebApplicationFactory<Program> _factory = null!;
 
     [SetUp]
@@ -57,19 +61,9 @@ public sealed class QuestEndpointsTests
     }
 
     [Test]
-    public async Task GetQuestsMe_WhenPlayerHasQuests_ReturnsList()
+    public async Task GetQuestsMe_FreshPlayer_LazilyReturnsSeededDaily()
     {
         var playerId = Guid.NewGuid();
-        var questId = Guid.NewGuid();
-        await UpsertQuestAsync(
-            questId,
-            playerId,
-            questType: "FirstGameCompleted",
-            state: "ReadyToClaim",
-            progress: 1,
-            goal: 1,
-            rewardAmount: 3,
-            issuedAt: DateTime.UtcNow.AddMinutes(-5));
 
         try
         {
@@ -81,46 +75,14 @@ public sealed class QuestEndpointsTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var body = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
             body.RootElement.ValueKind.Should().Be(JsonValueKind.Array);
-            body.RootElement.GetArrayLength().Should().Be(1);
+            body.RootElement.GetArrayLength().Should().Be(1, "lazy sync issues the seeded daily quest");
             var first = body.RootElement[0];
-            first.GetProperty("id").GetGuid().Should().Be(questId);
             first.GetProperty("playerId").GetGuid().Should().Be(playerId);
-            first.GetProperty("questType").GetString().Should().Be("FirstGameCompleted");
-            first.GetProperty("state").GetString().Should().Be("ReadyToClaim");
-            first.GetProperty("rewardAmount").GetInt32().Should().Be(3);
-        }
-        finally
-        {
-            await DeletePlayerQuestsAsync(playerId);
-        }
-    }
-
-    [Test]
-    public async Task PostClaim_OnReadyToClaimQuest_Returns204AndMarksClaimed()
-    {
-        var playerId = Guid.NewGuid();
-        var questId = Guid.NewGuid();
-        await UpsertQuestAsync(
-            questId,
-            playerId,
-            questType: "FirstGameCompleted",
-            state: "ReadyToClaim",
-            progress: 1,
-            goal: 1,
-            rewardAmount: 3,
-            issuedAt: DateTime.UtcNow.AddMinutes(-5));
-
-        try
-        {
-            using var client = _factory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", playerId.ToString());
-
-            var response = await client.PostAsync($"/quests/{questId}/claim", content: null);
-
-            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
-
-            var state = await ReadQuestStateAsync(questId);
-            state.Should().Be("Claimed");
+            first.GetProperty("questDefinitionId").GetGuid().Should().Be(SeedDailyQuestDefinitionId);
+            first.GetProperty("trigger").GetString().Should().Be("GameCompletedDaily");
+            first.GetProperty("threshold").GetInt32().Should().Be(3);
+            first.GetProperty("reward").GetInt32().Should().Be(5);
+            first.GetProperty("displayState").GetString().Should().Be("Active");
         }
         finally
         {
@@ -134,14 +96,11 @@ public sealed class QuestEndpointsTests
         var ownerId = Guid.NewGuid();
         var otherId = Guid.NewGuid();
         var questId = Guid.NewGuid();
-        await UpsertQuestAsync(
+        await UpsertActiveQuestAsync(
             questId,
             ownerId,
-            questType: "FirstGameCompleted",
-            state: "ReadyToClaim",
-            progress: 1,
-            goal: 1,
-            rewardAmount: 3,
+            questDefinitionId: SeedDailyQuestDefinitionId,
+            baselineSnapshot: 0,
             issuedAt: DateTime.UtcNow.AddMinutes(-5));
 
         try
@@ -159,48 +118,32 @@ public sealed class QuestEndpointsTests
         }
     }
 
-    private static async Task UpsertQuestAsync(
+    private static async Task UpsertActiveQuestAsync(
         Guid id,
         Guid playerId,
-        string questType,
-        string state,
-        int progress,
-        int goal,
-        int rewardAmount,
+        Guid questDefinitionId,
+        int baselineSnapshot,
         DateTime issuedAt)
     {
         await using var connection = new NpgsqlConnection(ConnectionString);
         await connection.OpenAsync();
         await using var command = new NpgsqlCommand("""
             INSERT INTO "quests"."PlayerQuests"
-                ("Id", "PlayerId", "QuestType", "Progress", "Goal", "RewardAmount", "State", "IssuedAt")
+                ("Id", "PlayerId", "QuestDefinitionId", "ProgressBaselineSnapshot",
+                 "State", "IssuedAt", "ClaimedAt", "ExpiresAt")
             VALUES
-                (@Id, @PlayerId, @QuestType, @Progress, @Goal, @RewardAmount, @State, @IssuedAt)
+                (@Id, @PlayerId, @QuestDefinitionId, @ProgressBaselineSnapshot,
+                 'Active', @IssuedAt, NULL, NULL)
             ON CONFLICT ("Id") DO UPDATE SET
                 "State" = EXCLUDED."State",
-                "Progress" = EXCLUDED."Progress";
+                "ProgressBaselineSnapshot" = EXCLUDED."ProgressBaselineSnapshot";
         """, connection);
         command.Parameters.AddWithValue("Id", id);
         command.Parameters.AddWithValue("PlayerId", playerId);
-        command.Parameters.AddWithValue("QuestType", questType);
-        command.Parameters.AddWithValue("Progress", progress);
-        command.Parameters.AddWithValue("Goal", goal);
-        command.Parameters.AddWithValue("RewardAmount", rewardAmount);
-        command.Parameters.AddWithValue("State", state);
+        command.Parameters.AddWithValue("QuestDefinitionId", questDefinitionId);
+        command.Parameters.AddWithValue("ProgressBaselineSnapshot", baselineSnapshot);
         command.Parameters.AddWithValue("IssuedAt", issuedAt);
         await command.ExecuteNonQueryAsync();
-    }
-
-    private static async Task<string?> ReadQuestStateAsync(Guid id)
-    {
-        await using var connection = new NpgsqlConnection(ConnectionString);
-        await connection.OpenAsync();
-        await using var command = new NpgsqlCommand("""
-            SELECT "State" FROM "quests"."PlayerQuests" WHERE "Id" = @Id;
-        """, connection);
-        command.Parameters.AddWithValue("Id", id);
-        var result = await command.ExecuteScalarAsync();
-        return result as string;
     }
 
     private static async Task DeletePlayerQuestsAsync(Guid playerId)

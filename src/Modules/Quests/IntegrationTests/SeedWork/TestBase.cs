@@ -12,6 +12,7 @@ using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Games.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
+using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Application.Contracts;
 using LexiLink.Modules.Quests.Infrastructure.Configuration;
 using MediatR;
@@ -28,6 +29,12 @@ public abstract class TestBase
     private const string DefaultConnectionString =
         "Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852";
 
+    // Daily seed id from 021_SeedQuestDefinitions.sql. Test base keeps the
+    // daily quest in place between tests; admin-created definitions are
+    // wiped in ClearDatabaseAsync.
+    protected static readonly Guid SeedDailyQuestDefinitionId =
+        Guid.Parse("11111111-0000-0000-0000-000000000010");
+
     private static IContainer _container = null!;
     private static string _connectionString = null!;
 
@@ -37,6 +44,7 @@ public abstract class TestBase
     protected IQuestsModule QuestsModule { get; private set; } = null!;
     protected IReadOnlyCollection<IOutboxProcessor> OutboxProcessors { get; private set; } = null!;
     protected TestAdminAuthorizationContext AdminContext { get; private set; } = null!;
+    protected MutableQuestCounterReader QuestCounterReader { get; private set; } = null!;
     protected string ConnectionString => _connectionString;
 
     [OneTimeSetUp]
@@ -63,8 +71,11 @@ public abstract class TestBase
             sp.GetRequiredService<TestAdminAuthorizationContext>());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
-        // Cross-module gateway stub — Quests integration tests don't boot Energy.
+        // Cross-module gateway stubs — Quests IT doesn't boot Energy and
+        // doesn't depend on Stats / Players counters being populated.
         services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
+        services.AddSingleton<MutableQuestCounterReader>();
+        services.AddSingleton<IQuestCounterReader>(sp => sp.GetRequiredService<MutableQuestCounterReader>());
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
@@ -86,6 +97,8 @@ public abstract class TestBase
         AdminContext = Scope.Resolve<TestAdminAuthorizationContext>();
         AdminContext.Logout();
         OutboxProcessors = Scope.Resolve<IEnumerable<IOutboxProcessor>>().ToArray();
+        QuestCounterReader = Scope.Resolve<MutableQuestCounterReader>();
+        QuestCounterReader.Reset();
 
         await ClearDatabaseAsync();
     }
@@ -140,33 +153,26 @@ public abstract class TestBase
         await using var connection = new NpgsqlConnection(_connectionString);
         await connection.OpenAsync();
 
-        await connection.ExecuteAsync("""
+        await connection.ExecuteAsync($"""
             DELETE FROM "administration"."AdminActionAudit";
             DELETE FROM "quests"."OutboxMessages";
-            -- QuestDefinitions seeded via DbUp; not deleted between tests.
-            -- Admin IT tests rely on the four seed rows being present.
             DELETE FROM "quests"."PlayerQuests" WHERE TRUE;
-            -- Remove admin-created definitions (those NOT in the seed range).
+            -- Remove admin-created QuestDefinitions; keep the seeded daily
+            -- quest (021_SeedQuestDefinitions.sql) so per-test setup is
+            -- deterministic.
             DELETE FROM "quests"."QuestDefinitions"
-                WHERE "Id" NOT IN (
-                    '11111111-0000-0000-0000-000000000001',
-                    '11111111-0000-0000-0000-000000000002',
-                    '11111111-0000-0000-0000-000000000003',
-                    '11111111-0000-0000-0000-000000000004'
-                );
-            -- Reset seed rows to original IsActive / Goal / Reward / Prereq.
+                WHERE "Id" <> '11111111-0000-0000-0000-000000000010';
+            -- Reset the seeded daily quest in case an Update mutated it.
             UPDATE "quests"."QuestDefinitions"
-                SET "IsActive" = TRUE, "Goal" = 1, "RewardAmount" = 3, "PrerequisiteQuestType" = NULL
-                WHERE "Id" = '11111111-0000-0000-0000-000000000001';
-            UPDATE "quests"."QuestDefinitions"
-                SET "IsActive" = TRUE, "Goal" = 3, "RewardAmount" = 5, "PrerequisiteQuestType" = NULL
-                WHERE "Id" = '11111111-0000-0000-0000-000000000002';
-            UPDATE "quests"."QuestDefinitions"
-                SET "IsActive" = TRUE, "Goal" = 1, "RewardAmount" = 5, "PrerequisiteQuestType" = 'ThreeGamesCompleted'
-                WHERE "Id" = '11111111-0000-0000-0000-000000000003';
-            UPDATE "quests"."QuestDefinitions"
-                SET "IsActive" = TRUE, "Goal" = 3, "RewardAmount" = 5, "PrerequisiteQuestType" = NULL
-                WHERE "Id" = '11111111-0000-0000-0000-000000000004';
+                SET "IsActive" = TRUE,
+                    "Name" = 'Günlük 3 Oyun',
+                    "Description" = 'Bugün 3 oyun tamamla.',
+                    "Trigger" = 'GameCompletedDaily',
+                    "Threshold" = 3,
+                    "Reward" = 5,
+                    "PrerequisiteQuestDefinitionId" = NULL,
+                    "ProgressBaseline" = 'FromSnapshot'
+                WHERE "Id" = '11111111-0000-0000-0000-000000000010';
             DELETE FROM "games"."GameHistory";
             DELETE FROM "games"."GameOptimalPath";
             DELETE FROM "games"."Games";
@@ -178,5 +184,36 @@ public abstract class TestBase
             DELETE FROM "players"."Players";
             DELETE FROM "players"."OutboxMessages";
         """);
+    }
+}
+
+/// <summary>
+/// Test-only counter reader. Quests Application + Infrastructure depend
+/// on <see cref="IQuestCounterReader"/> for issuance baselines and
+/// claim eligibility. Production reads from <c>stats.*</c> +
+/// <c>players.*</c>, but the Quests IT container does not boot Stats /
+/// Players. This stub lets each test simulate the counters it cares
+/// about; defaults to all zeros.
+/// </summary>
+public sealed class MutableQuestCounterReader : IQuestCounterReader
+{
+    public int GamesCompletedTotal { get; set; }
+    public int GamesCompletedToday { get; set; }
+    public bool AuthProviderLinked { get; set; }
+
+    public Task<QuestCounters> ReadAsync(
+        Guid playerId,
+        DateTime nowUtc,
+        CancellationToken cancellationToken = default) =>
+        Task.FromResult(new QuestCounters(
+            GamesCompletedTotal,
+            GamesCompletedToday,
+            AuthProviderLinked));
+
+    public void Reset()
+    {
+        GamesCompletedTotal = 0;
+        GamesCompletedToday = 0;
+        AuthProviderLinked = false;
     }
 }

@@ -1,131 +1,195 @@
-using LexiLink.Modules.Games.IntegrationEvents;
-using LexiLink.Modules.Players.IntegrationEvents;
+using LexiLink.Common.Application.Admin;
+using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.CreateQuestDefinition;
 using LexiLink.Modules.Quests.Application.PlayerQuests.ClaimQuest;
+using LexiLink.Modules.Quests.Application.PlayerQuests.GetActiveQuests;
+using LexiLink.Modules.Quests.Domain.PlayerQuests;
 using LexiLink.Modules.Quests.IntegrationTests.SeedWork;
 
 namespace LexiLink.Modules.Quests.IntegrationTests.PlayerQuests;
 
+/// <summary>
+/// Post Sprint Q1 there are no Game/Auth integration event handlers in
+/// Quests — issuance is lazy, driven by <c>GET /quests/me</c>. These
+/// tests verify the sync pass + claim outbox flow against the seeded
+/// daily quest and admin-created definitions.
+/// </summary>
 [TestFixture]
 public class QuestIntegrationEventTests : TestBase
 {
+    private static readonly Guid AdminId = Guid.Parse("aaaaaaaa-0000-0000-0000-000000000002");
+
     [Test]
-    public async Task GameCompleted_IssuesAndProgresses_FirstThreeAndDailyQuests()
+    public async Task GetActiveQuests_FreshPlayer_LazilyIssuesSeedDailyQuest()
     {
         var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedToday = 0;
 
-        await EventsBus.PublishAsync(GameCompletedFor(playerId));
+        var quests = await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
 
-        var rows = await QueryAsync<QuestRow>("""
-            SELECT "QuestType", "State", "Progress", "Goal"
-            FROM "quests"."PlayerQuests"
-            WHERE "PlayerId" = @PlayerId
-            ORDER BY "QuestType";
+        quests.Should().HaveCount(1);
+        quests[0].QuestDefinitionId.Should().Be(SeedDailyQuestDefinitionId);
+        quests[0].DisplayState.Should().Be(nameof(QuestState.Active));
+        quests[0].Progress.Should().Be(0);
+        quests[0].Threshold.Should().Be(3);
+
+        var dbCount = await QuerySingleOrDefaultAsync<int>("""
+            SELECT COUNT(*)::int FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId;
         """, new { PlayerId = playerId });
-
-        rows.Should().HaveCount(3);
-
-        // FirstGameCompleted (goal=1) completes in one event.
-        rows.Should().ContainEquivalentOf(new QuestRow(
-            "FirstGameCompleted", "ReadyToClaim", 1, 1));
-
-        // ThreeGamesCompleted (goal=3) advances to 1.
-        rows.Should().ContainEquivalentOf(new QuestRow(
-            "ThreeGamesCompleted", "Active", 1, 3));
-
-        // DailyThreeGames (goal=3) advances to 1.
-        rows.Should().ContainEquivalentOf(new QuestRow(
-            "DailyThreeGames", "Active", 1, 3));
+        dbCount.Should().Be(1, "lazy sync persisted the daily quest row");
     }
 
     [Test]
-    public async Task ThreeGameCompletedEvents_CompleteThreeGamesAndDailyQuests()
+    public async Task GetActiveQuests_TwiceForSamePlayer_IsIdempotent()
     {
         var playerId = Guid.NewGuid();
 
-        for (var i = 0; i < 3; i++)
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        var dbCount = await QuerySingleOrDefaultAsync<int>("""
+            SELECT COUNT(*)::int FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId;
+        """, new { PlayerId = playerId });
+        dbCount.Should().Be(1, "ON CONFLICT DO NOTHING keeps the row count stable");
+    }
+
+    [Test]
+    public async Task GetActiveQuests_ProjectsReadyToClaim_WhenCounterMeetsThreshold()
+    {
+        var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedToday = 5; // above threshold (3)
+
+        var quests = await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        quests.Should().HaveCount(1);
+        // Baseline captured at issue time was 5 (the daily counter at
+        // sync). So progress = counter(5) - baseline(5) = 0; the quest
+        // is NOT ready immediately after first sync. The "FromExistingTotal"
+        // ProgressBaseline would be needed to reward existing progress.
+        quests[0].Progress.Should().Be(0);
+        quests[0].DisplayState.Should().Be(nameof(QuestState.Active));
+    }
+
+    [Test]
+    public async Task GetActiveQuests_PrereqUnclaimed_DoesNotIssueDownstream()
+    {
+        AdminContext.LoginAs(AdminId);
+        var prereqId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
+            name: "Bronz",
+            description: "1 oyun",
+            trigger: QuestTrigger.GameCompletedTotal,
+            threshold: 1,
+            reward: 3,
+            prerequisiteQuestDefinitionId: null,
+            progressBaseline: ProgressBaseline.FromSnapshot));
+        var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
+            name: "Gümüş",
+            description: "3 oyun",
+            trigger: QuestTrigger.GameCompletedTotal,
+            threshold: 3,
+            reward: 5,
+            prerequisiteQuestDefinitionId: prereqId,
+            progressBaseline: ProgressBaseline.FromSnapshot));
+        AdminContext.Logout();
+
+        var playerId = Guid.NewGuid();
+
+        var quests = await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        quests.Should().NotContain(q => q.QuestDefinitionId == downstreamId);
+        quests.Should().Contain(q => q.QuestDefinitionId == prereqId);
+    }
+
+    [Test]
+    public async Task GetActiveQuests_PrereqClaimed_IssuesDownstream()
+    {
+        AdminContext.LoginAs(AdminId);
+        var prereqId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
+            name: "Bronz",
+            description: "1 oyun",
+            trigger: QuestTrigger.GameCompletedTotal,
+            threshold: 1,
+            reward: 3,
+            prerequisiteQuestDefinitionId: null,
+            progressBaseline: ProgressBaseline.FromSnapshot));
+        var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
+            name: "Gümüş",
+            description: "3 oyun",
+            trigger: QuestTrigger.GameCompletedTotal,
+            threshold: 3,
+            reward: 5,
+            prerequisiteQuestDefinitionId: prereqId,
+            progressBaseline: ProgressBaseline.FromSnapshot));
+        AdminContext.Logout();
+
+        var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedTotal = 0;
+
+        // First sync: prereq issued, downstream not yet.
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        // Player completes a game and claims the prereq.
+        QuestCounterReader.GamesCompletedTotal = 1;
+        var prereqRowId = await QuerySingleOrDefaultAsync<Guid>("""
+            SELECT "Id" FROM "quests"."PlayerQuests"
+            WHERE "PlayerId" = @PlayerId AND "QuestDefinitionId" = @QuestDefinitionId;
+        """, new { PlayerId = playerId, QuestDefinitionId = prereqId });
+        await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(prereqRowId, playerId));
+
+        // Second sync: downstream should now appear.
+        var quests = await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        quests.Should().Contain(q => q.QuestDefinitionId == downstreamId);
+    }
+
+    [Test]
+    public async Task GetActiveQuests_DeletesExpiredDailyRows_OnSync()
+    {
+        var playerId = Guid.NewGuid();
+
+        // First sync: daily quest issued with expiry = next UTC midnight.
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        // Force the existing daily row to look expired.
+        var expiredAt = DateTime.UtcNow.AddDays(-1);
+        await using (var connection = new Npgsql.NpgsqlConnection(ConnectionString))
         {
-            await EventsBus.PublishAsync(GameCompletedFor(playerId));
+            await connection.OpenAsync();
+            await Dapper.SqlMapper.ExecuteAsync(connection, """
+                UPDATE "quests"."PlayerQuests"
+                SET "ExpiresAt" = @ExpiresAt
+                WHERE "PlayerId" = @PlayerId;
+            """, new { PlayerId = playerId, ExpiresAt = expiredAt });
         }
 
-        var rows = await QueryAsync<QuestRow>("""
-            SELECT "QuestType", "State", "Progress", "Goal"
-            FROM "quests"."PlayerQuests"
-            WHERE "PlayerId" = @PlayerId
-            ORDER BY "QuestType";
-        """, new { PlayerId = playerId });
+        // Next sync: expired Active row is deleted, then re-issued because
+        // the daily definition is still active.
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
 
-        rows.Should().HaveCount(3);
-        rows.Should().ContainEquivalentOf(new QuestRow(
-            "FirstGameCompleted", "ReadyToClaim", 1, 1));
-        rows.Should().ContainEquivalentOf(new QuestRow(
-            "ThreeGamesCompleted", "ReadyToClaim", 3, 3));
-        rows.Should().ContainEquivalentOf(new QuestRow(
-            "DailyThreeGames", "ReadyToClaim", 3, 3));
+        var rows = await QueryAsync<DateTime?>("""
+            SELECT "ExpiresAt" FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId;
+        """, new { PlayerId = playerId });
+        rows.Should().HaveCount(1);
+        rows[0].Should().NotBeNull();
+        rows[0]!.Value.Should().BeAfter(DateTime.UtcNow, "sync re-issued the daily quest with a fresh expiry");
     }
 
     [Test]
-    public async Task AuthProviderLinked_DoesNotIssueAccountLinked_WhenThreeGamesNotClaimed()
+    public async Task ClaimQuest_AtThreshold_QueuesQuestClaimedOutboxNotification()
     {
         var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedToday = 0;
 
-        await EventsBus.PublishAsync(AuthProviderLinkedFor(playerId));
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
 
-        var count = await QuerySingleOrDefaultAsync<long>("""
-            SELECT COUNT(*) FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId;
+        // Player now completes 3 games today, hitting the threshold.
+        QuestCounterReader.GamesCompletedToday = 3;
+
+        var questId = await QuerySingleOrDefaultAsync<Guid>("""
+            SELECT "Id" FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId LIMIT 1;
         """, new { PlayerId = playerId });
+        questId.Should().NotBe(Guid.Empty);
 
-        count.Should().Be(0L,
-            "AccountLinked must wait for ThreeGamesCompleted to be claimed before being issued");
-    }
-
-    [Test]
-    public async Task AuthProviderLinked_IssuesAccountLinked_WhenThreeGamesClaimed()
-    {
-        var playerId = Guid.NewGuid();
-
-        // Complete + claim ThreeGamesCompleted to satisfy AccountLinked's prerequisite.
-        for (var i = 0; i < 3; i++)
-        {
-            await EventsBus.PublishAsync(GameCompletedFor(playerId));
-        }
-
-        var threeGamesQuestId = await QuerySingleOrDefaultAsync<Guid>("""
-            SELECT "Id" FROM "quests"."PlayerQuests"
-            WHERE "PlayerId" = @PlayerId AND "QuestType" = 'ThreeGamesCompleted';
-        """, new { PlayerId = playerId });
-        threeGamesQuestId.Should().NotBe(Guid.Empty);
-
-        await QuestsModule.ExecuteCommandAsync(
-            new ClaimQuestCommand(threeGamesQuestId, playerId));
-
-        // Now AuthProviderLinked should issue AccountLinked and immediately complete it.
-        await EventsBus.PublishAsync(AuthProviderLinkedFor(playerId));
-
-        var accountLinked = await QuerySingleOrDefaultAsync<QuestRow>("""
-            SELECT "QuestType", "State", "Progress", "Goal"
-            FROM "quests"."PlayerQuests"
-            WHERE "PlayerId" = @PlayerId AND "QuestType" = 'AccountLinked';
-        """, new { PlayerId = playerId });
-
-        accountLinked.Should().NotBeNull();
-        accountLinked!.State.Should().Be("ReadyToClaim");
-        accountLinked.Progress.Should().Be(1);
-        accountLinked.Goal.Should().Be(1);
-    }
-
-    [Test]
-    public async Task ClaimQuest_QueuesAndProcessesQuestClaimedOutboxNotification()
-    {
-        var playerId = Guid.NewGuid();
-        await EventsBus.PublishAsync(GameCompletedFor(playerId));
-
-        var firstQuestId = await QuerySingleOrDefaultAsync<Guid>("""
-            SELECT "Id" FROM "quests"."PlayerQuests"
-            WHERE "PlayerId" = @PlayerId AND "QuestType" = 'FirstGameCompleted';
-        """, new { PlayerId = playerId });
-        firstQuestId.Should().NotBe(Guid.Empty);
-
-        await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(firstQuestId, playerId));
+        await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
 
         var queued = await QuerySingleOrDefaultAsync<OutboxRow>("""
             SELECT "Type" AS "Type", "ProcessedDate" AS "ProcessedDate"
@@ -148,29 +212,29 @@ public class QuestIntegrationEventTests : TestBase
         processed!.ProcessedDate.Should().NotBeNull("outbox processor should mark the row as processed");
     }
 
+    [Test]
+    public async Task ClaimQuest_BelowThreshold_BreaksBusinessRule()
+    {
+        var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedToday = 0;
+
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        var questId = await QuerySingleOrDefaultAsync<Guid>("""
+            SELECT "Id" FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId LIMIT 1;
+        """, new { PlayerId = playerId });
+
+        // Threshold not reached.
+        QuestCounterReader.GamesCompletedToday = 1;
+
+        var act = async () => await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
+
+        await act.Should().ThrowAsync<Common.Domain.BusinessRuleValidationException>();
+    }
+
     private sealed class OutboxRow
     {
         public string Type { get; init; } = string.Empty;
         public DateTime? ProcessedDate { get; init; }
     }
-
-    private static GameCompletedIntegrationEvent GameCompletedFor(Guid playerId) =>
-        new(
-            Id: Guid.NewGuid(),
-            OccurredOn: DateTime.UtcNow,
-            GameId: Guid.NewGuid(),
-            PlayerId: playerId,
-            StartLinkId: Guid.NewGuid(),
-            TargetLinkId: Guid.NewGuid(),
-            Score: 100);
-
-    private static AuthProviderLinkedIntegrationEvent AuthProviderLinkedFor(Guid playerId) =>
-        new(
-            Id: Guid.NewGuid(),
-            OccurredOn: DateTime.UtcNow,
-            PlayerId: playerId,
-            Provider: "Apple",
-            ExternalId: "external-id");
-
-    private sealed record QuestRow(string QuestType, string State, int Progress, int Goal);
 }

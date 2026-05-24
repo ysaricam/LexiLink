@@ -8,62 +8,46 @@ namespace LexiLink.Modules.Quests.Tests.PlayerQuests;
 public class PlayerQuestClaimTests : PlayerQuestTestsBase
 {
     [Test]
-    public void Claim_FromReadyToClaim_TransitionsToClaimed()
+    public void Claim_FromActive_WhenReady_TransitionsToClaimed()
     {
-        var quest = Issue(goal: 1);
-        quest.RecordProgress(1, FixedIssuedAt.AddSeconds(1));
-
+        var quest = Issue();
         var claimedAt = FixedIssuedAt.AddSeconds(10);
-        quest.Claim(claimedAt);
+
+        quest.Claim(claimedAt, isReadyToClaim: true, reward: SampleReward);
 
         quest.State.Should().Be(QuestState.Claimed);
         quest.ClaimedAt.Should().Be(claimedAt);
     }
 
     [Test]
-    public void Claim_RaisesPlayerQuestClaimedDomainEvent_WithRewardAmount()
+    public void Claim_RaisesPlayerQuestClaimedDomainEvent_CarryingReward()
     {
-        var quest = Issue(goal: 1, rewardAmount: 7);
-        quest.RecordProgress(1, FixedIssuedAt.AddSeconds(1));
+        var quest = Issue();
 
-        quest.Claim(FixedIssuedAt.AddSeconds(10));
+        quest.Claim(FixedIssuedAt.AddSeconds(10), isReadyToClaim: true, reward: 7);
 
         var evt = AssertPublishedDomainEvent<PlayerQuestClaimedDomainEvent>(quest);
-        evt.RewardAmount.Should().Be(7);
-        evt.QuestType.Should().Be(quest.QuestType);
+        evt.Reward.Should().Be(7);
+        evt.QuestDefinitionId.Should().Be(quest.QuestDefinitionId);
         evt.PlayerQuestId.Should().Be(quest.Id);
     }
 
     [Test]
-    public void Claim_FromActive_BreaksQuestMustBeReadyToBeClaimedRule()
+    public void Claim_WhenNotReady_BreaksQuestMustBeReadyToBeClaimedRule()
     {
         var quest = Issue();
 
         AssertBrokenRule<QuestMustBeReadyToBeClaimedRule>(() =>
-            quest.Claim(FixedIssuedAt.AddSeconds(1)));
+            quest.Claim(FixedIssuedAt.AddSeconds(1), isReadyToClaim: false, reward: SampleReward));
     }
 
     [Test]
     public void Claim_Twice_BreaksQuestMustBeReadyToBeClaimedRule()
     {
-        var quest = Issue(goal: 1);
-        quest.RecordProgress(1, FixedIssuedAt.AddSeconds(1));
-        quest.Claim(FixedIssuedAt.AddSeconds(10));
+        var quest = Issue();
+        quest.Claim(FixedIssuedAt.AddSeconds(10), isReadyToClaim: true, reward: SampleReward);
 
         AssertBrokenRule<QuestMustBeReadyToBeClaimedRule>(() =>
-            quest.Claim(FixedIssuedAt.AddSeconds(20)));
-    }
-
-    [Test]
-    public void Claim_AfterExpiry_BreaksQuestMustBeReadyToBeClaimedRule()
-    {
-        var expiresAt = FixedIssuedAt.AddHours(1);
-        var quest = Issue(goal: 1, expiresAt: expiresAt);
-        quest.RecordProgress(1, FixedIssuedAt.AddSeconds(1));
-
-        AssertBrokenRule<QuestMustBeReadyToBeClaimedRule>(() =>
-            quest.Claim(expiresAt.AddSeconds(1)));
-
-        quest.State.Should().Be(QuestState.Expired);
+            quest.Claim(FixedIssuedAt.AddSeconds(20), isReadyToClaim: true, reward: SampleReward));
     }
 }
