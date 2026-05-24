@@ -29,6 +29,7 @@ using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Energy.Infrastructure.Configuration;
 using LexiLink.Modules.Games.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
+using LexiLink.Modules.Hint.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
 using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Infrastructure.Configuration;
@@ -85,6 +86,7 @@ StatsStartup.Initialize(builder.Services, connectionString);
 EnergyStartup.Initialize(builder.Services, connectionString);
 QuestsStartup.Initialize(builder.Services, connectionString);
 AdministrationStartup.Initialize(builder.Services, connectionString);
+HintStartup.Initialize(builder.Services, connectionString);
 builder.Services.Configure<AdministrationBootstrapOptions>(
     builder.Configuration.GetSection(AdministrationBootstrapOptions.SectionName));
 builder.Services.AddHostedService<AdministrationBootstrapHostedService>();
@@ -214,6 +216,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     EnergyStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     QuestsStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     AdministrationStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+    HintStartup.InitializeCompositionRoot(containerBuilder, connectionString);
 
     containerBuilder.RegisterType<EnergyGuard>()
         .As<IEnergyGuard>()
@@ -243,6 +246,7 @@ PlayersStartup.CheckMappings();
 EnergyStartup.CheckMappings();
 QuestsStartup.CheckMappings();
 AdministrationStartup.CheckMappings();
+HintStartup.CheckMappings();
 
 if (app.Environment.IsDevelopment())
 {

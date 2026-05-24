@@ -39,6 +39,10 @@ public abstract class ArchitectureTestBase
     protected static readonly Assembly AdministrationApplicationAssembly = typeof(Modules.Administration.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly AdministrationInfrastructureAssembly = typeof(Modules.Administration.Infrastructure.AdministrationContext).Assembly;
 
+    protected static readonly Assembly HintDomainAssembly = typeof(Modules.Hint.Domain.PlayerHintInventories.PlayerHintInventory).Assembly;
+    protected static readonly Assembly HintApplicationAssembly = typeof(Modules.Hint.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly HintInfrastructureAssembly = typeof(Modules.Hint.Infrastructure.HintContext).Assembly;
+
     protected static readonly Assembly[] ModuleAssemblies =
     [
         GamesDomainAssembly,
@@ -57,7 +61,10 @@ public abstract class ArchitectureTestBase
         QuestsInfrastructureAssembly,
         AdministrationDomainAssembly,
         AdministrationApplicationAssembly,
-        AdministrationInfrastructureAssembly
+        AdministrationInfrastructureAssembly,
+        HintDomainAssembly,
+        HintApplicationAssembly,
+        HintInfrastructureAssembly
     ];
 
     protected static void AssertArchTestResult(TestResult result)
