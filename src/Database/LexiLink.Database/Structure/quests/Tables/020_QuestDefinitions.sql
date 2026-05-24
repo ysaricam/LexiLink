@@ -1,15 +1,19 @@
 CREATE TABLE IF NOT EXISTS "quests"."QuestDefinitions"
 (
-    "Id"                    uuid        NOT NULL,
-    "QuestType"             varchar(64) NOT NULL,
-    "Cadence"               varchar(32) NOT NULL,
-    "Goal"                  integer     NOT NULL,
-    "RewardAmount"          integer     NOT NULL,
-    "PrerequisiteQuestType" varchar(64) NULL,
-    "IsActive"              boolean     NOT NULL DEFAULT TRUE,
-    CONSTRAINT "PK_QuestDefinitions"            PRIMARY KEY ("Id"),
-    CONSTRAINT "UX_QuestDefinitions_QuestType"  UNIQUE      ("QuestType")
+    "Id"                            uuid         NOT NULL,
+    "Name"                          varchar(64)  NOT NULL,
+    "Description"                   varchar(256) NOT NULL,
+    "Trigger"                       varchar(32)  NOT NULL,
+    "Threshold"                     integer      NOT NULL,
+    "Reward"                        integer      NOT NULL,
+    "PrerequisiteQuestDefinitionId" uuid         NULL,
+    "ProgressBaseline"              varchar(32)  NOT NULL,
+    "IsActive"                      boolean      NOT NULL DEFAULT TRUE,
+    CONSTRAINT "PK_QuestDefinitions" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_QuestDefinitions_Prerequisite"
+        FOREIGN KEY ("PrerequisiteQuestDefinitionId")
+        REFERENCES "quests"."QuestDefinitions" ("Id")
 );
 
-CREATE INDEX IF NOT EXISTS "IX_QuestDefinitions_IsActive_QuestType"
-    ON "quests"."QuestDefinitions" ("IsActive", "QuestType");
+CREATE INDEX IF NOT EXISTS "IX_QuestDefinitions_IsActive"
+    ON "quests"."QuestDefinitions" ("IsActive");
