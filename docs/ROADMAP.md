@@ -1285,6 +1285,295 @@ Goal: ship the second module to validate the modular monolith pattern. Scope: mi
 
 ---
 
+## Sprint H — Hint Module + Quest Multi-Reward
+
+Goal: ship a **Hint** module that holds a per-player persistent hint
+balance, integrated end-to-end. Per-game free hint count stays on
+`Game` (1 fixed, see locked decisions). When the player taps "use
+hint" and the in-game allowance is exhausted, the request falls
+through to the new `IHintGuard` sync gateway which consumes from the
+player's hint inventory. The same sprint expands quest rewards from
+a single int to a structured `QuestReward` carrying both
+`EnergyReward` and `HintReward`, with at-least-one-positive
+validation. Two consumers (Energy + Hint) listen to the same
+`QuestClaimedIntegrationEvent` and each grants its share
+independently.
+
+### Why now
+
+Manual testing of Sprint Q1 exposed a product gap: the only reward
+players can earn is Energy. The operator wants hints as a
+differentiated reward — used inside a game when the puzzle is
+genuinely hard — so quests can offer either, both, or asymmetric
+mixes (e.g. "complete 10 games → 5⚡ + 2💡"). The Hint module also
+makes per-player inventory inspectable from the admin panel (set /
+grant / reset like Energy), so support cases can compensate without
+manual SQL.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Per-game free hint location | Stays in `Game.HintAllowance` VO. Game knows nothing about the Hint module. |
+| Free hint count | Fixed at **1** per game across all difficulties. If `IGameConfigurationService.ResolveHintAllowance` currently varies by difficulty, H3 collapses it to 1. |
+| Hint module aggregate scope | `PlayerHintInventory` holds `_balance` only. No refill, no max cap, no timer. Sımılar to Energy but stripped of mechanics that don't apply. |
+| Hint inventory cap | **Unlimited.** Players can hoard. Hints are earned through quest claims, never free time-based refill, so hoarding is rate-limited by quest cadence. |
+| Initial balance | 0. Configurable via `Hint:InitialBalance` (default 0); operator can bump in `appsettings` if onboarding policy changes. |
+| Quest reward shape | `QuestReward` VO = `(int EnergyReward, int HintReward)`. Both ≥ 0; rule: at least one > 0. Stored as two columns on `quests.QuestDefinitions`. |
+| Reward delivery | Each module listens to `QuestClaimedIntegrationEvent` independently. Energy consumer no-ops when `EnergyReward == 0`; Hint consumer no-ops when `HintReward == 0`. Both fire in the same outbox-dispatched event. |
+| Hint guard pattern | New sync gateway `IHintGuard.EnsureHintAvailableAsync(playerId, ct)`. Insufficient → `BusinessRuleValidationException` propagates up — same dual-write residual as `IEnergyGuard` (acceptable for MVP, documented in `kamil-modular-monolith-comparison.md`). |
+| Admin operations | Set / Grant / Reset endpoints + audit, exact `IAdminCommand` template from Energy B8. |
+| Migration | Destructive: rename `quests.QuestDefinitions.Reward` → `EnergyReward`, add `HintReward` NOT NULL DEFAULT 0. Daily seed values migrate losslessly (`Reward=5` → `EnergyReward=5, HintReward=0`). |
+
+### Architecture notes
+
+- **Hint mirrors Energy but smaller.** PlayerHintInventory has no
+  refill timer and no max cap; the aggregate file is ~half the size
+  of `PlayerEnergy`. Same outbox/inbox/decorator infrastructure
+  copied per Kamil's decorator-per-module rule (no Common shortcut).
+- **`Game` stays ignorant of Hint.** The `HintAllowance` VO on Game
+  continues to track free per-game hint usage. The handler
+  (`UseHintCommandHandler`) is the integration point: if
+  `game.HasFreeHintRemaining` then `game.UseHint()`, otherwise the
+  handler calls `IHintGuard.EnsureHintAvailableAsync` (which throws
+  on insufficient balance) and then `game.UseHintWithExternalInventory()`
+  to update the puzzle state without touching the in-game allowance.
+- **Reverse cross-module event dep, second instance.** Sprint Q1
+  established Energy → `Quests.IntegrationEvents` as the pattern.
+  Sprint H adds Hint → `Quests.IntegrationEvents` with the exact
+  same granular ArchTest allow. Quests.Domain / Application /
+  Infrastructure stay forbidden from any consumer.
+- **Reward delivery atomicity.** `QuestClaimedIntegrationEvent` is
+  outbox-published once. Both Energy and Hint consumers receive it
+  inside the same in-process bus dispatch; each is its own scoped
+  transaction. If one fails and the other succeeds, the failing
+  consumer's outbox/retry path recovers it independently. Operator
+  is comfortable with eventual consistency here — these are reward
+  grants, not the puzzle state.
+- **Hint admin operations reuse Energy B8 template.** `AdminSet` /
+  `AdminGrant` / `AdminReset` domain methods on PlayerHintInventory,
+  plus a per-module `AdminAuditingCommandHandlerDecorator` and
+  `HintAdminActionPerformedNotification` mapping. The audit row
+  lands in `administration.AdminActionAudit` via the existing
+  cross-module outbox flow.
+
+### Slice plan
+
+#### H1 — Hint module foundation (target: 2 h)
+
+- New module under `src/Modules/Hint/` with six projects (Domain,
+  Application, Infrastructure, IntegrationEvents, Tests,
+  IntegrationTests) following the Energy template.
+- `PlayerHintInventory` aggregate: `Id` (`PlayerHintInventoryId`,
+  same Guid as `PlayerId`), `_balance`. Methods: `InitializeFor`,
+  `Consume(amount, now)`, `GrantBonus(amount, now)`. Events:
+  `PlayerHintInventoryInitializedDomainEvent`,
+  `PlayerHintConsumedDomainEvent`, `PlayerHintGrantedDomainEvent`.
+  Rules: `HintAmountMustBePositiveRule`,
+  `HintBalanceMustBeSufficientRule`.
+- `IPlayerHintInventoryRepository`. EF mapping + per-module Autofac
+  module + `HintStartup`.
+- DbUp: `hint` schema, `hint.PlayerHintInventories` (PlayerId PK,
+  Balance int NOT NULL, CreatedAt, UpdatedAt), `hint.OutboxMessages`.
+- ArchTests: `Hint*` assemblies added to boundary tests; no
+  forbidden references.
+
+#### H2 — Player registration → Hint init (target: 30 min)
+
+- `Hint.Application/EnsurePlayerHintInventoryExistsCommand` +
+  handler (idempotent, no-op if already initialized).
+- `Hint.Application/PlayerRegisteredIntegrationEventHandler`
+  dispatches the command on every `PlayerRegisteredIntegrationEvent`.
+- `Hint:InitialBalance` config option (default 0).
+  `IHintConfigurationService` exposes it (matches Energy pattern).
+
+#### H3 — IHintGuard sync gateway + Game.UseHint refactor (target: 1 h)
+
+- `Games.Application/Configuration/CrossModule/IHintGuard.cs`:
+  `EnsureHintAvailableAsync(playerId, ct)` — throws on insufficient.
+- API host adapter `LexiLink.API/CrossModule/HintGuard.cs` →
+  dispatches `ConsumePlayerHintCommand` to `IHintModule`.
+- Verify (and if needed flatten) `IGameConfigurationService`
+  hint allowance to 1 fixed across difficulties.
+- `Game` aggregate:
+  - Add `HasFreeHintRemaining` public read property
+    (delegates to `HintAllowance.Remaining > 0`).
+  - Add `UseHintWithExternalInventory()` method — same effect on
+    puzzle state as `UseHint()` but doesn't touch the allowance.
+- `UseHintCommandHandler` refactor: branch on
+  `game.HasFreeHintRemaining`. Free path calls `game.UseHint()`;
+  external path calls `IHintGuard.EnsureHintAvailableAsync` first
+  then `game.UseHintWithExternalInventory()`. Domain rule violation
+  from either path propagates as `BusinessRuleValidationException`.
+- ArchTest granular allow: `Games.Application` →
+  `Hint.Application` reference (cross-module contract only,
+  Hint.Domain/Infrastructure stay forbidden).
+
+#### H4 — Quest multi-reward shape (target: 2 h, destructive)
+
+- `Quests.Domain/PlayerQuests/QuestReward.cs` VO: positional
+  record `(int EnergyReward, int HintReward)` with static
+  `Of(energy, hint)` factory enforcing both ≥ 0 and at-least-one >
+  0.
+- `QuestDefinition` field reshape: `_energyReward` + `_hintReward`
+  replace `_reward`. Properties exposed. `Create` / `Update`
+  signatures take the pair (or the `QuestReward` VO — decide at
+  slice start for ergonomic call sites).
+- Rules: rename `QuestRewardMustBePositiveRule` →
+  `QuestRewardMustHaveAtLeastOnePositiveRule(energyReward,
+  hintReward)`. Drop the single-int variant.
+- Events: `QuestDefinitionCreated/UpdatedDomainEvent` carry both
+  fields. `PlayerQuestClaimedDomainEvent` carries
+  `EnergyReward` + `HintReward`. `PlayerQuest.Claim(now,
+  isReadyToClaim, energyReward, hintReward)` forwards both into the
+  event.
+- `IntegrationEvents/QuestClaimedIntegrationEvent`: rename `Reward`
+  → `EnergyReward`, add `HintReward`.
+- `ClaimQuestCommandHandler`: reads definition, passes both rewards
+  into `Claim`.
+- DbUp `quests/Tables/040_ReshapeQuestRewardsForSprintH.sql`:
+  `ALTER TABLE quests."QuestDefinitions" RENAME COLUMN "Reward" TO
+  "EnergyReward"; ALTER TABLE ... ADD COLUMN "HintReward" int NOT
+  NULL DEFAULT 0;`. Idempotent (uses `IF EXISTS` / `IF NOT
+  EXISTS`-style guards or `ALTER` wrapped in DO block).
+- Update `010` / `020` canonical files to the new shape.
+- Update daily seed (`021`) — `'Günlük 3 Oyun'` becomes
+  `EnergyReward=5, HintReward=0`.
+- Energy consumer adapt: `if (event.EnergyReward > 0)` guard around
+  the existing `EnsurePlayerEnergyExists + GrantEnergyCommand`
+  pipeline.
+- New `Hint.Application/QuestClaimedIntegrationEventHandler`:
+  symmetric guard `if (event.HintReward > 0)` →
+  `EnsurePlayerHintInventoryExists + GrantHintCommand`.
+- Admin `CreateQuestDefinitionCommand` /
+  `UpdateQuestDefinitionCommand`: replace `Reward` with
+  `EnergyReward` + `HintReward`. Validators: each ≥ 0, at least
+  one > 0. Admin DTOs: two fields.
+- `ArchTest` granular allow: `Hint.Application` →
+  `Quests.IntegrationEvents`.
+
+#### H5 — API endpoints + admin operations (target: 45 min)
+
+- `GET /players/me/hint` — `AuthenticatedPlayer` policy, returns
+  `{ playerId, balance }`.
+- `GET /admin/players/{playerId}/hint` — `AuthenticatedAdmin`
+  policy, returns the same DTO.
+- `POST /admin/players/{playerId}/hint/set|grant|reset` — three
+  `IAdminCommand`s following the Energy B8 template:
+  - `SetPlayerHintCommand(playerId, newBalance)` — 0..int.MaxValue.
+  - `GrantHintCommand(playerId, amount)` — over-cap allowed
+    (unlimited cap).
+  - `ResetPlayerHintCommand(playerId)` — balance ← 0.
+- `PlayerHintInventory.AdminSet` / `AdminGrant` / `AdminReset`
+  domain methods + events (`PlayerHintAdminSetDomainEvent`, etc.).
+- `Hint.Infrastructure/Configuration/Processing/AdminAuditingCommandHandlerDecorator`
+  (per-module copy, fifth instance after Quests/Energy/Players/
+  Games). `HintAdminActionPerformedNotification` mapping.
+- `Hint.Infrastructure` → `Administration.IntegrationEvents`
+  granular ArchTest allow.
+- API host: `LexiLink.API/Modules/Admin/AdminHintEndpoints.cs`.
+
+#### H6 — Frontend reshape (target: 2 h)
+
+- New feature folder `lib/features/hint/`:
+  - `data/player_hint.dart` — `{ playerId, balance }`.
+  - `data/hint_repository.dart` — `getMe()`.
+  - `application/hint_cubit.dart` — load + refresh.
+- New feature folder `lib/features/admin_hint/`:
+  - Mirror of `admin_energy` (set/grant/reset card).
+- Player UI:
+  - Header: hint balance badge next to the energy badge.
+  - Game screen: hint button unchanged in shape; backend now
+    decides free vs inventory automatically. Optional: surface
+    `freeHintRemaining` so the UI can show "1 ücretsiz" vs "💡
+    {balance}".
+- Admin quest form (`quest_definition_form.dart`): split reward
+  input into two — "Enerji ödülü" (⚡ icon) and "İpucu ödülü" (💡
+  icon). Validation: each ≥ 0, at least one > 0. Row in admin
+  catalog renders both badges when present.
+- Admin player console: hint card next to the energy card with set
+  / grant / reset buttons.
+
+#### H7 — Tests + quality gate (target: 2 h)
+
+- Backend:
+  - `Hint.Tests` — domain unit tests for the aggregate, rules,
+    events.
+  - `Hint.IntegrationTests` — Initialize, Consume happy + rule
+    violation, GrantBonus, admin commands + audit roundtrip, quest
+    reward delivery via `QuestClaimedIntegrationEvent`.
+  - `Games.IntegrationTests` — UseHint with free remaining, with
+    free exhausted + hint inventory available, with both
+    exhausted (rule violation).
+  - `Energy.IntegrationTests` — quest reward consumer skips when
+    `EnergyReward == 0`.
+  - `Quests.IntegrationTests` — admin Create/Update with new
+    reward shape, validator at-least-one rule, audit row.
+  - `API.Tests` — `GET /players/me/hint`, admin operations
+    401/403/200.
+- Frontend:
+  - `hint_cubit_test`, `hint_repository_test`.
+  - `admin_hint_*_test`.
+  - `admin_quests_screen_test` extension for two-reward form.
+- Run `scripts/test.sh` + `flutter test`. Sprint closes only when
+  both quality gates are green.
+
+#### H8 — Manual verification + docs (target: 30 min)
+
+- Restart stack (API + Flutter web).
+- Admin creates a quest with `EnergyReward=5, HintReward=2`.
+- Test player completes it; verify Energy and Hint balances both
+  grow by the right amounts and the audit shows the admin's create
+  action.
+- Player plays a game, uses 1 hint (free), tries again — second
+  hint should consume from inventory; refresh shows balance -1.
+- Once inventory hits 0, a third use-hint attempt returns the
+  business rule error.
+- Docs:
+  - `progress.md` → "Sprint H" entry with per-slice notes.
+  - `activeContext.md` → flip Active Sprint to closed; document
+    Hint constraints (no refill/cap, free hint stays in Game,
+    multi-reward consumer pattern).
+  - `frontendActiveContext.md` + `frontendProgress.md` → Slice H6.
+  - `GLOSSARY.md` → add `PlayerHintInventory`, `IHintGuard`,
+    `QuestReward`, update `QuestClaimedIntegrationEvent` shape and
+    business-rule total.
+
+### Risk / open questions
+
+- **`IGameConfigurationService.ResolveHintAllowance` shape today.**
+  Slice H3 starts by checking if it varies by difficulty. If yes,
+  fixing it to 1 is a small behavior change for the in-game free
+  hint count — operator explicitly approved fixed-at-1.
+- **Quest reward serialization size.** `QuestClaimedIntegrationEvent`
+  grows from 5 fields to 6. Outbox row size impact negligible. No
+  concern.
+- **Migration safety.** `040_ReshapeQuestRewardsForSprintH.sql` runs
+  ALTER COLUMN + ADD COLUMN on a populated `QuestDefinitions` table
+  (the daily seed). Both are non-blocking in Postgres. Existing rows
+  get `HintReward = 0`.
+- **Cross-test order coupling.** Two cross-module event handlers
+  (Energy + Hint) for the same integration event. Tests must
+  tolerate either order — the in-memory bus dispatches them
+  sequentially in registration order, but the assertion should
+  check the end state, not the order.
+
+### Acceptance
+
+- Admin operator can create a quest with any mix of Energy and
+  Hint rewards (subject to the at-least-one-positive rule), claim
+  it as a test player, and observe both inventories update via the
+  player UI and the admin player console.
+- Player tapping "use hint" inside a game first consumes the free
+  in-game hint (1 per game), then falls through to the personal
+  hint inventory once free is exhausted. When inventory is 0 the
+  request is blocked with a business rule error.
+- All backend tests + Flutter tests pass after H7. Manual flow in
+  H8 confirms end-to-end behaviour. Sprint commits land one-per-
+  slice (H1 → H8 = eight commits) on `main`.
+
+---
+
 ## Sprint Q1 — Quests Module Redesign (data-driven, lazy, chain-aware) ✅ Q1.1–Q1.7 closed 2026-05-24
 
 **Status:** Backend slices Q1.1–Q1.5 + Q1.7 and frontend slice Q1.6
