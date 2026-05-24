@@ -1,6 +1,4 @@
 using LexiLink.API.Configuration.Authentication;
-using LexiLink.Modules.Quests.Application.Admin.PlayerQuests.IssueQuestToPlayer;
-using LexiLink.Modules.Quests.Application.Admin.PlayerQuests.ResetPlayerQuest;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.CreateQuestDefinition;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.DeactivateQuestDefinition;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.GetQuestDefinitions;
@@ -34,11 +32,13 @@ public static class AdminQuestEndpoints
             {
                 var id = await quests.ExecuteCommandAsync(
                     new CreateQuestDefinitionCommand(
-                        body.QuestType,
-                        body.Cadence,
-                        body.Goal,
-                        body.RewardAmount,
-                        body.PrerequisiteQuestType),
+                        body.Name,
+                        body.Description,
+                        body.Trigger,
+                        body.Threshold,
+                        body.Reward,
+                        body.PrerequisiteQuestDefinitionId,
+                        body.ProgressBaseline),
                     ct);
                 return Results.Created($"/admin/quests/definitions/{id}", new CreateQuestDefinitionResponse(id));
             })
@@ -52,9 +52,11 @@ public static class AdminQuestEndpoints
                 await quests.ExecuteCommandAsync(
                     new UpdateQuestDefinitionCommand(
                         id,
-                        body.Goal,
-                        body.RewardAmount,
-                        body.PrerequisiteQuestType),
+                        body.Description,
+                        body.Threshold,
+                        body.Reward,
+                        body.PrerequisiteQuestDefinitionId,
+                        body.ProgressBaseline),
                     ct);
                 return Results.NoContent();
             })
@@ -81,46 +83,23 @@ public static class AdminQuestEndpoints
             })
             .Produces(StatusCodes.Status204NoContent)
             .ProducesProblem(StatusCodes.Status404NotFound);
-
-        group.MapPost(
-            "/players/{playerId:guid}/issue",
-            async (IQuestsModule quests, Guid playerId, IssueQuestRequest body, CancellationToken ct) =>
-            {
-                await quests.ExecuteCommandAsync(
-                    new IssueQuestToPlayerCommand(playerId, body.QuestType),
-                    ct);
-                return Results.NoContent();
-            })
-            .Produces(StatusCodes.Status204NoContent);
-
-        group.MapPost(
-            "/players/{playerId:guid}/{playerQuestId:guid}/reset",
-            async (IQuestsModule quests, Guid playerId, Guid playerQuestId, CancellationToken ct) =>
-            {
-                // PlayerId is not required by the handler but is in the URL so
-                // admin UIs link cleanly from the player detail page. The handler
-                // looks the quest up by its own id.
-                _ = playerId;
-                await quests.ExecuteCommandAsync(new ResetPlayerQuestCommand(playerQuestId), ct);
-                return Results.NoContent();
-            })
-            .Produces(StatusCodes.Status204NoContent)
-            .ProducesProblem(StatusCodes.Status404NotFound);
     }
 }
 
 public sealed record CreateQuestDefinitionRequest(
-    QuestType QuestType,
-    QuestCadence Cadence,
-    int Goal,
-    int RewardAmount,
-    QuestType? PrerequisiteQuestType);
+    string Name,
+    string Description,
+    QuestTrigger Trigger,
+    int Threshold,
+    int Reward,
+    Guid? PrerequisiteQuestDefinitionId,
+    ProgressBaseline ProgressBaseline);
 
 public sealed record CreateQuestDefinitionResponse(Guid Id);
 
 public sealed record UpdateQuestDefinitionRequest(
-    int Goal,
-    int RewardAmount,
-    QuestType? PrerequisiteQuestType);
-
-public sealed record IssueQuestRequest(QuestType QuestType);
+    string Description,
+    int Threshold,
+    int Reward,
+    Guid? PrerequisiteQuestDefinitionId,
+    ProgressBaseline ProgressBaseline);
