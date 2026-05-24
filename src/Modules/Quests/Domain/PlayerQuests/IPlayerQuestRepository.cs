@@ -6,9 +6,9 @@ public interface IPlayerQuestRepository : IRepository<PlayerQuest>
 {
     Task<PlayerQuest?> GetByIdAsync(PlayerQuestId id, CancellationToken cancellationToken = default);
 
-    Task<PlayerQuest?> GetActiveOrReadyByPlayerAndTypeAsync(
+    Task<PlayerQuest?> GetActiveOrClaimedByPlayerAndDefinitionAsync(
         Guid playerId,
-        QuestType questType,
+        QuestDefinitionId questDefinitionId,
         CancellationToken cancellationToken = default);
 
     Task<IReadOnlyCollection<PlayerQuest>> GetByPlayerAsync(
@@ -17,7 +17,7 @@ public interface IPlayerQuestRepository : IRepository<PlayerQuest>
 
     Task<bool> HasClaimedAsync(
         Guid playerId,
-        QuestType questType,
+        QuestDefinitionId questDefinitionId,
         CancellationToken cancellationToken = default);
 
     Task AddAsync(PlayerQuest playerQuest, CancellationToken cancellationToken = default);

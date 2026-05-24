@@ -4,29 +4,31 @@ using LexiLink.Modules.Quests.Domain.PlayerQuests.Rules;
 
 namespace LexiLink.Modules.Quests.Domain.PlayerQuests;
 
+/// <summary>
+/// A player's instance of a <see cref="QuestDefinition"/>. Post Sprint Q1
+/// the row stores only what cannot be derived from Stats: the snapshot
+/// of the player's counter at issuance, the claim transition timestamp,
+/// and (for daily quests) the expiry deadline. Progress and
+/// ReadyToClaim are recomputed at every read from
+/// <c>counter - ProgressBaselineSnapshot</c>.
+/// </summary>
 public class PlayerQuest : Entity, IAggregateRoot
 {
     public PlayerQuestId Id { get; private set; }
 
     private Guid _playerId;
-    private QuestType _questType;
-    private int _progress;
-    private int _goal;
-    private int _rewardAmount;
+    private QuestDefinitionId _questDefinitionId = null!;
+    private int _progressBaselineSnapshot;
     private QuestState _state;
     private DateTime _issuedAt;
-    private DateTime? _completedAt;
     private DateTime? _claimedAt;
     private DateTime? _expiresAt;
 
     public Guid PlayerId => _playerId;
-    public QuestType QuestType => _questType;
-    public int Progress => _progress;
-    public int Goal => _goal;
-    public int RewardAmount => _rewardAmount;
+    public QuestDefinitionId QuestDefinitionId => _questDefinitionId;
+    public int ProgressBaselineSnapshot => _progressBaselineSnapshot;
     public QuestState State => _state;
     public DateTime IssuedAt => _issuedAt;
-    public DateTime? CompletedAt => _completedAt;
     public DateTime? ClaimedAt => _claimedAt;
     public DateTime? ExpiresAt => _expiresAt;
 
@@ -38,121 +40,55 @@ public class PlayerQuest : Entity, IAggregateRoot
     private PlayerQuest(
         PlayerQuestId id,
         Guid playerId,
-        QuestType questType,
-        int goal,
-        int rewardAmount,
+        QuestDefinitionId questDefinitionId,
+        int progressBaselineSnapshot,
         DateTime issuedAt,
         DateTime? expiresAt)
     {
-        CheckRule(new QuestGoalMustBePositiveRule(goal));
-        CheckRule(new QuestRewardAmountMustBePositiveRule(rewardAmount));
-
         Id = id;
         _playerId = playerId;
-        _questType = questType;
-        _goal = goal;
-        _rewardAmount = rewardAmount;
-        _progress = 0;
+        _questDefinitionId = questDefinitionId;
+        _progressBaselineSnapshot = Math.Max(0, progressBaselineSnapshot);
         _state = QuestState.Active;
         _issuedAt = issuedAt;
         _expiresAt = expiresAt;
 
-        AddDomainEvent(new PlayerQuestIssuedDomainEvent(Id, _playerId, _questType));
+        AddDomainEvent(new PlayerQuestIssuedDomainEvent(Id, _playerId, _questDefinitionId));
     }
 
     internal static PlayerQuest IssueFor(
         Guid playerId,
-        QuestType questType,
-        int goal,
-        int rewardAmount,
+        QuestDefinitionId questDefinitionId,
+        int progressBaselineSnapshot,
         DateTime issuedAt,
         DateTime? expiresAt = null)
     {
         return new PlayerQuest(
             new PlayerQuestId(Guid.NewGuid()),
             playerId,
-            questType,
-            goal,
-            rewardAmount,
+            questDefinitionId,
+            progressBaselineSnapshot,
             issuedAt,
             expiresAt);
     }
 
-    internal void RecordProgress(int delta, DateTime now)
+    /// <summary>
+    /// Transition Active → Claimed. The caller computes
+    /// <paramref name="isReadyToClaim"/> from the current Stats counter
+    /// (<c>counter - <see cref="ProgressBaselineSnapshot"/> &gt;=
+    /// QuestDefinition.Threshold</c>) and the caller has also verified
+    /// the row is not already past <see cref="ExpiresAt"/>. The reward
+    /// amount lives on <see cref="QuestDefinition"/> and is carried into
+    /// the claimed domain event by the handler so downstream consumers
+    /// (Energy bonus delivery) can stay event-driven.
+    /// </summary>
+    internal void Claim(DateTime now, bool isReadyToClaim, int reward)
     {
-        CheckRule(new QuestProgressDeltaMustBePositiveRule(delta));
-
-        ExpireIfPast(now);
-
-        CheckRule(new QuestMustBeActiveToProgressRule(_state));
-
-        // Clamp so a late integration event cannot push progress beyond goal.
-        var clampedDelta = Math.Min(delta, _goal - _progress);
-        if (clampedDelta <= 0)
-        {
-            return;
-        }
-
-        _progress += clampedDelta;
-
-        if (_progress >= _goal)
-        {
-            _state = QuestState.ReadyToClaim;
-            _completedAt = now;
-            AddDomainEvent(new PlayerQuestCompletedDomainEvent(Id, _playerId, _questType));
-        }
-    }
-
-    internal void Claim(DateTime now)
-    {
-        ExpireIfPast(now);
-
-        CheckRule(new QuestMustBeReadyToBeClaimedRule(_state));
+        CheckRule(new QuestMustBeReadyToBeClaimedRule(_state, isReadyToClaim));
 
         _state = QuestState.Claimed;
         _claimedAt = now;
 
-        AddDomainEvent(new PlayerQuestClaimedDomainEvent(Id, _playerId, _questType, _rewardAmount));
-    }
-
-    internal void ExpireIfPast(DateTime now)
-    {
-        if (_state != QuestState.Active && _state != QuestState.ReadyToClaim)
-        {
-            return;
-        }
-
-        if (_expiresAt is null)
-        {
-            return;
-        }
-
-        if (now < _expiresAt.Value)
-        {
-            return;
-        }
-
-        _state = QuestState.Expired;
-    }
-
-    /// <summary>
-    /// Admin-only force-reset: clears progress, re-arms the quest as
-    /// Active, drops completed/claimed timestamps, and refreshes the
-    /// expiry. The caller computes <paramref name="newExpiresAt"/>
-    /// from the current definition's cadence (null for OneTime, next
-    /// UTC midnight for Daily). Support tooling only — the regular
-    /// issuance / progress / claim flow is unaffected by this method
-    /// existing.
-    /// </summary>
-    public void AdminReset(DateTime now, DateTime? newExpiresAt)
-    {
-        _progress = 0;
-        _state = QuestState.Active;
-        _completedAt = null;
-        _claimedAt = null;
-        _issuedAt = now;
-        _expiresAt = newExpiresAt;
-
-        AddDomainEvent(new PlayerQuestAdminResetDomainEvent(Id, _playerId, _questType));
+        AddDomainEvent(new PlayerQuestClaimedDomainEvent(Id, _playerId, _questDefinitionId, reward));
     }
 }

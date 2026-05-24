@@ -5,19 +5,25 @@ namespace LexiLink.Modules.Quests.Domain.PlayerQuests.Events;
 public class QuestDefinitionUpdatedDomainEvent : DomainEvent
 {
     public Guid QuestDefinitionId { get; }
-    public int Goal { get; }
-    public int RewardAmount { get; }
-    public string? PrerequisiteQuestType { get; }
+    public string Description { get; }
+    public int Threshold { get; }
+    public int Reward { get; }
+    public Guid? PrerequisiteQuestDefinitionId { get; }
+    public string ProgressBaseline { get; }
 
     public QuestDefinitionUpdatedDomainEvent(
         Guid questDefinitionId,
-        int goal,
-        int rewardAmount,
-        string? prerequisiteQuestType)
+        string description,
+        int threshold,
+        int reward,
+        Guid? prerequisiteQuestDefinitionId,
+        string progressBaseline)
     {
         QuestDefinitionId = questDefinitionId;
-        Goal = goal;
-        RewardAmount = rewardAmount;
-        PrerequisiteQuestType = prerequisiteQuestType;
+        Description = description;
+        Threshold = threshold;
+        Reward = reward;
+        PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
+        ProgressBaseline = progressBaseline;
     }
 }

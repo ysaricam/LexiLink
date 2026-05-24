@@ -3,15 +3,14 @@ namespace LexiLink.Modules.Quests.Domain.PlayerQuests;
 /// <summary>
 /// Read-only view over the active quest catalog. Backed by
 /// <see cref="IQuestDefinitionRepository"/> in production; command
-/// handlers (e.g. IssueQuestCommand) consult this to find the rules of
-/// a given quest type. Returns null when no active definition exists
-/// for the type — issuance handlers treat that as a no-op so a
-/// deactivated quest stops being issued without breaking active
-/// PlayerQuest history.
+/// handlers (e.g. IssueQuestCommand, ClaimQuestCommandHandler) consult
+/// this to find the rules of a given definition. Returns null when the
+/// definition exists but is inactive, so issuance handlers can no-op
+/// without breaking PlayerQuest history.
 /// </summary>
 public interface IQuestCatalog
 {
-    Task<QuestDefinition?> ResolveAsync(QuestType questType, CancellationToken cancellationToken = default);
+    Task<QuestDefinition?> ResolveAsync(QuestDefinitionId questDefinitionId, CancellationToken cancellationToken = default);
 
     Task<IReadOnlyList<QuestDefinition>> GetAllActiveAsync(CancellationToken cancellationToken = default);
 }

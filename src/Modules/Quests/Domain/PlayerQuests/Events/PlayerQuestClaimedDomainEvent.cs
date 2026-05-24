@@ -6,18 +6,18 @@ public class PlayerQuestClaimedDomainEvent : DomainEvent
 {
     public PlayerQuestId PlayerQuestId { get; }
     public Guid PlayerId { get; }
-    public QuestType QuestType { get; }
-    public int RewardAmount { get; }
+    public QuestDefinitionId QuestDefinitionId { get; }
+    public int Reward { get; }
 
     public PlayerQuestClaimedDomainEvent(
         PlayerQuestId playerQuestId,
         Guid playerId,
-        QuestType questType,
-        int rewardAmount)
+        QuestDefinitionId questDefinitionId,
+        int reward)
     {
         PlayerQuestId = playerQuestId;
         PlayerId = playerId;
-        QuestType = questType;
-        RewardAmount = rewardAmount;
+        QuestDefinitionId = questDefinitionId;
+        Reward = reward;
     }
 }

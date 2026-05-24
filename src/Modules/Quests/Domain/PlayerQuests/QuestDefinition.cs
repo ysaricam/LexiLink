@@ -5,30 +5,33 @@ using LexiLink.Modules.Quests.Domain.PlayerQuests.Rules;
 namespace LexiLink.Modules.Quests.Domain.PlayerQuests;
 
 /// <summary>
-/// Catalog entry describing how a quest is issued and rewarded.
-/// Previously a hardcoded record; promoted to an aggregate in Slice B6
-/// so admin tooling (B7) can create/update/deactivate definitions
-/// without a code redeploy. Seed of the original four definitions is
-/// delivered via DbUp SQL (deterministic ids) and intentionally bypasses
-/// <see cref="Create"/> — those four are known-good and predate this
-/// aggregate.
+/// Catalog entry describing how a quest is issued and rewarded. Fully
+/// data-driven post Sprint Q1 — every field is admin-configurable
+/// except <see cref="Name"/> and <see cref="Trigger"/>, which are fixed
+/// at creation time so an admin re-name does not silently re-key
+/// PlayerQuest history and a trigger swap does not invalidate baseline
+/// snapshots.
 /// </summary>
 public sealed class QuestDefinition : Entity, IAggregateRoot
 {
     public QuestDefinitionId Id { get; private set; }
 
-    private QuestType _questType;
-    private QuestCadence _cadence;
-    private int _goal;
-    private int _rewardAmount;
-    private QuestType? _prerequisiteQuestType;
+    private string _name = null!;
+    private string _description = null!;
+    private QuestTrigger _trigger;
+    private int _threshold;
+    private int _reward;
+    private QuestDefinitionId? _prerequisiteQuestDefinitionId;
+    private ProgressBaseline _progressBaseline;
     private bool _isActive;
 
-    public QuestType QuestType => _questType;
-    public QuestCadence Cadence => _cadence;
-    public int Goal => _goal;
-    public int RewardAmount => _rewardAmount;
-    public QuestType? PrerequisiteQuestType => _prerequisiteQuestType;
+    public string Name => _name;
+    public string Description => _description;
+    public QuestTrigger Trigger => _trigger;
+    public int Threshold => _threshold;
+    public int Reward => _reward;
+    public QuestDefinitionId? PrerequisiteQuestDefinitionId => _prerequisiteQuestDefinitionId;
+    public ProgressBaseline ProgressBaseline => _progressBaseline;
     public bool IsActive => _isActive;
 
     private QuestDefinition()
@@ -38,67 +41,96 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
 
     private QuestDefinition(
         QuestDefinitionId id,
-        QuestType questType,
-        QuestCadence cadence,
-        int goal,
-        int rewardAmount,
-        QuestType? prerequisiteQuestType)
+        string name,
+        string description,
+        QuestTrigger trigger,
+        int threshold,
+        int reward,
+        QuestDefinitionId? prerequisiteQuestDefinitionId,
+        ProgressBaseline progressBaseline,
+        bool prerequisiteWouldCreateCycle)
     {
-        CheckRule(new QuestGoalMustBePositiveRule(goal));
-        CheckRule(new QuestRewardAmountMustBePositiveRule(rewardAmount));
+        CheckRule(new QuestNameMustNotBeEmptyRule(name));
+        CheckRule(new QuestNameMustNotExceedMaxLengthRule(name));
+        CheckRule(new QuestDescriptionMustNotExceedMaxLengthRule(description));
+        CheckRule(new QuestThresholdMustBePositiveRule(threshold));
+        CheckRule(new QuestRewardMustBePositiveRule(reward));
+        CheckRule(new QuestPrerequisiteMustNotCreateCycleRule(prerequisiteWouldCreateCycle));
 
         Id = id;
-        _questType = questType;
-        _cadence = cadence;
-        _goal = goal;
-        _rewardAmount = rewardAmount;
-        _prerequisiteQuestType = prerequisiteQuestType;
+        _name = name.Trim();
+        _description = description ?? string.Empty;
+        _trigger = trigger;
+        _threshold = threshold;
+        _reward = reward;
+        _prerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
+        _progressBaseline = progressBaseline;
         _isActive = true;
 
         AddDomainEvent(new QuestDefinitionCreatedDomainEvent(
             id.Value,
-            questType.ToString(),
-            cadence.ToString(),
-            goal,
-            rewardAmount,
-            prerequisiteQuestType?.ToString()));
+            _name,
+            trigger.ToString(),
+            threshold,
+            reward,
+            prerequisiteQuestDefinitionId?.Value,
+            progressBaseline.ToString()));
     }
 
     public static QuestDefinition Create(
-        QuestType questType,
-        QuestCadence cadence,
-        int goal,
-        int rewardAmount,
-        QuestType? prerequisiteQuestType)
+        string name,
+        string description,
+        QuestTrigger trigger,
+        int threshold,
+        int reward,
+        QuestDefinitionId? prerequisiteQuestDefinitionId,
+        ProgressBaseline progressBaseline,
+        bool prerequisiteWouldCreateCycle)
     {
         return new QuestDefinition(
             new QuestDefinitionId(Guid.NewGuid()),
-            questType,
-            cadence,
-            goal,
-            rewardAmount,
-            prerequisiteQuestType);
+            name,
+            description,
+            trigger,
+            threshold,
+            reward,
+            prerequisiteQuestDefinitionId,
+            progressBaseline,
+            prerequisiteWouldCreateCycle);
     }
 
     /// <summary>
-    /// Update tunable fields. QuestType + Cadence are not mutable —
-    /// changing them would re-key existing PlayerQuest history. To swap
-    /// cadence, deactivate the definition and create a new one.
+    /// Update mutable fields. Name and Trigger are immutable post-create
+    /// — changing them would invalidate the meaning of existing
+    /// PlayerQuest rows (snapshots are sized against the original
+    /// threshold/trigger). Deactivate + create-new is the migration path.
     /// </summary>
-    public void Update(int goal, int rewardAmount, QuestType? prerequisiteQuestType)
+    public void Update(
+        string description,
+        int threshold,
+        int reward,
+        QuestDefinitionId? prerequisiteQuestDefinitionId,
+        ProgressBaseline progressBaseline,
+        bool prerequisiteWouldCreateCycle)
     {
-        CheckRule(new QuestGoalMustBePositiveRule(goal));
-        CheckRule(new QuestRewardAmountMustBePositiveRule(rewardAmount));
+        CheckRule(new QuestDescriptionMustNotExceedMaxLengthRule(description));
+        CheckRule(new QuestThresholdMustBePositiveRule(threshold));
+        CheckRule(new QuestRewardMustBePositiveRule(reward));
+        CheckRule(new QuestPrerequisiteMustNotCreateCycleRule(prerequisiteWouldCreateCycle));
 
-        _goal = goal;
-        _rewardAmount = rewardAmount;
-        _prerequisiteQuestType = prerequisiteQuestType;
+        _description = description ?? string.Empty;
+        _threshold = threshold;
+        _reward = reward;
+        _prerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
+        _progressBaseline = progressBaseline;
 
         AddDomainEvent(new QuestDefinitionUpdatedDomainEvent(
             Id.Value,
-            goal,
-            rewardAmount,
-            prerequisiteQuestType?.ToString()));
+            _description,
+            threshold,
+            reward,
+            prerequisiteQuestDefinitionId?.Value,
+            progressBaseline.ToString()));
     }
 
     public void Deactivate()

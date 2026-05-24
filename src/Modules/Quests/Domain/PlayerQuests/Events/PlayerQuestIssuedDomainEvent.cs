@@ -6,15 +6,15 @@ public class PlayerQuestIssuedDomainEvent : DomainEvent
 {
     public PlayerQuestId PlayerQuestId { get; }
     public Guid PlayerId { get; }
-    public QuestType QuestType { get; }
+    public QuestDefinitionId QuestDefinitionId { get; }
 
     public PlayerQuestIssuedDomainEvent(
         PlayerQuestId playerQuestId,
         Guid playerId,
-        QuestType questType)
+        QuestDefinitionId questDefinitionId)
     {
         PlayerQuestId = playerQuestId;
         PlayerId = playerId;
-        QuestType = questType;
+        QuestDefinitionId = questDefinitionId;
     }
 }
