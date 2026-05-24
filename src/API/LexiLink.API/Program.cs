@@ -30,6 +30,7 @@ using LexiLink.Modules.Energy.Infrastructure.Configuration;
 using LexiLink.Modules.Games.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
+using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Infrastructure.Configuration;
 using LexiLink.Modules.Stats.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication;
@@ -224,6 +225,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
     containerBuilder.RegisterType<PlayerStatusLookup>()
         .As<IPlayerStatusLookup>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.Register(_ => new QuestCounterReader(connectionString))
+        .As<IQuestCounterReader>()
         .InstancePerLifetimeScope();
 
     containerBuilder.RegisterType<AdminAuthorizationContext>()
