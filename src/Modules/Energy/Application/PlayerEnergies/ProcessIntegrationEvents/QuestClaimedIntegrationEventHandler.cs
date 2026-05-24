@@ -27,7 +27,7 @@ internal class QuestClaimedIntegrationEventHandler :
             cancellationToken);
 
         await _energyModule.ExecuteCommandAsync(
-            new GrantEnergyCommand(integrationEvent.PlayerId, integrationEvent.RewardAmount),
+            new GrantEnergyCommand(integrationEvent.PlayerId, integrationEvent.Reward),
             cancellationToken);
     }
 }

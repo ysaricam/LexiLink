@@ -1,14 +1,22 @@
 namespace LexiLink.Modules.Quests.Application.PlayerQuests.GetActiveQuests;
 
+/// <summary>
+/// View-model for a player's quest. Progress and DisplayState are
+/// computed at read time from the Stats counter — they are not
+/// persisted columns on PlayerQuests. DisplayState is one of
+/// "Active" / "ReadyToClaim" / "Claimed".
+/// </summary>
 public record PlayerQuestDto(
     Guid Id,
     Guid PlayerId,
-    string QuestType,
-    string State,
+    Guid QuestDefinitionId,
+    string Name,
+    string Description,
+    string Trigger,
+    string DisplayState,
     int Progress,
-    int Goal,
-    int RewardAmount,
+    int Threshold,
+    int Reward,
     DateTime IssuedAt,
-    DateTime? CompletedAt,
     DateTime? ClaimedAt,
     DateTime? ExpiresAt);

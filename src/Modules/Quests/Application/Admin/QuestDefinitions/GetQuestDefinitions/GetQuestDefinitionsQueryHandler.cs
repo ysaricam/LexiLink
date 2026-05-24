@@ -21,11 +21,13 @@ internal sealed class GetQuestDefinitionsQueryHandler
         return all
             .Select(d => new QuestDefinitionDto(
                 d.Id.Value,
-                d.QuestType,
-                d.Cadence,
-                d.Goal,
-                d.RewardAmount,
-                d.PrerequisiteQuestType,
+                d.Name,
+                d.Description,
+                d.Trigger,
+                d.Threshold,
+                d.Reward,
+                d.PrerequisiteQuestDefinitionId?.Value,
+                d.ProgressBaseline,
                 d.IsActive))
             .ToList();
     }

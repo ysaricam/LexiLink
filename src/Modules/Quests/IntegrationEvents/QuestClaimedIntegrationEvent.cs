@@ -7,5 +7,5 @@ public sealed record QuestClaimedIntegrationEvent(
     DateTime OccurredOn,
     Guid PlayerId,
     Guid PlayerQuestId,
-    string QuestType,
-    int RewardAmount) : IIntegrationEvent;
+    Guid QuestDefinitionId,
+    int Reward) : IIntegrationEvent;

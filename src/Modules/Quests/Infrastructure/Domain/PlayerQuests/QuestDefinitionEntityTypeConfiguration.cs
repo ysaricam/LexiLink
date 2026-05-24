@@ -14,23 +14,29 @@ internal sealed class QuestDefinitionEntityTypeConfiguration : IEntityTypeConfig
 
         builder.Property(x => x.Id).HasColumnName("Id");
 
-        builder.Property<QuestType>("_questType")
-            .HasColumnName("QuestType")
-            .HasConversion<string>()
+        builder.Property<string>("_name")
+            .HasColumnName("Name")
             .HasMaxLength(64);
 
-        builder.Property<QuestCadence>("_cadence")
-            .HasColumnName("Cadence")
+        builder.Property<string>("_description")
+            .HasColumnName("Description")
+            .HasMaxLength(256);
+
+        builder.Property<QuestTrigger>("_trigger")
+            .HasColumnName("Trigger")
             .HasConversion<string>()
             .HasMaxLength(32);
 
-        builder.Property<int>("_goal").HasColumnName("Goal");
-        builder.Property<int>("_rewardAmount").HasColumnName("RewardAmount");
+        builder.Property<int>("_threshold").HasColumnName("Threshold");
+        builder.Property<int>("_reward").HasColumnName("Reward");
 
-        builder.Property<QuestType?>("_prerequisiteQuestType")
-            .HasColumnName("PrerequisiteQuestType")
-            .HasConversion<string?>()
-            .HasMaxLength(64);
+        builder.Property<QuestDefinitionId?>("_prerequisiteQuestDefinitionId")
+            .HasColumnName("PrerequisiteQuestDefinitionId");
+
+        builder.Property<ProgressBaseline>("_progressBaseline")
+            .HasColumnName("ProgressBaseline")
+            .HasConversion<string>()
+            .HasMaxLength(32);
 
         builder.Property<bool>("_isActive").HasColumnName("IsActive");
     }

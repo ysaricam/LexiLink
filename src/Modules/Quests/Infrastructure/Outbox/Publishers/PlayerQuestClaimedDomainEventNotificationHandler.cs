@@ -25,8 +25,8 @@ internal class PlayerQuestClaimedDomainEventNotificationHandler :
                 notification.OccurredOn,
                 notification.PlayerId,
                 notification.PlayerQuestId,
-                notification.QuestType,
-                notification.RewardAmount),
+                notification.QuestDefinitionId,
+                notification.Reward),
             cancellationToken);
     }
 }

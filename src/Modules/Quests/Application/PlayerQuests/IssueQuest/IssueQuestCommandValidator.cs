@@ -7,6 +7,6 @@ internal class IssueQuestCommandValidator : AbstractValidator<IssueQuestCommand>
     public IssueQuestCommandValidator()
     {
         RuleFor(x => x.PlayerId).NotEmpty();
-        RuleFor(x => x.QuestType).IsInEnum();
+        RuleFor(x => x.QuestDefinitionId).NotEmpty();
     }
 }

@@ -7,20 +7,26 @@ namespace LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.UpdateQuest
 public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
 {
     public Guid QuestDefinitionId { get; }
-    public int Goal { get; }
-    public int RewardAmount { get; }
-    public QuestType? PrerequisiteQuestType { get; }
+    public string Description { get; }
+    public int Threshold { get; }
+    public int Reward { get; }
+    public Guid? PrerequisiteQuestDefinitionId { get; }
+    public ProgressBaseline ProgressBaseline { get; }
 
     public UpdateQuestDefinitionCommand(
         Guid questDefinitionId,
-        int goal,
-        int rewardAmount,
-        QuestType? prerequisiteQuestType)
+        string description,
+        int threshold,
+        int reward,
+        Guid? prerequisiteQuestDefinitionId,
+        ProgressBaseline progressBaseline)
     {
         QuestDefinitionId = questDefinitionId;
-        Goal = goal;
-        RewardAmount = rewardAmount;
-        PrerequisiteQuestType = prerequisiteQuestType;
+        Description = description;
+        Threshold = threshold;
+        Reward = reward;
+        PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
+        ProgressBaseline = progressBaseline;
     }
 
     public string AuditTargetType => "Quests.QuestDefinition";

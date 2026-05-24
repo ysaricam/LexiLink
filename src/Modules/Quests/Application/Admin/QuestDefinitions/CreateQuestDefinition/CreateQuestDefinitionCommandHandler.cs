@@ -16,25 +16,32 @@ internal sealed class CreateQuestDefinitionCommandHandler
 
     public async Task<Guid> Handle(CreateQuestDefinitionCommand request, CancellationToken cancellationToken)
     {
-        // QuestType is unique in the catalog — one active definition per
-        // type. Recreating an existing type returns a 400 ValidationProblem
-        // (InvalidCommandException). To re-tune, use UpdateQuestDefinition.
-        var existing = await _repository.GetByQuestTypeAsync(request.QuestType, cancellationToken);
-        if (existing is not null)
+        QuestDefinitionId? prereqId = null;
+        if (request.PrerequisiteQuestDefinitionId is { } prereqGuid)
         {
-            throw new InvalidCommandException(new Dictionary<string, string[]>
-            {
-                [nameof(CreateQuestDefinitionCommand.QuestType)] =
-                    [$"A QuestDefinition for type '{request.QuestType}' already exists."]
-            });
+            prereqId = new QuestDefinitionId(prereqGuid);
+            var prereq = await _repository.GetByIdAsync(prereqId, cancellationToken)
+                ?? throw new InvalidCommandException(new Dictionary<string, string[]>
+                {
+                    [nameof(CreateQuestDefinitionCommand.PrerequisiteQuestDefinitionId)] =
+                        [$"Prerequisite QuestDefinition '{prereqGuid}' was not found."]
+                });
+            // Defensive: a freshly created definition cannot already be
+            // referenced by anything, so a cycle through self is
+            // impossible here. The prereq's own chain is the admin's
+            // problem to keep clean.
+            _ = prereq;
         }
 
         var definition = QuestDefinition.Create(
-            request.QuestType,
-            request.Cadence,
-            request.Goal,
-            request.RewardAmount,
-            request.PrerequisiteQuestType);
+            request.Name,
+            request.Description,
+            request.Trigger,
+            request.Threshold,
+            request.Reward,
+            prereqId,
+            request.ProgressBaseline,
+            prerequisiteWouldCreateCycle: false);
 
         await _repository.AddAsync(definition, cancellationToken);
         return definition.Id.Value;

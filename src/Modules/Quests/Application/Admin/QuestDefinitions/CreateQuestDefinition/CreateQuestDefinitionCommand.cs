@@ -6,24 +6,30 @@ namespace LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.CreateQuest
 
 public sealed class CreateQuestDefinitionCommand : CommandBase<Guid>, IAdminCommand
 {
-    public QuestType QuestType { get; }
-    public QuestCadence Cadence { get; }
-    public int Goal { get; }
-    public int RewardAmount { get; }
-    public QuestType? PrerequisiteQuestType { get; }
+    public string Name { get; }
+    public string Description { get; }
+    public QuestTrigger Trigger { get; }
+    public int Threshold { get; }
+    public int Reward { get; }
+    public Guid? PrerequisiteQuestDefinitionId { get; }
+    public ProgressBaseline ProgressBaseline { get; }
 
     public CreateQuestDefinitionCommand(
-        QuestType questType,
-        QuestCadence cadence,
-        int goal,
-        int rewardAmount,
-        QuestType? prerequisiteQuestType)
+        string name,
+        string description,
+        QuestTrigger trigger,
+        int threshold,
+        int reward,
+        Guid? prerequisiteQuestDefinitionId,
+        ProgressBaseline progressBaseline)
     {
-        QuestType = questType;
-        Cadence = cadence;
-        Goal = goal;
-        RewardAmount = rewardAmount;
-        PrerequisiteQuestType = prerequisiteQuestType;
+        Name = name;
+        Description = description;
+        Trigger = trigger;
+        Threshold = threshold;
+        Reward = reward;
+        PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
+        ProgressBaseline = progressBaseline;
     }
 
     public string AuditTargetType => "Quests.QuestDefinition";

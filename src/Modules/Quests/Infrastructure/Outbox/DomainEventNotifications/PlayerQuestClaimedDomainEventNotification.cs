@@ -13,8 +13,8 @@ public class PlayerQuestClaimedDomainEventNotification : IDomainEventNotificatio
     public DateTime OccurredOn { get; private set; }
     public Guid PlayerId { get; private set; }
     public Guid PlayerQuestId { get; private set; }
-    public string QuestType { get; private set; } = null!;
-    public int RewardAmount { get; private set; }
+    public Guid QuestDefinitionId { get; private set; }
+    public int Reward { get; private set; }
 
     public PlayerQuestClaimedDomainEventNotification(PlayerQuestClaimedDomainEvent domainEvent, Guid id)
     {
@@ -23,8 +23,8 @@ public class PlayerQuestClaimedDomainEventNotification : IDomainEventNotificatio
         OccurredOn = domainEvent.OccurredOn;
         PlayerId = domainEvent.PlayerId;
         PlayerQuestId = domainEvent.PlayerQuestId.Value;
-        QuestType = domainEvent.QuestType.ToString();
-        RewardAmount = domainEvent.RewardAmount;
+        QuestDefinitionId = domainEvent.QuestDefinitionId.Value;
+        Reward = domainEvent.Reward;
     }
 
     [JsonConstructor]

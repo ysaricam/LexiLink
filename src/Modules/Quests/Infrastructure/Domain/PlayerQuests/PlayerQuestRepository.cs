@@ -17,16 +17,14 @@ internal class PlayerQuestRepository : IPlayerQuestRepository
         return await _questsContext.PlayerQuests.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
-    public async Task<PlayerQuest?> GetActiveOrReadyByPlayerAndTypeAsync(
+    public async Task<PlayerQuest?> GetActiveOrClaimedByPlayerAndDefinitionAsync(
         Guid playerId,
-        QuestType questType,
+        QuestDefinitionId questDefinitionId,
         CancellationToken cancellationToken = default)
     {
         return await _questsContext.PlayerQuests
             .Where(x => EF.Property<Guid>(x, "_playerId") == playerId
-                        && EF.Property<QuestType>(x, "_questType") == questType
-                        && (EF.Property<QuestState>(x, "_state") == QuestState.Active
-                            || EF.Property<QuestState>(x, "_state") == QuestState.ReadyToClaim))
+                        && EF.Property<QuestDefinitionId>(x, "_questDefinitionId") == questDefinitionId)
             .OrderByDescending(x => EF.Property<DateTime>(x, "_issuedAt"))
             .FirstOrDefaultAsync(cancellationToken);
     }
@@ -43,12 +41,12 @@ internal class PlayerQuestRepository : IPlayerQuestRepository
 
     public async Task<bool> HasClaimedAsync(
         Guid playerId,
-        QuestType questType,
+        QuestDefinitionId questDefinitionId,
         CancellationToken cancellationToken = default)
     {
         return await _questsContext.PlayerQuests
             .AnyAsync(x => EF.Property<Guid>(x, "_playerId") == playerId
-                            && EF.Property<QuestType>(x, "_questType") == questType
+                            && EF.Property<QuestDefinitionId>(x, "_questDefinitionId") == questDefinitionId
                             && EF.Property<QuestState>(x, "_state") == QuestState.Claimed,
                 cancellationToken);
     }

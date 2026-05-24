@@ -11,9 +11,9 @@ internal sealed class QuestCatalog : IQuestCatalog
         _repository = repository;
     }
 
-    public async Task<QuestDefinition?> ResolveAsync(QuestType questType, CancellationToken cancellationToken = default)
+    public async Task<QuestDefinition?> ResolveAsync(QuestDefinitionId questDefinitionId, CancellationToken cancellationToken = default)
     {
-        var definition = await _repository.GetByQuestTypeAsync(questType, cancellationToken);
+        var definition = await _repository.GetByIdAsync(questDefinitionId, cancellationToken);
         return definition is { IsActive: true } ? definition : null;
     }
 

@@ -15,19 +15,13 @@ internal class PlayerQuestEntityTypeConfiguration : IEntityTypeConfiguration<Pla
         builder.Property(x => x.Id).HasColumnName("Id");
 
         builder.Property<Guid>("_playerId").HasColumnName("PlayerId");
-        builder.Property<QuestType>("_questType")
-            .HasColumnName("QuestType")
-            .HasConversion<string>()
-            .HasMaxLength(64);
-        builder.Property<int>("_progress").HasColumnName("Progress");
-        builder.Property<int>("_goal").HasColumnName("Goal");
-        builder.Property<int>("_rewardAmount").HasColumnName("RewardAmount");
+        builder.Property<QuestDefinitionId>("_questDefinitionId").HasColumnName("QuestDefinitionId");
+        builder.Property<int>("_progressBaselineSnapshot").HasColumnName("ProgressBaselineSnapshot");
         builder.Property<QuestState>("_state")
             .HasColumnName("State")
             .HasConversion<string>()
             .HasMaxLength(32);
         builder.Property<DateTime>("_issuedAt").HasColumnName("IssuedAt");
-        builder.Property<DateTime?>("_completedAt").HasColumnName("CompletedAt");
         builder.Property<DateTime?>("_claimedAt").HasColumnName("ClaimedAt");
         builder.Property<DateTime?>("_expiresAt").HasColumnName("ExpiresAt");
     }

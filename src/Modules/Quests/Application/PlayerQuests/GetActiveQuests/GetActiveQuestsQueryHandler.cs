@@ -1,19 +1,35 @@
+using System.Data;
 using Dapper;
 using LexiLink.Common.Application.Data;
 using LexiLink.Common.Application.Time;
+using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Application.Configuration.Queries;
 using LexiLink.Modules.Quests.Domain.PlayerQuests;
 
 namespace LexiLink.Modules.Quests.Application.PlayerQuests.GetActiveQuests;
 
+/// <summary>
+/// Two-pass handler. The first pass mutates: it issues missing
+/// PlayerQuest rows for every active QuestDefinition the player is now
+/// eligible for and deletes expired daily rows. The second pass reads
+/// the final set, joins it with Stats counters in memory, and computes
+/// progress + display state for the API. Lazy issuance replaces the
+/// pre-Sprint-Q1 eager broadcast on PlayerRegistered + game-completed
+/// integration events.
+/// </summary>
 internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery, IReadOnlyList<PlayerQuestDto>>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
+    private readonly IQuestCounterReader _counterReader;
     private readonly IClock _clock;
 
-    internal GetActiveQuestsQueryHandler(ISqlConnectionFactory sqlConnectionFactory, IClock clock)
+    internal GetActiveQuestsQueryHandler(
+        ISqlConnectionFactory sqlConnectionFactory,
+        IQuestCounterReader counterReader,
+        IClock clock)
     {
         _sqlConnectionFactory = sqlConnectionFactory;
+        _counterReader = counterReader;
         _clock = clock;
     }
 
@@ -22,56 +38,182 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         CancellationToken cancellationToken)
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
+        var now = _clock.UtcNow;
+        var counters = await _counterReader.ReadAsync(query.PlayerId, now, cancellationToken);
 
-        // Filter out PlayerQuests whose definition has been deactivated
-        // — the row stays in DB (so admin audit + claim history remain
-        // intact) but the player no longer sees it. Admins reactivate
-        // the definition to bring affected quests back into the list.
+        // Delete first, then sync — an expired Daily row in the DB would
+        // otherwise look "existing" to the sync pass and prevent re-issue
+        // for the new day. With this order the sync sees the deleted slot
+        // as missing and inserts a fresh row with today's baseline.
+        await DeleteExpiredDailyPlayerQuestsAsync(connection, query.PlayerId, now, cancellationToken);
+        await SyncMissingPlayerQuestsAsync(connection, query.PlayerId, counters, now, cancellationToken);
+
+        var rows = await ReadPlayerQuestsAsync(connection, query.PlayerId, cancellationToken);
+        return rows.Select(r => Project(r, counters, now)).ToList();
+    }
+
+    private static async Task SyncMissingPlayerQuestsAsync(
+        IDbConnection connection,
+        Guid playerId,
+        QuestCounters counters,
+        DateTime now,
+        CancellationToken cancellationToken)
+    {
+        const string definitionsSql = """
+            SELECT
+                "Id",
+                "Name",
+                "Description",
+                "Trigger",
+                "Threshold",
+                "Reward",
+                "PrerequisiteQuestDefinitionId",
+                "ProgressBaseline",
+                "IsActive"
+            FROM "quests"."QuestDefinitions"
+            WHERE "IsActive" = TRUE;
+        """;
+        var definitions = (await connection.QueryAsync<RawQuestDefinitionRow>(
+            new CommandDefinition(definitionsSql, cancellationToken: cancellationToken))).ToList();
+
+        if (definitions.Count == 0)
+        {
+            return;
+        }
+
+        const string existingSql = """
+            SELECT "QuestDefinitionId", "State"
+            FROM "quests"."PlayerQuests"
+            WHERE "PlayerId" = @PlayerId;
+        """;
+        var existing = (await connection.QueryAsync<(Guid QuestDefinitionId, string State)>(
+            new CommandDefinition(existingSql, new { PlayerId = playerId }, cancellationToken: cancellationToken)))
+            .ToList();
+
+        var anyExisting = existing.Select(e => e.QuestDefinitionId).ToHashSet();
+        var claimed = existing
+            .Where(e => string.Equals(e.State, nameof(QuestState.Claimed), StringComparison.Ordinal))
+            .Select(e => e.QuestDefinitionId)
+            .ToHashSet();
+
+        const string insertSql = """
+            INSERT INTO "quests"."PlayerQuests"
+                ("Id", "PlayerId", "QuestDefinitionId", "ProgressBaselineSnapshot",
+                 "State", "IssuedAt", "ClaimedAt", "ExpiresAt")
+            VALUES
+                (@Id, @PlayerId, @QuestDefinitionId, @ProgressBaselineSnapshot,
+                 @State, @IssuedAt, NULL, @ExpiresAt)
+            ON CONFLICT ("PlayerId", "QuestDefinitionId") DO NOTHING;
+        """;
+
+        foreach (var def in definitions)
+        {
+            if (anyExisting.Contains(def.Id))
+            {
+                continue;
+            }
+
+            if (def.PrerequisiteQuestDefinitionId is { } prereq && !claimed.Contains(prereq))
+            {
+                continue;
+            }
+
+            var trigger = Enum.Parse<QuestTrigger>(def.Trigger);
+            var baseline = Enum.Parse<ProgressBaseline>(def.ProgressBaseline);
+            var baselineSnapshot = ComputeBaselineSnapshot(trigger, baseline, counters);
+            var expiresAt = trigger == QuestTrigger.GameCompletedDaily
+                ? (DateTime?)NextUtcMidnight(now)
+                : null;
+
+            await connection.ExecuteAsync(new CommandDefinition(
+                insertSql,
+                new
+                {
+                    Id = Guid.NewGuid(),
+                    PlayerId = playerId,
+                    QuestDefinitionId = def.Id,
+                    ProgressBaselineSnapshot = baselineSnapshot,
+                    State = nameof(QuestState.Active),
+                    IssuedAt = now,
+                    ExpiresAt = expiresAt,
+                },
+                cancellationToken: cancellationToken));
+        }
+    }
+
+    private static Task DeleteExpiredDailyPlayerQuestsAsync(
+        IDbConnection connection,
+        Guid playerId,
+        DateTime now,
+        CancellationToken cancellationToken)
+    {
+        const string sql = """
+            DELETE FROM "quests"."PlayerQuests"
+            WHERE "PlayerId" = @PlayerId
+              AND "State" = 'Active'
+              AND "ExpiresAt" IS NOT NULL
+              AND "ExpiresAt" <= @Now;
+        """;
+        return connection.ExecuteAsync(new CommandDefinition(
+            sql,
+            new { PlayerId = playerId, Now = now },
+            cancellationToken: cancellationToken));
+    }
+
+    private static async Task<IReadOnlyList<RawPlayerQuestRow>> ReadPlayerQuestsAsync(
+        IDbConnection connection,
+        Guid playerId,
+        CancellationToken cancellationToken)
+    {
         const string sql = """
             SELECT
-                pq."Id"            AS "Id",
-                pq."PlayerId"      AS "PlayerId",
-                pq."QuestType"     AS "QuestType",
-                pq."State"         AS "State",
-                pq."Progress"      AS "Progress",
-                pq."Goal"          AS "Goal",
-                pq."RewardAmount"  AS "RewardAmount",
-                pq."IssuedAt"      AS "IssuedAt",
-                pq."CompletedAt"   AS "CompletedAt",
-                pq."ClaimedAt"     AS "ClaimedAt",
-                pq."ExpiresAt"     AS "ExpiresAt"
-            FROM "quests"."v_PlayerQuests" AS pq
+                pq."Id"                       AS "Id",
+                pq."PlayerId"                 AS "PlayerId",
+                pq."QuestDefinitionId"        AS "QuestDefinitionId",
+                pq."ProgressBaselineSnapshot" AS "ProgressBaselineSnapshot",
+                pq."State"                    AS "State",
+                pq."IssuedAt"                 AS "IssuedAt",
+                pq."ClaimedAt"                AS "ClaimedAt",
+                pq."ExpiresAt"                AS "ExpiresAt",
+                qd."Name"                     AS "Name",
+                qd."Description"              AS "Description",
+                qd."Trigger"                  AS "Trigger",
+                qd."Threshold"                AS "Threshold",
+                qd."Reward"                   AS "Reward"
+            FROM "quests"."PlayerQuests" AS pq
             INNER JOIN "quests"."QuestDefinitions" AS qd
-                ON qd."QuestType" = pq."QuestType"
+                ON qd."Id" = pq."QuestDefinitionId"
             WHERE pq."PlayerId" = @PlayerId
               AND qd."IsActive" = TRUE
             ORDER BY pq."IssuedAt" DESC;
         """;
-
         var rows = await connection.QueryAsync<RawPlayerQuestRow>(
-            new CommandDefinition(sql, new { query.PlayerId }, cancellationToken: cancellationToken));
-
-        var now = _clock.UtcNow;
-        return rows.Select(row => Project(row, now)).ToList();
+            new CommandDefinition(sql, new { PlayerId = playerId }, cancellationToken: cancellationToken));
+        return rows.ToList();
     }
 
-    private static PlayerQuestDto Project(RawPlayerQuestRow row, DateTime now)
+    private static PlayerQuestDto Project(RawPlayerQuestRow row, QuestCounters counters, DateTime now)
     {
+        var trigger = Enum.Parse<QuestTrigger>(row.Trigger);
+        var currentCounter = CurrentCounterFor(trigger, counters);
+        var rawProgress = currentCounter - row.ProgressBaselineSnapshot;
+        var progress = Math.Clamp(rawProgress, 0, row.Threshold);
+
         var dbState = Enum.Parse<QuestState>(row.State);
-        var effectiveState = ProjectState(dbState, row.ExpiresAt, now);
+        var displayState = ComputeDisplayState(dbState, progress, row.Threshold);
 
         return new PlayerQuestDto(
             Id: row.Id,
             PlayerId: row.PlayerId,
-            QuestType: row.QuestType,
-            State: effectiveState.ToString(),
-            Progress: row.Progress,
-            Goal: row.Goal,
-            RewardAmount: row.RewardAmount,
+            QuestDefinitionId: row.QuestDefinitionId,
+            Name: row.Name,
+            Description: row.Description,
+            Trigger: row.Trigger,
+            DisplayState: displayState,
+            Progress: progress,
+            Threshold: row.Threshold,
+            Reward: row.Reward,
             IssuedAt: DateTime.SpecifyKind(row.IssuedAt, DateTimeKind.Utc),
-            CompletedAt: row.CompletedAt is null
-                ? null
-                : DateTime.SpecifyKind(row.CompletedAt.Value, DateTimeKind.Utc),
             ClaimedAt: row.ClaimedAt is null
                 ? null
                 : DateTime.SpecifyKind(row.ClaimedAt.Value, DateTimeKind.Utc),
@@ -80,33 +222,71 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
                 : DateTime.SpecifyKind(row.ExpiresAt.Value, DateTimeKind.Utc));
     }
 
-    private static QuestState ProjectState(QuestState dbState, DateTime? expiresAt, DateTime now)
+    private static int CurrentCounterFor(QuestTrigger trigger, QuestCounters counters) =>
+        trigger switch
+        {
+            QuestTrigger.GameCompletedDaily => counters.GamesCompletedToday,
+            QuestTrigger.GameCompletedTotal => counters.GamesCompletedTotal,
+            QuestTrigger.AuthProviderLinked => counters.AuthProviderLinked ? 1 : 0,
+            _                               => 0,
+        };
+
+    private static int ComputeBaselineSnapshot(
+        QuestTrigger trigger,
+        ProgressBaseline baseline,
+        QuestCounters counters) =>
+        trigger switch
+        {
+            QuestTrigger.GameCompletedDaily   => counters.GamesCompletedToday,
+            QuestTrigger.AuthProviderLinked   => 0,
+            QuestTrigger.GameCompletedTotal   =>
+                baseline == ProgressBaseline.FromExistingTotal ? 0 : counters.GamesCompletedTotal,
+            _                                 => 0,
+        };
+
+    private static string ComputeDisplayState(QuestState dbState, int progress, int threshold)
     {
-        if (dbState != QuestState.Active && dbState != QuestState.ReadyToClaim)
+        if (dbState == QuestState.Claimed)
         {
-            return dbState;
+            return nameof(QuestState.Claimed);
         }
 
-        if (expiresAt is null || now < expiresAt.Value)
-        {
-            return dbState;
-        }
+        return progress >= threshold ? "ReadyToClaim" : nameof(QuestState.Active);
+    }
 
-        return QuestState.Expired;
+    private static DateTime NextUtcMidnight(DateTime now)
+    {
+        var todayUtcMidnight = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc);
+        return todayUtcMidnight.AddDays(1);
+    }
+
+    private sealed class RawQuestDefinitionRow
+    {
+        public Guid Id { get; init; }
+        public string Name { get; init; } = string.Empty;
+        public string Description { get; init; } = string.Empty;
+        public string Trigger { get; init; } = string.Empty;
+        public int Threshold { get; init; }
+        public int Reward { get; init; }
+        public Guid? PrerequisiteQuestDefinitionId { get; init; }
+        public string ProgressBaseline { get; init; } = string.Empty;
+        public bool IsActive { get; init; }
     }
 
     private sealed class RawPlayerQuestRow
     {
         public Guid Id { get; init; }
         public Guid PlayerId { get; init; }
-        public string QuestType { get; init; } = string.Empty;
+        public Guid QuestDefinitionId { get; init; }
+        public int ProgressBaselineSnapshot { get; init; }
         public string State { get; init; } = string.Empty;
-        public int Progress { get; init; }
-        public int Goal { get; init; }
-        public int RewardAmount { get; init; }
         public DateTime IssuedAt { get; init; }
-        public DateTime? CompletedAt { get; init; }
         public DateTime? ClaimedAt { get; init; }
         public DateTime? ExpiresAt { get; init; }
+        public string Name { get; init; } = string.Empty;
+        public string Description { get; init; } = string.Empty;
+        public string Trigger { get; init; } = string.Empty;
+        public int Threshold { get; init; }
+        public int Reward { get; init; }
     }
 }

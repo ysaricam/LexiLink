@@ -4,9 +4,11 @@ namespace LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.GetQuestDef
 
 public sealed record QuestDefinitionDto(
     Guid Id,
-    QuestType QuestType,
-    QuestCadence Cadence,
-    int Goal,
-    int RewardAmount,
-    QuestType? PrerequisiteQuestType,
+    string Name,
+    string Description,
+    QuestTrigger Trigger,
+    int Threshold,
+    int Reward,
+    Guid? PrerequisiteQuestDefinitionId,
+    ProgressBaseline ProgressBaseline,
     bool IsActive);

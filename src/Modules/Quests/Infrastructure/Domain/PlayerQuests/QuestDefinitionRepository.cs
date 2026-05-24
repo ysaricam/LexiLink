@@ -15,16 +15,10 @@ internal sealed class QuestDefinitionRepository : IQuestDefinitionRepository
     public Task<QuestDefinition?> GetByIdAsync(QuestDefinitionId id, CancellationToken cancellationToken = default) =>
         _context.QuestDefinitions.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-    public Task<QuestDefinition?> GetByQuestTypeAsync(QuestType questType, CancellationToken cancellationToken = default) =>
-        _context.QuestDefinitions
-            .FirstOrDefaultAsync(
-                x => EF.Property<QuestType>(x, "_questType") == questType,
-                cancellationToken);
-
     public async Task<IReadOnlyList<QuestDefinition>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         var list = await _context.QuestDefinitions
-            .OrderBy(x => EF.Property<QuestType>(x, "_questType"))
+            .OrderBy(x => EF.Property<string>(x, "_name"))
             .ToListAsync(cancellationToken);
         return list;
     }
