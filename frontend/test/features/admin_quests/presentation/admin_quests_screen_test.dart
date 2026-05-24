@@ -41,9 +41,13 @@ void main() {
       (_) => http.Response(
             '['
             '{"id":"00000000-0000-0000-0000-000000000001",'
-            '"questType":"DailyThreeGames","cadence":"Daily",'
-            '"goal":3,"rewardAmount":15,'
-            '"prerequisiteQuestType":null,"isActive":true}'
+            '"name":"Daily Three",'
+            '"description":"Three today",'
+            '"trigger":"GameCompletedDaily",'
+            '"threshold":3,"reward":15,'
+            '"prerequisiteQuestDefinitionId":null,'
+            '"progressBaseline":"FromSnapshot",'
+            '"isActive":true}'
             ']',
             200,
           ),
@@ -57,16 +61,17 @@ void main() {
     // Async init + load completes.
     await tester.pumpAndSettle();
 
-    expect(find.text('Quest definitions'), findsOneWidget);
-    expect(find.text('DailyThreeGames'), findsOneWidget);
-    expect(find.text('Daily'), findsOneWidget);
+    expect(find.text('Quest tanımları'), findsOneWidget);
+    expect(find.text('Daily Three'), findsOneWidget);
+    // Row subtitle includes "Günlük oyun · 3" from QuestTrigger label.
+    expect(find.textContaining('Günlük oyun'), findsOneWidget);
 
-    await tester.tap(find.text('New quest'));
+    await tester.tap(find.text('Yeni quest'));
     await tester.pumpAndSettle();
 
-    expect(find.text('New quest definition'), findsOneWidget);
-    expect(find.text('Cancel'), findsOneWidget);
-    expect(find.text('Create'), findsOneWidget);
+    expect(find.text('Yeni quest tanımı'), findsOneWidget);
+    expect(find.text('İptal'), findsOneWidget);
+    expect(find.text('Oluştur'), findsOneWidget);
   });
 
   testWidgets('empty state shows hint message', (tester) async {
@@ -87,7 +92,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.textContaining('No quest definitions yet'),
+      find.textContaining('Henüz quest tanımı yok'),
       findsOneWidget,
     );
   });

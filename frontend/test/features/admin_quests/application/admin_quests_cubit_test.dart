@@ -9,7 +9,6 @@ import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
-/// Drives the cubit's underlying repository via a scripted MockClient.
 class _Script {
   _Script();
 
@@ -44,8 +43,12 @@ AdminQuestsRepository _repoFromScript(_Script script) {
 const _emptyList = '[]';
 const _oneDailyDef = '['
     '{"id":"00000000-0000-0000-0000-000000000001",'
-    '"questType":"DailyThreeGames","cadence":"Daily",'
-    '"goal":3,"rewardAmount":15,"prerequisiteQuestType":null,'
+    '"name":"Daily Three",'
+    '"description":"Three today",'
+    '"trigger":"GameCompletedDaily",'
+    '"threshold":3,"reward":15,'
+    '"prerequisiteQuestDefinitionId":null,'
+    '"progressBaseline":"FromSnapshot",'
     '"isActive":true}'
     ']';
 
@@ -63,8 +66,8 @@ void main() {
         expect(cubit.state.status, AdminQuestsStatus.loaded);
         expect(cubit.state.definitions, hasLength(1));
         expect(
-          cubit.state.definitions.first.questType,
-          AdminQuestType.dailyThreeGames,
+          cubit.state.definitions.first.trigger,
+          QuestTrigger.gameCompletedDaily,
         );
       },
     );
@@ -97,10 +100,12 @@ void main() {
         return AdminQuestsCubit(repository: _repoFromScript(script));
       },
       act: (cubit) => cubit.create(
-        questType: AdminQuestType.dailyThreeGames,
-        cadence: AdminQuestCadence.daily,
-        goal: 3,
-        rewardAmount: 15,
+        name: 'Daily Three',
+        description: 'Three today',
+        trigger: QuestTrigger.gameCompletedDaily,
+        threshold: 3,
+        reward: 15,
+        progressBaseline: ProgressBaseline.fromSnapshot,
       ),
       verify: (cubit) {
         expect(cubit.state.status, AdminQuestsStatus.loaded);
@@ -116,9 +121,12 @@ void main() {
           ..enqueue((_) => http.Response(
                 '['
                 '{"id":"00000000-0000-0000-0000-000000000001",'
-                '"questType":"DailyThreeGames","cadence":"Daily",'
-                '"goal":3,"rewardAmount":15,'
-                '"prerequisiteQuestType":null,'
+                '"name":"Daily Three",'
+                '"description":"Three today",'
+                '"trigger":"GameCompletedDaily",'
+                '"threshold":3,"reward":15,'
+                '"prerequisiteQuestDefinitionId":null,'
+                '"progressBaseline":"FromSnapshot",'
                 '"isActive":false}'
                 ']',
                 200,
@@ -143,8 +151,10 @@ void main() {
       },
       act: (cubit) => cubit.update(
         id: '00000000-0000-0000-0000-000000000001',
-        goal: 5,
-        rewardAmount: 25,
+        description: 'updated',
+        threshold: 5,
+        reward: 25,
+        progressBaseline: ProgressBaseline.fromSnapshot,
       ),
       verify: (cubit) {
         expect(cubit.state.status, AdminQuestsStatus.loaded);

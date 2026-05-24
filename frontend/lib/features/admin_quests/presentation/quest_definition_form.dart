@@ -2,41 +2,44 @@ import 'package:flutter/material.dart';
 import 'package:lexilink_app/features/admin_quests/data/quest_definition.dart';
 import 'package:lexilink_app/features/admin_quests/data/quest_enums.dart';
 
-/// Result of [QuestDefinitionFormDialog]. For Create [questType] and
-/// [cadence] are required; for Edit they're carried through unchanged
-/// but the dialog disables those fields (server doesn't allow them to
-/// change once a definition exists).
+/// Result of [QuestDefinitionFormDialog]. For Create the dialog
+/// supplies name + trigger; for Edit those fields are read-only
+/// (server rejects changes to name/trigger after Create — see Q1.5).
 class QuestDefinitionFormResult {
   const QuestDefinitionFormResult({
-    required this.questType,
-    required this.cadence,
-    required this.goal,
-    required this.rewardAmount,
-    this.prerequisiteQuestType,
+    required this.name,
+    required this.description,
+    required this.trigger,
+    required this.threshold,
+    required this.reward,
+    required this.progressBaseline,
+    this.prerequisiteQuestDefinitionId,
   });
 
-  final AdminQuestType? questType;
-  final AdminQuestCadence? cadence;
-  final int goal;
-  final int rewardAmount;
-  final AdminQuestType? prerequisiteQuestType;
+  final String name;
+  final String description;
+  final QuestTrigger trigger;
+  final int threshold;
+  final int reward;
+  final ProgressBaseline progressBaseline;
+  final String? prerequisiteQuestDefinitionId;
 }
 
 class QuestDefinitionFormDialog extends StatefulWidget {
   const QuestDefinitionFormDialog({
     super.key,
     this.initial,
-    this.takenTypes = const {},
+    this.availablePrerequisites = const [],
   });
 
-  /// When non-null the dialog is in Edit mode — type/cadence fields
-  /// are read-only.
+  /// When non-null the dialog is in Edit mode — name + trigger are
+  /// read-only.
   final QuestDefinition? initial;
 
-  /// Quest types that already have a definition in the catalog. In
-  /// create mode these are removed from the type dropdown so the
-  /// admin can't trigger the server's "already exists" 400.
-  final Set<AdminQuestType> takenTypes;
+  /// Other active definitions admin can pick as a prerequisite. In
+  /// Edit mode the current definition is filtered out so the user
+  /// can't pick it as its own prereq.
+  final List<QuestDefinition> availablePrerequisites;
 
   @override
   State<QuestDefinitionFormDialog> createState() =>
@@ -44,13 +47,15 @@ class QuestDefinitionFormDialog extends StatefulWidget {
 }
 
 class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
-  late final TextEditingController _goalController;
+  late final TextEditingController _nameController;
+  late final TextEditingController _descriptionController;
+  late final TextEditingController _thresholdController;
   late final TextEditingController _rewardController;
   final _formKey = GlobalKey<FormState>();
 
-  AdminQuestType? _questType;
-  AdminQuestCadence? _cadence;
-  AdminQuestType? _prerequisite;
+  QuestTrigger? _trigger;
+  ProgressBaseline _progressBaseline = ProgressBaseline.fromSnapshot;
+  String? _prerequisiteId;
 
   bool get _isEdit => widget.initial != null;
 
@@ -58,26 +63,38 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
   void initState() {
     super.initState();
     final initial = widget.initial;
-    _goalController =
-        TextEditingController(text: initial?.goal.toString() ?? '');
+    _nameController = TextEditingController(text: initial?.name ?? '');
+    _descriptionController =
+        TextEditingController(text: initial?.description ?? '');
+    _thresholdController =
+        TextEditingController(text: initial?.threshold.toString() ?? '');
     _rewardController =
-        TextEditingController(text: initial?.rewardAmount.toString() ?? '');
-    _questType = initial?.questType;
-    _cadence = initial?.cadence;
-    _prerequisite = initial?.prerequisiteQuestType;
+        TextEditingController(text: initial?.reward.toString() ?? '');
+    _trigger = initial?.trigger;
+    _progressBaseline = initial?.progressBaseline ?? ProgressBaseline.fromSnapshot;
+    _prerequisiteId = initial?.prerequisiteQuestDefinitionId;
   }
 
   @override
   void dispose() {
-    _goalController.dispose();
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _thresholdController.dispose();
     _rewardController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final prereqs = _isEdit
+        ? widget.availablePrerequisites
+            .where((d) => d.id != widget.initial!.id)
+            .toList(growable: false)
+        : widget.availablePrerequisites;
+    final showProgressBaseline = _trigger == QuestTrigger.gameCompletedTotal;
+
     return AlertDialog(
-      title: Text(_isEdit ? 'Edit quest definition' : 'New quest definition'),
+      title: Text(_isEdit ? 'Quest tanımını düzenle' : 'Yeni quest tanımı'),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -85,65 +102,69 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              DropdownButtonFormField<AdminQuestType>(
-                initialValue: _questType,
-                decoration: const InputDecoration(
-                  labelText: 'Quest type',
-                  border: OutlineInputBorder(),
+              TextFormField(
+                controller: _nameController,
+                readOnly: _isEdit,
+                maxLength: 64,
+                decoration: InputDecoration(
+                  labelText: 'İsim',
+                  border: const OutlineInputBorder(),
+                  helperText: _isEdit
+                      ? 'Oluşturulduktan sonra değiştirilemez.'
+                      : null,
                 ),
-                items: [
-                  for (final t in AdminQuestType.values)
-                    DropdownMenuItem(
-                      value: t,
-                      enabled:
-                          _isEdit || !widget.takenTypes.contains(t),
-                      child: Text(
-                        widget.takenTypes.contains(t) && !_isEdit
-                            ? '${t.wire}  (exists)'
-                            : t.wire,
-                      ),
-                    ),
-                ],
-                onChanged: _isEdit
-                    ? null
-                    : (v) => setState(() => _questType = v),
-                validator: (v) =>
-                    v == null ? 'Quest type is required' : null,
-              ),
-              if (!_isEdit &&
-                  widget.takenTypes.length ==
-                      AdminQuestType.values.length) ...[
-                const SizedBox(height: 8),
-                Text(
-                  'All quest types already have a definition. Edit or '
-                  'deactivate an existing one instead.',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.error,
-                      ),
-                ),
-              ],
-              const SizedBox(height: 12),
-              DropdownButtonFormField<AdminQuestCadence>(
-                initialValue: _cadence,
-                decoration: const InputDecoration(
-                  labelText: 'Cadence',
-                  border: OutlineInputBorder(),
-                ),
-                items: [
-                  for (final c in AdminQuestCadence.values)
-                    DropdownMenuItem(value: c, child: Text(c.wire)),
-                ],
-                onChanged: _isEdit
-                    ? null
-                    : (v) => setState(() => _cadence = v),
-                validator: (v) =>
-                    v == null ? 'Cadence is required' : null,
+                validator: (v) {
+                  if (v == null || v.trim().isEmpty) {
+                    return 'İsim zorunlu';
+                  }
+                  if (v.length > 64) {
+                    return 'En fazla 64 karakter';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 12),
               TextFormField(
-                controller: _goalController,
+                controller: _descriptionController,
+                maxLength: 256,
+                minLines: 2,
+                maxLines: 4,
                 decoration: const InputDecoration(
-                  labelText: 'Goal',
+                  labelText: 'Açıklama',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (v) {
+                  if (v != null && v.length > 256) {
+                    return 'En fazla 256 karakter';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<QuestTrigger>(
+                initialValue: _trigger,
+                decoration: InputDecoration(
+                  labelText: 'Tetikleyici',
+                  border: const OutlineInputBorder(),
+                  helperText: _isEdit
+                      ? 'Oluşturulduktan sonra değiştirilemez.'
+                      : null,
+                ),
+                items: [
+                  for (final t in QuestTrigger.values)
+                    DropdownMenuItem(value: t, child: Text(t.displayLabel)),
+                ],
+                onChanged: _isEdit
+                    ? null
+                    : (v) => setState(() => _trigger = v),
+                validator: (v) =>
+                    v == null ? 'Tetikleyici zorunlu' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _thresholdController,
+                decoration: const InputDecoration(
+                  labelText: 'Eşik (threshold)',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
@@ -153,30 +174,49 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
               TextFormField(
                 controller: _rewardController,
                 decoration: const InputDecoration(
-                  labelText: 'Reward amount',
+                  labelText: 'Ödül (⚡)',
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
                 validator: _validatePositive,
               ),
+              if (showProgressBaseline) ...[
+                const SizedBox(height: 12),
+                DropdownButtonFormField<ProgressBaseline>(
+                  initialValue: _progressBaseline,
+                  decoration: const InputDecoration(
+                    labelText: 'İlerleme başlangıcı',
+                    border: OutlineInputBorder(),
+                    helperText:
+                        'Yalnız "Toplam oyun" için anlamlıdır.',
+                  ),
+                  items: [
+                    for (final b in ProgressBaseline.values)
+                      DropdownMenuItem(value: b, child: Text(b.displayLabel)),
+                  ],
+                  onChanged: (v) => setState(() {
+                    if (v != null) _progressBaseline = v;
+                  }),
+                ),
+              ],
               const SizedBox(height: 12),
-              DropdownButtonFormField<AdminQuestType?>(
-                initialValue: _prerequisite,
+              DropdownButtonFormField<String?>(
+                initialValue: _prerequisiteId,
                 decoration: const InputDecoration(
-                  labelText: 'Prerequisite (optional)',
+                  labelText: 'Ön koşul (opsiyonel)',
                   border: OutlineInputBorder(),
                 ),
                 items: [
-                  const DropdownMenuItem<AdminQuestType?>(
-                    child: Text('— none —'),
+                  const DropdownMenuItem<String?>(
+                    child: Text('— yok —'),
                   ),
-                  for (final t in AdminQuestType.values)
-                    DropdownMenuItem<AdminQuestType?>(
-                      value: t,
-                      child: Text(t.wire),
+                  for (final p in prereqs)
+                    DropdownMenuItem<String?>(
+                      value: p.id,
+                      child: Text(p.name),
                     ),
                 ],
-                onChanged: (v) => setState(() => _prerequisite = v),
+                onChanged: (v) => setState(() => _prerequisiteId = v),
               ),
             ],
           ),
@@ -185,21 +225,21 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: const Text('İptal'),
         ),
         FilledButton(
           onPressed: _submit,
-          child: Text(_isEdit ? 'Save' : 'Create'),
+          child: Text(_isEdit ? 'Kaydet' : 'Oluştur'),
         ),
       ],
     );
   }
 
   String? _validatePositive(String? v) {
-    if (v == null || v.trim().isEmpty) return 'Required';
+    if (v == null || v.trim().isEmpty) return 'Zorunlu';
     final parsed = int.tryParse(v.trim());
-    if (parsed == null) return 'Must be a number';
-    if (parsed <= 0) return 'Must be greater than 0';
+    if (parsed == null) return 'Sayı olmalı';
+    if (parsed <= 0) return '0\'dan büyük olmalı';
     return null;
   }
 
@@ -207,11 +247,13 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     if (!_formKey.currentState!.validate()) return;
     Navigator.of(context).pop(
       QuestDefinitionFormResult(
-        questType: _questType,
-        cadence: _cadence,
-        goal: int.parse(_goalController.text.trim()),
-        rewardAmount: int.parse(_rewardController.text.trim()),
-        prerequisiteQuestType: _prerequisite,
+        name: _nameController.text.trim(),
+        description: _descriptionController.text.trim(),
+        trigger: _trigger!,
+        threshold: int.parse(_thresholdController.text.trim()),
+        reward: int.parse(_rewardController.text.trim()),
+        progressBaseline: _progressBaseline,
+        prerequisiteQuestDefinitionId: _prerequisiteId,
       ),
     );
   }

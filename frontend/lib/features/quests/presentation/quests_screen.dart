@@ -130,27 +130,27 @@ class _QuestsView extends StatelessWidget {
               const AppBackBar(title: 'Quests'),
               const SizedBox(height: 8),
               Text(
-                'Complete daily and account quests to earn bonus energy.',
+                'Quest tamamla, bonus enerji kazan.',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 20),
               if (state.isLoading && state.quests.isEmpty)
-                const AppLoadingState(message: 'Loading quests...')
+                const AppLoadingState(message: 'Quest\'ler yükleniyor...')
               else if (state.status == QuestsStatus.failure)
                 AppErrorState(
-                  title: 'Could not load quests',
-                  message: state.message ?? 'Try again.',
+                  title: 'Quest\'ler yüklenemedi',
+                  message: state.message ?? 'Tekrar dene.',
                   onRetry: () => context.read<QuestsCubit>().loadQuests(),
                 )
               else if (state.status == QuestsStatus.success &&
                   state.quests.isEmpty)
                 AppEmptyState(
-                  title: 'No quests yet',
+                  title: 'Henüz quest yok',
                   message:
-                      'Complete a game to unlock daily and account quests.',
-                  actionLabel: 'Refresh',
+                      'Bir oyun tamamla, quest\'ler burada görünmeye başlasın.',
+                  actionLabel: 'Yenile',
                   onAction: () => context.read<QuestsCubit>().loadQuests(),
                 )
               else
@@ -199,10 +199,8 @@ class _QuestsList extends StatelessWidget {
           return 1;
         case QuestState.claimed:
           return 2;
-        case QuestState.expired:
-          return 3;
         case QuestState.unknown:
-          return 4;
+          return 3;
       }
     }
 
@@ -229,9 +227,9 @@ class _QuestTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final progressFraction = quest.goal == 0
+    final progressFraction = quest.threshold == 0
         ? 0.0
-        : (quest.progress / quest.goal).clamp(0.0, 1.0);
+        : (quest.progress / quest.threshold).clamp(0.0, 1.0);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -248,13 +246,22 @@ class _QuestTile extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    _humanQuestType(quest.questType),
+                    quest.name,
                     style: textTheme.titleMedium,
                   ),
                 ),
                 _StateBadge(state: quest.state),
               ],
             ),
+            if (quest.description.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Text(
+                quest.description,
+                style: textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
             const SizedBox(height: 10),
             ClipRRect(
               borderRadius: BorderRadius.circular(999),
@@ -271,13 +278,13 @@ class _QuestTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '${quest.progress}/${quest.goal}',
+                  '${quest.progress}/${quest.threshold}',
                   style: textTheme.bodySmall?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
                 Text(
-                  '+${quest.rewardAmount}⚡',
+                  '+${quest.reward}⚡',
                   style: textTheme.labelLarge?.copyWith(
                     color: colorScheme.primary,
                   ),
@@ -287,7 +294,7 @@ class _QuestTile extends StatelessWidget {
             if (quest.isReadyToClaim) ...[
               const SizedBox(height: 12),
               AppPrimaryButton(
-                label: isClaiming ? 'Claiming...' : 'Claim reward',
+                label: isClaiming ? 'Alınıyor...' : 'Ödülü al',
                 onPressed: (isClaiming || claimDisabled)
                     ? null
                     : () => context.read<QuestsCubit>().claim(quest.id),
@@ -297,21 +304,6 @@ class _QuestTile extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static String _humanQuestType(String raw) {
-    switch (raw) {
-      case 'FirstGameCompleted':
-        return 'Complete your first game';
-      case 'ThreeGamesCompleted':
-        return 'Complete three games';
-      case 'AccountLinked':
-        return 'Link an account';
-      case 'DailyThreeGames':
-        return 'Complete three games today';
-      default:
-        return raw;
-    }
   }
 }
 
@@ -327,24 +319,19 @@ class _StateBadge extends StatelessWidget {
 
     final (label, foreground, background) = switch (state) {
       QuestState.readyToClaim => (
-        'Ready',
+        'Hazır',
         colorScheme.onPrimary,
         colorScheme.primary,
       ),
       QuestState.active => (
-        'Active',
+        'Aktif',
         colorScheme.onSurface,
         colorScheme.surfaceContainerHighest,
       ),
       QuestState.claimed => (
-        'Claimed',
+        'Alındı',
         colorScheme.onSecondaryContainer,
         colorScheme.secondaryContainer,
-      ),
-      QuestState.expired => (
-        'Expired',
-        colorScheme.onSurfaceVariant,
-        colorScheme.surfaceContainerLow,
       ),
       QuestState.unknown => (
         '—',

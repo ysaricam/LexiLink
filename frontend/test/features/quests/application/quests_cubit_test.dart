@@ -13,13 +13,15 @@ const _readyQuest = '''
 {
   "id": "11111111-1111-1111-1111-111111111111",
   "playerId": "22222222-2222-2222-2222-222222222222",
-  "questType": "FirstGameCompleted",
-  "state": "ReadyToClaim",
+  "questDefinitionId": "44444444-4444-4444-4444-444444444444",
+  "name": "First game",
+  "description": "Finish one game",
+  "trigger": "GameCompletedTotal",
+  "displayState": "ReadyToClaim",
   "progress": 1,
-  "goal": 1,
-  "rewardAmount": 3,
+  "threshold": 1,
+  "reward": 3,
   "issuedAt": "2026-05-15T09:00:00Z",
-  "completedAt": "2026-05-15T09:05:00Z",
   "claimedAt": null,
   "expiresAt": null
 }
@@ -29,13 +31,15 @@ const _claimedQuest = '''
 {
   "id": "11111111-1111-1111-1111-111111111111",
   "playerId": "22222222-2222-2222-2222-222222222222",
-  "questType": "FirstGameCompleted",
-  "state": "Claimed",
+  "questDefinitionId": "44444444-4444-4444-4444-444444444444",
+  "name": "First game",
+  "description": "Finish one game",
+  "trigger": "GameCompletedTotal",
+  "displayState": "Claimed",
   "progress": 1,
-  "goal": 1,
-  "rewardAmount": 3,
+  "threshold": 1,
+  "reward": 3,
   "issuedAt": "2026-05-15T09:00:00Z",
-  "completedAt": "2026-05-15T09:05:00Z",
   "claimedAt": "2026-05-15T09:10:00Z",
   "expiresAt": null
 }

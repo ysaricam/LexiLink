@@ -5,15 +5,14 @@ import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
 import 'package:lexilink_app/features/admin_quests/application/admin_quests_cubit.dart';
 import 'package:lexilink_app/features/admin_quests/data/admin_quests_repository.dart';
 import 'package:lexilink_app/features/admin_quests/data/quest_definition.dart';
-import 'package:lexilink_app/features/admin_quests/data/quest_enums.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/quest_definition_form.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
-/// Admin quest catalog. Tap a row to edit goal / reward / prerequisite,
-/// FAB to create a new definition, swipe / per-row action to
-/// deactivate. The list reloads after each mutation.
+/// Admin quest catalog. Tap a row to edit description / threshold /
+/// reward / prerequisite / baseline; FAB to create a new definition.
+/// The list reloads after each mutation.
 class AdminQuestsScreen extends StatefulWidget {
   const AdminQuestsScreen({
     super.key,
@@ -116,7 +115,7 @@ class _AdminQuestsView extends StatelessWidget {
               child: FloatingActionButton.extended(
                 onPressed: () => _showCreateDialog(context),
                 icon: const Icon(Icons.add),
-                label: const Text('New quest'),
+                label: const Text('Yeni quest'),
               ),
             ),
           ],
@@ -136,7 +135,7 @@ class _AdminQuestsView extends StatelessWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Text(state.errorMessage ?? 'Failed to load quests.'),
+          child: Text(state.errorMessage ?? 'Quest tanımları yüklenemedi.'),
         ),
       );
     }
@@ -145,7 +144,7 @@ class _AdminQuestsView extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(24),
           child: Text(
-            'No quest definitions yet. Use "New quest" to create one.',
+            'Henüz quest tanımı yok. "Yeni quest" ile başlat.',
           ),
         ),
       );
@@ -156,7 +155,7 @@ class _AdminQuestsView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Quest definitions',
+            'Quest tanımları',
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 12),
@@ -164,7 +163,10 @@ class _AdminQuestsView extends StatelessWidget {
             child: Column(
               children: [
                 for (var i = 0; i < state.definitions.length; i++) ...[
-                  _QuestRow(definition: state.definitions[i]),
+                  _QuestRow(
+                    definition: state.definitions[i],
+                    allDefinitions: state.definitions,
+                  ),
                   if (i < state.definitions.length - 1)
                     const Divider(height: 0),
                 ],
@@ -178,65 +180,79 @@ class _AdminQuestsView extends StatelessWidget {
 
   Future<void> _showCreateDialog(BuildContext context) async {
     final cubit = context.read<AdminQuestsCubit>();
-    final takenTypes = {
-      for (final d in cubit.state.definitions) d.questType,
-    };
+    final activeDefinitions = cubit.state.definitions
+        .where((d) => d.isActive)
+        .toList(growable: false);
     final result = await showDialog<QuestDefinitionFormResult>(
       context: context,
       useRootNavigator: false,
-      builder: (_) => QuestDefinitionFormDialog(takenTypes: takenTypes),
+      builder: (_) => QuestDefinitionFormDialog(
+        availablePrerequisites: activeDefinitions,
+      ),
     );
     if (result == null) return;
     await cubit.create(
-      questType: result.questType!,
-      cadence: result.cadence!,
-      goal: result.goal,
-      rewardAmount: result.rewardAmount,
-      prerequisiteQuestType: result.prerequisiteQuestType,
+      name: result.name,
+      description: result.description,
+      trigger: result.trigger,
+      threshold: result.threshold,
+      reward: result.reward,
+      progressBaseline: result.progressBaseline,
+      prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );
   }
 }
 
 class _QuestRow extends StatelessWidget {
-  const _QuestRow({required this.definition});
+  const _QuestRow({
+    required this.definition,
+    required this.allDefinitions,
+  });
 
   final QuestDefinition definition;
+  final List<QuestDefinition> allDefinitions;
 
   @override
   Widget build(BuildContext context) {
+    final prereqName = definition.prerequisiteQuestDefinitionId == null
+        ? null
+        : allDefinitions
+            .where((d) => d.id == definition.prerequisiteQuestDefinitionId)
+            .map((d) => d.name)
+            .firstOrNull;
     final subtitleParts = <String>[
-      'Goal: ${definition.goal}',
-      'Reward: ${definition.rewardAmount}',
-      if (definition.prerequisiteQuestType != null)
-        'Requires: ${definition.prerequisiteQuestType!.wire}',
+      '${definition.trigger.displayLabel} · ${definition.threshold}',
+      if (prereqName != null) 'Ön koşul: $prereqName',
+      if (definition.description.isNotEmpty) definition.description,
     ];
     return ListTile(
       title: Row(
         children: [
-          Expanded(child: Text(definition.questType.wire)),
-          _CadenceBadge(cadence: definition.cadence),
+          Expanded(child: Text(definition.name)),
+          _RewardBadge(reward: definition.reward),
           const SizedBox(width: 8),
           if (!definition.isActive) const _DeactivatedBadge(),
         ],
       ),
       subtitle: Text(subtitleParts.join(' · ')),
+      isThreeLine: definition.description.isNotEmpty,
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            tooltip: 'Edit',
+            tooltip: 'Düzenle',
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => _edit(context),
           ),
           if (definition.isActive)
             IconButton(
-              tooltip: 'Deactivate',
+              tooltip: 'Deaktive et',
               icon: const Icon(Icons.block_flipped),
               onPressed: () => _deactivate(context),
             )
           else
             IconButton(
-              tooltip: 'Reactivate',
+              tooltip: 'Tekrar aktive et',
               icon: const Icon(Icons.power_settings_new),
               onPressed: () => _reactivate(context),
             ),
@@ -247,19 +263,25 @@ class _QuestRow extends StatelessWidget {
 
   Future<void> _edit(BuildContext context) async {
     final cubit = context.read<AdminQuestsCubit>();
+    final activeDefinitions = cubit.state.definitions
+        .where((d) => d.isActive)
+        .toList(growable: false);
     final result = await showDialog<QuestDefinitionFormResult>(
       context: context,
       useRootNavigator: false,
       builder: (_) => QuestDefinitionFormDialog(
         initial: definition,
+        availablePrerequisites: activeDefinitions,
       ),
     );
     if (result == null) return;
     await cubit.update(
       id: definition.id,
-      goal: result.goal,
-      rewardAmount: result.rewardAmount,
-      prerequisiteQuestType: result.prerequisiteQuestType,
+      description: result.description,
+      threshold: result.threshold,
+      reward: result.reward,
+      progressBaseline: result.progressBaseline,
+      prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );
   }
 
@@ -269,19 +291,19 @@ class _QuestRow extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
-        title: const Text('Deactivate quest definition?'),
+        title: const Text('Quest tanımı deaktive edilsin mi?'),
         content: Text(
-          '${definition.questType.wire} will no longer be issued. Existing '
-          'player progress is unaffected.',
+          '"${definition.name}" artık player\'lara verilmeyecek. '
+          'Mevcut player ilerlemesi etkilenmez.',
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: const Text('İptal'),
           ),
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Deactivate'),
+            child: const Text('Deaktive et'),
           ),
         ],
       ),
@@ -295,15 +317,12 @@ class _QuestRow extends StatelessWidget {
   }
 }
 
-class _CadenceBadge extends StatelessWidget {
-  const _CadenceBadge({required this.cadence});
-  final AdminQuestCadence cadence;
+class _RewardBadge extends StatelessWidget {
+  const _RewardBadge({required this.reward});
+  final int reward;
   @override
   Widget build(BuildContext context) {
-    final color = cadence == AdminQuestCadence.daily
-        ? Colors.indigo
-        : Colors.teal;
-    return _Badge(label: cadence.wire, color: color);
+    return _Badge(label: '+$reward⚡', color: Theme.of(context).colorScheme.primary);
   }
 }
 

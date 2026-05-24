@@ -3,32 +3,39 @@ import 'package:lexilink_app/features/admin_quests/data/quest_enums.dart';
 class QuestDefinition {
   const QuestDefinition({
     required this.id,
-    required this.questType,
-    required this.cadence,
-    required this.goal,
-    required this.rewardAmount,
+    required this.name,
+    required this.description,
+    required this.trigger,
+    required this.threshold,
+    required this.reward,
+    required this.progressBaseline,
     required this.isActive,
-    this.prerequisiteQuestType,
+    this.prerequisiteQuestDefinitionId,
   });
 
   factory QuestDefinition.fromJson(Map<String, dynamic> json) {
     return QuestDefinition(
       id: json['id'] as String,
-      questType: AdminQuestType.fromWire(json['questType'] as String),
-      cadence: AdminQuestCadence.fromWire(json['cadence'] as String),
-      goal: json['goal'] as int,
-      rewardAmount: json['rewardAmount'] as int,
-      prerequisiteQuestType:
-          AdminQuestType.tryFromWire(json['prerequisiteQuestType'] as String?),
+      name: json['name'] as String,
+      description: (json['description'] as String?) ?? '',
+      trigger: QuestTrigger.fromWire(json['trigger'] as String),
+      threshold: json['threshold'] as int,
+      reward: json['reward'] as int,
+      prerequisiteQuestDefinitionId:
+          json['prerequisiteQuestDefinitionId'] as String?,
+      progressBaseline:
+          ProgressBaseline.fromWire(json['progressBaseline'] as String),
       isActive: json['isActive'] as bool,
     );
   }
 
   final String id;
-  final AdminQuestType questType;
-  final AdminQuestCadence cadence;
-  final int goal;
-  final int rewardAmount;
-  final AdminQuestType? prerequisiteQuestType;
+  final String name;
+  final String description;
+  final QuestTrigger trigger;
+  final int threshold;
+  final int reward;
+  final String? prerequisiteQuestDefinitionId;
+  final ProgressBaseline progressBaseline;
   final bool isActive;
 }

@@ -17,20 +17,24 @@ class AdminQuestsRepository {
   }
 
   Future<String> createDefinition({
-    required AdminQuestType questType,
-    required AdminQuestCadence cadence,
-    required int goal,
-    required int rewardAmount,
-    AdminQuestType? prerequisiteQuestType,
+    required String name,
+    required String description,
+    required QuestTrigger trigger,
+    required int threshold,
+    required int reward,
+    required ProgressBaseline progressBaseline,
+    String? prerequisiteQuestDefinitionId,
   }) async {
     final response = await _apiClient.postJson(
       '/admin/quests/definitions',
       body: {
-        'questType': questType.wire,
-        'cadence': cadence.wire,
-        'goal': goal,
-        'rewardAmount': rewardAmount,
-        'prerequisiteQuestType': prerequisiteQuestType?.wire,
+        'name': name,
+        'description': description,
+        'trigger': trigger.wire,
+        'threshold': threshold,
+        'reward': reward,
+        'prerequisiteQuestDefinitionId': prerequisiteQuestDefinitionId,
+        'progressBaseline': progressBaseline.wire,
       },
     );
     final id = response['id'];
@@ -44,16 +48,20 @@ class AdminQuestsRepository {
 
   Future<void> updateDefinition({
     required String id,
-    required int goal,
-    required int rewardAmount,
-    AdminQuestType? prerequisiteQuestType,
+    required String description,
+    required int threshold,
+    required int reward,
+    required ProgressBaseline progressBaseline,
+    String? prerequisiteQuestDefinitionId,
   }) async {
     await _apiClient.putJson(
       '/admin/quests/definitions/$id',
       body: {
-        'goal': goal,
-        'rewardAmount': rewardAmount,
-        'prerequisiteQuestType': prerequisiteQuestType?.wire,
+        'description': description,
+        'threshold': threshold,
+        'reward': reward,
+        'prerequisiteQuestDefinitionId': prerequisiteQuestDefinitionId,
+        'progressBaseline': progressBaseline.wire,
       },
     );
   }

@@ -24,13 +24,20 @@ void main() {
         return http.Response(
           '['
           '{"id":"00000000-0000-0000-0000-000000000001",'
-          '"questType":"DailyThreeGames","cadence":"Daily",'
-          '"goal":3,"rewardAmount":15,"prerequisiteQuestType":null,'
+          '"name":"Daily Three",'
+          '"description":"Three games today",'
+          '"trigger":"GameCompletedDaily",'
+          '"threshold":3,"reward":15,'
+          '"prerequisiteQuestDefinitionId":null,'
+          '"progressBaseline":"FromSnapshot",'
           '"isActive":true},'
           '{"id":"00000000-0000-0000-0000-000000000002",'
-          '"questType":"ThreeGamesCompleted","cadence":"OneTime",'
-          '"goal":3,"rewardAmount":10,'
-          '"prerequisiteQuestType":"FirstGameCompleted",'
+          '"name":"Bronz",'
+          '"description":"",'
+          '"trigger":"GameCompletedTotal",'
+          '"threshold":3,"reward":10,'
+          '"prerequisiteQuestDefinitionId":"00000000-0000-0000-0000-000000000001",'
+          '"progressBaseline":"FromExistingTotal",'
           '"isActive":false}'
           ']',
           200,
@@ -40,25 +47,26 @@ void main() {
       final defs = await repo.fetchDefinitions();
 
       expect(defs, hasLength(2));
-      expect(defs[0].questType, AdminQuestType.dailyThreeGames);
-      expect(defs[0].cadence, AdminQuestCadence.daily);
-      expect(defs[0].goal, 3);
+      expect(defs[0].trigger, QuestTrigger.gameCompletedDaily);
+      expect(defs[0].threshold, 3);
       expect(defs[0].isActive, isTrue);
       expect(defs[1].isActive, isFalse);
+      expect(defs[1].progressBaseline, ProgressBaseline.fromExistingTotal);
       expect(
-        defs[1].prerequisiteQuestType,
-        AdminQuestType.firstGameCompleted,
+        defs[1].prerequisiteQuestDefinitionId,
+        '00000000-0000-0000-0000-000000000001',
       );
     });
 
-    test('createDefinition posts wire-form enums and returns id', () async {
+    test('createDefinition posts new shape and returns id', () async {
       final repo = _repo(MockClient((req) async {
         expect(req.method, 'POST');
         expect(req.url.path, '/admin/quests/definitions');
-        expect(req.body, contains('"questType":"FirstGameCompleted"'));
-        expect(req.body, contains('"cadence":"OneTime"'));
-        expect(req.body, contains('"goal":1'));
-        expect(req.body, contains('"rewardAmount":5'));
+        expect(req.body, contains('"name":"First Game"'));
+        expect(req.body, contains('"trigger":"GameCompletedTotal"'));
+        expect(req.body, contains('"threshold":1'));
+        expect(req.body, contains('"reward":5'));
+        expect(req.body, contains('"progressBaseline":"FromSnapshot"'));
         return http.Response(
           '{"id":"00000000-0000-0000-0000-000000000099"}',
           201,
@@ -66,32 +74,38 @@ void main() {
       }));
 
       final id = await repo.createDefinition(
-        questType: AdminQuestType.firstGameCompleted,
-        cadence: AdminQuestCadence.oneTime,
-        goal: 1,
-        rewardAmount: 5,
+        name: 'First Game',
+        description: 'Finish one game',
+        trigger: QuestTrigger.gameCompletedTotal,
+        threshold: 1,
+        reward: 5,
+        progressBaseline: ProgressBaseline.fromSnapshot,
       );
 
       expect(id, '00000000-0000-0000-0000-000000000099');
     });
 
-    test('updateDefinition issues PUT with goal/reward/prereq', () async {
+    test('updateDefinition issues PUT with description/threshold/reward', () async {
       final repo = _repo(MockClient((req) async {
         expect(req.method, 'PUT');
         expect(
           req.url.path,
           '/admin/quests/definitions/00000000-0000-0000-0000-000000000005',
         );
-        expect(req.body, contains('"goal":7'));
-        expect(req.body, contains('"rewardAmount":42'));
-        expect(req.body, contains('"prerequisiteQuestType":null'));
+        expect(req.body, contains('"description":"updated"'));
+        expect(req.body, contains('"threshold":7'));
+        expect(req.body, contains('"reward":42'));
+        expect(req.body, contains('"prerequisiteQuestDefinitionId":null'));
+        expect(req.body, contains('"progressBaseline":"FromSnapshot"'));
         return http.Response('', 204);
       }));
 
       await repo.updateDefinition(
         id: '00000000-0000-0000-0000-000000000005',
-        goal: 7,
-        rewardAmount: 42,
+        description: 'updated',
+        threshold: 7,
+        reward: 42,
+        progressBaseline: ProgressBaseline.fromSnapshot,
       );
     });
 

@@ -31,20 +31,24 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
   }
 
   Future<void> create({
-    required AdminQuestType questType,
-    required AdminQuestCadence cadence,
-    required int goal,
-    required int rewardAmount,
-    AdminQuestType? prerequisiteQuestType,
+    required String name,
+    required String description,
+    required QuestTrigger trigger,
+    required int threshold,
+    required int reward,
+    required ProgressBaseline progressBaseline,
+    String? prerequisiteQuestDefinitionId,
   }) async {
     emit(state.copyWith(status: AdminQuestsStatus.saving, clearError: true));
     try {
       await _repository.createDefinition(
-        questType: questType,
-        cadence: cadence,
-        goal: goal,
-        rewardAmount: rewardAmount,
-        prerequisiteQuestType: prerequisiteQuestType,
+        name: name,
+        description: description,
+        trigger: trigger,
+        threshold: threshold,
+        reward: reward,
+        progressBaseline: progressBaseline,
+        prerequisiteQuestDefinitionId: prerequisiteQuestDefinitionId,
       );
       await _reload();
     } on ApiException catch (e) {
@@ -57,17 +61,21 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
 
   Future<void> update({
     required String id,
-    required int goal,
-    required int rewardAmount,
-    AdminQuestType? prerequisiteQuestType,
+    required String description,
+    required int threshold,
+    required int reward,
+    required ProgressBaseline progressBaseline,
+    String? prerequisiteQuestDefinitionId,
   }) async {
     emit(state.copyWith(status: AdminQuestsStatus.saving, clearError: true));
     try {
       await _repository.updateDefinition(
         id: id,
-        goal: goal,
-        rewardAmount: rewardAmount,
-        prerequisiteQuestType: prerequisiteQuestType,
+        description: description,
+        threshold: threshold,
+        reward: reward,
+        progressBaseline: progressBaseline,
+        prerequisiteQuestDefinitionId: prerequisiteQuestDefinitionId,
       );
       await _reload();
     } on ApiException catch (e) {

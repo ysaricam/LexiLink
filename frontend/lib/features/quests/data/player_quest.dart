@@ -1,10 +1,12 @@
 import 'package:equatable/equatable.dart';
 
+/// Display states the backend computes on each /quests/me sync. The
+/// persisted Domain state is only Active|Claimed, but the read pass
+/// promotes Active rows to ReadyToClaim when progress >= threshold.
 enum QuestState {
   active,
   readyToClaim,
   claimed,
-  expired,
   unknown;
 
   static QuestState fromString(String value) {
@@ -15,8 +17,6 @@ enum QuestState {
         return QuestState.readyToClaim;
       case 'Claimed':
         return QuestState.claimed;
-      case 'Expired':
-        return QuestState.expired;
       default:
         return QuestState.unknown;
     }
@@ -27,13 +27,15 @@ class PlayerQuest extends Equatable {
   const PlayerQuest({
     required this.id,
     required this.playerId,
-    required this.questType,
+    required this.questDefinitionId,
+    required this.name,
+    required this.description,
+    required this.trigger,
     required this.state,
     required this.progress,
-    required this.goal,
-    required this.rewardAmount,
+    required this.threshold,
+    required this.reward,
     required this.issuedAt,
-    required this.completedAt,
     required this.claimedAt,
     required this.expiresAt,
   });
@@ -41,13 +43,15 @@ class PlayerQuest extends Equatable {
   factory PlayerQuest.fromJson(Map<String, dynamic> json) {
     final id = json['id'];
     final playerId = json['playerId'];
-    final questType = json['questType'];
-    final state = json['state'];
+    final questDefinitionId = json['questDefinitionId'];
+    final name = json['name'];
+    final description = json['description'];
+    final trigger = json['trigger'];
+    final displayState = json['displayState'];
     final progress = json['progress'];
-    final goal = json['goal'];
-    final rewardAmount = json['rewardAmount'];
+    final threshold = json['threshold'];
+    final reward = json['reward'];
     final issuedAt = json['issuedAt'];
-    final completedAt = json['completedAt'];
     final claimedAt = json['claimedAt'];
     final expiresAt = json['expiresAt'];
 
@@ -55,15 +59,19 @@ class PlayerQuest extends Equatable {
         id.isEmpty ||
         playerId is! String ||
         playerId.isEmpty ||
-        questType is! String ||
-        questType.isEmpty ||
-        state is! String ||
-        state.isEmpty ||
+        questDefinitionId is! String ||
+        questDefinitionId.isEmpty ||
+        name is! String ||
+        name.isEmpty ||
+        trigger is! String ||
+        trigger.isEmpty ||
+        displayState is! String ||
+        displayState.isEmpty ||
         progress is! int ||
-        goal is! int ||
-        rewardAmount is! int ||
+        threshold is! int ||
+        reward is! int ||
         issuedAt is! String ||
-        (completedAt != null && completedAt is! String) ||
+        (description != null && description is! String) ||
         (claimedAt != null && claimedAt is! String) ||
         (expiresAt != null && expiresAt is! String)) {
       throw StateError('Player quest response is missing required fields.');
@@ -72,15 +80,15 @@ class PlayerQuest extends Equatable {
     return PlayerQuest(
       id: id,
       playerId: playerId,
-      questType: questType,
-      state: QuestState.fromString(state),
+      questDefinitionId: questDefinitionId,
+      name: name,
+      description: (description as String?) ?? '',
+      trigger: trigger,
+      state: QuestState.fromString(displayState),
       progress: progress,
-      goal: goal,
-      rewardAmount: rewardAmount,
+      threshold: threshold,
+      reward: reward,
       issuedAt: DateTime.parse(issuedAt),
-      completedAt: completedAt == null
-          ? null
-          : DateTime.parse(completedAt as String),
       claimedAt: claimedAt == null
           ? null
           : DateTime.parse(claimedAt as String),
@@ -92,31 +100,34 @@ class PlayerQuest extends Equatable {
 
   final String id;
   final String playerId;
-  final String questType;
+  final String questDefinitionId;
+  final String name;
+  final String description;
+  final String trigger;
   final QuestState state;
   final int progress;
-  final int goal;
-  final int rewardAmount;
+  final int threshold;
+  final int reward;
   final DateTime issuedAt;
-  final DateTime? completedAt;
   final DateTime? claimedAt;
   final DateTime? expiresAt;
 
   bool get isReadyToClaim => state == QuestState.readyToClaim;
-  bool get isClosed =>
-      state == QuestState.claimed || state == QuestState.expired;
+  bool get isClosed => state == QuestState.claimed;
 
   @override
   List<Object?> get props => [
     id,
     playerId,
-    questType,
+    questDefinitionId,
+    name,
+    description,
+    trigger,
     state,
     progress,
-    goal,
-    rewardAmount,
+    threshold,
+    reward,
     issuedAt,
-    completedAt,
     claimedAt,
     expiresAt,
   ];

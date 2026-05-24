@@ -1,44 +1,46 @@
 /// Server-side enums mirror. Wire format is the .NET enum name
 /// (System.Text.Json JsonStringEnumConverter is registered on the
-/// host).
-enum AdminQuestType {
-  firstGameCompleted('FirstGameCompleted'),
-  threeGamesCompleted('ThreeGamesCompleted'),
-  accountLinked('AccountLinked'),
-  dailyThreeGames('DailyThreeGames'),
-  // Placeholder slots. No automatic event-handler behavior on the
-  // server — admin manually issues + claims for these.
-  custom1('Custom1'),
-  custom2('Custom2'),
-  custom3('Custom3');
+/// host). Post Sprint Q1 the closed AdminQuestType catalog is gone —
+/// each quest definition carries free-text name + description and one
+/// of three trigger types.
+enum QuestTrigger {
+  gameCompletedTotal('GameCompletedTotal'),
+  gameCompletedDaily('GameCompletedDaily'),
+  authProviderLinked('AuthProviderLinked');
 
-  const AdminQuestType(this.wire);
+  const QuestTrigger(this.wire);
 
   final String wire;
 
-  static AdminQuestType fromWire(String value) =>
-      AdminQuestType.values.firstWhere(
-        (t) => t.wire == value,
-        orElse: () => throw FormatException('Unknown quest type: $value'),
-      );
+  String get displayLabel => switch (this) {
+        QuestTrigger.gameCompletedTotal => 'Toplam oyun',
+        QuestTrigger.gameCompletedDaily => 'Günlük oyun',
+        QuestTrigger.authProviderLinked => 'Hesap bağlandı',
+      };
 
-  static AdminQuestType? tryFromWire(String? value) {
-    if (value == null) return null;
-    return AdminQuestType.fromWire(value);
-  }
+  static QuestTrigger fromWire(String value) =>
+      QuestTrigger.values.firstWhere(
+        (t) => t.wire == value,
+        orElse: () => throw FormatException('Unknown quest trigger: $value'),
+      );
 }
 
-enum AdminQuestCadence {
-  oneTime('OneTime'),
-  daily('Daily');
+enum ProgressBaseline {
+  fromSnapshot('FromSnapshot'),
+  fromExistingTotal('FromExistingTotal');
 
-  const AdminQuestCadence(this.wire);
+  const ProgressBaseline(this.wire);
 
   final String wire;
 
-  static AdminQuestCadence fromWire(String value) =>
-      AdminQuestCadence.values.firstWhere(
-        (c) => c.wire == value,
-        orElse: () => throw FormatException('Unknown quest cadence: $value'),
+  String get displayLabel => switch (this) {
+        ProgressBaseline.fromSnapshot => 'Bu noktadan sonra',
+        ProgressBaseline.fromExistingTotal => 'Tüm zamanlar',
+      };
+
+  static ProgressBaseline fromWire(String value) =>
+      ProgressBaseline.values.firstWhere(
+        (b) => b.wire == value,
+        orElse: () => throw FormatException('Unknown progress baseline: $value'),
       );
 }
