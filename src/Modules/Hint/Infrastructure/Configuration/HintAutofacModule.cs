@@ -78,6 +78,11 @@ public class HintAutofacModule : Autofac.Module
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
 
+        builder.RegisterType<HintConfigurationService>()
+            .As<IHintConfigurationService>()
+            .InstancePerLifetimeScope()
+            .FindConstructorsWith(allCtors);
+
         builder.RegisterAssemblyTypes(applicationAssembly)
             .AsClosedTypesOf(typeof(ICommandHandler<>))
             .AsImplementedInterfaces()

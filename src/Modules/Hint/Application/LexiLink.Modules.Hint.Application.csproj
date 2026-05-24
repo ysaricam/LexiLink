@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\LexiLink.Modules.Hint.Domain.csproj" />
     <ProjectReference Include="..\..\..\Common\Application\LexiLink.Common.Application.csproj" />
+    <ProjectReference Include="..\..\Players\IntegrationEvents\LexiLink.Modules.Players.IntegrationEvents.csproj" />
   </ItemGroup>
 
   <ItemGroup>
