@@ -20,13 +20,11 @@ public sealed class StandardGameConfigurationService : IGameConfigurationService
         _ => throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null)
     };
 
-    public int ResolveHints(Difficulty difficulty) => difficulty switch
-    {
-        Difficulty.Easy => 3,
-        Difficulty.Medium => 2,
-        Difficulty.Hard => 1,
-        _ => throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null)
-    };
+    // Sprint H decision (locked): every game ships with exactly one
+    // free hint regardless of difficulty. Players who want more spend
+    // from their persistent PlayerHintInventory via the IHintGuard
+    // sync gateway.
+    public int ResolveHints(Difficulty difficulty) => 1;
 
     public int ResolveUndos(Difficulty difficulty) => difficulty switch
     {

@@ -60,9 +60,10 @@ public abstract class TestBase
             sp.GetRequiredService<TestAdminAuthorizationContext>());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
-        // Cross-module gateway stub — Games integration tests exercise the Games module
-        // in isolation; the real Energy module is not booted here.
+        // Cross-module gateway stubs — Games integration tests exercise the Games
+        // module in isolation; the real Energy and Hint modules are not booted here.
         services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
+        services.AddSingleton<IHintGuard>(new AlwaysAllowingHintGuard());
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
@@ -135,6 +136,12 @@ public abstract class TestBase
     private sealed class AlwaysAllowingEnergyGuard : IEnergyGuard
     {
         public Task EnsureCanStartGameAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AlwaysAllowingHintGuard : IHintGuard
+    {
+        public Task EnsureHintAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
     }
 

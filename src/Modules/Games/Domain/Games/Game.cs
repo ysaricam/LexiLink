@@ -122,11 +122,37 @@ public class Game : Entity, IAggregateRoot
         }
     }
 
+    /// <summary>
+    /// True while the per-game free hint allowance still has at least
+    /// one charge. The handler consults this to decide whether to call
+    /// <see cref="UseHint"/> (free path) or fall through to the
+    /// player's persistent hint inventory via the IHintGuard sync
+    /// gateway.
+    /// </summary>
+    public bool HasFreeHintRemaining => _hintAllowance.Remaining > 0;
+
     public HintResult UseHint()
     {
         CheckRule(new GameMustBeInProgressRule(_gameState));
 
         _hintAllowance = _hintAllowance.Consume();
+        var hintResult = _puzzle.RequestHint(_currentLinkId);
+
+        AddDomainEvent(new HintUsedDomainEvent(Id, hintResult));
+
+        return hintResult;
+    }
+
+    /// <summary>
+    /// Same effect on the puzzle as <see cref="UseHint"/> but does
+    /// NOT touch the per-game free allowance — the caller has already
+    /// consumed one charge from the player's persistent
+    /// PlayerHintInventory via <c>IHintGuard.EnsureHintAvailableAsync</c>.
+    /// </summary>
+    public HintResult UseHintWithExternalInventory()
+    {
+        CheckRule(new GameMustBeInProgressRule(_gameState));
+
         var hintResult = _puzzle.RequestHint(_currentLinkId);
 
         AddDomainEvent(new HintUsedDomainEvent(Id, hintResult));

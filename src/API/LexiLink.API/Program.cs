@@ -222,6 +222,10 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         .As<IEnergyGuard>()
         .InstancePerLifetimeScope();
 
+    containerBuilder.RegisterType<HintGuard>()
+        .As<IHintGuard>()
+        .InstancePerLifetimeScope();
+
     containerBuilder.RegisterType<AdminLookup>()
         .As<IAdminLookup>()
         .InstancePerLifetimeScope();

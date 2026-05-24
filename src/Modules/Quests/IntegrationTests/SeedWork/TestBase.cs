@@ -71,9 +71,10 @@ public abstract class TestBase
             sp.GetRequiredService<TestAdminAuthorizationContext>());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
-        // Cross-module gateway stubs — Quests IT doesn't boot Energy and
-        // doesn't depend on Stats / Players counters being populated.
+        // Cross-module gateway stubs — Quests IT doesn't boot Energy or Hint
+        // and doesn't depend on Stats / Players counters being populated.
         services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
+        services.AddSingleton<IHintGuard>(new AlwaysAllowingHintGuard());
         services.AddSingleton<MutableQuestCounterReader>();
         services.AddSingleton<IQuestCounterReader>(sp => sp.GetRequiredService<MutableQuestCounterReader>());
 
@@ -145,6 +146,12 @@ public abstract class TestBase
     private sealed class AlwaysAllowingEnergyGuard : IEnergyGuard
     {
         public Task EnsureCanStartGameAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AlwaysAllowingHintGuard : IHintGuard
+    {
+        public Task EnsureHintAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
     }
 

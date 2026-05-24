@@ -60,9 +60,10 @@ public abstract class TestBase
         services.AddSingleton<IAdminAuthorizationContext>(new NoAdminAuthorizationContext());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
-        // Cross-module gateway stub — Stats integration tests exercise the producer-side
-        // event flow; the real Energy module is not booted here.
+        // Cross-module gateway stubs — Stats integration tests exercise the producer-side
+        // event flow; the real Energy and Hint modules are not booted here.
         services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
+        services.AddSingleton<IHintGuard>(new AlwaysAllowingHintGuard());
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
@@ -119,6 +120,12 @@ public abstract class TestBase
     private sealed class AlwaysAllowingEnergyGuard : IEnergyGuard
     {
         public Task EnsureCanStartGameAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AlwaysAllowingHintGuard : IHintGuard
+    {
+        public Task EnsureHintAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
     }
 
