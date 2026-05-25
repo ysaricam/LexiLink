@@ -20,7 +20,8 @@ const _readyQuest = '''
   "displayState": "ReadyToClaim",
   "progress": 1,
   "threshold": 1,
-  "reward": 3,
+  "energyReward": 3,
+  "hintReward": 0,
   "issuedAt": "2026-05-15T09:00:00Z",
   "claimedAt": null,
   "expiresAt": null
@@ -38,7 +39,8 @@ const _claimedQuest = '''
   "displayState": "Claimed",
   "progress": 1,
   "threshold": 1,
-  "reward": 3,
+  "energyReward": 3,
+  "hintReward": 0,
   "issuedAt": "2026-05-15T09:00:00Z",
   "claimedAt": "2026-05-15T09:10:00Z",
   "expiresAt": null
@@ -119,7 +121,7 @@ void main() {
       expect(cubit.state.claimingId, isNull);
       expect(
         cubit.state.claimMessage,
-        'Reward queued — your energy will update in a few seconds.',
+        'Reward queued — your inventories will update in a few seconds.',
       );
 
       await cubit.close();

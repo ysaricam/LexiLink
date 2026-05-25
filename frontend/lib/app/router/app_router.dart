@@ -74,6 +74,10 @@ final appRouter = GoRouter(
           builder: (context, state) => const AdminEnergyPage(),
         ),
         GoRoute(
+          path: '/admin/hint',
+          builder: (context, state) => const AdminHintPage(),
+        ),
+        GoRoute(
           path: '/admin/audit',
           builder: (context, state) => const AdminAuditPage(),
         ),

@@ -196,7 +196,8 @@ class _AdminQuestsView extends StatelessWidget {
       description: result.description,
       trigger: result.trigger,
       threshold: result.threshold,
-      reward: result.reward,
+      energyReward: result.energyReward,
+      hintReward: result.hintReward,
       progressBaseline: result.progressBaseline,
       prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );
@@ -229,8 +230,21 @@ class _QuestRow extends StatelessWidget {
       title: Row(
         children: [
           Expanded(child: Text(definition.name)),
-          _RewardBadge(reward: definition.reward),
-          const SizedBox(width: 8),
+          if (definition.energyReward > 0) ...[
+            _RewardBadge(
+              label: '+${definition.energyReward}⚡',
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(width: 4),
+          ],
+          if (definition.hintReward > 0) ...[
+            _RewardBadge(
+              label: '+${definition.hintReward}💡',
+              color: Theme.of(context).colorScheme.tertiary,
+            ),
+            const SizedBox(width: 4),
+          ],
+          const SizedBox(width: 4),
           if (!definition.isActive) const _DeactivatedBadge(),
         ],
       ),
@@ -279,7 +293,8 @@ class _QuestRow extends StatelessWidget {
       id: definition.id,
       description: result.description,
       threshold: result.threshold,
-      reward: result.reward,
+      energyReward: result.energyReward,
+      hintReward: result.hintReward,
       progressBaseline: result.progressBaseline,
       prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );
@@ -318,11 +333,12 @@ class _QuestRow extends StatelessWidget {
 }
 
 class _RewardBadge extends StatelessWidget {
-  const _RewardBadge({required this.reward});
-  final int reward;
+  const _RewardBadge({required this.label, required this.color});
+  final String label;
+  final Color color;
   @override
   Widget build(BuildContext context) {
-    return _Badge(label: '+$reward⚡', color: Theme.of(context).colorScheme.primary);
+    return _Badge(label: label, color: color);
   }
 }
 

@@ -5,13 +5,17 @@ import 'package:lexilink_app/features/admin_quests/data/quest_enums.dart';
 /// Result of [QuestDefinitionFormDialog]. For Create the dialog
 /// supplies name + trigger; for Edit those fields are read-only
 /// (server rejects changes to name/trigger after Create — see Q1.5).
+/// Sprint H splits the reward into energy + hint; at least one must
+/// be positive (the form enforces this client-side via a non-field
+/// check before submit).
 class QuestDefinitionFormResult {
   const QuestDefinitionFormResult({
     required this.name,
     required this.description,
     required this.trigger,
     required this.threshold,
-    required this.reward,
+    required this.energyReward,
+    required this.hintReward,
     required this.progressBaseline,
     this.prerequisiteQuestDefinitionId,
   });
@@ -20,7 +24,8 @@ class QuestDefinitionFormResult {
   final String description;
   final QuestTrigger trigger;
   final int threshold;
-  final int reward;
+  final int energyReward;
+  final int hintReward;
   final ProgressBaseline progressBaseline;
   final String? prerequisiteQuestDefinitionId;
 }
@@ -50,12 +55,14 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _thresholdController;
-  late final TextEditingController _rewardController;
+  late final TextEditingController _energyRewardController;
+  late final TextEditingController _hintRewardController;
   final _formKey = GlobalKey<FormState>();
 
   QuestTrigger? _trigger;
   ProgressBaseline _progressBaseline = ProgressBaseline.fromSnapshot;
   String? _prerequisiteId;
+  String? _rewardSumError;
 
   bool get _isEdit => widget.initial != null;
 
@@ -68,8 +75,10 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
         TextEditingController(text: initial?.description ?? '');
     _thresholdController =
         TextEditingController(text: initial?.threshold.toString() ?? '');
-    _rewardController =
-        TextEditingController(text: initial?.reward.toString() ?? '');
+    _energyRewardController =
+        TextEditingController(text: initial?.energyReward.toString() ?? '0');
+    _hintRewardController =
+        TextEditingController(text: initial?.hintReward.toString() ?? '0');
     _trigger = initial?.trigger;
     _progressBaseline = initial?.progressBaseline ?? ProgressBaseline.fromSnapshot;
     _prerequisiteId = initial?.prerequisiteQuestDefinitionId;
@@ -80,7 +89,8 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     _nameController.dispose();
     _descriptionController.dispose();
     _thresholdController.dispose();
-    _rewardController.dispose();
+    _energyRewardController.dispose();
+    _hintRewardController.dispose();
     super.dispose();
   }
 
@@ -171,15 +181,43 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                 validator: _validatePositive,
               ),
               const SizedBox(height: 12),
-              TextFormField(
-                controller: _rewardController,
-                decoration: const InputDecoration(
-                  labelText: 'Ödül (⚡)',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.number,
-                validator: _validatePositive,
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _energyRewardController,
+                      decoration: const InputDecoration(
+                        labelText: 'Enerji ödülü ⚡',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: _validateNonNegative,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _hintRewardController,
+                      decoration: const InputDecoration(
+                        labelText: 'İpucu ödülü 💡',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: _validateNonNegative,
+                    ),
+                  ),
+                ],
               ),
+              if (_rewardSumError != null) ...[
+                const SizedBox(height: 4),
+                Text(
+                  _rewardSumError!,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.error,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
               if (showProgressBaseline) ...[
                 const SizedBox(height: 12),
                 DropdownButtonFormField<ProgressBaseline>(
@@ -243,15 +281,33 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     return null;
   }
 
+  String? _validateNonNegative(String? v) {
+    if (v == null || v.trim().isEmpty) return 'Zorunlu';
+    final parsed = int.tryParse(v.trim());
+    if (parsed == null) return 'Sayı olmalı';
+    if (parsed < 0) return '0\'dan küçük olamaz';
+    return null;
+  }
+
   void _submit() {
-    if (!_formKey.currentState!.validate()) return;
+    final formValid = _formKey.currentState!.validate();
+    final energy = int.tryParse(_energyRewardController.text.trim()) ?? -1;
+    final hint = int.tryParse(_hintRewardController.text.trim()) ?? -1;
+    final atLeastOnePositive = energy > 0 || hint > 0;
+    setState(() {
+      _rewardSumError = atLeastOnePositive
+          ? null
+          : 'En az bir ödül (enerji veya ipucu) > 0 olmalı.';
+    });
+    if (!formValid || !atLeastOnePositive) return;
     Navigator.of(context).pop(
       QuestDefinitionFormResult(
         name: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
         trigger: _trigger!,
         threshold: int.parse(_thresholdController.text.trim()),
-        reward: int.parse(_rewardController.text.trim()),
+        energyReward: energy,
+        hintReward: hint,
         progressBaseline: _progressBaseline,
         prerequisiteQuestDefinitionId: _prerequisiteId,
       ),

@@ -49,6 +49,12 @@ class _AppAdminShellState extends State<AppAdminShell> {
       route: '/admin/energy',
     ),
     _AdminDestination(
+      label: 'Hint',
+      icon: Icons.lightbulb_outline,
+      selectedIcon: Icons.lightbulb,
+      route: '/admin/hint',
+    ),
+    _AdminDestination(
       label: 'Audit',
       icon: Icons.fact_check_outlined,
       selectedIcon: Icons.fact_check,

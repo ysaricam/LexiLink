@@ -7,7 +7,8 @@ class QuestDefinition {
     required this.description,
     required this.trigger,
     required this.threshold,
-    required this.reward,
+    required this.energyReward,
+    required this.hintReward,
     required this.progressBaseline,
     required this.isActive,
     this.prerequisiteQuestDefinitionId,
@@ -20,7 +21,8 @@ class QuestDefinition {
       description: (json['description'] as String?) ?? '',
       trigger: QuestTrigger.fromWire(json['trigger'] as String),
       threshold: json['threshold'] as int,
-      reward: json['reward'] as int,
+      energyReward: json['energyReward'] as int,
+      hintReward: json['hintReward'] as int,
       prerequisiteQuestDefinitionId:
           json['prerequisiteQuestDefinitionId'] as String?,
       progressBaseline:
@@ -34,7 +36,8 @@ class QuestDefinition {
   final String description;
   final QuestTrigger trigger;
   final int threshold;
-  final int reward;
+  final int energyReward;
+  final int hintReward;
   final String? prerequisiteQuestDefinitionId;
   final ProgressBaseline progressBaseline;
   final bool isActive;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lexilink_app/features/admin_audit/presentation/admin_audit_screen.dart';
 import 'package:lexilink_app/features/admin_energy/presentation/admin_energy_screen.dart';
+import 'package:lexilink_app/features/admin_hint/presentation/admin_hint_screen.dart';
 import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
 
@@ -27,6 +28,13 @@ class AdminEnergyPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const AdminEnergyScreen();
+}
+
+class AdminHintPage extends StatelessWidget {
+  const AdminHintPage({super.key});
+
+  @override
+  Widget build(BuildContext context) => const AdminHintScreen();
 }
 
 class AdminAuditPage extends StatelessWidget {

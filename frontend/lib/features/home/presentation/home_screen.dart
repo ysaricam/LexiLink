@@ -14,6 +14,9 @@ import 'package:lexilink_app/features/categories/data/category_repository.dart';
 import 'package:lexilink_app/features/energy/application/energy_cubit.dart';
 import 'package:lexilink_app/features/energy/data/energy_repository.dart';
 import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
+import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
+import 'package:lexilink_app/features/hint/data/hint_repository.dart';
+import 'package:lexilink_app/features/hint/presentation/hint_badge.dart';
 import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/session/application/session_cubit.dart';
@@ -90,6 +93,7 @@ class _HomeProvidersState extends State<_HomeProviders> {
   late final GuestEntryCubit _guestEntryCubit;
   late final CategoryListCubit _categoryListCubit;
   late final EnergyCubit _energyCubit;
+  late final HintCubit _hintCubit;
   late final GameStartCubit _gameStartCubit;
 
   @override
@@ -113,6 +117,9 @@ class _HomeProvidersState extends State<_HomeProviders> {
     _energyCubit = EnergyCubit(
       energyRepository: EnergyRepository(apiClient: apiClient),
     );
+    _hintCubit = HintCubit(
+      hintRepository: HintRepository(apiClient: apiClient),
+    );
     _gameStartCubit = GameStartCubit(
       gameRepository: GameRepository(apiClient: apiClient),
       tokenStore: widget.tokenStore,
@@ -124,6 +131,7 @@ class _HomeProvidersState extends State<_HomeProviders> {
   @override
   void dispose() {
     _gameStartCubit.close();
+    _hintCubit.close();
     _energyCubit.close();
     _categoryListCubit.close();
     _guestEntryCubit.close();
@@ -140,6 +148,7 @@ class _HomeProvidersState extends State<_HomeProviders> {
         BlocProvider.value(value: _guestEntryCubit),
         BlocProvider.value(value: _categoryListCubit),
         BlocProvider.value(value: _energyCubit),
+        BlocProvider.value(value: _hintCubit),
         BlocProvider.value(value: _gameStartCubit),
       ],
       child: const _HomeView(),
@@ -171,6 +180,7 @@ class _HomeView extends StatelessWidget {
             } else if (state.status == SessionStatus.authenticated) {
               context.read<CategoryListCubit>().loadCategories();
               context.read<EnergyCubit>().loadEnergy();
+              context.read<HintCubit>().loadHint();
             }
           },
         ),
@@ -213,7 +223,14 @@ class _HomeScaffold extends StatelessWidget {
             const Positioned(
               top: 12,
               right: 12,
-              child: EnergyBadge(),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  HintBadge(),
+                  SizedBox(width: 8),
+                  EnergyBadge(),
+                ],
+              ),
             ),
             Positioned(
               top: 12,

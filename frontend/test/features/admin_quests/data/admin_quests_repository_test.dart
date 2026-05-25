@@ -27,7 +27,7 @@ void main() {
           '"name":"Daily Three",'
           '"description":"Three games today",'
           '"trigger":"GameCompletedDaily",'
-          '"threshold":3,"reward":15,'
+          '"threshold":3,"energyReward":15,"hintReward":0,'
           '"prerequisiteQuestDefinitionId":null,'
           '"progressBaseline":"FromSnapshot",'
           '"isActive":true},'
@@ -35,7 +35,7 @@ void main() {
           '"name":"Bronz",'
           '"description":"",'
           '"trigger":"GameCompletedTotal",'
-          '"threshold":3,"reward":10,'
+          '"threshold":3,"energyReward":0,"hintReward":2,'
           '"prerequisiteQuestDefinitionId":"00000000-0000-0000-0000-000000000001",'
           '"progressBaseline":"FromExistingTotal",'
           '"isActive":false}'
@@ -65,7 +65,8 @@ void main() {
         expect(req.body, contains('"name":"First Game"'));
         expect(req.body, contains('"trigger":"GameCompletedTotal"'));
         expect(req.body, contains('"threshold":1'));
-        expect(req.body, contains('"reward":5'));
+        expect(req.body, contains('"energyReward":5'));
+        expect(req.body, contains('"hintReward":2'));
         expect(req.body, contains('"progressBaseline":"FromSnapshot"'));
         return http.Response(
           '{"id":"00000000-0000-0000-0000-000000000099"}',
@@ -78,14 +79,15 @@ void main() {
         description: 'Finish one game',
         trigger: QuestTrigger.gameCompletedTotal,
         threshold: 1,
-        reward: 5,
+        energyReward: 5,
+        hintReward: 2,
         progressBaseline: ProgressBaseline.fromSnapshot,
       );
 
       expect(id, '00000000-0000-0000-0000-000000000099');
     });
 
-    test('updateDefinition issues PUT with description/threshold/reward', () async {
+    test('updateDefinition issues PUT with description/threshold/rewards', () async {
       final repo = _repo(MockClient((req) async {
         expect(req.method, 'PUT');
         expect(
@@ -94,7 +96,8 @@ void main() {
         );
         expect(req.body, contains('"description":"updated"'));
         expect(req.body, contains('"threshold":7'));
-        expect(req.body, contains('"reward":42'));
+        expect(req.body, contains('"energyReward":42'));
+        expect(req.body, contains('"hintReward":1'));
         expect(req.body, contains('"prerequisiteQuestDefinitionId":null'));
         expect(req.body, contains('"progressBaseline":"FromSnapshot"'));
         return http.Response('', 204);
@@ -104,7 +107,8 @@ void main() {
         id: '00000000-0000-0000-0000-000000000005',
         description: 'updated',
         threshold: 7,
-        reward: 42,
+        energyReward: 42,
+        hintReward: 1,
         progressBaseline: ProgressBaseline.fromSnapshot,
       );
     });

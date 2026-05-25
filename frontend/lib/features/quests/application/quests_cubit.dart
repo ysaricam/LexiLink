@@ -36,9 +36,9 @@ class QuestsCubit extends Cubit<QuestsState> {
     }
   }
 
-  // Claim transitions ReadyToClaim → Claimed on the server. The reward
-  // (bonus energy) is delivered asynchronously by the backend outbox; the UI
-  // should refresh the energy badge separately after a short delay.
+  // Claim transitions ReadyToClaim → Claimed on the server. Rewards (bonus
+  // energy and/or hints) are delivered asynchronously by the backend outbox;
+  // the UI should refresh the badges separately after a short delay.
   Future<bool> claim(String playerQuestId) async {
     if (state.claimingId != null) {
       return false;
@@ -53,7 +53,7 @@ class QuestsCubit extends Cubit<QuestsState> {
         state.copyWith(
           claimingId: null,
           claimMessage:
-              'Reward queued — your energy will update in a few seconds.',
+              'Reward queued — your inventories will update in a few seconds.',
         ),
       );
       return true;

@@ -34,7 +34,8 @@ class PlayerQuest extends Equatable {
     required this.state,
     required this.progress,
     required this.threshold,
-    required this.reward,
+    required this.energyReward,
+    required this.hintReward,
     required this.issuedAt,
     required this.claimedAt,
     required this.expiresAt,
@@ -50,7 +51,8 @@ class PlayerQuest extends Equatable {
     final displayState = json['displayState'];
     final progress = json['progress'];
     final threshold = json['threshold'];
-    final reward = json['reward'];
+    final energyReward = json['energyReward'];
+    final hintReward = json['hintReward'];
     final issuedAt = json['issuedAt'];
     final claimedAt = json['claimedAt'];
     final expiresAt = json['expiresAt'];
@@ -69,7 +71,8 @@ class PlayerQuest extends Equatable {
         displayState.isEmpty ||
         progress is! int ||
         threshold is! int ||
-        reward is! int ||
+        energyReward is! int ||
+        hintReward is! int ||
         issuedAt is! String ||
         (description != null && description is! String) ||
         (claimedAt != null && claimedAt is! String) ||
@@ -87,7 +90,8 @@ class PlayerQuest extends Equatable {
       state: QuestState.fromString(displayState),
       progress: progress,
       threshold: threshold,
-      reward: reward,
+      energyReward: energyReward,
+      hintReward: hintReward,
       issuedAt: DateTime.parse(issuedAt),
       claimedAt: claimedAt == null
           ? null
@@ -107,7 +111,8 @@ class PlayerQuest extends Equatable {
   final QuestState state;
   final int progress;
   final int threshold;
-  final int reward;
+  final int energyReward;
+  final int hintReward;
   final DateTime issuedAt;
   final DateTime? claimedAt;
   final DateTime? expiresAt;
@@ -126,7 +131,8 @@ class PlayerQuest extends Equatable {
     state,
     progress,
     threshold,
-    reward,
+    energyReward,
+    hintReward,
     issuedAt,
     claimedAt,
     expiresAt,

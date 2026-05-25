@@ -34,7 +34,8 @@ void main() {
     "displayState": "ReadyToClaim",
     "progress": 1,
     "threshold": 1,
-    "reward": 3,
+    "energyReward": 3,
+    "hintReward": 0,
     "issuedAt": "2026-05-15T09:00:00Z",
     "claimedAt": null,
     "expiresAt": null
@@ -49,7 +50,8 @@ void main() {
     "displayState": "Active",
     "progress": 1,
     "threshold": 3,
-    "reward": 5,
+    "energyReward": 5,
+    "hintReward": 2,
     "issuedAt": "2026-05-15T09:00:00Z",
     "claimedAt": null,
     "expiresAt": "2026-05-16T00:00:00Z"
@@ -65,10 +67,13 @@ void main() {
     expect(quests, hasLength(2));
     expect(quests[0].state, QuestState.readyToClaim);
     expect(quests[0].name, 'First game');
-    expect(quests[0].reward, 3);
+    expect(quests[0].energyReward, 3);
+    expect(quests[0].hintReward, 0);
     expect(quests[1].state, QuestState.active);
     expect(quests[1].progress, 1);
     expect(quests[1].threshold, 3);
+    expect(quests[1].energyReward, 5);
+    expect(quests[1].hintReward, 2);
     expect(quests[1].expiresAt, DateTime.parse('2026-05-16T00:00:00Z'));
   });
 
