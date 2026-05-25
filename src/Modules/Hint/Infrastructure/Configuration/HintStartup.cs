@@ -2,6 +2,7 @@ using Autofac;
 using LexiLink.Common.Infrastructure;
 using LexiLink.Common.Infrastructure.DomainEventsDispatching;
 using LexiLink.Modules.Hint.Infrastructure.Configuration.Outbox;
+using LexiLink.Modules.Hint.Infrastructure.Outbox.DomainEventNotifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +16,9 @@ public static class HintStartup
 
     static HintStartup()
     {
-        // Admin notifications mapped here in H5. For now Hint module has
-        // no public outbox notifications.
+        DomainNotificationsMap.Add(
+            "Hint.AdminActionPerformedNotification",
+            typeof(HintAdminActionPerformedNotification));
     }
 
     public static void Initialize(IServiceCollection services, string connectionString)

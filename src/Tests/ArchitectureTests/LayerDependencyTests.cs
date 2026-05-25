@@ -443,8 +443,10 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "Npgsql"
             });
 
-        // Hint.Infrastructure is internal to the module. AdminAuditing
-        // decorator + Administration.IntegrationEvents allow comes in H5.
+        // Hint.Infrastructure MAY reference Administration.IntegrationEvents
+        // (public contract assembly) — the AdminAuditing decorator publishes
+        // AdminActionPerformedIntegrationEvent (H5). Administration.Domain /
+        // Application / Infrastructure remain forbidden.
         yield return new TestCaseData(
             "Hint.Infrastructure",
             HintInfrastructureAssembly,
@@ -455,7 +457,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
-                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
                 "LexiLink.API"
             });
     }

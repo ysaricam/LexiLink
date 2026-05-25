@@ -71,4 +71,28 @@ public class PlayerHintInventory : Entity, IAggregateRoot
 
         AddDomainEvent(new PlayerHintGrantedDomainEvent(Id.Value, amount, _balance, now));
     }
+
+    /// <summary>
+    /// Admin override: snap the balance to a specific value. Must
+    /// be non-negative. Used by the admin console set endpoint.
+    /// </summary>
+    public void AdminSet(int newBalance, DateTime now)
+    {
+        CheckRule(new HintAmountMustBeNonNegativeRule(newBalance));
+
+        _balance = newBalance;
+
+        AddDomainEvent(new PlayerHintAdminSetDomainEvent(Id.Value, _balance, now));
+    }
+
+    /// <summary>
+    /// Admin override: reset the balance to zero. Used by the admin
+    /// console reset endpoint.
+    /// </summary>
+    public void AdminReset(DateTime now)
+    {
+        _balance = 0;
+
+        AddDomainEvent(new PlayerHintAdminResetDomainEvent(Id.Value, now));
+    }
 }

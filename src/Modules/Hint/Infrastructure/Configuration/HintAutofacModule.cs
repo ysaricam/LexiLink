@@ -124,9 +124,18 @@ public class HintAutofacModule : Autofac.Module
             .InstancePerLifetimeScope()
             .FindConstructorsWith(allCtors);
 
-        // Decorator chain order: registered first = innermost. AdminAuditing
-        // would be the innermost wrapper but Hint admin operations land in
-        // H5 — until then UoW is the innermost.
+        // AdminAuditing must be the INNERMOST decorator (registered first
+        // = wrapped first = innermost). UnitOfWork wraps it so the outbox
+        // row enqueued for IAdminCommand commits in the same SaveChangesAsync
+        // as the command's domain changes. Mirrors the Energy/Quests pattern.
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerDecorator<>),
+            typeof(IRequestHandler<>));
+
+        builder.RegisterGenericDecorator(
+            typeof(AdminAuditingCommandHandlerWithResultDecorator<,>),
+            typeof(IRequestHandler<,>));
+
         builder.RegisterGenericDecorator(
             typeof(UnitOfWorkCommandHandlerDecorator<>),
             typeof(IRequestHandler<>));
