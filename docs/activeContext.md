@@ -4,23 +4,135 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-24 (Sprint Q1 backend Q1.1–Q1.5 + Q1.7 and frontend Q1.6 closed; only Q1.8 manual stack verification + docs polish remains).
+> Last updated: 2026-05-26 (Sprint H — Hint Module + Quest Multi-Reward — closed end-to-end; eight slices delivered with operator-confirmed manual verification).
 
 ---
 
 ## Active Sprint
 
-**Sprint Q1 — Quests Module Redesign — backend + frontend closed.**
-Backend slices Q1.1 → Q1.5 + tests Q1.7 shipped on 2026-05-24. The
-frontend slice Q1.6 (Flutter admin + player UI) shipped the same
-session. Q1.8 remains: operator runs the stack, builds a chain via
-the admin UI, verifies the lazy chain unlocks via guest gameplay,
-then declares the sprint done.
+**Sprint H — Hint Module + Quest Multi-Reward — closed.** Eight
+slices (H1 → H8) shipped on 2026-05-25 → 2026-05-26 with per-slice
+operator approval and standalone commits. Manual stack verification
+on 2026-05-26 passed all golden flows (multi-reward quest claim,
+Game UseHint free→inventory fall-through, admin hint console).
+Final quality gate: **348 .NET tests + 103 Flutter tests green**.
 
-Final quality gate: **361/361 .NET tests + 103/103 Flutter tests
-green**. Detailed slice plan in `ROADMAP.md > Sprint Q1 — Quests
-Module Redesign`; per-slice delivery notes in `progress.md > Sprint
-Q1` and `frontendProgress.md > Slice Q1.6`.
+Goal (delivered): extracted player hints out of `Game.HintAllowance`
+into a dedicated **Hint module** (sixth business module —
+`PlayerHintInventory` aggregate) and reshaped `QuestReward` into a
+`(EnergyReward, HintReward)` pair so a single quest can deliver
+either or both. The per-game free hint quota stays inside Games
+(fixed at 1 across all difficulties); when exhausted,
+`UseHintCommandHandler` falls through to
+`IHintGuard.EnsureHintAvailableAsync(playerId)` (sync gateway). The
+adapter (`LexiLink.API/CrossModule/HintGuard.cs`) translates this to
+a `ConsumePlayerHintCommand` on the Hint module — empty inventory
+breaks `HintBalanceMustBeSufficientRule` and the puzzle does not
+advance.
+
+Multi-reward delivery uses **two independent outbox consumers** each
+guarding on its reward's positivity:
+`Energy.Application/QuestClaimedIntegrationEventHandler` skips when
+`EnergyReward == 0`, and the new
+`Hint.Application/QuestClaimedIntegrationEventHandler` grants hints
+when `HintReward > 0`. This is LexiLink's **second reverse
+cross-module event dependency** (after Energy's existing
+consumer of `Quests.IntegrationEvents`).
+
+Detailed slice plan in `ROADMAP.md > Sprint H`; per-slice delivery
+notes in `progress.md > Sprint H` and `frontendProgress.md > Slice
+H6`.
+
+### Recently closed (Sprint H session, 2026-05-25 → 2026-05-26)
+
+- **Hint module foundation (H1).** Full Kamil-style module
+  scaffolding (Domain / Application / Infrastructure / Tests /
+  IntegrationTests + Autofac module + Startup + UoW + decorators
+  + outbox + EF mapping). Aggregate has no max cap and no refill
+  timer — hints are earned, not regenerated.
+- **Lazy init from PlayerRegistered (H2).** Mirrors Energy's
+  pattern: `Hint.Application` consumes
+  `PlayerRegisteredIntegrationEvent` and dispatches
+  `EnsurePlayerHintInventoryExistsCommand` (idempotent).
+  `Hint:InitialBalance` config (default 0).
+- **IHintGuard sync gateway (H3).** Contract in Games.Application;
+  adapter in API host. `Game.HasFreeHintRemaining` +
+  `UseHintWithExternalInventory()` route the call.
+  `ResolveHints(difficulty)` flattened to 1 — the per-game free
+  quota no longer scales with difficulty.
+- **Quest multi-reward (H4, destructive).**
+  `QuestDefinition._energyReward` + `_hintReward`,
+  `QuestRewardMustHaveAtLeastOnePositiveRule`,
+  `PlayerQuest.Claim(now, ready, energyReward, hintReward)`,
+  `QuestClaimedIntegrationEvent` carries both fields. DbUp
+  `040_ReshapeQuestRewardsForSprintH.sql` is idempotent (column
+  RENAME + ADD COLUMN with information_schema guards).
+- **Hint admin console + audit (H5).** `AdminSet` / `AdminReset`
+  domain methods. Three `IAdminCommand` commands (Set / GrantBonus
+  / Reset) wired through a per-module
+  `AdminAuditingCommandHandlerDecorator` (5th copy of the
+  template). `GET /hint/me` (player) + admin GET/POST endpoints.
+- **Flutter reshape (H6).** New `hint/` and `admin_hint/` features.
+  HintBadge in HomeScreen next to EnergyBadge. Admin quest form
+  collects two reward inputs with form-level at-least-one rule.
+  Player quest tile renders both badges side-by-side when
+  positive. 5 test files reshaped; 103/103 Flutter pass.
+- **Tests + quality gate (H7).** 19 Hint domain + 8 Hint
+  integration + 3 Games.IT UseHint fall-through scenarios via the
+  new `RecordingHintGuard` (configurable + call-counted).
+  `scripts/test.sh` registers Hint.Tests and Hint.IntegrationTests.
+- **Manual verification (H8).** Operator restarted the stack,
+  created an Energy+Hint reward quest, completed games as a test
+  player, verified both inventories update after claim, exercised
+  the Game UseHint free→inventory→empty flow end-to-end. All
+  passed.
+
+### Lessons captured this session (Sprint H, 2026-05-25 → 2026-05-26)
+
+- **HintsUsed counts only the free quota by design.** The
+  per-game `HintAllowance.Used` counter is unrelated to player
+  inventory consumption. `UseHintWithExternalInventory()`
+  deliberately does **not** advance the counter. Surfaces in
+  `GameDetailsDto.HintsUsed` as the *free* count, not the *total*
+  count. Codified in `UseHintFallThroughTests`.
+- **Reverse event dependency justifies a granular ArchTest
+  allow.** Hint.Application needs `Quests.IntegrationEvents` for
+  its consumer; Hint.Infrastructure needs
+  `Administration.IntegrationEvents` for the audit notification.
+  The Architecture test allowlist accepts these two pairings
+  explicitly — the module's Domain remains forbidden from any
+  cross-module namespace.
+- **Two consumers > one fat consumer.** A single multi-reward
+  consumer would couple Energy and Hint to each other. Two
+  independent consumers each guard on their reward's positivity
+  and degrade independently: a Hint outage doesn't block energy
+  delivery and vice versa.
+- **`GrantBonus` permits over-cap balance — twice.** Both
+  `PlayerEnergy.GrantBonus` and `PlayerHintInventory.GrantBonus`
+  intentionally bypass max checks. The semantics are "reward
+  earned, not regenerated" — capping the bonus would silently
+  swallow the operator's intent. Documented in the aggregates.
+- **iCloud duplicate `.sql` files break DbUp.** Embedded SQL
+  resources accumulated `* 2.sql` copies in `bin/Debug/` from
+  iCloud sync. DbUp health check listed them as
+  "missing scripts" and ready probe failed. `find . -name "* 2.sql"
+  -delete` cleans up; commit happened to be unrelated, so no
+  source change was needed.
+
+---
+
+## Last sprint closure (kept for context)
+
+## Sprint Q1 — Quests Module Redesign — closed (2026-05-24)
+
+Backend slices Q1.1 → Q1.5 + tests Q1.7 + frontend slice Q1.6 +
+manual verification Q1.8 all delivered. Closed with **361 .NET +
+103 Flutter tests green**. (Sprint H later raised the Flutter
+count via test reshape and lowered the .NET count by 13 because
+the multi-reward shape collapses some narrower
+`QuestRewardMustBePositive` cases into broader
+`QuestRewardMustHaveAtLeastOnePositive` cases — net 348 backend
+tests at H7 close.)
 
 Goal (delivered): replaced the fixed-enum `QuestType` catalog with a
 fully data-driven `QuestDefinition` shape carrying `Name`,
@@ -35,7 +147,7 @@ written. Eager broadcast + `PlayerRegisteredIntegrationEventHandler`
 + the hardcoded `GameCompletedIntegrationEventHandler` /
 `AuthProviderLinkedIntegrationEventHandler` were deleted in Q1.3.
 
-Why now: manual testing of the closed admin frontend (F1–F6) exposed
+Why: manual testing of the closed admin frontend (F1–F6) exposed
 three product gaps — closed catalog (enum-fixed), hardcoded behavior
 (handlers know only 4 quest types), and eager broadcast cost (B15
 auto-issuance scales poorly with player count). Operator preference
@@ -399,33 +511,24 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Sprint Q1 backend Q1.1–Q1.5+Q1.7 + frontend Q1.6 kapandı.**
-Tüm slice'lar commit'lendi (7 ardışık commit: Q1.1, Q1.2, Q1.3,
-Q1.4, Q1.5, Q1.7, Q1.6). Quality gate 361/361 .NET + 103/103 Flutter.
+**Sprint H — Hint Module + Quest Multi-Reward — kapandı.** Sekiz
+slice'ın tamamı commit'lendi; manuel doğrulama 2026-05-26 günü
+operator tarafından geçildi. Quality gate 348/348 .NET + 103/103
+Flutter.
 
-Kalan tek iş **Q1.8 — operator workflow**:
+Sprint H aday listesi tükendi. Sonraki sprint adayları `ROADMAP.md
+> Beyond Sprint 7` bölümünde:
 
-1. Stack ayağa kalkmış (Q1.6 commit sonrası):
-   - API: `http://127.0.0.1:5000`, `Authentication__Mode=ProductionJwt`,
-     bootstrap admin `yasin.srcmm@gmail.com` (dev verifier:
-     `dev:admin:yasin.srcmm@gmail.com`).
-   - Flutter web: `http://127.0.0.1:5173` (Chrome).
-2. Admin UI'dan chain kur: Bronz (Total/1/+3) → Gümüş
-   (Total/3/+5/prereq=Bronz) → Altın (Total/10/+10/prereq=Gümüş).
-3. Guest player ile splash → quests sekmesi → ilk açılışta sadece
-   Daily seed + chain'in başı (Bronz) görünmeli (lazy issuance
-   + prereq honor).
-4. Bir oyun bitir → quest sayfasına dön → Bronz "Hazır" olur (Stats
-   counter via IQuestCounterReader → progress 1/1).
-5. Claim → enerji +3⚡ (outbox roundtrip), sonraki sync'te Gümüş
-   görünür.
-6. Daily expiry doğrula: DB'den manuel `UPDATE quests."PlayerQuests"
-   SET "ExpiresAt"='2025-01-01' WHERE ...` ile expired'a çek, quests
-   sayfasını refresh et → row silinip yeniden issue edilmeli.
-
-Q1.8 doğrulandıktan sonra Sprint Q1 tamamen kapanır. Sonraki sprint
-aday listesi `ROADMAP.md > Beyond Sprint 7` ve aşağıdaki "diğer
-aktif olmayan adaylar" bölümünde.
+- **Power-up / shop ekonomisi.** Enerji + ipucu artık iki ayrı
+  para birimi gibi davranıyor — alış-veriş ekranı, IAP veya
+  reklam-temelli bonus akışları doğal sonraki adım.
+- **Quest yeni trigger türleri.** Şu an `GameCompletedTotal /
+  Daily / AuthProviderLinked` üçlüsü var. Operator backlog'unda
+  `StreakReached`, `CategoryMastered` gibi adaylar var (ayrı
+  sprint olarak değerlendirilecek).
+- **Tutorial flow.** Yeni guest player'a 1-2 puzzle'lık rehberli
+  giriş; quest sistemine ısıtmak için "Hint öğren" + "Enerji
+  öğren" tarzı sıfır-zorluk puzzle'larla.
 
 ---
 

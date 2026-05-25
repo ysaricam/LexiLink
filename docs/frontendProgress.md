@@ -5,6 +5,82 @@ yeniden yazilmaz.
 
 ---
 
+## Slice H6 — Hint feature + multi-reward quest UI ✅ closed (2026-05-25, commit 4109a93)
+
+Sprint H frontend leg. Two new features and four reshapes shipped as
+a single bundled commit. Quality gate: **103/103 Flutter tests pass**,
+`flutter analyze` only pre-existing info-level warnings. All errors
+flagged by analyze were in stale test fixtures (old `reward` field)
+and were repaired in the same commit.
+
+**New `features/hint/` (player UX):**
+- `data/player_hint.dart` — `PlayerHint { playerId, balance }` DTO.
+- `data/hint_repository.dart` — `getMe()` → `GET /hint/me`.
+- `application/hint_cubit.dart` — initial/loading/success/failure
+  states; `loadHint()` invoked from `home_screen.dart` on session
+  authentication.
+- `presentation/hint_badge.dart` — lightbulb icon + balance number in
+  `colorScheme.tertiary`. Sits in a Row next to `EnergyBadge` in the
+  HomeScreen header.
+
+**New `features/admin_hint/` (admin console):**
+- `data/player_hint_snapshot.dart`, `data/admin_hint_repository.dart`
+  (fetchSnapshot / setBalance / grant / reset).
+- `application/admin_hint_cubit.dart` — full mirror of
+  `admin_energy_cubit` with a notFound state for 404 lookups.
+- `presentation/admin_hint_screen.dart` — lookup row + balance card +
+  set / grant / reset buttons.
+- Route `/admin/hint` wired in `app_router.dart` between energy and
+  audit; nav destination + icon (`lightbulb_outline`/`lightbulb`)
+  added to `app_admin_shell.dart`; `AdminHintPage` wrapper added to
+  `admin_placeholder_page.dart`.
+
+**Quest multi-reward reshape:**
+- `admin_quests/data/quest_definition.dart` — `reward` split to
+  `energyReward` + `hintReward`.
+- `admin_quests/data/admin_quests_repository.dart` — Create / Update
+  bodies send both fields.
+- `admin_quests/application/admin_quests_cubit.dart` — Create /
+  Update signatures take both fields.
+- `admin_quests/presentation/quest_definition_form.dart` —
+  `_rewardController` replaced with `_energyRewardController` +
+  `_hintRewardController` (two side-by-side inputs labeled
+  "Enerji ödülü ⚡" and "İpucu ödülü 💡"). Each is `≥ 0`; a
+  non-field `_rewardSumError` enforces the at-least-one-positive
+  rule client-side and surfaces under the row in red.
+- `admin_quests/presentation/admin_quests_screen.dart` — row renders
+  one `_RewardBadge` per positive reward (energy in
+  `colorScheme.primary`, hint in `colorScheme.tertiary`); inactive
+  badge stays.
+- `quests/data/player_quest.dart` — `reward` field split to
+  `energyReward` + `hintReward`.
+- `quests/presentation/quests_screen.dart` — player tile renders
+  both badges side-by-side when positive; the 8-px spacer appears
+  only between two positive rewards.
+- `quests/application/quests_cubit.dart` — claim snackbar updated
+  from "your energy will update" to "your inventories will update"
+  to reflect dual-reward semantics.
+
+**Test reshape:**
+- `test/features/admin_quests/application/admin_quests_cubit_test.dart`
+  — `_oneDailyDef` payload + Create + Update calls switched to
+  `energyReward` + `hintReward`.
+- `test/features/admin_quests/data/admin_quests_repository_test.dart`
+  — fetch decode payload + Create + Update body expectations
+  switched.
+- `test/features/admin_quests/presentation/admin_quests_screen_test.dart`
+  — `_oneDailyDef` payload switched.
+- `test/features/quests/application/quests_cubit_test.dart` —
+  `_readyQuest` + `_claimedQuest` fixtures switched; claim snackbar
+  expectation updated.
+- `test/features/quests/data/quest_repository_test.dart` — fetch
+  decode fixtures switched + new field assertions added.
+
+Detailed Sprint H shape lives in `frontendActiveContext.md > Sprint
+H — Hint Module + Quest Multi-Reward (frontend leg)`.
+
+---
+
 ## Slice Q1.6 — Quests redesign frontend reshape ✅ closed (2026-05-24, commit a754301)
 
 Frontend leg of the Sprint Q1 redesign. Shipped as a single bundled

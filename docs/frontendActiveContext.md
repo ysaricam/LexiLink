@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-24 (Sprint Q1 frontend reshape Q1.6 closed; only Q1.8 operator-level manual verification remains)
+> Last updated: 2026-05-26 (Sprint H frontend slice H6 closed; full Sprint H + manual verification kapanışı tamamlandı)
 
 ---
 
@@ -112,6 +112,24 @@ ayrimidir.
 ---
 
 ## Next Action
+
+**Sprint H frontend leg kapandı.** Slice H6 commit'lendi (4109a93);
+manuel doğrulama 2026-05-26'da geçildi (HintBadge HomeScreen'de
+gözüküyor, admin hint console set/grant/reset çalışıyor, multi-reward
+quest formu iki ödül alıyor, player quest tile iki rozeti yan yana
+gösteriyor, claim sonrası ikisi de güncelleniyor). 103/103 Flutter
+test pass, `flutter analyze` pre-existing info-level uyarılar.
+
+Sıradaki aday slice'lar (operator backlog'undan, sıra yok henüz):
+- **Power-up / shop ekranı.** Enerji + hint iki para birimi gibi
+  ayrı; satın alma / reklam-watch / IAP akışları doğal sonraki
+  adım.
+- **Player profili genişleme.** Tüm rozet türlerini (energy +
+  hint + level + streak) birleşik bir status widget'ında
+  toplamak.
+- **Game UseHint UI iyileştirme.** Player hint stoğu varken
+  "X ipucun var" overlay'i ekleyip free → inventory geçişini
+  görünür yapmak; şu an silent fall-through.
 
 Son tamamlanan frontend implementation slice:
 
@@ -462,6 +480,109 @@ get absorbed into Sprint Q1 if the change is structural enough:
 - **Quest reactivate button.** Inactive rows now show a power-icon
   reactivate button instead of a disabled deactivate button. Wired to
   backend B12 (`POST /admin/quests/definitions/{id}/reactivate`).
+
+---
+
+## Sprint H — Hint Module + Quest Multi-Reward (frontend leg) ✅ closed 2026-05-25
+
+Slice H6 only — single Flutter commit (`4109a93`) on 2026-05-25
+covering data + application + presentation + tests for both the new
+Hint feature pair and the multi-reward quest reshape. Quality gate
+at slice close: **103/103 Flutter tests pass**, `flutter analyze`
+only pre-existing info-level warnings.
+
+### Hint feature (player UX)
+
+- `features/hint/data/player_hint.dart` — `PlayerHint { playerId,
+  balance }` DTO with `fromJson`. Energy DTO's stripped-down
+  sibling: no max, no recharge interval, no `lastRefilledOn`.
+- `features/hint/data/hint_repository.dart` — `getMe()` calling
+  `GET /hint/me` (Sprint H5 backend endpoint).
+- `features/hint/application/hint_cubit.dart` — initial / loading /
+  success / failure states; mirrors `EnergyCubit`.
+- `features/hint/presentation/hint_badge.dart` — pill with
+  `Icons.lightbulb_outline` + balance number; color
+  `colorScheme.tertiary` so it visually distinguishes from the
+  energy lightning. Lives in a Row next to `EnergyBadge` in
+  `home_screen.dart`; loaded on session authentication alongside
+  the other player snapshots.
+
+### Hint feature (admin console)
+
+- `features/admin_hint/data/player_hint_snapshot.dart` and
+  `admin_hint_repository.dart` — fetchSnapshot / setBalance / grant
+  / reset.
+- `features/admin_hint/application/admin_hint_cubit.dart` — full
+  mirror of `AdminEnergyCubit` with the same notFound state for
+  404 lookups (player exists but inventory not yet initialized
+  shouldn't happen post-Sprint H, but the safety net stays).
+- `features/admin_hint/presentation/admin_hint_screen.dart` —
+  lookup row + balance card + set/grant/reset buttons. Uses
+  `useRootNavigator: false` on every showDialog (codified rule
+  from F1–F6).
+- Route `/admin/hint` added to `app_router.dart` between
+  `/admin/energy` and `/admin/audit`; nav destination + icon pair
+  (`lightbulb_outline` / `lightbulb`) added to
+  `app_admin_shell.dart`; `AdminHintPage` wrapper added to
+  `admin_placeholder_page.dart`.
+
+### Quest multi-reward UI reshape
+
+- `admin_quests` DTOs / repository / cubit reshape: single `reward`
+  → `energyReward` + `hintReward`. Wire-level breaking change
+  (backend H4 schema reshape).
+- `admin_quests/presentation/quest_definition_form.dart` —
+  `_rewardController` replaced with `_energyRewardController` +
+  `_hintRewardController` (two side-by-side number inputs labeled
+  "Enerji ödülü ⚡" and "İpucu ödülü 💡"). Each input validates
+  `≥ 0`. The at-least-one-positive rule is enforced
+  **client-side** as a non-field `_rewardSumError` that surfaces
+  in red under the row when both are zero — `_formKey.validate()`
+  is augmented with this check before `_submit` exits.
+- `admin_quests/presentation/admin_quests_screen.dart` — row
+  renders **one** `_RewardBadge` per positive reward. Energy badge
+  in `colorScheme.primary`, hint badge in `colorScheme.tertiary`.
+  Inactive badge unchanged.
+- `quests/data/player_quest.dart` — DTO splits `reward` →
+  `energyReward` + `hintReward`.
+- `quests/presentation/quests_screen.dart` — player tile renders
+  both badges in a `Row(mainAxisSize: min)` when positive. The
+  8-px spacer appears only between two positive rewards (no
+  trailing whitespace when only one reward is set).
+- `quests/application/quests_cubit.dart` — claim snackbar updated
+  from "your energy will update" to "your inventories will
+  update" to reflect dual-reward semantics. Comment in the
+  claim() method updated to mention "hints and/or energy" outbox
+  delivery.
+
+### Test reshape
+
+- `test/features/admin_quests/{application,data,presentation}/` —
+  5 of the 7 errors flutter analyze caught after H4 backend
+  reshape were stale `reward` references in test fixtures and
+  assertion bodies. Repaired in the same commit.
+- `test/features/quests/{application,data}/` — `_readyQuest` and
+  `_claimedQuest` JSON fixtures + matching field assertions
+  switched to `energyReward` + `hintReward`. Claim-flow snackbar
+  expectation updated.
+
+### Decisions / lessons (Sprint H session, 2026-05-25)
+
+- **Hint badge color = `colorScheme.tertiary`.** Visually separates
+  from energy (primary). Existing M3 token, no theme change
+  needed.
+- **Two reward inputs over a single combined "value" field.**
+  Operator wants the reward type to be explicit at admin entry,
+  not derived from a mode toggle. Two number inputs are also
+  easier to validate per-field (`≥ 0`) plus a single form-level
+  rule for "at least one positive".
+- **Snackbar text generalization.** Claim's
+  `'energy will update'` was incorrect once hint-only rewards
+  shipped. Generic `'inventories will update'` covers both
+  without adding a localization branch.
+- **No platform-specific code added.** Both new features are pure
+  Flutter (Material). Hint badge uses Material icon; no Cupertino
+  variant required at this stage.
 
 ---
 
