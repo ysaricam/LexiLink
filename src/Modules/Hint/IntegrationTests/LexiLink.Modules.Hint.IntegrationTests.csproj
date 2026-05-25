@@ -35,6 +35,7 @@
     <ProjectReference Include="..\Infrastructure\LexiLink.Modules.Hint.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Players\Application\LexiLink.Modules.Players.Application.csproj" />
     <ProjectReference Include="..\..\Players\Infrastructure\LexiLink.Modules.Players.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Administration\Infrastructure\LexiLink.Modules.Administration.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

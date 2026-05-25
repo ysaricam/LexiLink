@@ -81,7 +81,8 @@ public sealed class QuestEndpointsTests
             first.GetProperty("questDefinitionId").GetGuid().Should().Be(SeedDailyQuestDefinitionId);
             first.GetProperty("trigger").GetString().Should().Be("GameCompletedDaily");
             first.GetProperty("threshold").GetInt32().Should().Be(3);
-            first.GetProperty("reward").GetInt32().Should().Be(5);
+            first.GetProperty("energyReward").GetInt32().Should().Be(5);
+            first.GetProperty("hintReward").GetInt32().Should().Be(0);
             first.GetProperty("displayState").GetString().Should().Be("Active");
         }
         finally
