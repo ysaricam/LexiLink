@@ -28,7 +28,8 @@ internal sealed class QuestDefinitionEntityTypeConfiguration : IEntityTypeConfig
             .HasMaxLength(32);
 
         builder.Property<int>("_threshold").HasColumnName("Threshold");
-        builder.Property<int>("_reward").HasColumnName("Reward");
+        builder.Property<int>("_energyReward").HasColumnName("EnergyReward");
+        builder.Property<int>("_hintReward").HasColumnName("HintReward");
 
         builder.Property<QuestDefinitionId?>("_prerequisiteQuestDefinitionId")
             .HasColumnName("PrerequisiteQuestDefinitionId");

@@ -25,7 +25,8 @@ internal sealed class GetQuestDefinitionsQueryHandler
                 d.Description,
                 d.Trigger,
                 d.Threshold,
-                d.Reward,
+                d.EnergyReward,
+                d.HintReward,
                 d.PrerequisiteQuestDefinitionId?.Value,
                 d.ProgressBaseline,
                 d.IsActive))

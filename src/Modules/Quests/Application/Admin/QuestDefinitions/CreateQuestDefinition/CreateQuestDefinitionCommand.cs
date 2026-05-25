@@ -10,7 +10,8 @@ public sealed class CreateQuestDefinitionCommand : CommandBase<Guid>, IAdminComm
     public string Description { get; }
     public QuestTrigger Trigger { get; }
     public int Threshold { get; }
-    public int Reward { get; }
+    public int EnergyReward { get; }
+    public int HintReward { get; }
     public Guid? PrerequisiteQuestDefinitionId { get; }
     public ProgressBaseline ProgressBaseline { get; }
 
@@ -19,7 +20,8 @@ public sealed class CreateQuestDefinitionCommand : CommandBase<Guid>, IAdminComm
         string description,
         QuestTrigger trigger,
         int threshold,
-        int reward,
+        int energyReward,
+        int hintReward,
         Guid? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline)
     {
@@ -27,7 +29,8 @@ public sealed class CreateQuestDefinitionCommand : CommandBase<Guid>, IAdminComm
         Description = description;
         Trigger = trigger;
         Threshold = threshold;
-        Reward = reward;
+        EnergyReward = energyReward;
+        HintReward = hintReward;
         PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         ProgressBaseline = progressBaseline;
     }

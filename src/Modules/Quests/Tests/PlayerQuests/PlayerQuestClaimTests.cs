@@ -13,21 +13,24 @@ public class PlayerQuestClaimTests : PlayerQuestTestsBase
         var quest = Issue();
         var claimedAt = FixedIssuedAt.AddSeconds(10);
 
-        quest.Claim(claimedAt, isReadyToClaim: true, reward: SampleReward);
+        quest.Claim(claimedAt, isReadyToClaim: true,
+            energyReward: SampleEnergyReward, hintReward: SampleHintReward);
 
         quest.State.Should().Be(QuestState.Claimed);
         quest.ClaimedAt.Should().Be(claimedAt);
     }
 
     [Test]
-    public void Claim_RaisesPlayerQuestClaimedDomainEvent_CarryingReward()
+    public void Claim_RaisesPlayerQuestClaimedDomainEvent_CarryingBothRewards()
     {
         var quest = Issue();
 
-        quest.Claim(FixedIssuedAt.AddSeconds(10), isReadyToClaim: true, reward: 7);
+        quest.Claim(FixedIssuedAt.AddSeconds(10), isReadyToClaim: true,
+            energyReward: 7, hintReward: 3);
 
         var evt = AssertPublishedDomainEvent<PlayerQuestClaimedDomainEvent>(quest);
-        evt.Reward.Should().Be(7);
+        evt.EnergyReward.Should().Be(7);
+        evt.HintReward.Should().Be(3);
         evt.QuestDefinitionId.Should().Be(quest.QuestDefinitionId);
         evt.PlayerQuestId.Should().Be(quest.Id);
     }
@@ -38,16 +41,19 @@ public class PlayerQuestClaimTests : PlayerQuestTestsBase
         var quest = Issue();
 
         AssertBrokenRule<QuestMustBeReadyToBeClaimedRule>(() =>
-            quest.Claim(FixedIssuedAt.AddSeconds(1), isReadyToClaim: false, reward: SampleReward));
+            quest.Claim(FixedIssuedAt.AddSeconds(1), isReadyToClaim: false,
+                energyReward: SampleEnergyReward, hintReward: SampleHintReward));
     }
 
     [Test]
     public void Claim_Twice_BreaksQuestMustBeReadyToBeClaimedRule()
     {
         var quest = Issue();
-        quest.Claim(FixedIssuedAt.AddSeconds(10), isReadyToClaim: true, reward: SampleReward);
+        quest.Claim(FixedIssuedAt.AddSeconds(10), isReadyToClaim: true,
+            energyReward: SampleEnergyReward, hintReward: SampleHintReward);
 
         AssertBrokenRule<QuestMustBeReadyToBeClaimedRule>(() =>
-            quest.Claim(FixedIssuedAt.AddSeconds(20), isReadyToClaim: true, reward: SampleReward));
+            quest.Claim(FixedIssuedAt.AddSeconds(20), isReadyToClaim: true,
+                energyReward: SampleEnergyReward, hintReward: SampleHintReward));
     }
 }

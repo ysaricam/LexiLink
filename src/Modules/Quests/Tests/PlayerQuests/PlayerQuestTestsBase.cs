@@ -15,7 +15,8 @@ public abstract class PlayerQuestTestsBase : TestBase
         new(2026, 5, 14, 9, 0, 0, DateTimeKind.Utc);
 
     protected const int SampleBaselineSnapshot = 0;
-    protected const int SampleReward = 5;
+    protected const int SampleEnergyReward = 5;
+    protected const int SampleHintReward = 0;
 
     protected static PlayerQuest Issue(
         QuestDefinitionId? questDefinitionId = null,

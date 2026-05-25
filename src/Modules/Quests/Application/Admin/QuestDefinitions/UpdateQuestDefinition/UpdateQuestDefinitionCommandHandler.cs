@@ -46,7 +46,8 @@ internal sealed class UpdateQuestDefinitionCommandHandler : ICommandHandler<Upda
         definition.Update(
             request.Description,
             request.Threshold,
-            request.Reward,
+            request.EnergyReward,
+            request.HintReward,
             prereqId,
             request.ProgressBaseline,
             prerequisiteWouldCreateCycle: wouldCycle);

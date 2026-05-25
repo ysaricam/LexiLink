@@ -10,6 +10,7 @@
     <ProjectReference Include="..\Domain\LexiLink.Modules.Hint.Domain.csproj" />
     <ProjectReference Include="..\..\..\Common\Application\LexiLink.Common.Application.csproj" />
     <ProjectReference Include="..\..\Players\IntegrationEvents\LexiLink.Modules.Players.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Quests\IntegrationEvents\LexiLink.Modules.Quests.IntegrationEvents.csproj" />
   </ItemGroup>
 
   <ItemGroup>

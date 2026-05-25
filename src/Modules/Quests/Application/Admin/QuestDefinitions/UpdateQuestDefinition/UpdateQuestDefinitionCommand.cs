@@ -9,7 +9,8 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
     public Guid QuestDefinitionId { get; }
     public string Description { get; }
     public int Threshold { get; }
-    public int Reward { get; }
+    public int EnergyReward { get; }
+    public int HintReward { get; }
     public Guid? PrerequisiteQuestDefinitionId { get; }
     public ProgressBaseline ProgressBaseline { get; }
 
@@ -17,14 +18,16 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
         Guid questDefinitionId,
         string description,
         int threshold,
-        int reward,
+        int energyReward,
+        int hintReward,
         Guid? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline)
     {
         QuestDefinitionId = questDefinitionId;
         Description = description;
         Threshold = threshold;
-        Reward = reward;
+        EnergyReward = energyReward;
+        HintReward = hintReward;
         PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         ProgressBaseline = progressBaseline;
     }

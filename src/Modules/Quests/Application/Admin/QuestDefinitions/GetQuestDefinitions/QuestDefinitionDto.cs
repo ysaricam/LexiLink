@@ -8,7 +8,8 @@ public sealed record QuestDefinitionDto(
     string Description,
     QuestTrigger Trigger,
     int Threshold,
-    int Reward,
+    int EnergyReward,
+    int HintReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline,
     bool IsActive);

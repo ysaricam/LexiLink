@@ -176,7 +176,8 @@ public abstract class TestBase
                     "Description" = 'Bugün 3 oyun tamamla.',
                     "Trigger" = 'GameCompletedDaily',
                     "Threshold" = 3,
-                    "Reward" = 5,
+                    "EnergyReward" = 5,
+                    "HintReward" = 0,
                     "PrerequisiteQuestDefinitionId" = NULL,
                     "ProgressBaseline" = 'FromSnapshot'
                 WHERE "Id" = '11111111-0000-0000-0000-000000000010';

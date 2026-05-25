@@ -12,6 +12,10 @@ internal sealed class CreateQuestDefinitionCommandValidator : AbstractValidator<
         RuleFor(x => x.Trigger).IsInEnum();
         RuleFor(x => x.ProgressBaseline).IsInEnum();
         RuleFor(x => x.Threshold).GreaterThan(0);
-        RuleFor(x => x.Reward).GreaterThan(0);
+        RuleFor(x => x.EnergyReward).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.HintReward).GreaterThanOrEqualTo(0);
+        RuleFor(x => x)
+            .Must(x => x.EnergyReward > 0 || x.HintReward > 0)
+            .WithMessage("At least one of EnergyReward or HintReward must be positive.");
     }
 }

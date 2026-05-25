@@ -16,7 +16,8 @@ public class QuestDefinitionTests : TestBase
             description: "3 oyun tamamla",
             trigger: QuestTrigger.GameCompletedTotal,
             threshold: 3,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false);
@@ -25,7 +26,8 @@ public class QuestDefinitionTests : TestBase
         definition.Description.Should().Be("3 oyun tamamla");
         definition.Trigger.Should().Be(QuestTrigger.GameCompletedTotal);
         definition.Threshold.Should().Be(3);
-        definition.Reward.Should().Be(5);
+        definition.EnergyReward.Should().Be(5);
+        definition.HintReward.Should().Be(0);
         definition.PrerequisiteQuestDefinitionId.Should().BeNull();
         definition.ProgressBaseline.Should().Be(ProgressBaseline.FromSnapshot);
         definition.IsActive.Should().BeTrue();
@@ -35,9 +37,28 @@ public class QuestDefinitionTests : TestBase
         created.Name.Should().Be("Üç Oyun");
         created.Trigger.Should().Be(nameof(QuestTrigger.GameCompletedTotal));
         created.Threshold.Should().Be(3);
-        created.Reward.Should().Be(5);
+        created.EnergyReward.Should().Be(5);
+        created.HintReward.Should().Be(0);
         created.PrerequisiteQuestDefinitionId.Should().BeNull();
         created.ProgressBaseline.Should().Be(nameof(ProgressBaseline.FromSnapshot));
+    }
+
+    [Test]
+    public void Create_Should_AllowHintOnlyReward()
+    {
+        var definition = Create(energyReward: 0, hintReward: 2);
+
+        definition.EnergyReward.Should().Be(0);
+        definition.HintReward.Should().Be(2);
+    }
+
+    [Test]
+    public void Create_Should_AllowMixedReward()
+    {
+        var definition = Create(energyReward: 5, hintReward: 2);
+
+        definition.EnergyReward.Should().Be(5);
+        definition.HintReward.Should().Be(2);
     }
 
     [Test]
@@ -50,7 +71,8 @@ public class QuestDefinitionTests : TestBase
             description: "",
             trigger: QuestTrigger.AuthProviderLinked,
             threshold: 1,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false);
@@ -86,9 +108,24 @@ public class QuestDefinitionTests : TestBase
     }
 
     [Test]
-    public void Create_Should_RejectNonPositiveReward()
+    public void Create_Should_RejectBothRewardsZero()
     {
-        AssertBrokenRule<QuestRewardMustBePositiveRule>(() => Create(reward: 0));
+        AssertBrokenRule<QuestRewardMustHaveAtLeastOnePositiveRule>(() =>
+            Create(energyReward: 0, hintReward: 0));
+    }
+
+    [Test]
+    public void Create_Should_RejectNegativeEnergyReward()
+    {
+        AssertBrokenRule<QuestRewardMustHaveAtLeastOnePositiveRule>(() =>
+            Create(energyReward: -1, hintReward: 5));
+    }
+
+    [Test]
+    public void Create_Should_RejectNegativeHintReward()
+    {
+        AssertBrokenRule<QuestRewardMustHaveAtLeastOnePositiveRule>(() =>
+            Create(energyReward: 5, hintReward: -1));
     }
 
     [Test]
@@ -107,21 +144,24 @@ public class QuestDefinitionTests : TestBase
         definition.Update(
             description: "yeni açıklama",
             threshold: 5,
-            reward: 10,
+            energyReward: 10,
+            hintReward: 2,
             prerequisiteQuestDefinitionId: newPrereq,
             progressBaseline: ProgressBaseline.FromExistingTotal,
             prerequisiteWouldCreateCycle: false);
 
         definition.Description.Should().Be("yeni açıklama");
         definition.Threshold.Should().Be(5);
-        definition.Reward.Should().Be(10);
+        definition.EnergyReward.Should().Be(10);
+        definition.HintReward.Should().Be(2);
         definition.PrerequisiteQuestDefinitionId.Should().Be(newPrereq);
         definition.ProgressBaseline.Should().Be(ProgressBaseline.FromExistingTotal);
 
         var updated = AssertPublishedDomainEvent<QuestDefinitionUpdatedDomainEvent>(definition);
         updated.Description.Should().Be("yeni açıklama");
         updated.Threshold.Should().Be(5);
-        updated.Reward.Should().Be(10);
+        updated.EnergyReward.Should().Be(10);
+        updated.HintReward.Should().Be(2);
         updated.PrerequisiteQuestDefinitionId.Should().Be(newPrereq.Value);
         updated.ProgressBaseline.Should().Be(nameof(ProgressBaseline.FromExistingTotal));
     }
@@ -134,7 +174,8 @@ public class QuestDefinitionTests : TestBase
         AssertBrokenRule<QuestThresholdMustBePositiveRule>(() => definition.Update(
             description: "x",
             threshold: -1,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false));
@@ -148,7 +189,8 @@ public class QuestDefinitionTests : TestBase
         AssertBrokenRule<QuestPrerequisiteMustNotCreateCycleRule>(() => definition.Update(
             description: "x",
             threshold: 1,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: new QuestDefinitionId(Guid.NewGuid()),
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: true));
@@ -198,7 +240,8 @@ public class QuestDefinitionTests : TestBase
         string description = "desc",
         QuestTrigger trigger = QuestTrigger.GameCompletedTotal,
         int threshold = 3,
-        int reward = 5,
+        int energyReward = 5,
+        int hintReward = 0,
         QuestDefinitionId? prerequisiteQuestDefinitionId = null,
         ProgressBaseline progressBaseline = ProgressBaseline.FromSnapshot,
         bool prerequisiteWouldCreateCycle = false) =>
@@ -207,7 +250,8 @@ public class QuestDefinitionTests : TestBase
             description,
             trigger,
             threshold,
-            reward,
+            energyReward,
+            hintReward,
             prerequisiteQuestDefinitionId,
             progressBaseline,
             prerequisiteWouldCreateCycle);

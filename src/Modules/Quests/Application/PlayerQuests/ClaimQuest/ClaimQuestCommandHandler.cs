@@ -49,7 +49,7 @@ internal class ClaimQuestCommandHandler : ICommandHandler<ClaimQuestCommand>
         var counters = await _counterReader.ReadAsync(request.PlayerId, now, cancellationToken);
         var isReadyToClaim = ComputeIsReadyToClaim(quest, definition, counters, now);
 
-        quest.Claim(now, isReadyToClaim, definition.Reward);
+        quest.Claim(now, isReadyToClaim, definition.EnergyReward, definition.HintReward);
     }
 
     private static bool ComputeIsReadyToClaim(

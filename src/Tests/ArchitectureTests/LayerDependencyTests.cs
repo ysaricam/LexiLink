@@ -395,6 +395,67 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Hint",
+                "LexiLink.API"
+            });
+
+        // Hint.Domain — fully isolated; no other module's namespace allowed.
+        yield return new TestCaseData(
+            "Hint.Domain",
+            HintDomainAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Hint.Application",
+                "LexiLink.Modules.Hint.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Dapper",
+                "Npgsql"
+            });
+
+        // Hint.Application MAY reference Players.IntegrationEvents (H2 lazy
+        // init consumer) and Quests.IntegrationEvents (H4 reward consumer)
+        // — granular allows. Other module internals remain forbidden.
+        yield return new TestCaseData(
+            "Hint.Application",
+            HintApplicationAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Hint.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players.Domain",
+                "LexiLink.Modules.Players.Application",
+                "LexiLink.Modules.Players.Infrastructure",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests.Domain",
+                "LexiLink.Modules.Quests.Application",
+                "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Administration",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Npgsql"
+            });
+
+        // Hint.Infrastructure is internal to the module. AdminAuditing
+        // decorator + Administration.IntegrationEvents allow comes in H5.
+        yield return new TestCaseData(
+            "Hint.Infrastructure",
+            HintInfrastructureAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
                 "LexiLink.API"
             });
     }

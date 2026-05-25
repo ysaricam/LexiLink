@@ -35,19 +35,21 @@ public sealed class QuestAdminCommandTests : TestBase
             description: "Toplam 3 oyun tamamla",
             trigger: QuestTrigger.GameCompletedTotal,
             threshold: 3,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 2,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
         var row = await QuerySingleOrDefaultAsync<QuestDefinitionRow>("""
-            SELECT "Id", "Name", "Trigger", "Threshold", "Reward", "ProgressBaseline", "IsActive"
+            SELECT "Id", "Name", "Trigger", "Threshold", "EnergyReward", "HintReward", "ProgressBaseline", "IsActive"
             FROM "quests"."QuestDefinitions" WHERE "Id" = @Id
             """, new { Id = id });
         row.Should().NotBeNull();
         row!.Name.Should().Be("İlk Üç Oyun");
         row.Trigger.Should().Be("GameCompletedTotal");
         row.Threshold.Should().Be(3);
-        row.Reward.Should().Be(5);
+        row.EnergyReward.Should().Be(5);
+        row.HintReward.Should().Be(2);
         row.ProgressBaseline.Should().Be("FromSnapshot");
         row.IsActive.Should().BeTrue();
 
@@ -62,13 +64,11 @@ public sealed class QuestAdminCommandTests : TestBase
         audit.Should().NotBeNull();
         audit!.AdminUserId.Should().Be(AdminId);
         audit.TargetType.Should().Be("Quests.QuestDefinition");
-        // Create allocates the id inside the handler — audit row's TargetId
-        // is null; the created id surfaces in the audit PayloadJson.
         audit.TargetId.Should().BeNull();
     }
 
     [Test]
-    public async Task UpdateQuestDefinition_AsAdmin_ChangesThreshold_AndWritesAuditRow()
+    public async Task UpdateQuestDefinition_AsAdmin_ChangesRewards_AndWritesAuditRow()
     {
         AdminContext.LoginAs(AdminId);
 
@@ -76,17 +76,19 @@ public sealed class QuestAdminCommandTests : TestBase
             questDefinitionId: SeedDailyQuestDefinitionId,
             description: "yeni açıklama",
             threshold: 7,
-            reward: 9,
+            energyReward: 9,
+            hintReward: 3,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
         var row = await QuerySingleOrDefaultAsync<QuestDefinitionRow>("""
-            SELECT "Id", "Name", "Trigger", "Threshold", "Reward", "ProgressBaseline", "IsActive"
+            SELECT "Id", "Name", "Trigger", "Threshold", "EnergyReward", "HintReward", "ProgressBaseline", "IsActive"
             FROM "quests"."QuestDefinitions" WHERE "Id" = @Id
             """, new { Id = SeedDailyQuestDefinitionId });
         row.Should().NotBeNull();
         row!.Threshold.Should().Be(7);
-        row.Reward.Should().Be(9);
+        row.EnergyReward.Should().Be(9);
+        row.HintReward.Should().Be(3);
 
         await ProcessOutboxAsync();
 
@@ -148,7 +150,8 @@ public sealed class QuestAdminCommandTests : TestBase
             questDefinitionId: SeedDailyQuestDefinitionId,
             description: "x",
             threshold: 3,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: SeedDailyQuestDefinitionId,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
@@ -182,7 +185,8 @@ public sealed class QuestAdminCommandTests : TestBase
         string Name,
         string Trigger,
         int Threshold,
-        int Reward,
+        int EnergyReward,
+        int HintReward,
         string ProgressBaseline,
         bool IsActive);
 

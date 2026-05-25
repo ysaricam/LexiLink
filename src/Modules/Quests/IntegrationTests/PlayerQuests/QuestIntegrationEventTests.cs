@@ -78,7 +78,8 @@ public class QuestIntegrationEventTests : TestBase
             description: "1 oyun",
             trigger: QuestTrigger.GameCompletedTotal,
             threshold: 1,
-            reward: 3,
+            energyReward: 3,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
         var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
@@ -86,7 +87,8 @@ public class QuestIntegrationEventTests : TestBase
             description: "3 oyun",
             trigger: QuestTrigger.GameCompletedTotal,
             threshold: 3,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot));
         AdminContext.Logout();
@@ -108,7 +110,8 @@ public class QuestIntegrationEventTests : TestBase
             description: "1 oyun",
             trigger: QuestTrigger.GameCompletedTotal,
             threshold: 1,
-            reward: 3,
+            energyReward: 3,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
         var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
@@ -116,7 +119,8 @@ public class QuestIntegrationEventTests : TestBase
             description: "3 oyun",
             trigger: QuestTrigger.GameCompletedTotal,
             threshold: 3,
-            reward: 5,
+            energyReward: 5,
+            hintReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot));
         AdminContext.Logout();

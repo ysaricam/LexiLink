@@ -36,7 +36,8 @@ public static class AdminQuestEndpoints
                         body.Description,
                         body.Trigger,
                         body.Threshold,
-                        body.Reward,
+                        body.EnergyReward,
+                        body.HintReward,
                         body.PrerequisiteQuestDefinitionId,
                         body.ProgressBaseline),
                     ct);
@@ -54,7 +55,8 @@ public static class AdminQuestEndpoints
                         id,
                         body.Description,
                         body.Threshold,
-                        body.Reward,
+                        body.EnergyReward,
+                        body.HintReward,
                         body.PrerequisiteQuestDefinitionId,
                         body.ProgressBaseline),
                     ct);
@@ -91,7 +93,8 @@ public sealed record CreateQuestDefinitionRequest(
     string Description,
     QuestTrigger Trigger,
     int Threshold,
-    int Reward,
+    int EnergyReward,
+    int HintReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline);
 
@@ -100,6 +103,7 @@ public sealed record CreateQuestDefinitionResponse(Guid Id);
 public sealed record UpdateQuestDefinitionRequest(
     string Description,
     int Threshold,
-    int Reward,
+    int EnergyReward,
+    int HintReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline);

@@ -66,7 +66,8 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
                 "Description",
                 "Trigger",
                 "Threshold",
-                "Reward",
+                "EnergyReward",
+                "HintReward",
                 "PrerequisiteQuestDefinitionId",
                 "ProgressBaseline",
                 "IsActive"
@@ -179,7 +180,8 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
                 qd."Description"              AS "Description",
                 qd."Trigger"                  AS "Trigger",
                 qd."Threshold"                AS "Threshold",
-                qd."Reward"                   AS "Reward"
+                qd."EnergyReward"             AS "EnergyReward",
+                qd."HintReward"               AS "HintReward"
             FROM "quests"."PlayerQuests" AS pq
             INNER JOIN "quests"."QuestDefinitions" AS qd
                 ON qd."Id" = pq."QuestDefinitionId"
@@ -212,7 +214,8 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
             DisplayState: displayState,
             Progress: progress,
             Threshold: row.Threshold,
-            Reward: row.Reward,
+            EnergyReward: row.EnergyReward,
+            HintReward: row.HintReward,
             IssuedAt: DateTime.SpecifyKind(row.IssuedAt, DateTimeKind.Utc),
             ClaimedAt: row.ClaimedAt is null
                 ? null
@@ -267,7 +270,8 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         public string Description { get; init; } = string.Empty;
         public string Trigger { get; init; } = string.Empty;
         public int Threshold { get; init; }
-        public int Reward { get; init; }
+        public int EnergyReward { get; init; }
+        public int HintReward { get; init; }
         public Guid? PrerequisiteQuestDefinitionId { get; init; }
         public string ProgressBaseline { get; init; } = string.Empty;
         public bool IsActive { get; init; }
@@ -287,6 +291,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         public string Description { get; init; } = string.Empty;
         public string Trigger { get; init; } = string.Empty;
         public int Threshold { get; init; }
-        public int Reward { get; init; }
+        public int EnergyReward { get; init; }
+        public int HintReward { get; init; }
     }
 }

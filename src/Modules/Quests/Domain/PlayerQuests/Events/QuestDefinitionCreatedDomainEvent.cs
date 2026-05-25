@@ -8,7 +8,8 @@ public class QuestDefinitionCreatedDomainEvent : DomainEvent
     public string Name { get; }
     public string Trigger { get; }
     public int Threshold { get; }
-    public int Reward { get; }
+    public int EnergyReward { get; }
+    public int HintReward { get; }
     public Guid? PrerequisiteQuestDefinitionId { get; }
     public string ProgressBaseline { get; }
 
@@ -17,7 +18,8 @@ public class QuestDefinitionCreatedDomainEvent : DomainEvent
         string name,
         string trigger,
         int threshold,
-        int reward,
+        int energyReward,
+        int hintReward,
         Guid? prerequisiteQuestDefinitionId,
         string progressBaseline)
     {
@@ -25,7 +27,8 @@ public class QuestDefinitionCreatedDomainEvent : DomainEvent
         Name = name;
         Trigger = trigger;
         Threshold = threshold;
-        Reward = reward;
+        EnergyReward = energyReward;
+        HintReward = hintReward;
         PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         ProgressBaseline = progressBaseline;
     }

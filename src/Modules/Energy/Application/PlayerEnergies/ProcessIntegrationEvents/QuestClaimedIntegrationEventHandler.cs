@@ -18,6 +18,14 @@ internal class QuestClaimedIntegrationEventHandler :
 
     public async Task Handle(QuestClaimedIntegrationEvent integrationEvent, CancellationToken cancellationToken)
     {
+        // Sprint H: the event now carries an EnergyReward + a HintReward.
+        // No-op the energy path when the quest is hint-only, so we don't
+        // run EnsurePlayerEnergyExists / GrantEnergy with a zero amount.
+        if (integrationEvent.EnergyReward <= 0)
+        {
+            return;
+        }
+
         // Defensively ensure the energy aggregate exists. Under normal flow it
         // was already initialized via PlayerRegisteredIntegrationEvent, but quest
         // claims can race with that init under retries; EnsurePlayerEnergyExists
@@ -27,7 +35,7 @@ internal class QuestClaimedIntegrationEventHandler :
             cancellationToken);
 
         await _energyModule.ExecuteCommandAsync(
-            new GrantEnergyCommand(integrationEvent.PlayerId, integrationEvent.Reward),
+            new GrantEnergyCommand(integrationEvent.PlayerId, integrationEvent.EnergyReward),
             cancellationToken);
     }
 }
