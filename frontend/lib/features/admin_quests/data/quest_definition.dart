@@ -9,6 +9,8 @@ class QuestDefinition {
     required this.threshold,
     required this.energyReward,
     required this.hintReward,
+    required this.undoReward,
+    required this.resetReward,
     required this.progressBaseline,
     required this.isActive,
     this.prerequisiteQuestDefinitionId,
@@ -23,6 +25,8 @@ class QuestDefinition {
       threshold: json['threshold'] as int,
       energyReward: json['energyReward'] as int,
       hintReward: json['hintReward'] as int,
+      undoReward: json['undoReward'] as int,
+      resetReward: json['resetReward'] as int,
       prerequisiteQuestDefinitionId:
           json['prerequisiteQuestDefinitionId'] as String?,
       progressBaseline:
@@ -38,6 +42,8 @@ class QuestDefinition {
   final int threshold;
   final int energyReward;
   final int hintReward;
+  final int undoReward;
+  final int resetReward;
   final String? prerequisiteQuestDefinitionId;
   final ProgressBaseline progressBaseline;
   final bool isActive;

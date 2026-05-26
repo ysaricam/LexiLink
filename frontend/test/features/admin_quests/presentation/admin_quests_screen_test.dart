@@ -44,7 +44,7 @@ void main() {
             '"name":"Daily Three",'
             '"description":"Three today",'
             '"trigger":"GameCompletedDaily",'
-            '"threshold":3,"energyReward":15,"hintReward":0,'
+            '"threshold":3,"energyReward":15,"hintReward":0,"undoReward":0,"resetReward":0,'
             '"prerequisiteQuestDefinitionId":null,'
             '"progressBaseline":"FromSnapshot",'
             '"isActive":true}'

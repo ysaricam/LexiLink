@@ -27,7 +27,7 @@ void main() {
           '"name":"Daily Three",'
           '"description":"Three games today",'
           '"trigger":"GameCompletedDaily",'
-          '"threshold":3,"energyReward":15,"hintReward":0,'
+          '"threshold":3,"energyReward":15,"hintReward":0,"undoReward":0,"resetReward":0,'
           '"prerequisiteQuestDefinitionId":null,'
           '"progressBaseline":"FromSnapshot",'
           '"isActive":true},'
@@ -35,7 +35,7 @@ void main() {
           '"name":"Bronz",'
           '"description":"",'
           '"trigger":"GameCompletedTotal",'
-          '"threshold":3,"energyReward":0,"hintReward":2,'
+          '"threshold":3,"energyReward":0,"hintReward":2,"undoReward":1,"resetReward":1,'
           '"prerequisiteQuestDefinitionId":"00000000-0000-0000-0000-000000000001",'
           '"progressBaseline":"FromExistingTotal",'
           '"isActive":false}'
@@ -67,6 +67,8 @@ void main() {
         expect(req.body, contains('"threshold":1'));
         expect(req.body, contains('"energyReward":5'));
         expect(req.body, contains('"hintReward":2'));
+        expect(req.body, contains('"undoReward":0'));
+        expect(req.body, contains('"resetReward":0'));
         expect(req.body, contains('"progressBaseline":"FromSnapshot"'));
         return http.Response(
           '{"id":"00000000-0000-0000-0000-000000000099"}',
@@ -81,6 +83,8 @@ void main() {
         threshold: 1,
         energyReward: 5,
         hintReward: 2,
+        undoReward: 0,
+        resetReward: 0,
         progressBaseline: ProgressBaseline.fromSnapshot,
       );
 
@@ -98,6 +102,8 @@ void main() {
         expect(req.body, contains('"threshold":7'));
         expect(req.body, contains('"energyReward":42'));
         expect(req.body, contains('"hintReward":1'));
+        expect(req.body, contains('"undoReward":0'));
+        expect(req.body, contains('"resetReward":0'));
         expect(req.body, contains('"prerequisiteQuestDefinitionId":null'));
         expect(req.body, contains('"progressBaseline":"FromSnapshot"'));
         return http.Response('', 204);
@@ -109,6 +115,8 @@ void main() {
         threshold: 7,
         energyReward: 42,
         hintReward: 1,
+        undoReward: 0,
+        resetReward: 0,
         progressBaseline: ProgressBaseline.fromSnapshot,
       );
     });

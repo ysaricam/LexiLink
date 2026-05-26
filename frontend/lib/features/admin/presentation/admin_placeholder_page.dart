@@ -4,6 +4,8 @@ import 'package:lexilink_app/features/admin_energy/presentation/admin_energy_scr
 import 'package:lexilink_app/features/admin_hint/presentation/admin_hint_screen.dart';
 import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
+import 'package:lexilink_app/features/admin_reset/presentation/admin_reset_screen.dart';
+import 'package:lexilink_app/features/admin_undo/presentation/admin_undo_screen.dart';
 
 /// Thin route-target wrappers consumed by the admin ShellRoute. Each
 /// returns the feature's real screen; this layer exists so the router
@@ -35,6 +37,20 @@ class AdminHintPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const AdminHintScreen();
+}
+
+class AdminUndoPage extends StatelessWidget {
+  const AdminUndoPage({super.key});
+
+  @override
+  Widget build(BuildContext context) => const AdminUndoScreen();
+}
+
+class AdminResetPage extends StatelessWidget {
+  const AdminResetPage({super.key});
+
+  @override
+  Widget build(BuildContext context) => const AdminResetScreen();
 }
 
 class AdminAuditPage extends StatelessWidget {

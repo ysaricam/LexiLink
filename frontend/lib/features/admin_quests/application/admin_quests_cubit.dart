@@ -37,6 +37,8 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
     required int threshold,
     required int energyReward,
     required int hintReward,
+    required int undoReward,
+    required int resetReward,
     required ProgressBaseline progressBaseline,
     String? prerequisiteQuestDefinitionId,
   }) async {
@@ -49,6 +51,8 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
         threshold: threshold,
         energyReward: energyReward,
         hintReward: hintReward,
+        undoReward: undoReward,
+        resetReward: resetReward,
         progressBaseline: progressBaseline,
         prerequisiteQuestDefinitionId: prerequisiteQuestDefinitionId,
       );
@@ -67,6 +71,8 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
     required int threshold,
     required int energyReward,
     required int hintReward,
+    required int undoReward,
+    required int resetReward,
     required ProgressBaseline progressBaseline,
     String? prerequisiteQuestDefinitionId,
   }) async {
@@ -78,6 +84,8 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
         threshold: threshold,
         energyReward: energyReward,
         hintReward: hintReward,
+        undoReward: undoReward,
+        resetReward: resetReward,
         progressBaseline: progressBaseline,
         prerequisiteQuestDefinitionId: prerequisiteQuestDefinitionId,
       );

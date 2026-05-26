@@ -78,6 +78,14 @@ final appRouter = GoRouter(
           builder: (context, state) => const AdminHintPage(),
         ),
         GoRoute(
+          path: '/admin/undo',
+          builder: (context, state) => const AdminUndoPage(),
+        ),
+        GoRoute(
+          path: '/admin/reset',
+          builder: (context, state) => const AdminResetPage(),
+        ),
+        GoRoute(
           path: '/admin/audit',
           builder: (context, state) => const AdminAuditPage(),
         ),

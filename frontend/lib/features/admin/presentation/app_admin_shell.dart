@@ -55,6 +55,18 @@ class _AppAdminShellState extends State<AppAdminShell> {
       route: '/admin/hint',
     ),
     _AdminDestination(
+      label: 'Undo',
+      icon: Icons.undo,
+      selectedIcon: Icons.undo,
+      route: '/admin/undo',
+    ),
+    _AdminDestination(
+      label: 'Reset',
+      icon: Icons.restart_alt,
+      selectedIcon: Icons.restart_alt,
+      route: '/admin/reset',
+    ),
+    _AdminDestination(
       label: 'Audit',
       icon: Icons.fact_check_outlined,
       selectedIcon: Icons.fact_check,

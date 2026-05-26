@@ -283,8 +283,8 @@ class _QuestTile extends StatelessWidget {
                     color: colorScheme.onSurfaceVariant,
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+                Wrap(
+                  spacing: 8,
                   children: [
                     if (quest.energyReward > 0)
                       Text(
@@ -293,13 +293,25 @@ class _QuestTile extends StatelessWidget {
                           color: colorScheme.primary,
                         ),
                       ),
-                    if (quest.energyReward > 0 && quest.hintReward > 0)
-                      const SizedBox(width: 8),
                     if (quest.hintReward > 0)
                       Text(
                         '+${quest.hintReward}💡',
                         style: textTheme.labelLarge?.copyWith(
                           color: colorScheme.tertiary,
+                        ),
+                      ),
+                    if (quest.undoReward > 0)
+                      Text(
+                        '+${quest.undoReward}↶',
+                        style: textTheme.labelLarge?.copyWith(
+                          color: colorScheme.secondary,
+                        ),
+                      ),
+                    if (quest.resetReward > 0)
+                      Text(
+                        '+${quest.resetReward}↻',
+                        style: textTheme.labelLarge?.copyWith(
+                          color: colorScheme.error,
                         ),
                       ),
                   ],

@@ -198,6 +198,8 @@ class _AdminQuestsView extends StatelessWidget {
       threshold: result.threshold,
       energyReward: result.energyReward,
       hintReward: result.hintReward,
+      undoReward: result.undoReward,
+      resetReward: result.resetReward,
       progressBaseline: result.progressBaseline,
       prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );
@@ -241,6 +243,20 @@ class _QuestRow extends StatelessWidget {
             _RewardBadge(
               label: '+${definition.hintReward}💡',
               color: Theme.of(context).colorScheme.tertiary,
+            ),
+            const SizedBox(width: 4),
+          ],
+          if (definition.undoReward > 0) ...[
+            _RewardBadge(
+              label: '+${definition.undoReward}↶',
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+            const SizedBox(width: 4),
+          ],
+          if (definition.resetReward > 0) ...[
+            _RewardBadge(
+              label: '+${definition.resetReward}↻',
+              color: Theme.of(context).colorScheme.error,
             ),
             const SizedBox(width: 4),
           ],
@@ -295,6 +311,8 @@ class _QuestRow extends StatelessWidget {
       threshold: result.threshold,
       energyReward: result.energyReward,
       hintReward: result.hintReward,
+      undoReward: result.undoReward,
+      resetReward: result.resetReward,
       progressBaseline: result.progressBaseline,
       prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );

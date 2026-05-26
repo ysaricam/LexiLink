@@ -46,7 +46,7 @@ const _oneDailyDef = '['
     '"name":"Daily Three",'
     '"description":"Three today",'
     '"trigger":"GameCompletedDaily",'
-    '"threshold":3,"energyReward":15,"hintReward":0,'
+    '"threshold":3,"energyReward":15,"hintReward":0,"undoReward":0,"resetReward":0,'
     '"prerequisiteQuestDefinitionId":null,'
     '"progressBaseline":"FromSnapshot",'
     '"isActive":true}'
@@ -106,6 +106,8 @@ void main() {
         threshold: 3,
         energyReward: 15,
         hintReward: 0,
+        undoReward: 0,
+        resetReward: 0,
         progressBaseline: ProgressBaseline.fromSnapshot,
       ),
       verify: (cubit) {
@@ -125,7 +127,7 @@ void main() {
                 '"name":"Daily Three",'
                 '"description":"Three today",'
                 '"trigger":"GameCompletedDaily",'
-                '"threshold":3,"energyReward":15,"hintReward":0,'
+                '"threshold":3,"energyReward":15,"hintReward":0,"undoReward":0,"resetReward":0,'
                 '"prerequisiteQuestDefinitionId":null,'
                 '"progressBaseline":"FromSnapshot",'
                 '"isActive":false}'
@@ -156,6 +158,8 @@ void main() {
         threshold: 5,
         energyReward: 25,
         hintReward: 0,
+        undoReward: 0,
+        resetReward: 0,
         progressBaseline: ProgressBaseline.fromSnapshot,
       ),
       verify: (cubit) {

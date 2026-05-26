@@ -17,6 +17,12 @@ import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
 import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
 import 'package:lexilink_app/features/hint/data/hint_repository.dart';
 import 'package:lexilink_app/features/hint/presentation/hint_badge.dart';
+import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
+import 'package:lexilink_app/features/undo/data/undo_repository.dart';
+import 'package:lexilink_app/features/undo/presentation/undo_badge.dart';
+import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
+import 'package:lexilink_app/features/reset/data/reset_repository.dart';
+import 'package:lexilink_app/features/reset/presentation/reset_badge.dart';
 import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/session/application/session_cubit.dart';
@@ -94,6 +100,8 @@ class _HomeProvidersState extends State<_HomeProviders> {
   late final CategoryListCubit _categoryListCubit;
   late final EnergyCubit _energyCubit;
   late final HintCubit _hintCubit;
+  late final UndoCubit _undoCubit;
+  late final ResetCubit _resetCubit;
   late final GameStartCubit _gameStartCubit;
 
   @override
@@ -120,6 +128,12 @@ class _HomeProvidersState extends State<_HomeProviders> {
     _hintCubit = HintCubit(
       hintRepository: HintRepository(apiClient: apiClient),
     );
+    _undoCubit = UndoCubit(
+      undoRepository: UndoRepository(apiClient: apiClient),
+    );
+    _resetCubit = ResetCubit(
+      resetRepository: ResetRepository(apiClient: apiClient),
+    );
     _gameStartCubit = GameStartCubit(
       gameRepository: GameRepository(apiClient: apiClient),
       tokenStore: widget.tokenStore,
@@ -131,6 +145,8 @@ class _HomeProvidersState extends State<_HomeProviders> {
   @override
   void dispose() {
     _gameStartCubit.close();
+    _resetCubit.close();
+    _undoCubit.close();
     _hintCubit.close();
     _energyCubit.close();
     _categoryListCubit.close();
@@ -149,6 +165,8 @@ class _HomeProvidersState extends State<_HomeProviders> {
         BlocProvider.value(value: _categoryListCubit),
         BlocProvider.value(value: _energyCubit),
         BlocProvider.value(value: _hintCubit),
+        BlocProvider.value(value: _undoCubit),
+        BlocProvider.value(value: _resetCubit),
         BlocProvider.value(value: _gameStartCubit),
       ],
       child: const _HomeView(),
@@ -181,6 +199,8 @@ class _HomeView extends StatelessWidget {
               context.read<CategoryListCubit>().loadCategories();
               context.read<EnergyCubit>().loadEnergy();
               context.read<HintCubit>().loadHint();
+              context.read<UndoCubit>().loadUndo();
+              context.read<ResetCubit>().loadReset();
             }
           },
         ),
@@ -226,6 +246,10 @@ class _HomeScaffold extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  ResetBadge(),
+                  SizedBox(width: 8),
+                  UndoBadge(),
+                  SizedBox(width: 8),
                   HintBadge(),
                   SizedBox(width: 8),
                   EnergyBadge(),

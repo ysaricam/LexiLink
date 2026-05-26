@@ -16,6 +16,8 @@ class QuestDefinitionFormResult {
     required this.threshold,
     required this.energyReward,
     required this.hintReward,
+    required this.undoReward,
+    required this.resetReward,
     required this.progressBaseline,
     this.prerequisiteQuestDefinitionId,
   });
@@ -26,6 +28,8 @@ class QuestDefinitionFormResult {
   final int threshold;
   final int energyReward;
   final int hintReward;
+  final int undoReward;
+  final int resetReward;
   final ProgressBaseline progressBaseline;
   final String? prerequisiteQuestDefinitionId;
 }
@@ -57,6 +61,8 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
   late final TextEditingController _thresholdController;
   late final TextEditingController _energyRewardController;
   late final TextEditingController _hintRewardController;
+  late final TextEditingController _undoRewardController;
+  late final TextEditingController _resetRewardController;
   final _formKey = GlobalKey<FormState>();
 
   QuestTrigger? _trigger;
@@ -79,6 +85,10 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
         TextEditingController(text: initial?.energyReward.toString() ?? '0');
     _hintRewardController =
         TextEditingController(text: initial?.hintReward.toString() ?? '0');
+    _undoRewardController =
+        TextEditingController(text: initial?.undoReward.toString() ?? '0');
+    _resetRewardController =
+        TextEditingController(text: initial?.resetReward.toString() ?? '0');
     _trigger = initial?.trigger;
     _progressBaseline = initial?.progressBaseline ?? ProgressBaseline.fromSnapshot;
     _prerequisiteId = initial?.prerequisiteQuestDefinitionId;
@@ -91,6 +101,8 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     _thresholdController.dispose();
     _energyRewardController.dispose();
     _hintRewardController.dispose();
+    _undoRewardController.dispose();
+    _resetRewardController.dispose();
     super.dispose();
   }
 
@@ -208,6 +220,34 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _undoRewardController,
+                      decoration: const InputDecoration(
+                        labelText: 'Geri al ödülü ↶',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: _validateNonNegative,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: TextFormField(
+                      controller: _resetRewardController,
+                      decoration: const InputDecoration(
+                        labelText: 'Sıfırla ödülü ↻',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.number,
+                      validator: _validateNonNegative,
+                    ),
+                  ),
+                ],
+              ),
               if (_rewardSumError != null) ...[
                 const SizedBox(height: 4),
                 Text(
@@ -293,11 +333,14 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     final formValid = _formKey.currentState!.validate();
     final energy = int.tryParse(_energyRewardController.text.trim()) ?? -1;
     final hint = int.tryParse(_hintRewardController.text.trim()) ?? -1;
-    final atLeastOnePositive = energy > 0 || hint > 0;
+    final undo = int.tryParse(_undoRewardController.text.trim()) ?? -1;
+    final reset = int.tryParse(_resetRewardController.text.trim()) ?? -1;
+    final atLeastOnePositive =
+        energy > 0 || hint > 0 || undo > 0 || reset > 0;
     setState(() {
       _rewardSumError = atLeastOnePositive
           ? null
-          : 'En az bir ödül (enerji veya ipucu) > 0 olmalı.';
+          : 'En az bir ödül (enerji, ipucu, geri al, sıfırla) > 0 olmalı.';
     });
     if (!formValid || !atLeastOnePositive) return;
     Navigator.of(context).pop(
@@ -308,6 +351,8 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
         threshold: int.parse(_thresholdController.text.trim()),
         energyReward: energy,
         hintReward: hint,
+        undoReward: undo,
+        resetReward: reset,
         progressBaseline: _progressBaseline,
         prerequisiteQuestDefinitionId: _prerequisiteId,
       ),

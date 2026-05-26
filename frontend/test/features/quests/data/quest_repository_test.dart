@@ -36,6 +36,8 @@ void main() {
     "threshold": 1,
     "energyReward": 3,
     "hintReward": 0,
+    "undoReward": 0,
+    "resetReward": 0,
     "issuedAt": "2026-05-15T09:00:00Z",
     "claimedAt": null,
     "expiresAt": null
@@ -52,6 +54,8 @@ void main() {
     "threshold": 3,
     "energyReward": 5,
     "hintReward": 2,
+    "undoReward": 1,
+    "resetReward": 0,
     "issuedAt": "2026-05-15T09:00:00Z",
     "claimedAt": null,
     "expiresAt": "2026-05-16T00:00:00Z"
