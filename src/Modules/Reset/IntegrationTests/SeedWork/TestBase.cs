@@ -8,6 +8,7 @@ using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Common.Infrastructure.Time;
+using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
 using LexiLink.Modules.Reset.Application.Contracts;
 using LexiLink.Modules.Reset.Infrastructure;
@@ -53,6 +54,7 @@ public abstract class TestBase
         services.AddSingleton<IConfiguration>(new ConfigurationBuilder().Build());
         PlayersStartup.Initialize(services, _connectionString);
         ResetStartup.Initialize(services, _connectionString);
+        AdministrationStartup.Initialize(services, _connectionString);
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IMediator).Assembly));
         services.AddSingleton<IExecutionContextAccessor>(new TestExecutionContextAccessor());
         services.AddSingleton<TestAdminAuthorizationContext>();
@@ -64,6 +66,7 @@ public abstract class TestBase
         containerBuilder.Populate(services);
         PlayersStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
         ResetStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
+        AdministrationStartup.InitializeCompositionRoot(containerBuilder, _connectionString);
 
         _container = containerBuilder.Build();
     }
@@ -129,6 +132,7 @@ public abstract class TestBase
         await connection.OpenAsync();
 
         await connection.ExecuteAsync("""
+            DELETE FROM "administration"."AdminActionAudit";
             DELETE FROM "reset"."OutboxMessages";
             DELETE FROM "reset"."PlayerResetInventories";
             DELETE FROM "players"."PlayerAuthIdentities";

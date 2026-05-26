@@ -4,13 +4,115 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
-## Sprint UR — Undo + Reset Modules (started 2026-05-26)
+## Sprint UR — Undo + Reset Modules + Quest 4-Reward (2026-05-26, closed)
 
-Ninth full-stack sprint. Goal: extract Undo and Reset into two new
-Kamil-faithful inventory modules, remove their per-game free quota from
-Games, and later expand quest rewards from `(Energy, Hint)` to
-`(Energy, Hint, Undo, Reset)`. Detailed plan lives in
-`ROADMAP.md > Sprint UR — Undo + Reset Modules`.
+Ninth full-stack sprint. Extracted Undo and Reset into two new
+Kamil-faithful inventory modules, **eliminated** their per-game free
+quota from Games (unlike Hint, every call goes through the sync
+gateway), and expanded quest rewards from `(Energy, Hint)` to
+`(Energy, Hint, Undo, Reset)`. Eight slices delivered in four
+commits — UR1–UR5 bulk (`ba9e42d`), UR6 admin (`725c7d2`), UR7
+frontend (`277fcad`), UR8 admin IT tests + docs (this commit).
+
+Final quality gate: **464 .NET tests + 103 Flutter tests green**.
+Detailed plan in `ROADMAP.md > Sprint UR`; per-slice delivery
+notes below; frontend slice detail in
+`frontendProgress.md > Slice UR7`.
+
+### Slice UR8 — Admin command IT tests + docs (2026-05-26, this commit)
+
+- New `UndoAdminCommandTests` + `ResetAdminCommandTests` mirror
+  `HintAdminCommandTests`: NonAdmin reject, Set / GrantBonus /
+  Reset with audit row assertions. 8 cases total.
+- Undo.IT + Reset.IT `TestBase` extended with
+  `AdministrationStartup` boot and
+  `administration.AdminActionAudit` cleanup so the outbox-
+  published audit row actually lands in the test DB.
+- Final backend test count: **464 pass** (Hint 27, Undo 29, Reset
+  29).
+- Docs polish: this `progress.md` entry; `activeContext.md > Active
+  Sprint` pivots from "planning closed" to "Sprint UR closed";
+  `GLOSSARY.md` updates for `QuestDefinition` 4-reward,
+  `PlayerQuest.Claim` 4-arg, `QuestClaimedIntegrationEvent`
+  4-consumer fan-out, widened
+  `QuestRewardMustHaveAtLeastOnePositiveRule`;
+  `frontendActiveContext.md` + `frontendProgress.md > Slice UR7`
+  added.
+- Manual verification: operator runs four golden flows — single-
+  reward quest claim × 4 (one per reward type), mixed-reward
+  quest, empty-inventory fall-through rejection, admin Set / Grant
+  / Reset on both new consoles with audit log assertions.
+
+### Slice UR7 — Frontend reshape (2026-05-26, 277fcad)
+
+See `frontendProgress.md > Slice UR7` for the full slice.
+Highlights:
+
+- Two new player features (`lib/features/undo/` +
+  `lib/features/reset/`) and two new admin consoles
+  (`lib/features/admin_undo/` + `lib/features/admin_reset/`).
+- HomeScreen now hosts **4** badges in the top-right row (Reset /
+  Undo / Hint / Energy). Each uses a distinct M3 color token so
+  the four inventories are visually distinguishable at a glance.
+- Admin quest form gains 2 new number inputs (Geri al ↶ + Sıfırla
+  ↻); form-level at-least-one-positive rule spans all four
+  rewards.
+- Player quest tile switched from a fixed Row to `Wrap` so all 4
+  reward badges flow on narrow screens.
+- 5 quest-area test files reshaped to include `undoReward` +
+  `resetReward`. 103/103 Flutter tests pass; `flutter analyze`
+  shows no new errors.
+
+### Slice UR6 — Admin operations + GET endpoints + audit (2026-05-26, 725c7d2)
+
+- 6 new admin commands (Set / GrantBonus / Reset per module)
+  marked `IAdminCommand` with `AuditTargetType =
+  "{Undo,Reset}.PlayerXInventory"`. `ResetPlayerResetCommand`'s
+  double-Reset naming is intentional (outer verb, inner
+  aggregate).
+- 2 new player queries (`GetPlayer{Undo,Reset}Query` + handler +
+  Dapper SQL + `PlayerXSnapshotDto`).
+- 7th + 8th per-module copies of
+  `AdminAuditingCommandHandlerDecorator`.
+  `{Undo,Reset}AdminActionPerformedNotification` + handler
+  publishes `AdminActionPerformedIntegrationEvent` through each
+  module's own outbox.
+  `{Undo,Reset}.Infrastructure.csproj` add granular
+  references to `Administration.IntegrationEvents`; ArchTests
+  updated to allow.
+- API endpoints: `GET /undo/me`, `GET /reset/me` (player);
+  `GET /admin/players/{id}/{undo,reset}` +
+  `POST .../{set,grant,reset}` (admin). Program.cs wires all
+  four MapXEndpoints calls.
+
+### Slice UR5 — Quest 4-reward (destructive) (2026-05-26, part of ba9e42d)
+
+- `QuestDefinition._undoReward + _resetReward`; `Create` +
+  `Update` signatures expand to 4 reward parameters.
+- `QuestRewardMustHaveAtLeastOnePositiveRule` widens across all
+  4 fields — each ≥ 0, at least one > 0.
+- `PlayerQuestClaimedDomainEvent` + `QuestClaimedIntegrationEvent`
+  carry all 4 reward fields.
+- `PlayerQuest.Claim(now, ready, energyReward, hintReward,
+  undoReward, resetReward)`.
+- 2 new outbox consumers in
+  `Undo.Application/PlayerUndoInventories/ProcessIntegrationEvents/`
+  and the Reset twin: each guards on its reward's positivity and
+  dispatches `Grant{Undo,Reset}Command` (which calls
+  `Player*Inventory.GrantBonus` — same over-cap-allowed bonus
+  semantics as Hint).
+- `GrantUndoCommand` + `GrantResetCommand` added.
+- DbUp `quests/050_ExpandQuestRewardsWithUndoReset.sql` —
+  idempotent ALTER ADD COLUMN with `IF NOT EXISTS`. Canonical
+  `020_QuestDefinitions.sql` + `021_SeedQuestDefinitions.sql`
+  also updated for cold-start DBs.
+- All admin Quest commands / validators / DTOs / endpoint
+  requests + EF mapping + outbox notification + integration
+  events reshape to carry 4 reward fields. Existing
+  `QuestRewardDeliveryTests` in Energy.IT + Hint.IT now assert
+  the 4-field shape; new `QuestRewardDeliveryTests` in Undo.IT +
+  Reset.IT verify the new consumers fire only when their
+  reward field is > 0.
 
 ### Slice UR4 — Sync gateway integration (2026-05-26, working tree)
 

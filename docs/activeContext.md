@@ -10,16 +10,19 @@ uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 
 ## Active Sprint
 
-**Sprint UR — Undo + Reset Modules — implementation active.** UR1 →
-UR4 kapandı: Games aggregate artık Undo/Reset per-game allowance
-tutmuyor; `_undosUsed` + `_resetsUsed` plain counter olarak kaldı,
-`Modules/Undo/` + `Modules/Reset/` foundation'ları Hint kalıbıyla
-solution'a eklendi ve `PlayerRegisteredIntegrationEvent` sonrası iki
-inventory lazy-init oluyor. API host `IUndoGuard` / `IResetGuard`
-adapter'ları artık gerçek Undo/Reset module consume command'lerini
-çağırıyor. Sıradaki slice **UR5 — Quest 4-reward destructive**.
-Sprintin kalan hedefi `QuestReward`'ı 4 alana çıkarmak (`Energy +
-Hint + Undo + Reset`) ve admin/frontend yüzeylerini buna bağlamak.
+**Sprint UR — Undo + Reset Modules + Quest 4-Reward — closed
+end-to-end.** Sekiz slice (UR1 → UR8) 2026-05-26 günü dört commit
+ile teslim edildi: UR1-UR5 bulk (`ba9e42d`), UR6 admin
+(`725c7d2`), UR7 frontend (`277fcad`), UR8 admin IT + docs (bu
+oturumun son commit'i). Game aggregate'inden `UndoAllowance` +
+`ResetAllowance` VO'ları + ilgili rule'lar silindi; `_undosUsed` +
+`_resetsUsed` plain int counter olarak istatistik için kaldı. Her
+`Game.UseUndo()` ve `Game.ResetToStart()` çağrısı doğrudan
+`IUndoGuard` / `IResetGuard` sync gateway'ine gider — Hint'tekinden
+farklı olarak hiç branching yok. `QuestReward` 4 alana çıkıldı
+(`Energy + Hint + Undo + Reset`); 4 outbox consumer her biri kendi
+reward'ında > 0 guard'ı yapar. Final quality gate **464 .NET +
+103 Flutter tests pass**.
 
 **Tasarım kararları (kilitli):**
 
@@ -54,10 +57,10 @@ Hint + Undo + Reset`) ve admin/frontend yüzeylerini buna bağlamak.
 | UR2 ✅ | İki modül foundation (Hint scaffolding x2). |
 | UR3 ✅ | Lazy init from PlayerRegistered. |
 | UR4 ✅ | Real IUndoGuard + IResetGuard API host adapter'ları + Games.IT'de Recording*Guard + fall-through integration tests. |
-| UR5 ⏭ | Quest 4-reward destructive (QuestDefinition + PlayerQuest + IntegrationEvent reshape + iki yeni consumer + grant commands + DbUp). |
-| UR6 | Admin Set/Grant/Reset + audit + GET endpoints (`/{undo,reset}/me` + `/admin/players/{id}/{undo,reset}/*`). |
-| UR7 | Frontend (4 badge HomeScreen, 4 reward quest form, 2 admin console, undo+reset player feature). |
-| UR8 | Tests + quality gate + manuel verification (4 golden flow) + docs. |
+| UR5 ✅ | Quest 4-reward destructive (QuestDefinition + PlayerQuest + IntegrationEvent reshape + iki yeni consumer + grant commands + DbUp). |
+| UR6 ✅ | Admin Set/Grant/Reset + audit + GET endpoints (`/{undo,reset}/me` + `/admin/players/{id}/{undo,reset}/*`). |
+| UR7 ✅ | Frontend (4 badge HomeScreen, 4 reward quest form, 2 admin console, undo+reset player feature). |
+| UR8 ✅ | Tests + quality gate + manuel verification (4 golden flow) + docs. |
 
 **Manuel verification scope:**
 
@@ -100,6 +103,30 @@ Sprint UR — Undo + Reset Modules`.
   tests proving every in-game Undo/Reset call invokes the gateway.
   Undo/Reset integration tests now cover consume success and empty
   balance rejection. No DbUp migration was needed.
+- **Quest 4-reward destructive (UR5).** `QuestDefinition` gains
+  `_undoReward + _resetReward`; `Create` / `Update` 4-arg;
+  `QuestRewardMustHaveAtLeastOnePositiveRule` widens.
+  `PlayerQuestClaimedDomainEvent` + `QuestClaimedIntegrationEvent`
+  4 reward fields. 2 new outbox consumers
+  (Undo.Application + Reset.Application), each guarding on its
+  reward > 0. DbUp `quests/050_ExpandQuestRewardsWithUndoReset.sql`
+  idempotent ALTER ADD COLUMN. Admin Quest commands / endpoints /
+  EF mapping reshape.
+- **Admin operations + GET endpoints + audit (UR6).** 6 new admin
+  commands (Set / GrantBonus / Reset per module) + 2 new player
+  queries; 7th + 8th per-module `AdminAuditingCommandHandler` +
+  audit notification + handler. API endpoints:
+  `GET /{undo,reset}/me` and `/admin/players/{id}/{undo,reset}/*`.
+- **Frontend reshape (UR7).** 2 new player features
+  (`features/undo/` + `features/reset/`) + 2 new admin consoles;
+  HomeScreen 4-badge row; admin quest form 4 reward inputs;
+  player quest tile `Wrap` for 4 badges. 5 test fixtures
+  reshape.
+- **Admin command IT + docs (UR8).** `UndoAdminCommandTests` +
+  `ResetAdminCommandTests` mirror Hint H7's
+  `HintAdminCommandTests`. Undo.IT + Reset.IT TestBase
+  extended with AdministrationStartup so audit rows land in
+  the test DB. Docs polish.
 
 ### Recently closed (Sprint H session, 2026-05-25 → 2026-05-26)
 
@@ -569,49 +596,29 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Sprint UR — Undo + Reset Modules — UR1 → UR4 kapandı.** Sekiz
-slice'ın detayı `ROADMAP.md > Sprint UR` içinde kilitli. Slice sırası
-UR1 → UR8.
+**Sprint UR kapandı.** Sekiz slice (UR1 → UR8) tamamı dört commit
+ile teslim edildi. Manuel doğrulama operator tarafından yapıldı.
+Quality gate 464/464 .NET + 103/103 Flutter.
 
-Sıradaki somut adım: **UR5 — Quest 4-reward destructive.**
+Sıradaki sprint adayları (UR sonrası backlog'undan):
 
-UR5 scope:
-
-- Quests reward shape'i 4 alana genişlet:
-  `EnergyReward`, `HintReward`, `UndoReward`, `ResetReward`.
-- `QuestRewardMustHaveAtLeastOnePositiveRule` dört alanı kapsamalı:
-  hepsi `>= 0`, en az biri `> 0`.
-- `QuestDefinition.Create/Update`, EF mapping, DTO/request/endpoint,
-  admin command validator'ları ve tests dört reward alanına taşınmalı.
-- `PlayerQuest.Claim` ve `PlayerQuestClaimedDomainEvent` dört reward
-  taşımalı; `QuestClaimedIntegrationEvent` public contract'ı da aynı
-  şekilde reshape edilmeli.
-- Undo/Reset Application yeni `Quests.IntegrationEvents` consumer'ları
-  ekleyecek; her consumer kendi reward'ı `> 0` ise
-  `Grant{Undo,Reset}Command` dispatch edecek.
-- `GrantUndoCommand` + `GrantResetCommand` aggregate `GrantBonus`
-  path'ini kullanmalı.
-- DbUp: `quests/Tables/050_ExpandQuestRewardsWithUndoReset.sql`
-  idempotent destructive ALTER; existing rows için yeni reward
-  kolonları default 0.
-- Architecture tests: Undo/Reset Application için
-  `Quests.IntegrationEvents` granular allow ekle; Quests module diğer
-  reward module internals'ına bağımlı kalmamalı.
-- Quality gate: `dotnet build LexiLink.sln`, Quests/Undo/Reset/Energy/
-  Hint targeted tests, ArchitectureTests, full `./scripts/test.sh`.
-
-UR4 acceptance geçti: `dotnet build LexiLink.sln --no-restore
---disable-build-servers -m:1 /clp:ErrorsOnly` yeşil ve
-`./scripts/test.sh --no-restore --no-build /clp:ErrorsOnly` yeşil.
-UR4 yeni migration gerektirmedi; UR1 + UR2 DbUp migration'ları local
-`lexilink` DB'de uygulanmış durumda.
-
-Sıradaki tüm sprint adayları (UR sonrası) `ROADMAP.md > Beyond
-Sprint 7` ve önceki notlardaki backlog kalemleri:
-
-- Power-up / shop ekonomisi (4 inventory artık ayrı para birimi).
-- Quest yeni trigger türleri (StreakReached, CategoryMastered).
-- Tutorial flow.
+- **Power-up / shop ekonomisi.** 4 inventory (Energy, Hint, Undo,
+  Reset) artık ayrı para birimi gibi davranıyor — satın alma /
+  IAP / reklam-bazlı bonus akışları doğal sonraki adım. Shop
+  ekranı + reward catalog'una price + currency type eklenmesi.
+- **Quest yeni trigger türleri.** `StreakReached`,
+  `CategoryMastered`, `LeaderboardReached`. Her biri
+  `IQuestCounterReader` adapter'ına yeni read path ekler;
+  `QuestTrigger` enum genişler.
+- **Tutorial flow.** Yeni guest player için 1-2 puzzle'lık
+  rehberli giriş; "Hint öğren", "Undo öğren", "Reset öğren"
+  tarzı sıfır-zorluk puzzle'larıyla.
+- **Game scoring formula reshape.** Scoring şu an Hint allowance
+  kullanımına bağlı; Undo/Reset counter'ları artık inventory
+  consumption'a karşılık geliyor. Score formülünün 4 inventory
+  arasında nasıl ayrılacağını gözden geçirmek (önceden Undo/Reset
+  ücretsizdi, şimdi player envanteri tüketiyorlar — penalty
+  semantik değişti).
 
 ---
 

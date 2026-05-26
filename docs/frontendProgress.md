@@ -5,6 +5,111 @@ yeniden yazilmaz.
 
 ---
 
+## Slice UR7 — Undo + Reset features + quest 4-reward UI ✅ closed (2026-05-26, commit 277fcad)
+
+Sprint UR frontend leg. Two new player features, two new admin
+consoles, and a 4-reward quest reshape — all shipped in one bundled
+commit. Quality gate at slice close: **103/103 Flutter tests pass**,
+`flutter analyze` only pre-existing info-level warnings.
+
+### New player features
+
+- `features/undo/`: `PlayerUndo { playerId, balance }` DTO,
+  `UndoRepository.getMe()` (GET /undo/me), `UndoCubit`
+  (initial/loading/success/failure), `UndoBadge` (Icons.undo,
+  `colorScheme.secondary`).
+- `features/reset/`: same shape as undo. `ResetBadge` uses
+  `Icons.restart_alt` in `colorScheme.error` to visually
+  distinguish from the other three inventory badges.
+
+### New admin consoles
+
+- `features/admin_undo/`: `PlayerUndoSnapshot` DTO,
+  `AdminUndoRepository` (fetchSnapshot / setBalance / grant /
+  reset), `AdminUndoCubit` (full mirror of `admin_hint` with the
+  same notFound state on 404 lookup), `AdminUndoScreen` (lookup
+  row + balance card + set / grant / reset buttons). Uses
+  `useRootNavigator: false` on every showDialog (codified rule
+  from F1–F6).
+- `features/admin_reset/`: same shape. The "Reset to zero" admin
+  action label is unchanged — the Reset module's domain name
+  collides with the admin verb, so the screen text reads
+  "Reset reset balance" in the confirmation dialog. Awkward but
+  consistent with the per-module audit log naming the operator
+  chose during UR planning.
+
+### Routing + shell + placeholder
+
+- `/admin/undo` and `/admin/reset` routes added to
+  `app_router.dart` between `/admin/hint` and `/admin/audit`.
+- `app_admin_shell.dart`: nav destinations `Undo` (`Icons.undo`)
+  and `Reset` (`Icons.restart_alt`) between Hint and Audit.
+- `admin_placeholder_page.dart`: `AdminUndoPage` and
+  `AdminResetPage` thin StatelessWidget wrappers.
+
+### HomeScreen 4-badge row
+
+- `home_screen.dart`: added `UndoCubit` + `ResetCubit` fields,
+  init in `initState`, dispose in `dispose`, BlocProvider
+  entries, and `loadUndo()` + `loadReset()` invocations on
+  session authentication alongside `loadHint()` and
+  `loadEnergy()`.
+- Top-right badge stack pivoted from 2 badges
+  (HintBadge + EnergyBadge) to **4 badges** in a Row:
+  Reset → Undo → Hint → Energy, with 8-px spacers between.
+
+### Quest 4-reward UI
+
+- `admin_quests/data/quest_definition.dart`: added `undoReward` +
+  `resetReward` fields with `fromJson` parsing.
+- `admin_quests/data/admin_quests_repository.dart`: Create +
+  Update bodies now send 4 reward fields.
+- `admin_quests/application/admin_quests_cubit.dart`: 4-reward
+  Create + Update signatures.
+- `admin_quests/presentation/quest_definition_form.dart`: two new
+  number inputs (Geri al ödülü ↶ + Sıfırla ödülü ↻) added below
+  the existing energy + hint row. Form-level
+  `_rewardSumError` now spans all four fields and surfaces a
+  message ("En az bir ödül (enerji, ipucu, geri al, sıfırla) > 0
+  olmalı.") when all four are zero.
+- `admin_quests/presentation/admin_quests_screen.dart`: row
+  renders one `_RewardBadge` per positive reward (energy/primary,
+  hint/tertiary, undo/secondary, reset/error). The reward-summary
+  badges sit between the quest name and the inactive badge.
+- `quests/data/player_quest.dart`: added `undoReward` +
+  `resetReward` to the DTO.
+- `quests/presentation/quests_screen.dart`: player tile reward
+  row switched from a fixed `Row(mainAxisSize: min)` to
+  `Wrap(spacing: 8)` so all four badges flow on narrow
+  screens.
+
+### Test fixtures reshape
+
+- `admin_quests/{cubit,repo,screen}_test.dart` and
+  `quests/{cubit,repo}_test.dart`: 5 test files updated to
+  include `undoReward` + `resetReward` in the JSON payloads
+  (mostly 0 except where the test checks a positive non-energy/
+  hint reward delivery — e.g. the repo decode test asserts
+  `undoReward: 1` flows through the DTO).
+
+### Decisions / lessons (Sprint UR session, 2026-05-26)
+
+- **Badge colors locked at 4 distinct M3 tokens.** Energy →
+  primary, Hint → tertiary, Undo → secondary, Reset → error.
+  No theme change needed; all four already in use elsewhere.
+- **`Wrap` over `Row` for the player tile reward row.** When
+  all 4 rewards are positive on a narrow phone screen, the
+  badges need to flow to a second line. `Wrap(spacing: 8)`
+  handles this without conditional spacers.
+- **"Reset reset balance" double-word is intentional.** The
+  Reset module's outer verb (admin action: Reset) collides with
+  its inner aggregate (PlayerResetInventory). Renaming the
+  action to "Clear" or "Zero" would break the per-module
+  Set/Grant/Reset audit log pattern. The frontend text reflects
+  that pattern verbatim.
+
+---
+
 ## Slice H6 — Hint feature + multi-reward quest UI ✅ closed (2026-05-25, commit 4109a93)
 
 Sprint H frontend leg. Two new features and four reshapes shipped as
