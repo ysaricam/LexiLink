@@ -1285,6 +1285,317 @@ Goal: ship the second module to validate the modular monolith pattern. Scope: mi
 
 ---
 
+## Sprint UR — Undo + Reset Modules (active)
+
+Goal: extract per-player **Undo** and **Reset** charges out of the
+`Game` aggregate's allowance VOs into two new Kamil-faithful modules
+(`Modules/Undo/` + `Modules/Reset/`), mirroring the Sprint H Hint
+pattern. The per-game free quota is **eliminated** — every
+`Game.UseUndo()` and `Game.ResetToStart()` call now consumes one
+charge from the player's persistent inventory via a sync gateway
+(`IUndoGuard` / `IResetGuard`). Empty inventory blocks the action.
+The same sprint expands `QuestReward` from `(Energy, Hint)` to four
+fields `(Energy, Hint, Undo, Reset)` so admin-defined quests can
+deliver any combination.
+
+### Why now
+
+Sprint H ended with two product gaps surfaced during manual testing:
+(1) Undo and Reset feel "free" — Easy/Medium/Hard giveaways make
+puzzles too forgiving and remove the tension that creates moment-
+to-moment decisions; (2) the reward catalog only delivers Energy and
+Hint, so quest design can't motivate skillful play. Treating Undo
+and Reset as scarce, earnable resources mirrors the design
+philosophy proven by the Hint inventory in Sprint H — players value
+what they pay for, and operators get a fourth knob (Undo/Reset
+grants from quests, admin compensation, future shop sales).
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Module structure | **Two separate modules** (`Modules/Undo/` + `Modules/Reset/`). Hint scaffolding cloned in both. ~10 new csproj + 2 new schemas + 2 new outbox tables (boilerplate accepted in exchange for full module isolation). |
+| Free quota (per-game) | **Eliminated entirely.** `UndoAllowance` + `ResetAllowance` VOs and their rules are deleted; `Game.UseUndo()` and `Game.ResetToStart()` always invoke the sync gateway (no `HasFreeXRemaining` branching, **unlike** Hint). |
+| Counter retention | `Game._undosUsed` + `_resetsUsed` survive as **plain int counters** (statistics + scoring). Increment + read only; no rule, no branching. Frontend reads them through `GameDetailsDto`. |
+| Quest reward shape | `QuestReward` expands to 4 fields: `(EnergyReward, HintReward, UndoReward, ResetReward)`. `QuestRewardMustHaveAtLeastOnePositiveRule` widens to cover all four. Destructive ALTER on `quests.QuestDefinitions`. |
+| Reward delivery | Four independent outbox consumers, each guarding on its reward's positivity. Hint pattern symmetric: each consumer no-ops when its reward is 0. Adds two new reverse cross-module event dependencies (`Undo.Application → Quests.IntegrationEvents` and `Reset.Application → Quests.IntegrationEvents`) — granular ArchTest allows. |
+| Player inventory shape | `PlayerUndoInventory` + `PlayerResetInventory` each hold a single `int _balance`. No cap, no refill timer (twins of `PlayerHintInventory`). Over-cap `GrantBonus` permitted. |
+| Initial balance | 0 for both inventories. Configurable via `Undo:InitialBalance` + `Reset:InitialBalance` (defaults 0). Operator can flip in `appsettings.json` pre-launch if onboarding policy needs softer ramp. |
+| Sync gateway pattern | Two new gateways (`IUndoGuard.EnsureUndoAvailableAsync`, `IResetGuard.EnsureResetAvailableAsync`) — exact `IHintGuard` template. Contracts in Games.Application; adapters in API host. |
+| Admin operations | `AdminSet` + `AdminReset` domain methods on each aggregate; 3 admin commands per module (Set / GrantBonus / Reset) + 1 player query (`GET /{undo,reset}/me`). 7th and 8th per-module copies of `AdminAuditingCommandHandlerDecorator`. |
+| Migration | Destructive but idempotent: `Game._undoAllowance` / `_resetAllowance` EF mapping removed; `Games.UndosTotal` / `ResetsTotal` columns dropped if they exist; `quests.QuestDefinitions` ALTER ADD `UndoReward`, `ResetReward` NOT NULL DEFAULT 0. Information_schema guards so fresh DBs short-circuit. |
+| Slice ordering | **Game.cs reshape first**, then modules. Allowance VOs + rules deleted in S1 while modules don't yet exist; API host wires no-op `AlwaysAllowing*Guard` adapters temporarily so the stack stays runnable. Real adapters land in S4. |
+
+### Architecture notes
+
+- **Undo + Reset are Hint's twins**, both stripped further. Each
+  aggregate is a single `int _balance`; the codebase will have three
+  near-identical inventory modules. The repetition is intentional —
+  Kamil's per-module decorator + outbox + EF mapping pattern
+  forbids `Common` shortcuts.
+- **No per-game free quota** is the load-bearing difference from
+  Hint. `Game.UseUndo()` and `Game.ResetToStart()` always invoke the
+  sync gateway; there is no `game.HasFreeUndoRemaining` branch. This
+  simplifies `UseUndoCommandHandler` / `ResetCommandHandler` to a
+  single call shape and removes the dual-source-of-truth problem
+  Hint accepted.
+- **Counters survive but lose semantics.** `_undosUsed` /
+  `_resetsUsed` no longer "remaining quota" — they are usage stats
+  for scoring + UI ("you undid 3 times this game"). If
+  `IScoreCalculator` consumes them today, the formula stays; if it
+  was reading "remaining as a bonus", that codepath needs adjustment.
+  S1 audit will surface the actual coupling.
+- **Quest reward 4-fields > generic reward bag** chosen over a
+  `(RewardType, Amount)[]` table for the same reason H4 was: simpler
+  EF mapping, simpler admin form, simpler outbox consumer (one int
+  field per consumer). The cost is another schema reshape if a
+  fifth reward type is ever added.
+- **Two more reverse event dependencies** land in S5. After this
+  sprint, four modules (`Energy.Application`, `Hint.Application`,
+  `Undo.Application`, `Reset.Application`) all carry a granular
+  ArchTest allow on `Quests.IntegrationEvents`. The pattern is now
+  the LexiLink norm for reward delivery.
+
+### Slice plan
+
+#### UR1 — Game.cs destructive reshape
+
+- Delete `Modules/Games/Domain/Games/Allowances/UndoAllowance.cs` +
+  `ResetAllowance.cs` and the matching
+  `UndoAllowanceMustHaveRemainingRule` +
+  `ResetAllowanceMustHaveRemainingRule`.
+- Remove `_undoAllowance` + `_resetAllowance` fields from
+  `Game.cs`; remove their EF `OwnsOne` mappings from
+  `GameEntityTypeConfiguration`. DbUp script
+  `games/Tables/050_DropUndoResetAllowanceColumns.sql`
+  (idempotent ALTER DROP COLUMN).
+- Add `_undosUsed` + `_resetsUsed` plain int counters on Game
+  (default 0). Map as plain columns in EF
+  (`Games.UndosUsed` / `Games.ResetsUsed` — keep current column
+  names if present, otherwise add).
+- Reshape `Game.UseUndo()` to take no allowance check; emit
+  `UndoUsedDomainEvent` and increment `_undosUsed`. Same for
+  `Game.ResetToStart()`.
+- Add `Game.UseUndoWithExternalInventory()` +
+  `Game.ResetWithExternalInventory()` (no-op stubs that increment
+  counter + emit event; the per-game branch will not be reached
+  post-reshape but the method exists so the API host adapter
+  pattern matches Hint's `UseHintWithExternalInventory`).
+- New contracts in `Games.Application/Configuration/CrossModule/`:
+  `IUndoGuard.EnsureUndoAvailableAsync(playerId, ct)` and
+  `IResetGuard.EnsureResetAvailableAsync(playerId, ct)`.
+- Reshape `UseUndoCommandHandler` and `ResetCommandHandler` to
+  always invoke the gateway then call the external-inventory
+  method on Game (no `HasFree*Remaining` branching).
+- API host: temporary no-op `AlwaysAllowingUndoGuard` +
+  `AlwaysAllowingResetGuard` adapters in
+  `LexiLink.API/CrossModule/`. Replaced in UR4.
+- Games.IT: stub `AlwaysAllowing{Undo,Reset}Guard` in TestBase
+  (Hint pattern). Recording variant lands in UR4.
+- Delete `UndoAllowanceTests` + `ResetAllowanceTests`. Reshape
+  Game lifecycle tests that asserted the allowance count
+  (probably 4–6 cases in GameUndoTests / GameResetTests). Keep
+  tests for the increment counter + event emission shape.
+- `IGameConfigurationService.ResolveUndos(d)` /
+  `ResolveResets(d)` removed if no remaining callers; otherwise
+  flattened or kept as informational. Audit the surface area.
+- Stats / scoring audit: confirm `IScoreCalculator` impact and
+  fix if necessary.
+
+**Acceptance:** `dotnet test LexiLink.sln` green; Game.UseUndo
+and Game.ResetToStart always succeed in dev because the no-op
+adapter accepts everything. Frontend Undo / Reset buttons still
+work in the dev stack (no inventory yet — that lands UR2/UR3).
+
+#### UR2 — Undo + Reset module foundation
+
+- Two new module directories cloned from `Modules/Hint/`:
+  `Modules/Undo/{Domain,Application,Infrastructure,IntegrationEvents,Tests,IntegrationTests}/`
+  and `Modules/Reset/...` (same shape).
+- Aggregates: `PlayerUndoInventory` + `PlayerResetInventory`
+  (each identified by their own typed Id; same value as owning
+  `PlayerId`). Single `int _balance` field. Twin of Hint
+  aggregate (no max, no refill).
+- Rules per module: `{Undo,Reset}AmountMustBePositiveRule`,
+  `*AmountMustBeNonNegativeRule`,
+  `*BalanceMustBeSufficientRule`. Six rules total across both.
+- Events per aggregate: `Initialized`, `Consumed`, `Granted`,
+  `AdminSet`, `AdminReset` (5 per aggregate, 10 total).
+- Per-module Autofac module + Startup + UoW +
+  DomainEventsDispatcher + decorator chain (Logging /
+  Validation / UnitOfWork — admin auditing decorator added in
+  UR6).
+- DbUp scaffolding per module:
+  `{undo,reset}/Schema/001_CreateSchema.sql`,
+  `{undo,reset}/Tables/010_Player{Undo,Reset}Inventories.sql`,
+  `{undo,reset}/Tables/070_OutboxMessages.sql`.
+
+**Acceptance:** both modules compile, ArchTests pass with new
+namespaces in the allowed-pair list, no integration tests yet.
+
+#### UR3 — Lazy init from PlayerRegistered
+
+- `EnsurePlayerUndoInventoryExistsCommand` + handler + validator
+  in each module.
+- `PlayerRegisteredIntegrationEventHandler` in
+  `{Undo,Reset}.Application/Player*Inventories/ProcessIntegrationEvents/`
+  dispatching the ensure command. Mirrors Hint's H2 lazy-init.
+- `I{Undo,Reset}ConfigurationService.InitialBalance` Domain
+  interface + Infrastructure implementation reading
+  `{Undo,Reset}:InitialBalance` config (default 0).
+
+**Acceptance:** new guest registration creates a row in
+`undo.PlayerUndoInventories` and `reset.PlayerResetInventories`
+after outbox processing. Idempotency confirmed via re-register.
+
+#### UR4 — Sync gateway integration
+
+- `LexiLink.API/CrossModule/UndoGuard.cs` + `ResetGuard.cs`
+  replace the no-op stubs from UR1. Each adapter calls
+  `I{Undo,Reset}Module.ExecuteCommandAsync(new
+  ConsumePlayer{Undo,Reset}Command(playerId, 1))`.
+- `ConsumePlayer{Undo,Reset}Command` + handler + validator in
+  each module.
+- Games.IT: `AlwaysAllowing{Undo,Reset}Guard` upgraded to
+  configurable `Recording{Undo,Reset}Guard` (Hint pattern from
+  H7 — `CallCount` + `RejectNext` flag).
+- New Games.IT tests: `UseUndoFallThroughTests` +
+  `ResetFallThroughTests`. Each asserts: every call invokes the
+  gateway (no free branching); rejection propagates as
+  `BusinessRuleValidationException`; counter only increments on
+  success.
+
+**Acceptance:** end-to-end Undo and Reset flows go through the
+real Hint-style sync gateway; integration tests prove both
+modules participate.
+
+#### UR5 — Quest 4-reward destructive
+
+- `QuestDefinition` adds `_undoReward` + `_resetReward` fields;
+  `Create` / `Update` signatures expand to 4 reward parameters.
+- `QuestRewardMustHaveAtLeastOnePositiveRule` widens: all four
+  must be ≥ 0, at least one > 0.
+- `PlayerQuestClaimedDomainEvent` and
+  `QuestClaimedIntegrationEvent` carry all 4 reward fields.
+- `PlayerQuest.Claim(now, ready, energyReward, hintReward,
+  undoReward, resetReward)`.
+- New `QuestClaimedIntegrationEventHandler` in
+  `Undo.Application` + `Reset.Application` (each guards on its
+  own reward > 0; dispatches `Grant{Undo,Reset}Command`).
+- `GrantUndoCommand` + `GrantResetCommand` (each calls
+  `Player*Inventory.GrantBonus`). Granular ArchTest allows for
+  `Undo.Application → Quests.IntegrationEvents` and
+  `Reset.Application → Quests.IntegrationEvents`.
+- DbUp `quests/Tables/050_ExpandQuestRewardsWithUndoReset.sql` —
+  idempotent ALTER TABLE ADD COLUMN with
+  information_schema guards.
+- All admin Quest commands / validators / DTOs / endpoint
+  requests + EF mapping reshape to carry 4 reward fields.
+- Quests.IT existing reward delivery tests reshape; new tests
+  for the two new consumers; existing
+  `QuestClaimedIntegrationEvent` shape tests updated.
+
+**Acceptance:** admin can mint a quest with any combination of
+the 4 rewards; claiming dispatches exactly the consumers whose
+reward > 0; each inventory updates accordingly.
+
+#### UR6 — Admin operations + GET endpoints + audit
+
+- `PlayerUndoInventory.AdminSet(newBalance, now)` +
+  `AdminReset(now)` + matching domain events. Same for
+  `PlayerResetInventory`.
+- 3 `IAdminCommand` commands per module
+  (`SetPlayer{Undo,Reset}Command`,
+  `GrantBonus{Undo,Reset}Command`,
+  `ResetPlayer{Undo,Reset}Command`). `AuditTargetType =>
+  "{Undo,Reset}.Player{Undo,Reset}Inventory"`.
+- Player query: `GetPlayer{Undo,Reset}Query` + handler
+  (Dapper SELECT). Returns
+  `Player{Undo,Reset}SnapshotDto(PlayerId, Balance)`.
+- 7th + 8th per-module copies of
+  `AdminAuditingCommandHandlerDecorator` template.
+- `{Undo,Reset}AdminActionPerformedNotification` + handler
+  publishing `AdminActionPerformedIntegrationEvent`.
+  `{Undo,Reset}.Infrastructure.csproj` adds reference to
+  `Administration.IntegrationEvents` (granular ArchTest allow).
+- API endpoints:
+  - `GET /{undo,reset}/me` (AuthenticatedPlayer).
+  - `GET /admin/players/{id}/{undo,reset}` +
+    `POST .../set | grant | reset` (AuthenticatedAdmin).
+
+**Acceptance:** admin can lookup any player's Undo + Reset
+balance, set / grant / reset each independently; every action
+hits the audit log with the right `TargetType`.
+
+#### UR7 — Frontend reshape
+
+- Two new player features: `lib/features/undo/` +
+  `lib/features/reset/`. Each has `PlayerX` DTO,
+  `XRepository.getMe()`, `XCubit`, `XBadge` (icon + balance).
+  Undo badge: `Icons.undo` in `colorScheme.secondary`. Reset
+  badge: `Icons.restart_alt` in `colorScheme.error.withOpacity()`
+  or a fresh tertiary tone — UI taste call at slice time.
+- Two new admin features: `lib/features/admin_undo/` +
+  `lib/features/admin_reset/`. Same shape as `admin_hint` /
+  `admin_energy`: lookup row + balance card + set / grant /
+  reset.
+- HomeScreen top bar: four badges in a Row (Energy ⚡ + Hint 💡 +
+  Undo ↶ + Reset ↻). If the layout cramps on narrow screens, wrap
+  the row or use a `Wrap` widget — UI taste call at slice time.
+- `/admin/undo` + `/admin/reset` routes wired in `app_router.dart`;
+  nav destinations + icons added to `app_admin_shell.dart`;
+  placeholder wrappers added.
+- Quest definition form expands to 4 reward inputs (Energy ⚡ +
+  Hint 💡 + Undo ↶ + Reset ↻) with the same form-level
+  at-least-one-positive rule (`_rewardSumError`).
+- Quest tile (admin + player) renders all 4 possible badges
+  conditionally (only when > 0). Spacers between only adjacent
+  positive rewards.
+- Test fixtures reshape: existing payloads switch from
+  2-field reward to 4-field. ~7 test files affected
+  (admin_quests {cubit, repo, screen}, quests {cubit, repo}, new
+  undo + reset feature tests).
+
+**Acceptance:** `flutter analyze` shows no new errors; `flutter
+test` green; manual smoke pass on the dev stack.
+
+#### UR8 — Tests + quality gate + manual verification + docs
+
+- Backend Undo.Tests + Undo.IT + Reset.Tests + Reset.IT mirroring
+  Hint.Tests/IT (Initialize / Consume / GrantBonus / Admin
+  scenarios + lifecycle + admin command tests). ~30 new domain
+  tests + ~12 new integration tests expected.
+- Games.IT `UseUndoFallThroughTests` + `ResetFallThroughTests`
+  finalized.
+- `scripts/test.sh` registers `Undo.Tests`, `Undo.IT`,
+  `Reset.Tests`, `Reset.IT`.
+- `dotnet test LexiLink.sln` + `flutter test` both green.
+- Manual verification:
+  1. Multi-reward quest claim — admin creates 4 separate quests
+     (salt-Energy, salt-Hint, salt-Undo, salt-Reset); player
+     completes each and verifies only the matching inventory
+     updates.
+  2. Mixed-reward quest — single quest with Energy + Hint + Undo
+     + Reset all > 0; claim once, verify all 4 outbox consumers
+     fire.
+  3. Undo / Reset fall-through with empty inventory — drain
+     player to 0 via admin reset; in-game Undo or Reset button
+     surfaces the rule error and Game state does not advance.
+  4. Admin Set / Grant / Reset — exercise each operation in
+     both admin consoles (`/admin/undo` + `/admin/reset`);
+     confirm audit log shows correct `TargetType` rows.
+- Docs: prepend Sprint UR entries to `progress.md`; pivot
+  `activeContext.md > Active Sprint` to UR closure; update
+  `GLOSSARY.md` (new aggregates / events / rules / gateways /
+  4-reward QuestDefinition + PlayerQuest text); update frontend
+  docs (UR7 slice details).
+
+**Acceptance:** sprint closes with operator-confirmed manual
+verification + all four golden flows above passing; every doc
+synced.
+
+---
+
 ## Sprint H — Hint Module + Quest Multi-Reward
 
 Goal: ship a **Hint** module that holds a per-player persistent hint

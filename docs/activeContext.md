@@ -4,44 +4,69 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-26 (Sprint H — Hint Module + Quest Multi-Reward — closed end-to-end; eight slices delivered with operator-confirmed manual verification).
+> Last updated: 2026-05-26 (Sprint UR — Undo + Reset Modules — planlandı; sekiz slice lockdown, implementation operator tarafından yapılacak, ben kontrol edeceğim).
 
 ---
 
 ## Active Sprint
 
-**Sprint H — Hint Module + Quest Multi-Reward — closed.** Eight
-slices (H1 → H8) shipped on 2026-05-25 → 2026-05-26 with per-slice
-operator approval and standalone commits. Manual stack verification
-on 2026-05-26 passed all golden flows (multi-reward quest claim,
-Game UseHint free→inventory fall-through, admin hint console).
-Final quality gate: **348 .NET tests + 103 Flutter tests green**.
+**Sprint UR — Undo + Reset Modules — planning closed, implementation
+pending.** Aynı Hint kalıbını Undo + Reset için iki yeni Kamil-faithful
+modüle uygulayacağız (`Modules/Undo/` + `Modules/Reset/`), aynı
+zamanda `QuestReward`'ı 4 alana çıkaracağız
+(`Energy + Hint + Undo + Reset`). Sekiz slice plan detayı
+`ROADMAP.md > Sprint UR`. Implementation operator tarafından
+yapılacak; bu oturum onaylama + review modunda.
 
-Goal (delivered): extracted player hints out of `Game.HintAllowance`
-into a dedicated **Hint module** (sixth business module —
-`PlayerHintInventory` aggregate) and reshaped `QuestReward` into a
-`(EnergyReward, HintReward)` pair so a single quest can deliver
-either or both. The per-game free hint quota stays inside Games
-(fixed at 1 across all difficulties); when exhausted,
-`UseHintCommandHandler` falls through to
-`IHintGuard.EnsureHintAvailableAsync(playerId)` (sync gateway). The
-adapter (`LexiLink.API/CrossModule/HintGuard.cs`) translates this to
-a `ConsumePlayerHintCommand` on the Hint module — empty inventory
-breaks `HintBalanceMustBeSufficientRule` and the puzzle does not
-advance.
+**Tasarım kararları (kilitli):**
 
-Multi-reward delivery uses **two independent outbox consumers** each
-guarding on its reward's positivity:
-`Energy.Application/QuestClaimedIntegrationEventHandler` skips when
-`EnergyReward == 0`, and the new
-`Hint.Application/QuestClaimedIntegrationEventHandler` grants hints
-when `HintReward > 0`. This is LexiLink's **second reverse
-cross-module event dependency** (after Energy's existing
-consumer of `Quests.IntegrationEvents`).
+- **İki ayrı modül** (Hint şablonunun birebir kopyası). 10 yeni
+  csproj, 2 yeni schema, 2 yeni outbox tablosu.
+- **Per-game free quota tamamen kaldırılır.** `UndoAllowance` +
+  `ResetAllowance` VO'ları ve ilgili rule'ları silinir;
+  `Game.UseUndo()` + `Game.ResetToStart()` her çağrıda doğrudan
+  `IUndoGuard` / `IResetGuard` invoke eder. **Hint'ten farkı:**
+  branching yok (`HasFreeXRemaining` Game'de yok).
+- **`Game._undosUsed` + `_resetsUsed` int counter olarak kalır**
+  (istatistik + scoring). Allowance VO + rule yok.
+- **QuestReward 4 alan** (`EnergyReward, HintReward, UndoReward,
+  ResetReward`). `QuestRewardMustHaveAtLeastOnePositiveRule` 4
+  alanı kapsayacak şekilde genişler. Destructive DbUp ALTER.
+- **4 outbox consumer** (her reward türü için bir tane), her biri
+  kendi reward'ında > 0 guard'ı yapar. İki yeni reverse cross-
+  module event dependency (`Undo.Application →
+  Quests.IntegrationEvents`, `Reset.Application →
+  Quests.IntegrationEvents`).
+- **Player inventory başlangıç stoğu 0** (Hint defaultu).
+  `Undo:InitialBalance` + `Reset:InitialBalance` configurable.
+- **Slice ordering:** önce `Game.cs` reshape (UR1), sonra
+  modüller. UR1 sırasında API host no-op `AlwaysAllowing*Guard`
+  adapter'ları geçici olarak çalışır; gerçek adapter'lar UR4'te
+  iner.
 
-Detailed slice plan in `ROADMAP.md > Sprint H`; per-slice delivery
-notes in `progress.md > Sprint H` and `frontendProgress.md > Slice
-H6`.
+**Slice listesi:**
+
+| Slice | İçerik |
+|-------|--------|
+| UR1 | Game.cs destructive reshape (Allowance VO'lar + rule sil, int counter ekle, IUndoGuard/IResetGuard contract'ları + UseUndoWithExternalInventory + ResetWithExternalInventory + Games.IT stub'ları + no-op API host adapter'ları). |
+| UR2 | İki modül foundation (Hint scaffolding x2). |
+| UR3 | Lazy init from PlayerRegistered. |
+| UR4 | Real IUndoGuard + IResetGuard API host adapter'ları + Games.IT'de Recording*Guard + fall-through integration tests. |
+| UR5 | Quest 4-reward destructive (QuestDefinition + PlayerQuest + IntegrationEvent reshape + iki yeni consumer + grant commands + DbUp). |
+| UR6 | Admin Set/Grant/Reset + audit + GET endpoints (`/{undo,reset}/me` + `/admin/players/{id}/{undo,reset}/*`). |
+| UR7 | Frontend (4 badge HomeScreen, 4 reward quest form, 2 admin console, undo+reset player feature). |
+| UR8 | Tests + quality gate + manuel verification (4 golden flow) + docs. |
+
+**Manuel verification scope:**
+
+1. Multi-reward quest claim (4 ayrı quest, her biri tek reward türü).
+2. Karma reward quest (tek quest, 4 reward birden, hepsi delivered).
+3. Empty inventory fall-through (admin reset → in-game Undo/Reset
+   blocks).
+4. Admin Set / Grant / Reset her iki console'da audit log doğrulamalı.
+
+Detaylı slice plan, rationale ve trade-off notları `ROADMAP.md >
+Sprint UR — Undo + Reset Modules`.
 
 ### Recently closed (Sprint H session, 2026-05-25 → 2026-05-26)
 
@@ -511,24 +536,57 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Sprint H — Hint Module + Quest Multi-Reward — kapandı.** Sekiz
-slice'ın tamamı commit'lendi; manuel doğrulama 2026-05-26 günü
-operator tarafından geçildi. Quality gate 348/348 .NET + 103/103
-Flutter.
+**Sprint UR — Undo + Reset Modules — implementation operator tarafından
+başlatılacak; ben kontrol modundayım.** Sekiz slice'ın detayı
+`ROADMAP.md > Sprint UR` içinde kilitli. UR1 (Game.cs destructive
+reshape) ilk commit. Slice sırası UR1 → UR8.
 
-Sprint H aday listesi tükendi. Sonraki sprint adayları `ROADMAP.md
-> Beyond Sprint 7` bölümünde:
+İlk somut adım: **UR1 — Game.cs reshape.**
 
-- **Power-up / shop ekonomisi.** Enerji + ipucu artık iki ayrı
-  para birimi gibi davranıyor — alış-veriş ekranı, IAP veya
-  reklam-temelli bonus akışları doğal sonraki adım.
-- **Quest yeni trigger türleri.** Şu an `GameCompletedTotal /
-  Daily / AuthProviderLinked` üçlüsü var. Operator backlog'unda
-  `StreakReached`, `CategoryMastered` gibi adaylar var (ayrı
-  sprint olarak değerlendirilecek).
-- **Tutorial flow.** Yeni guest player'a 1-2 puzzle'lık rehberli
-  giriş; quest sistemine ısıtmak için "Hint öğren" + "Enerji
-  öğren" tarzı sıfır-zorluk puzzle'larla.
+Etkilenen dosyalar:
+
+- `src/Modules/Games/Domain/Games/Allowances/UndoAllowance.cs` (sil)
+- `src/Modules/Games/Domain/Games/Allowances/ResetAllowance.cs` (sil)
+- `src/Modules/Games/Domain/Games/Allowances/Rules/UndoAllowanceMustHaveRemainingRule.cs` (sil)
+- `src/Modules/Games/Domain/Games/Allowances/Rules/ResetAllowanceMustHaveRemainingRule.cs` (sil)
+- `src/Modules/Games/Domain/Games/Game.cs` — `_undoAllowance` +
+  `_resetAllowance` field'larını sil; `_undosUsed` + `_resetsUsed`
+  int counter ekle; `UseUndo()` + `ResetToStart()` reshape;
+  `UseUndoWithExternalInventory()` + `ResetWithExternalInventory()`
+  ekle.
+- `src/Modules/Games/Infrastructure/Domain/Games/GameEntityTypeConfiguration.cs`
+  — `OwnsOne<UndoAllowance>` + `OwnsOne<ResetAllowance>` sil; plain
+  int kolon mapping ekle.
+- `src/Modules/Games/Application/Configuration/CrossModule/IUndoGuard.cs`
+  (yeni)
+- `src/Modules/Games/Application/Configuration/CrossModule/IResetGuard.cs`
+  (yeni)
+- `src/Modules/Games/Application/Games/UseUndo/UseUndoCommandHandler.cs` —
+  her zaman `IUndoGuard.EnsureUndoAvailableAsync` çağır.
+- `src/Modules/Games/Application/Games/Reset/ResetCommandHandler.cs` —
+  her zaman `IResetGuard.EnsureResetAvailableAsync` çağır.
+- `src/API/LexiLink.API/CrossModule/UndoGuard.cs` (no-op stub)
+- `src/API/LexiLink.API/CrossModule/ResetGuard.cs` (no-op stub)
+- `src/Modules/Games/IntegrationTests/SeedWork/TestBase.cs` —
+  `AlwaysAllowingUndoGuard` + `AlwaysAllowingResetGuard` stub'ları.
+- `src/Database/LexiLink.Database/Structure/games/Tables/050_DropUndoResetAllowanceColumns.sql`
+  (idempotent ALTER DROP COLUMN).
+- `src/Modules/Games/Tests/Games/Allowances/UndoAllowanceTests.cs` (sil)
+- `src/Modules/Games/Tests/Games/Allowances/ResetAllowanceTests.cs` (sil)
+- Game lifecycle testlerinde Undo/Reset senaryoları (`GameUndoTests`,
+  `GameResetTests`) — `Allowance.MustHaveRemaining` assertion'ları
+  kalkar; counter increment + event emission assertion'ları kalır.
+
+UR1 acceptance: `dotnet test LexiLink.sln` yeşil; Game.UseUndo ve
+Game.ResetToStart dev stack'te no-op adapter sayesinde her zaman
+çalışır.
+
+Sıradaki tüm sprint adayları (UR sonrası) `ROADMAP.md > Beyond
+Sprint 7` ve önceki notlardaki backlog kalemleri:
+
+- Power-up / shop ekonomisi (4 inventory artık ayrı para birimi).
+- Quest yeni trigger türleri (StreakReached, CategoryMastered).
+- Tutorial flow.
 
 ---
 
