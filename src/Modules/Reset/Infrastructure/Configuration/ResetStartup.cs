@@ -2,6 +2,7 @@ using Autofac;
 using LexiLink.Common.Infrastructure;
 using LexiLink.Common.Infrastructure.DomainEventsDispatching;
 using LexiLink.Modules.Reset.Infrastructure.Configuration.Outbox;
+using LexiLink.Modules.Reset.Infrastructure.Outbox.DomainEventNotifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +13,13 @@ public static class ResetStartup
 {
     private static readonly BiDictionary<string, Type> DomainNotificationsMap =
         LexiLink.Common.Infrastructure.DomainEventsDispatching.DomainNotificationsMap.Instance;
+
+    static ResetStartup()
+    {
+        DomainNotificationsMap.Add(
+            "Reset.AdminActionPerformedNotification",
+            typeof(ResetAdminActionPerformedNotification));
+    }
 
     public static void Initialize(IServiceCollection services, string connectionString)
     {

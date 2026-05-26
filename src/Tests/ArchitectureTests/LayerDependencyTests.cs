@@ -525,7 +525,10 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "Npgsql"
             });
 
-        // Undo.Infrastructure is isolated until admin audit integration lands.
+        // Undo.Infrastructure MAY reference Administration.IntegrationEvents
+        // (public contract assembly) — the AdminAuditing decorator publishes
+        // AdminActionPerformedIntegrationEvent (UR6). Administration.Domain /
+        // Application / Infrastructure remain forbidden.
         yield return new TestCaseData(
             "Undo.Infrastructure",
             UndoInfrastructureAssembly,
@@ -536,7 +539,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
-                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
                 "LexiLink.Modules.Hint",
                 "LexiLink.Modules.Reset",
                 "LexiLink.API"
@@ -590,7 +595,10 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "Npgsql"
             });
 
-        // Reset.Infrastructure is isolated until admin audit integration lands.
+        // Reset.Infrastructure MAY reference Administration.IntegrationEvents
+        // (public contract assembly) — the AdminAuditing decorator publishes
+        // AdminActionPerformedIntegrationEvent (UR6). Administration.Domain /
+        // Application / Infrastructure remain forbidden.
         yield return new TestCaseData(
             "Reset.Infrastructure",
             ResetInfrastructureAssembly,
@@ -601,7 +609,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
-                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
                 "LexiLink.Modules.Hint",
                 "LexiLink.Modules.Undo",
                 "LexiLink.API"
