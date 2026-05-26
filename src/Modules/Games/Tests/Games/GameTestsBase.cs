@@ -40,12 +40,10 @@ public abstract class GameTestsBase : TestBase
         Puzzle puzzle,
         int maxSteps = 10,
         int hints = 3,
-        int undos = 5,
-        int resets = 2,
         Guid? playerId = null,
         bool clearEvents = true)
     {
-        var game = Game.Create(playerId ?? NewPlayerId(), puzzle, maxSteps, hints, undos, resets);
+        var game = Game.Create(playerId ?? NewPlayerId(), puzzle, maxSteps, hints);
         if (clearEvents) DomainEventsTestHelper.ClearAllDomainEvents(game);
         return game;
     }

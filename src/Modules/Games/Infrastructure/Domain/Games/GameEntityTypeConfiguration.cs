@@ -66,19 +66,11 @@ internal class GameEntityTypeConfiguration : IEntityTypeConfiguration<Game>
         });
         builder.Navigation("_hintAllowance").UsePropertyAccessMode(PropertyAccessMode.Field);
 
-        builder.OwnsOne<UndoAllowance>("_undoAllowance", u =>
-        {
-            u.Property(x => x.Remaining).HasColumnName("UndosRemaining");
-            u.Property(x => x.Used).HasColumnName("UndosUsed");
-        });
-        builder.Navigation("_undoAllowance").UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder.Property<int>("_undosUsed")
+            .HasColumnName("UndosUsed");
 
-        builder.OwnsOne<ResetAllowance>("_resetAllowance", r =>
-        {
-            r.Property(x => x.Remaining).HasColumnName("ResetsRemaining");
-            r.Property(x => x.Used).HasColumnName("ResetsUsed");
-        });
-        builder.Navigation("_resetAllowance").UsePropertyAccessMode(PropertyAccessMode.Field);
+        builder.Property<int>("_resetsUsed")
+            .HasColumnName("ResetsUsed");
 
         builder.OwnsMany<GameHistoryStep>("_history", h =>
         {

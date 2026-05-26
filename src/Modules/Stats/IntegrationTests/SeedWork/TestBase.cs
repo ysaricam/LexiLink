@@ -61,9 +61,11 @@ public abstract class TestBase
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
         // Cross-module gateway stubs — Stats integration tests exercise the producer-side
-        // event flow; the real Energy and Hint modules are not booted here.
+        // event flow; the real resource modules are not booted here.
         services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
         services.AddSingleton<IHintGuard>(new AlwaysAllowingHintGuard());
+        services.AddSingleton<IUndoGuard>(new AlwaysAllowingUndoGuard());
+        services.AddSingleton<IResetGuard>(new AlwaysAllowingResetGuard());
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
@@ -126,6 +128,18 @@ public abstract class TestBase
     private sealed class AlwaysAllowingHintGuard : IHintGuard
     {
         public Task EnsureHintAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AlwaysAllowingUndoGuard : IUndoGuard
+    {
+        public Task EnsureUndoAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AlwaysAllowingResetGuard : IResetGuard
+    {
+        public Task EnsureResetAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
     }
 

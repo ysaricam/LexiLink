@@ -10,6 +10,8 @@ public sealed record QuestDefinitionDto(
     int Threshold,
     int EnergyReward,
     int HintReward,
+    int UndoReward,
+    int ResetReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline,
     bool IsActive);

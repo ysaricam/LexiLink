@@ -13,8 +13,8 @@ SELECT
     "StepsTaken"                                AS "StepsTaken",
     ("HintsRemaining"  + "HintsUsed")           AS "HintsTotal",
     "HintsUsed"                                 AS "HintsUsed",
-    ("UndosRemaining"  + "UndosUsed")           AS "UndosTotal",
+    ("UndosUsed" + 1)                           AS "UndosTotal",
     "UndosUsed"                                 AS "UndosUsed",
-    ("ResetsRemaining" + "ResetsUsed")          AS "ResetsTotal",
+    ("ResetsUsed" + 1)                          AS "ResetsTotal",
     "ResetsUsed"                                AS "ResetsUsed"
 FROM "games"."Games";

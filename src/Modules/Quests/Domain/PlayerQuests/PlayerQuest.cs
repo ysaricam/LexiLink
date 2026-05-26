@@ -79,11 +79,16 @@ public class PlayerQuest : Entity, IAggregateRoot
     /// QuestDefinition.Threshold</c>) and the caller has also verified
     /// the row is not already past <see cref="ExpiresAt"/>. Reward
     /// values live on <see cref="QuestDefinition"/> and are carried
-    /// into the claimed domain event by the handler so Energy and
-    /// Hint can each grant their portion event-driven (post Sprint H
-    /// the quest reward is the pair EnergyReward + HintReward).
+    /// into the claimed domain event by the handler so Energy, Hint,
+    /// Undo, and Reset can each grant their portion event-driven.
     /// </summary>
-    internal void Claim(DateTime now, bool isReadyToClaim, int energyReward, int hintReward)
+    internal void Claim(
+        DateTime now,
+        bool isReadyToClaim,
+        int energyReward,
+        int hintReward,
+        int undoReward,
+        int resetReward)
     {
         CheckRule(new QuestMustBeReadyToBeClaimedRule(_state, isReadyToClaim));
 
@@ -91,6 +96,12 @@ public class PlayerQuest : Entity, IAggregateRoot
         _claimedAt = now;
 
         AddDomainEvent(new PlayerQuestClaimedDomainEvent(
-            Id, _playerId, _questDefinitionId, energyReward, hintReward));
+            Id,
+            _playerId,
+            _questDefinitionId,
+            energyReward,
+            hintReward,
+            undoReward,
+            resetReward));
     }
 }

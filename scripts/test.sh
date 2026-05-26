@@ -14,6 +14,8 @@ db_free_projects=(
   "src/Modules/Energy/Tests/LexiLink.Modules.Energy.Tests.csproj"
   "src/Modules/Quests/Tests/LexiLink.Modules.Quests.Tests.csproj"
   "src/Modules/Hint/Tests/LexiLink.Modules.Hint.Tests.csproj"
+  "src/Modules/Undo/Tests/LexiLink.Modules.Undo.Tests.csproj"
+  "src/Modules/Reset/Tests/LexiLink.Modules.Reset.Tests.csproj"
   "src/Modules/Administration/Tests/LexiLink.Modules.Administration.Tests.csproj"
   "src/Tests/ArchitectureTests/LexiLink.ArchitectureTests.csproj"
 )
@@ -25,6 +27,8 @@ integration_projects=(
   "src/Modules/Energy/IntegrationTests/LexiLink.Modules.Energy.IntegrationTests.csproj"
   "src/Modules/Quests/IntegrationTests/LexiLink.Modules.Quests.IntegrationTests.csproj"
   "src/Modules/Hint/IntegrationTests/LexiLink.Modules.Hint.IntegrationTests.csproj"
+  "src/Modules/Undo/IntegrationTests/LexiLink.Modules.Undo.IntegrationTests.csproj"
+  "src/Modules/Reset/IntegrationTests/LexiLink.Modules.Reset.IntegrationTests.csproj"
   "src/Modules/Administration/IntegrationTests/LexiLink.Modules.Administration.IntegrationTests.csproj"
 )
 

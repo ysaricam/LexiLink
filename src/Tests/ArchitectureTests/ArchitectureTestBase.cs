@@ -43,6 +43,14 @@ public abstract class ArchitectureTestBase
     protected static readonly Assembly HintApplicationAssembly = typeof(Modules.Hint.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly HintInfrastructureAssembly = typeof(Modules.Hint.Infrastructure.HintContext).Assembly;
 
+    protected static readonly Assembly UndoDomainAssembly = typeof(Modules.Undo.Domain.PlayerUndoInventories.PlayerUndoInventory).Assembly;
+    protected static readonly Assembly UndoApplicationAssembly = typeof(Modules.Undo.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly UndoInfrastructureAssembly = typeof(Modules.Undo.Infrastructure.UndoContext).Assembly;
+
+    protected static readonly Assembly ResetDomainAssembly = typeof(Modules.Reset.Domain.PlayerResetInventories.PlayerResetInventory).Assembly;
+    protected static readonly Assembly ResetApplicationAssembly = typeof(Modules.Reset.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly ResetInfrastructureAssembly = typeof(Modules.Reset.Infrastructure.ResetContext).Assembly;
+
     protected static readonly Assembly[] ModuleAssemblies =
     [
         GamesDomainAssembly,
@@ -64,7 +72,13 @@ public abstract class ArchitectureTestBase
         AdministrationInfrastructureAssembly,
         HintDomainAssembly,
         HintApplicationAssembly,
-        HintInfrastructureAssembly
+        HintInfrastructureAssembly,
+        UndoDomainAssembly,
+        UndoApplicationAssembly,
+        UndoInfrastructureAssembly,
+        ResetDomainAssembly,
+        ResetApplicationAssembly,
+        ResetInfrastructureAssembly
     ];
 
     protected static void AssertArchTestResult(TestResult result)

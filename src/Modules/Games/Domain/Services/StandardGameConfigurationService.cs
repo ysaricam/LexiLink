@@ -25,20 +25,4 @@ public sealed class StandardGameConfigurationService : IGameConfigurationService
     // from their persistent PlayerHintInventory via the IHintGuard
     // sync gateway.
     public int ResolveHints(Difficulty difficulty) => 1;
-
-    public int ResolveUndos(Difficulty difficulty) => difficulty switch
-    {
-        Difficulty.Easy => 5,
-        Difficulty.Medium => 3,
-        Difficulty.Hard => 2,
-        _ => throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null)
-    };
-
-    public int ResolveResets(Difficulty difficulty) => difficulty switch
-    {
-        Difficulty.Easy => 2,
-        Difficulty.Medium => 1,
-        Difficulty.Hard => 1,
-        _ => throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null)
-    };
 }

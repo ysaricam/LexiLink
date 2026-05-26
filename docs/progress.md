@@ -4,6 +4,153 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Sprint UR — Undo + Reset Modules (started 2026-05-26)
+
+Ninth full-stack sprint. Goal: extract Undo and Reset into two new
+Kamil-faithful inventory modules, remove their per-game free quota from
+Games, and later expand quest rewards from `(Energy, Hint)` to
+`(Energy, Hint, Undo, Reset)`. Detailed plan lives in
+`ROADMAP.md > Sprint UR — Undo + Reset Modules`.
+
+### Slice UR4 — Sync gateway integration (2026-05-26, working tree)
+
+- Added `ConsumePlayerUndoCommand` and `ConsumePlayerResetCommand`
+  with validators and handlers. Handlers load the player inventory,
+  call aggregate `Consume(amount, now)`, and surface empty-balance
+  business-rule failures.
+- Replaced API host no-op `UndoGuard` and `ResetGuard` stubs with real
+  composition-root adapters. Each adapter calls its module facade with
+  `ConsumePlayer{Undo,Reset}Command(playerId, 1)`.
+- Games integration test composition root now registers configurable
+  `RecordingUndoGuard` and `RecordingResetGuard` stubs, matching the
+  Hint recording guard pattern.
+- Added Games.IT `UseUndoFallThroughTests` and `ResetFallThroughTests`.
+  They prove every in-game Undo/Reset call invokes the gateway, guard
+  rejection happens before Game mutation/counter increment, and success
+  keeps the existing history/counter behavior.
+- Undo/Reset integration lifecycle tests now cover consume success and
+  consume-from-zero rejection. Raw SQL balance seeding clears the EF
+  change tracker before command execution so the test observes database
+  state rather than a stale tracked aggregate.
+- No DbUp migration was needed for UR4; it uses the UR2 inventory
+  tables.
+- Quality gate passed: `dotnet build LexiLink.sln --no-restore
+  --disable-build-servers -m:1 /clp:ErrorsOnly`, Undo.Tests 19/19,
+  Reset.Tests 19/19, Games.IntegrationTests 34/34,
+  Undo.IntegrationTests 4/4, Reset.IntegrationTests 4/4,
+  ArchitectureTests 55/55, and full
+  `./scripts/test.sh --no-restore --no-build /clp:ErrorsOnly` green.
+
+### Slice UR3 — Lazy init from PlayerRegistered (2026-05-26, working tree)
+
+- Added `EnsurePlayerUndoInventoryExistsCommand` and
+  `EnsurePlayerResetInventoryExistsCommand` with validators and
+  idempotent handlers. Existing inventory rows short-circuit; missing
+  rows initialize with the module's configured initial balance.
+- Added `IUndoConfigurationService.InitialBalance` and
+  `IResetConfigurationService.InitialBalance` in Domain, plus
+  Infrastructure implementations reading `Undo:InitialBalance` and
+  `Reset:InitialBalance` with default 0.
+- Added `PlayerRegisteredIntegrationEventHandler` consumers in Undo
+  and Reset Application. Both consume only the public
+  `Players.IntegrationEvents` contract and dispatch their own ensure
+  command through the module facade.
+- Undo/Reset Application projects now reference
+  `LexiLink.Modules.Players.IntegrationEvents`; Architecture tests were
+  adjusted to allow that granular public-contract dependency while
+  keeping Players Domain/Application/Infrastructure forbidden.
+- Added Undo and Reset integration test bases and lifecycle tests:
+  new guest registration creates `undo.PlayerUndoInventories` and
+  `reset.PlayerResetInventories` after outbox processing, and replayed
+  `PlayerRegisteredIntegrationEvent` messages do not duplicate rows.
+- `scripts/test.sh` now runs Undo and Reset integration test projects.
+- Quality gate passed: `dotnet build LexiLink.sln --no-restore
+  --disable-build-servers -m:1 /clp:ErrorsOnly`, Undo.Tests 19/19,
+  Reset.Tests 19/19, Undo.IntegrationTests 2/2,
+  Reset.IntegrationTests 2/2, ArchitectureTests 55/55, and full
+  `./scripts/test.sh --no-restore --no-build /clp:ErrorsOnly` green.
+
+### Slice UR2 — Undo + Reset module foundation (2026-05-26, working tree)
+
+- Added two Kamil-faithful module skeletons:
+  `src/Modules/Undo/{Domain,Application,Infrastructure,Tests,IntegrationTests}/`
+  and
+  `src/Modules/Reset/{Domain,Application,Infrastructure,Tests,IntegrationTests}/`.
+  Ten new projects were added to `LexiLink.sln`.
+- Added `PlayerUndoInventory` and `PlayerResetInventory` aggregates.
+  Both use `Id == PlayerId`, a single `_balance`, no maximum cap, and
+  no refill timer. Every in-game Undo/Reset call is intended to spend
+  persistent inventory through the future real guard adapter.
+- Added domain rules/events/repositories for both modules:
+  `{Undo,Reset}AmountMustBePositiveRule`,
+  `{Undo,Reset}AmountMustBeNonNegativeRule`,
+  `{Undo,Reset}BalanceMustBeSufficientRule`, initialized/consumed/
+  granted/admin-set/admin-reset domain events, and repository
+  contracts.
+- Added per-module Application contracts (`IUndoModule`,
+  `IResetModule`, command/query base contracts and handler
+  interfaces).
+- Added per-module Infrastructure foundation: EF context, schema
+  startup, Autofac module, module facade, UnitOfWork, domain event
+  dispatcher, logging/validation/unit-of-work decorators, outbox
+  accessor/table mapping, repository implementation, and aggregate
+  mapping. Admin auditing decorators and quest reward consumers are
+  intentionally deferred to later UR slices.
+- DbUp scripts added and applied locally:
+  `{undo,reset}/Schema/001_CreateSchema.sql`,
+  `{undo,reset}/Tables/010_Player{Undo,Reset}Inventories.sql`, and
+  `{undo,reset}/Tables/070_OutboxMessages.sql`.
+- API composition root now initializes Undo and Reset startups, checks
+  their mappings, and references both Infrastructure projects. The
+  temporary no-op Games guard adapters from UR1 remain in place until
+  UR4.
+- Architecture tests now include Undo/Reset assemblies, aggregate
+  naming checks, API composition-root boundaries, and per-layer
+  dependency rules. `scripts/test.sh` now runs Undo and Reset unit test
+  projects.
+- iCloud duplicate `* 2.sql` resource copies were cleaned from source
+  and build output after DbUp reported duplicate/missing embedded
+  migration names.
+- Quality gate passed: `dotnet build LexiLink.sln --no-restore
+  --disable-build-servers -m:1 /clp:ErrorsOnly`,
+  Undo.Tests 19/19, Reset.Tests 19/19, ArchitectureTests 55/55, and
+  full `./scripts/test.sh --no-restore --no-build /clp:ErrorsOnly`
+  green.
+
+### Slice UR1 — Game.cs destructive reshape (2026-05-26, working tree)
+
+- Deleted `UndoAllowance` + `ResetAllowance` VOs, their
+  `*MustHaveRemainingRule` classes, and their unit tests.
+- `Game` now keeps `_undosUsed` + `_resetsUsed` as plain int counters.
+  `Undo()` delegates to `UseUndoWithExternalInventory()` and
+  `ResetToStart()` delegates to `ResetWithExternalInventory()`;
+  both methods preserve the existing state/history behavior, emit the
+  same domain events, and increment only the usage counter.
+- `Complete()` scoring now reads the plain counters instead of
+  allowance VO `.Used`.
+- `GameEntityTypeConfiguration` maps `UndosUsed` + `ResetsUsed` as
+  plain columns; `UndosRemaining` + `ResetsRemaining` owned mappings are
+  gone.
+- Added `IUndoGuard` + `IResetGuard` contracts in Games.Application.
+  `UndoCommandHandler` and `ResetCommandHandler` now always call the
+  corresponding gateway before mutating Game. API host registers
+  temporary no-op `UndoGuard` + `ResetGuard`; real adapters land in UR4.
+- Games, Quests, and Stats integration-test composition roots register
+  always-allowing Undo/Reset guard stubs so those modules still boot
+  without the new inventory modules.
+- DbUp `games/Tables/050_DropUndoResetAllowanceColumns.sql` drops the
+  old remaining columns idempotently. Canonical `040_Games.sql` and
+  `130_v_Games.sql` were updated; `v_Games` keeps `UndosTotal` and
+  `ResetsTotal` as temporary compatibility projections for the current
+  frontend.
+- API quest endpoint test was made resilient to local admin-created
+  active quest definitions: it now asserts that the seeded daily quest
+  is present, not that it is the only active quest.
+- Local `lexilink` DB was upgraded with the UR1 DbUp script. Quality
+  gate passed: `dotnet build LexiLink.sln --no-restore
+  --disable-build-servers -m:1 /clp:ErrorsOnly` and
+  `./scripts/test.sh --no-restore --no-build /clp:ErrorsOnly` green.
+
 ## Sprint H — Hint Module + Quest Multi-Reward (2026-05-25 → 2026-05-26)
 
 Eighth full-stack sprint. Extracted Hint out of `Game.HintAllowance`

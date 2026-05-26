@@ -16,6 +16,8 @@ public class PlayerQuestClaimedDomainEventNotification : IDomainEventNotificatio
     public Guid QuestDefinitionId { get; private set; }
     public int EnergyReward { get; private set; }
     public int HintReward { get; private set; }
+    public int UndoReward { get; private set; }
+    public int ResetReward { get; private set; }
 
     public PlayerQuestClaimedDomainEventNotification(PlayerQuestClaimedDomainEvent domainEvent, Guid id)
     {
@@ -27,6 +29,8 @@ public class PlayerQuestClaimedDomainEventNotification : IDomainEventNotificatio
         QuestDefinitionId = domainEvent.QuestDefinitionId.Value;
         EnergyReward = domainEvent.EnergyReward;
         HintReward = domainEvent.HintReward;
+        UndoReward = domainEvent.UndoReward;
+        ResetReward = domainEvent.ResetReward;
     }
 
     [JsonConstructor]

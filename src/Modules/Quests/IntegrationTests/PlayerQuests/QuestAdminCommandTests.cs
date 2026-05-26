@@ -37,11 +37,15 @@ public sealed class QuestAdminCommandTests : TestBase
             threshold: 3,
             energyReward: 5,
             hintReward: 2,
+            undoReward: 1,
+            resetReward: 4,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
         var row = await QuerySingleOrDefaultAsync<QuestDefinitionRow>("""
-            SELECT "Id", "Name", "Trigger", "Threshold", "EnergyReward", "HintReward", "ProgressBaseline", "IsActive"
+            SELECT "Id", "Name", "Trigger", "Threshold",
+                   "EnergyReward", "HintReward", "UndoReward", "ResetReward",
+                   "ProgressBaseline", "IsActive"
             FROM "quests"."QuestDefinitions" WHERE "Id" = @Id
             """, new { Id = id });
         row.Should().NotBeNull();
@@ -50,6 +54,8 @@ public sealed class QuestAdminCommandTests : TestBase
         row.Threshold.Should().Be(3);
         row.EnergyReward.Should().Be(5);
         row.HintReward.Should().Be(2);
+        row.UndoReward.Should().Be(1);
+        row.ResetReward.Should().Be(4);
         row.ProgressBaseline.Should().Be("FromSnapshot");
         row.IsActive.Should().BeTrue();
 
@@ -78,17 +84,23 @@ public sealed class QuestAdminCommandTests : TestBase
             threshold: 7,
             energyReward: 9,
             hintReward: 3,
+            undoReward: 4,
+            resetReward: 2,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
         var row = await QuerySingleOrDefaultAsync<QuestDefinitionRow>("""
-            SELECT "Id", "Name", "Trigger", "Threshold", "EnergyReward", "HintReward", "ProgressBaseline", "IsActive"
+            SELECT "Id", "Name", "Trigger", "Threshold",
+                   "EnergyReward", "HintReward", "UndoReward", "ResetReward",
+                   "ProgressBaseline", "IsActive"
             FROM "quests"."QuestDefinitions" WHERE "Id" = @Id
             """, new { Id = SeedDailyQuestDefinitionId });
         row.Should().NotBeNull();
         row!.Threshold.Should().Be(7);
         row.EnergyReward.Should().Be(9);
         row.HintReward.Should().Be(3);
+        row.UndoReward.Should().Be(4);
+        row.ResetReward.Should().Be(2);
 
         await ProcessOutboxAsync();
 
@@ -152,6 +164,8 @@ public sealed class QuestAdminCommandTests : TestBase
             threshold: 3,
             energyReward: 5,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: SeedDailyQuestDefinitionId,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
@@ -187,6 +201,8 @@ public sealed class QuestAdminCommandTests : TestBase
         int Threshold,
         int EnergyReward,
         int HintReward,
+        int UndoReward,
+        int ResetReward,
         string ProgressBaseline,
         bool IsActive);
 

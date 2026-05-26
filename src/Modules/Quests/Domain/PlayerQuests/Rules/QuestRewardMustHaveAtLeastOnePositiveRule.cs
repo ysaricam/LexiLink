@@ -3,24 +3,36 @@ using LexiLink.Common.Domain;
 namespace LexiLink.Modules.Quests.Domain.PlayerQuests.Rules;
 
 /// <summary>
-/// Quest rewards expanded in Sprint H from a single int to
-/// (EnergyReward, HintReward). Both must be non-negative, and at
-/// least one must be positive — a zero-zero reward would be a quest
-/// the player has no incentive to complete.
+/// Quest rewards are split by resource module. All four must be
+/// non-negative, and at least one must be positive — an all-zero
+/// reward would be a quest the player has no incentive to complete.
 /// </summary>
 public class QuestRewardMustHaveAtLeastOnePositiveRule : IBusinessRule
 {
     private readonly int _energyReward;
     private readonly int _hintReward;
+    private readonly int _undoReward;
+    private readonly int _resetReward;
 
-    public QuestRewardMustHaveAtLeastOnePositiveRule(int energyReward, int hintReward)
+    public QuestRewardMustHaveAtLeastOnePositiveRule(
+        int energyReward,
+        int hintReward,
+        int undoReward,
+        int resetReward)
     {
         _energyReward = energyReward;
         _hintReward = hintReward;
+        _undoReward = undoReward;
+        _resetReward = resetReward;
     }
 
-    public bool IsBroken() => _energyReward < 0 || _hintReward < 0 || (_energyReward == 0 && _hintReward == 0);
+    public bool IsBroken() =>
+        _energyReward < 0 ||
+        _hintReward < 0 ||
+        _undoReward < 0 ||
+        _resetReward < 0 ||
+        (_energyReward == 0 && _hintReward == 0 && _undoReward == 0 && _resetReward == 0);
 
     public string Message =>
-        "Quest reward must be non-negative and at least one of EnergyReward / HintReward must be positive.";
+        "Quest reward must be non-negative and at least one reward amount must be positive.";
 }

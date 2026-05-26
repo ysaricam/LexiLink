@@ -19,7 +19,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats.Infrastructure",
                 "LexiLink.Modules.Energy.Infrastructure",
                 "LexiLink.Modules.Quests.Infrastructure",
-                "LexiLink.Modules.Administration.Infrastructure")
+                "LexiLink.Modules.Administration.Infrastructure",
+                "LexiLink.Modules.Undo.Infrastructure",
+                "LexiLink.Modules.Reset.Infrastructure")
             .GetResult();
 
         AssertArchTestResult(result);
@@ -36,11 +38,15 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Energy.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Quests.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Administration.Infrastructure.Configuration.Outbox",
+                "LexiLink.Modules.Undo.Infrastructure.Configuration.Outbox",
+                "LexiLink.Modules.Reset.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Games.Infrastructure.GamesContext",
                 "LexiLink.Modules.Players.Infrastructure.PlayersContext",
                 "LexiLink.Modules.Energy.Infrastructure.EnergyContext",
                 "LexiLink.Modules.Quests.Infrastructure.QuestsContext",
                 "LexiLink.Modules.Administration.Infrastructure.AdministrationContext",
+                "LexiLink.Modules.Undo.Infrastructure.UndoContext",
+                "LexiLink.Modules.Reset.Infrastructure.ResetContext",
                 "Microsoft.EntityFrameworkCore")
             .GetResult();
 
@@ -396,6 +402,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
                 "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
                 "LexiLink.API"
             });
 
@@ -412,6 +420,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
                 "LexiLink.Modules.Administration",
                 "LexiLink.API",
                 "Microsoft.EntityFrameworkCore",
@@ -434,6 +444,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Players.Infrastructure",
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
                 "LexiLink.Modules.Quests.Domain",
                 "LexiLink.Modules.Quests.Application",
                 "LexiLink.Modules.Quests.Infrastructure",
@@ -457,9 +469,141 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
                 "LexiLink.Modules.Administration.Domain",
                 "LexiLink.Modules.Administration.Application",
                 "LexiLink.Modules.Administration.Infrastructure",
+                "LexiLink.API"
+            });
+
+        // Undo.Domain — fully isolated; no other module's namespace allowed.
+        yield return new TestCaseData(
+            "Undo.Domain",
+            UndoDomainAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Undo.Application",
+                "LexiLink.Modules.Undo.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Reset",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Dapper",
+                "Npgsql"
+            });
+
+        // Undo.Application MAY reference Players.IntegrationEvents
+        // (UR3 lazy init) and Quests.IntegrationEvents (UR5 reward
+        // consumer). Other module internals remain forbidden.
+        yield return new TestCaseData(
+            "Undo.Application",
+            UndoApplicationAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Undo.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players.Domain",
+                "LexiLink.Modules.Players.Application",
+                "LexiLink.Modules.Players.Infrastructure",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests.Domain",
+                "LexiLink.Modules.Quests.Application",
+                "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Reset",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Npgsql"
+            });
+
+        // Undo.Infrastructure is isolated until admin audit integration lands.
+        yield return new TestCaseData(
+            "Undo.Infrastructure",
+            UndoInfrastructureAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Reset",
+                "LexiLink.API"
+            });
+
+        // Reset.Domain — fully isolated; no other module's namespace allowed.
+        yield return new TestCaseData(
+            "Reset.Domain",
+            ResetDomainAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Reset.Application",
+                "LexiLink.Modules.Reset.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Dapper",
+                "Npgsql"
+            });
+
+        // Reset.Application MAY reference Players.IntegrationEvents
+        // (UR3 lazy init) and Quests.IntegrationEvents (UR5 reward
+        // consumer). Other module internals remain forbidden.
+        yield return new TestCaseData(
+            "Reset.Application",
+            ResetApplicationAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Reset.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players.Domain",
+                "LexiLink.Modules.Players.Application",
+                "LexiLink.Modules.Players.Infrastructure",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests.Domain",
+                "LexiLink.Modules.Quests.Application",
+                "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Npgsql"
+            });
+
+        // Reset.Infrastructure is isolated until admin audit integration lands.
+        yield return new TestCaseData(
+            "Reset.Infrastructure",
+            ResetInfrastructureAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
                 "LexiLink.API"
             });
     }
@@ -486,6 +630,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Quests.Domain",
                 "LexiLink.Modules.Quests.Application",
                 "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
                 "LexiLink.Modules.Administration.Domain",
                 "LexiLink.Modules.Administration.Application",
                 "LexiLink.Modules.Administration.Infrastructure",

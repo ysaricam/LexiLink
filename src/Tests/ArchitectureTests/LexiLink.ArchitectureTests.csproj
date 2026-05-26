@@ -46,6 +46,12 @@
     <ProjectReference Include="..\..\Modules\Hint\Domain\LexiLink.Modules.Hint.Domain.csproj" />
     <ProjectReference Include="..\..\Modules\Hint\Application\LexiLink.Modules.Hint.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Hint\Infrastructure\LexiLink.Modules.Hint.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Undo\Domain\LexiLink.Modules.Undo.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Undo\Application\LexiLink.Modules.Undo.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Undo\Infrastructure\LexiLink.Modules.Undo.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Reset\Domain\LexiLink.Modules.Reset.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Reset\Application\LexiLink.Modules.Reset.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Reset\Infrastructure\LexiLink.Modules.Reset.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

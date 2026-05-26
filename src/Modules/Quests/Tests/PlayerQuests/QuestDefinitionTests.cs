@@ -18,6 +18,8 @@ public class QuestDefinitionTests : TestBase
             threshold: 3,
             energyReward: 5,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false);
@@ -28,6 +30,8 @@ public class QuestDefinitionTests : TestBase
         definition.Threshold.Should().Be(3);
         definition.EnergyReward.Should().Be(5);
         definition.HintReward.Should().Be(0);
+        definition.UndoReward.Should().Be(0);
+        definition.ResetReward.Should().Be(0);
         definition.PrerequisiteQuestDefinitionId.Should().BeNull();
         definition.ProgressBaseline.Should().Be(ProgressBaseline.FromSnapshot);
         definition.IsActive.Should().BeTrue();
@@ -39,6 +43,8 @@ public class QuestDefinitionTests : TestBase
         created.Threshold.Should().Be(3);
         created.EnergyReward.Should().Be(5);
         created.HintReward.Should().Be(0);
+        created.UndoReward.Should().Be(0);
+        created.ResetReward.Should().Be(0);
         created.PrerequisiteQuestDefinitionId.Should().BeNull();
         created.ProgressBaseline.Should().Be(nameof(ProgressBaseline.FromSnapshot));
     }
@@ -53,12 +59,36 @@ public class QuestDefinitionTests : TestBase
     }
 
     [Test]
+    public void Create_Should_AllowUndoOnlyReward()
+    {
+        var definition = Create(energyReward: 0, hintReward: 0, undoReward: 2);
+
+        definition.EnergyReward.Should().Be(0);
+        definition.HintReward.Should().Be(0);
+        definition.UndoReward.Should().Be(2);
+        definition.ResetReward.Should().Be(0);
+    }
+
+    [Test]
+    public void Create_Should_AllowResetOnlyReward()
+    {
+        var definition = Create(energyReward: 0, hintReward: 0, resetReward: 1);
+
+        definition.EnergyReward.Should().Be(0);
+        definition.HintReward.Should().Be(0);
+        definition.UndoReward.Should().Be(0);
+        definition.ResetReward.Should().Be(1);
+    }
+
+    [Test]
     public void Create_Should_AllowMixedReward()
     {
-        var definition = Create(energyReward: 5, hintReward: 2);
+        var definition = Create(energyReward: 5, hintReward: 2, undoReward: 1, resetReward: 1);
 
         definition.EnergyReward.Should().Be(5);
         definition.HintReward.Should().Be(2);
+        definition.UndoReward.Should().Be(1);
+        definition.ResetReward.Should().Be(1);
     }
 
     [Test]
@@ -73,6 +103,8 @@ public class QuestDefinitionTests : TestBase
             threshold: 1,
             energyReward: 5,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false);
@@ -108,7 +140,7 @@ public class QuestDefinitionTests : TestBase
     }
 
     [Test]
-    public void Create_Should_RejectBothRewardsZero()
+    public void Create_Should_RejectAllRewardsZero()
     {
         AssertBrokenRule<QuestRewardMustHaveAtLeastOnePositiveRule>(() =>
             Create(energyReward: 0, hintReward: 0));
@@ -129,6 +161,20 @@ public class QuestDefinitionTests : TestBase
     }
 
     [Test]
+    public void Create_Should_RejectNegativeUndoReward()
+    {
+        AssertBrokenRule<QuestRewardMustHaveAtLeastOnePositiveRule>(() =>
+            Create(energyReward: 5, undoReward: -1));
+    }
+
+    [Test]
+    public void Create_Should_RejectNegativeResetReward()
+    {
+        AssertBrokenRule<QuestRewardMustHaveAtLeastOnePositiveRule>(() =>
+            Create(energyReward: 5, resetReward: -1));
+    }
+
+    [Test]
     public void Create_Should_RejectCycleWhenHandlerSignalsIt()
     {
         AssertBrokenRule<QuestPrerequisiteMustNotCreateCycleRule>(() =>
@@ -146,6 +192,8 @@ public class QuestDefinitionTests : TestBase
             threshold: 5,
             energyReward: 10,
             hintReward: 2,
+            undoReward: 3,
+            resetReward: 4,
             prerequisiteQuestDefinitionId: newPrereq,
             progressBaseline: ProgressBaseline.FromExistingTotal,
             prerequisiteWouldCreateCycle: false);
@@ -154,6 +202,8 @@ public class QuestDefinitionTests : TestBase
         definition.Threshold.Should().Be(5);
         definition.EnergyReward.Should().Be(10);
         definition.HintReward.Should().Be(2);
+        definition.UndoReward.Should().Be(3);
+        definition.ResetReward.Should().Be(4);
         definition.PrerequisiteQuestDefinitionId.Should().Be(newPrereq);
         definition.ProgressBaseline.Should().Be(ProgressBaseline.FromExistingTotal);
 
@@ -162,6 +212,8 @@ public class QuestDefinitionTests : TestBase
         updated.Threshold.Should().Be(5);
         updated.EnergyReward.Should().Be(10);
         updated.HintReward.Should().Be(2);
+        updated.UndoReward.Should().Be(3);
+        updated.ResetReward.Should().Be(4);
         updated.PrerequisiteQuestDefinitionId.Should().Be(newPrereq.Value);
         updated.ProgressBaseline.Should().Be(nameof(ProgressBaseline.FromExistingTotal));
     }
@@ -176,6 +228,8 @@ public class QuestDefinitionTests : TestBase
             threshold: -1,
             energyReward: 5,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false));
@@ -191,6 +245,8 @@ public class QuestDefinitionTests : TestBase
             threshold: 1,
             energyReward: 5,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: new QuestDefinitionId(Guid.NewGuid()),
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: true));
@@ -242,6 +298,8 @@ public class QuestDefinitionTests : TestBase
         int threshold = 3,
         int energyReward = 5,
         int hintReward = 0,
+        int undoReward = 0,
+        int resetReward = 0,
         QuestDefinitionId? prerequisiteQuestDefinitionId = null,
         ProgressBaseline progressBaseline = ProgressBaseline.FromSnapshot,
         bool prerequisiteWouldCreateCycle = false) =>
@@ -252,6 +310,8 @@ public class QuestDefinitionTests : TestBase
             threshold,
             energyReward,
             hintReward,
+            undoReward,
+            resetReward,
             prerequisiteQuestDefinitionId,
             progressBaseline,
             prerequisiteWouldCreateCycle);

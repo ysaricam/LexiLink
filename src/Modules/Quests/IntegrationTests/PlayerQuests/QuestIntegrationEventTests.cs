@@ -1,4 +1,6 @@
+using System.Text.Json;
 using LexiLink.Common.Application.Admin;
+using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.UpdateQuestDefinition;
 using LexiLink.Modules.Quests.Application.Admin.QuestDefinitions.CreateQuestDefinition;
 using LexiLink.Modules.Quests.Application.PlayerQuests.ClaimQuest;
 using LexiLink.Modules.Quests.Application.PlayerQuests.GetActiveQuests;
@@ -80,6 +82,8 @@ public class QuestIntegrationEventTests : TestBase
             threshold: 1,
             energyReward: 3,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
         var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
@@ -89,6 +93,8 @@ public class QuestIntegrationEventTests : TestBase
             threshold: 3,
             energyReward: 5,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot));
         AdminContext.Logout();
@@ -112,6 +118,8 @@ public class QuestIntegrationEventTests : TestBase
             threshold: 1,
             energyReward: 3,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
         var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
@@ -121,6 +129,8 @@ public class QuestIntegrationEventTests : TestBase
             threshold: 3,
             energyReward: 5,
             hintReward: 0,
+            undoReward: 0,
+            resetReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot));
         AdminContext.Logout();
@@ -183,6 +193,19 @@ public class QuestIntegrationEventTests : TestBase
         var playerId = Guid.NewGuid();
         QuestCounterReader.GamesCompletedToday = 0;
 
+        AdminContext.LoginAs(AdminId);
+        await QuestsModule.ExecuteCommandAsync(new UpdateQuestDefinitionCommand(
+            questDefinitionId: SeedDailyQuestDefinitionId,
+            description: "Bugün 3 oyun tamamla.",
+            threshold: 3,
+            energyReward: 5,
+            hintReward: 2,
+            undoReward: 1,
+            resetReward: 1,
+            prerequisiteQuestDefinitionId: null,
+            progressBaseline: ProgressBaseline.FromSnapshot));
+        AdminContext.Logout();
+
         await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
 
         // Player now completes 3 games today, hitting the threshold.
@@ -196,20 +219,30 @@ public class QuestIntegrationEventTests : TestBase
         await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
 
         var queued = await QuerySingleOrDefaultAsync<OutboxRow>("""
-            SELECT "Type" AS "Type", "ProcessedDate" AS "ProcessedDate"
+            SELECT "Type" AS "Type", "Data" AS "Data", "ProcessedDate" AS "ProcessedDate"
             FROM "quests"."OutboxMessages"
+            WHERE "Type" = 'Quests.PlayerQuestClaimedDomainEventNotification'
             ORDER BY "OccurredOn" DESC
             LIMIT 1;
         """);
         queued.Should().NotBeNull();
         queued!.Type.Should().Be("Quests.PlayerQuestClaimedDomainEventNotification");
         queued.ProcessedDate.Should().BeNull("outbox row should exist but not yet be processed");
+        using (var json = JsonDocument.Parse(queued.Data))
+        {
+            var root = json.RootElement;
+            root.GetProperty("EnergyReward").GetInt32().Should().Be(5);
+            root.GetProperty("HintReward").GetInt32().Should().Be(2);
+            root.GetProperty("UndoReward").GetInt32().Should().Be(1);
+            root.GetProperty("ResetReward").GetInt32().Should().Be(1);
+        }
 
         await ProcessOutboxAsync();
 
         var processed = await QuerySingleOrDefaultAsync<OutboxRow>("""
-            SELECT "Type" AS "Type", "ProcessedDate" AS "ProcessedDate"
+            SELECT "Type" AS "Type", "Data" AS "Data", "ProcessedDate" AS "ProcessedDate"
             FROM "quests"."OutboxMessages"
+            WHERE "Type" = 'Quests.PlayerQuestClaimedDomainEventNotification'
             ORDER BY "OccurredOn" DESC
             LIMIT 1;
         """);
@@ -239,6 +272,7 @@ public class QuestIntegrationEventTests : TestBase
     private sealed class OutboxRow
     {
         public string Type { get; init; } = string.Empty;
+        public string Data { get; init; } = string.Empty;
         public DateTime? ProcessedDate { get; init; }
     }
 }

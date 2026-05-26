@@ -24,8 +24,8 @@ public class Game : Entity, IAggregateRoot
     private StepBudget _stepBudget;
 
     private HintAllowance _hintAllowance;
-    private UndoAllowance _undoAllowance;
-    private ResetAllowance _resetAllowance;
+    private int _undosUsed;
+    private int _resetsUsed;
 
     public LinkId CurrentLinkId => _currentLinkId;
     public IReadOnlyCollection<LinkId> History => _history.Select(s => s.LinkId).ToList().AsReadOnly();
@@ -41,9 +41,7 @@ public class Game : Entity, IAggregateRoot
         Guid playerId,
         Puzzle puzzle,
         int maxSteps,
-        int hints,
-        int undos,
-        int resets)
+        int hints)
     {
         Id = new GameId(Guid.NewGuid());
         PlayerId = playerId;
@@ -55,8 +53,8 @@ public class Game : Entity, IAggregateRoot
         _stepBudget = StepBudget.Of(maxSteps);
 
         _hintAllowance = HintAllowance.Of(hints);
-        _undoAllowance = UndoAllowance.Of(undos);
-        _resetAllowance = ResetAllowance.Of(resets);
+        _undosUsed = 0;
+        _resetsUsed = 0;
 
         _history = [];
         _gameState = GameState.Initial;
@@ -68,11 +66,9 @@ public class Game : Entity, IAggregateRoot
         Guid playerId,
         Puzzle puzzle,
         int maxSteps,
-        int hints,
-        int undos,
-        int resets)
+        int hints)
     {
-        return new Game(playerId, puzzle, maxSteps, hints, undos, resets);
+        return new Game(playerId, puzzle, maxSteps, hints);
     }
 
     public void Start()
@@ -162,14 +158,18 @@ public class Game : Entity, IAggregateRoot
 
     public void Undo()
     {
+        UseUndoWithExternalInventory();
+    }
+
+    public void UseUndoWithExternalInventory()
+    {
         CheckRule(new GameMustBeInProgressRule(_gameState));
         CheckRule(new GameHistoryMustNotBeEmptyRule(_history));
-
-        _undoAllowance = _undoAllowance.Consume();
 
         _history.RemoveAt(_history.Count - 1);
         _currentLinkId = _history.Count > 0 ? _history[^1].LinkId : _puzzle.StartLinkId;
         _stepBudget = _stepBudget.UndoStep();
+        _undosUsed++;
 
         if (_gameState == GameState.LastStepWarning && _stepBudget.IsBelowLastWarning)
         {
@@ -181,15 +181,19 @@ public class Game : Entity, IAggregateRoot
 
     public void ResetToStart()
     {
+        ResetWithExternalInventory();
+    }
+
+    public void ResetWithExternalInventory()
+    {
         CheckRule(new GameMustBeInProgressRule(_gameState));
         CheckRule(new GameHistoryMustNotBeEmptyRule(_history));
-
-        _resetAllowance = _resetAllowance.Consume();
 
         _currentLinkId = _puzzle.StartLinkId;
         _history.Clear();
         _stepBudget = _stepBudget.Reset();
         _gameState = GameState.InProgress;
+        _resetsUsed++;
 
         AddDomainEvent(new ResetUsedDomainEvent(Id));
     }
@@ -210,8 +214,8 @@ public class Game : Entity, IAggregateRoot
             targetDepth: _puzzle.Depth,
             stepsTaken: _history.Count,
             hintsUsed: _hintAllowance.Used,
-            undosUsed: _undoAllowance.Used,
-            resetsUsed: _resetAllowance.Used);
+            undosUsed: _undosUsed,
+            resetsUsed: _resetsUsed);
 
         AddDomainEvent(new GameCompletedDomainEvent(Id, PlayerId, _puzzle.StartLinkId, _puzzle.TargetLinkId, _score));
     }

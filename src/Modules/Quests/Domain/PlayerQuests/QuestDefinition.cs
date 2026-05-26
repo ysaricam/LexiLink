@@ -12,11 +12,11 @@ namespace LexiLink.Modules.Quests.Domain.PlayerQuests;
 /// PlayerQuest history and a trigger swap does not invalidate baseline
 /// snapshots.
 ///
-/// Sprint H expanded the single reward int into two non-negative
-/// integers — <see cref="EnergyReward"/> and <see cref="HintReward"/>
-/// — with the rule that at least one must be positive. Energy and
-/// Hint modules each consume <c>QuestClaimedIntegrationEvent</c>
-/// independently and grant their portion.
+/// Sprint H expanded the single reward int into Energy + Hint; UR5
+/// adds Undo + Reset. All reward amounts are non-negative and at
+/// least one must be positive. Each resource module consumes
+/// <c>QuestClaimedIntegrationEvent</c> independently and grants its
+/// portion.
 /// </summary>
 public sealed class QuestDefinition : Entity, IAggregateRoot
 {
@@ -28,6 +28,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
     private int _threshold;
     private int _energyReward;
     private int _hintReward;
+    private int _undoReward;
+    private int _resetReward;
     private QuestDefinitionId? _prerequisiteQuestDefinitionId;
     private ProgressBaseline _progressBaseline;
     private bool _isActive;
@@ -38,6 +40,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
     public int Threshold => _threshold;
     public int EnergyReward => _energyReward;
     public int HintReward => _hintReward;
+    public int UndoReward => _undoReward;
+    public int ResetReward => _resetReward;
     public QuestDefinitionId? PrerequisiteQuestDefinitionId => _prerequisiteQuestDefinitionId;
     public ProgressBaseline ProgressBaseline => _progressBaseline;
     public bool IsActive => _isActive;
@@ -55,6 +59,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         int threshold,
         int energyReward,
         int hintReward,
+        int undoReward,
+        int resetReward,
         QuestDefinitionId? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline,
         bool prerequisiteWouldCreateCycle)
@@ -63,7 +69,11 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         CheckRule(new QuestNameMustNotExceedMaxLengthRule(name));
         CheckRule(new QuestDescriptionMustNotExceedMaxLengthRule(description));
         CheckRule(new QuestThresholdMustBePositiveRule(threshold));
-        CheckRule(new QuestRewardMustHaveAtLeastOnePositiveRule(energyReward, hintReward));
+        CheckRule(new QuestRewardMustHaveAtLeastOnePositiveRule(
+            energyReward,
+            hintReward,
+            undoReward,
+            resetReward));
         CheckRule(new QuestPrerequisiteMustNotCreateCycleRule(prerequisiteWouldCreateCycle));
 
         Id = id;
@@ -73,6 +83,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         _threshold = threshold;
         _energyReward = energyReward;
         _hintReward = hintReward;
+        _undoReward = undoReward;
+        _resetReward = resetReward;
         _prerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         _progressBaseline = progressBaseline;
         _isActive = true;
@@ -84,6 +96,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             threshold,
             energyReward,
             hintReward,
+            undoReward,
+            resetReward,
             prerequisiteQuestDefinitionId?.Value,
             progressBaseline.ToString()));
     }
@@ -95,6 +109,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         int threshold,
         int energyReward,
         int hintReward,
+        int undoReward,
+        int resetReward,
         QuestDefinitionId? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline,
         bool prerequisiteWouldCreateCycle)
@@ -107,6 +123,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             threshold,
             energyReward,
             hintReward,
+            undoReward,
+            resetReward,
             prerequisiteQuestDefinitionId,
             progressBaseline,
             prerequisiteWouldCreateCycle);
@@ -123,19 +141,27 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         int threshold,
         int energyReward,
         int hintReward,
+        int undoReward,
+        int resetReward,
         QuestDefinitionId? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline,
         bool prerequisiteWouldCreateCycle)
     {
         CheckRule(new QuestDescriptionMustNotExceedMaxLengthRule(description));
         CheckRule(new QuestThresholdMustBePositiveRule(threshold));
-        CheckRule(new QuestRewardMustHaveAtLeastOnePositiveRule(energyReward, hintReward));
+        CheckRule(new QuestRewardMustHaveAtLeastOnePositiveRule(
+            energyReward,
+            hintReward,
+            undoReward,
+            resetReward));
         CheckRule(new QuestPrerequisiteMustNotCreateCycleRule(prerequisiteWouldCreateCycle));
 
         _description = description ?? string.Empty;
         _threshold = threshold;
         _energyReward = energyReward;
         _hintReward = hintReward;
+        _undoReward = undoReward;
+        _resetReward = resetReward;
         _prerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         _progressBaseline = progressBaseline;
 
@@ -145,6 +171,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             threshold,
             energyReward,
             hintReward,
+            undoReward,
+            resetReward,
             prerequisiteQuestDefinitionId?.Value,
             progressBaseline.ToString()));
     }

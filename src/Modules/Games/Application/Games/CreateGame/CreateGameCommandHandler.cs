@@ -58,10 +58,8 @@ internal class CreateGameCommandHandler : ICommandHandler<CreateGameCommand, Gui
 
         var maxSteps = _gameConfiguration.ResolveMaxSteps(request.Difficulty, puzzle.Depth);
         var hints = _gameConfiguration.ResolveHints(request.Difficulty);
-        var undos = _gameConfiguration.ResolveUndos(request.Difficulty);
-        var resets = _gameConfiguration.ResolveResets(request.Difficulty);
 
-        var game = Game.Create(request.PlayerId, puzzle, maxSteps, hints, undos, resets);
+        var game = Game.Create(request.PlayerId, puzzle, maxSteps, hints);
 
         await _gameRepository.AddAsync(game, cancellationToken);
 

@@ -13,7 +13,7 @@ public class GameCreateTests : GameTestsBase
         var target = NewLinkId();
         var puzzle = BuildPuzzle(start, target, [target]);
 
-        var game = Game.Create(NewPlayerId(), puzzle, maxSteps: 5, hints: 3, undos: 5, resets: 2);
+        var game = Game.Create(NewPlayerId(), puzzle, maxSteps: 5, hints: 3);
 
         AssertPublishedDomainEvent<GameCreatedDomainEvent>(game)
             .GameId.Should().Be(game.Id);

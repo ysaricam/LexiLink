@@ -27,6 +27,8 @@ internal sealed class GetQuestDefinitionsQueryHandler
                 d.Threshold,
                 d.EnergyReward,
                 d.HintReward,
+                d.UndoReward,
+                d.ResetReward,
                 d.PrerequisiteQuestDefinitionId?.Value,
                 d.ProgressBaseline,
                 d.IsActive))

@@ -43,7 +43,10 @@ public class DomainModelTests : ArchitectureTestBase
             "Game",
             "Player",
             "AdminUser",
-            "QuestDefinition"
+            "QuestDefinition",
+            "PlayerHintInventory",
+            "PlayerUndoInventory",
+            "PlayerResetInventory"
         };
 
         var failingTypes = ModuleAssemblies

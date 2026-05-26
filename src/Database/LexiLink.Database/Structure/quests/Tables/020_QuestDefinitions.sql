@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS "quests"."QuestDefinitions"
     "Threshold"                     integer      NOT NULL,
     "EnergyReward"                  integer      NOT NULL DEFAULT 0,
     "HintReward"                    integer      NOT NULL DEFAULT 0,
+    "UndoReward"                    integer      NOT NULL DEFAULT 0,
+    "ResetReward"                   integer      NOT NULL DEFAULT 0,
     "PrerequisiteQuestDefinitionId" uuid         NULL,
     "ProgressBaseline"              varchar(32)  NOT NULL,
     "IsActive"                      boolean      NOT NULL DEFAULT TRUE,

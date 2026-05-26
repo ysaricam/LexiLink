@@ -1446,7 +1446,8 @@ namespaces in the allowed-pair list, no integration tests yet.
 
 **Acceptance:** new guest registration creates a row in
 `undo.PlayerUndoInventories` and `reset.PlayerResetInventories`
-after outbox processing. Idempotency confirmed via re-register.
+after outbox processing. Idempotency confirmed via replayed
+`PlayerRegisteredIntegrationEvent`.
 
 #### UR4 — Sync gateway integration
 
@@ -1461,9 +1462,8 @@ after outbox processing. Idempotency confirmed via re-register.
   H7 — `CallCount` + `RejectNext` flag).
 - New Games.IT tests: `UseUndoFallThroughTests` +
   `ResetFallThroughTests`. Each asserts: every call invokes the
-  gateway (no free branching); rejection propagates as
-  `BusinessRuleValidationException`; counter only increments on
-  success.
+  gateway (no free branching); rejection propagates before Game
+  mutation; counter only increments on success.
 
 **Acceptance:** end-to-end Undo and Reset flows go through the
 real Hint-style sync gateway; integration tests prove both

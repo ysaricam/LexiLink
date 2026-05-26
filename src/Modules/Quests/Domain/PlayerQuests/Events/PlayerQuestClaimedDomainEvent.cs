@@ -9,18 +9,24 @@ public class PlayerQuestClaimedDomainEvent : DomainEvent
     public QuestDefinitionId QuestDefinitionId { get; }
     public int EnergyReward { get; }
     public int HintReward { get; }
+    public int UndoReward { get; }
+    public int ResetReward { get; }
 
     public PlayerQuestClaimedDomainEvent(
         PlayerQuestId playerQuestId,
         Guid playerId,
         QuestDefinitionId questDefinitionId,
         int energyReward,
-        int hintReward)
+        int hintReward,
+        int undoReward,
+        int resetReward)
     {
         PlayerQuestId = playerQuestId;
         PlayerId = playerId;
         QuestDefinitionId = questDefinitionId;
         EnergyReward = energyReward;
         HintReward = hintReward;
+        UndoReward = undoReward;
+        ResetReward = resetReward;
     }
 }

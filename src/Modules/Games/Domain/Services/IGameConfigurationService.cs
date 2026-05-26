@@ -7,6 +7,4 @@ public interface IGameConfigurationService
     (int MinDepth, int MaxDepth) ResolveDepthRange(Difficulty difficulty);
     int ResolveMaxSteps(Difficulty difficulty, int targetDepth);
     int ResolveHints(Difficulty difficulty);
-    int ResolveUndos(Difficulty difficulty);
-    int ResolveResets(Difficulty difficulty);
 }

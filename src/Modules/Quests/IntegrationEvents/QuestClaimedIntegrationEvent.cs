@@ -9,4 +9,6 @@ public sealed record QuestClaimedIntegrationEvent(
     Guid PlayerQuestId,
     Guid QuestDefinitionId,
     int EnergyReward,
-    int HintReward) : IIntegrationEvent;
+    int HintReward,
+    int UndoReward,
+    int ResetReward) : IIntegrationEvent;

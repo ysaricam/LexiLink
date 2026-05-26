@@ -75,8 +75,9 @@ public sealed class QuestEndpointsTests
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             var body = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
             body.RootElement.ValueKind.Should().Be(JsonValueKind.Array);
-            body.RootElement.GetArrayLength().Should().Be(1, "lazy sync issues the seeded daily quest");
-            var first = body.RootElement[0];
+            var quests = body.RootElement.EnumerateArray().ToList();
+            var first = quests.Single(q =>
+                q.GetProperty("questDefinitionId").GetGuid() == SeedDailyQuestDefinitionId);
             first.GetProperty("playerId").GetGuid().Should().Be(playerId);
             first.GetProperty("questDefinitionId").GetGuid().Should().Be(SeedDailyQuestDefinitionId);
             first.GetProperty("trigger").GetString().Should().Be("GameCompletedDaily");

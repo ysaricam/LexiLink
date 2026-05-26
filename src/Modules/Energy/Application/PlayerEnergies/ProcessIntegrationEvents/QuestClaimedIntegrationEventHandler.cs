@@ -18,9 +18,9 @@ internal class QuestClaimedIntegrationEventHandler :
 
     public async Task Handle(QuestClaimedIntegrationEvent integrationEvent, CancellationToken cancellationToken)
     {
-        // Sprint H: the event now carries an EnergyReward + a HintReward.
-        // No-op the energy path when the quest is hint-only, so we don't
-        // run EnsurePlayerEnergyExists / GrantEnergy with a zero amount.
+        // No-op the energy path when the quest has no energy reward,
+        // so we don't run EnsurePlayerEnergyExists / GrantEnergy with
+        // a zero amount.
         if (integrationEvent.EnergyReward <= 0)
         {
             return;

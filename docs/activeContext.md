@@ -4,19 +4,22 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-26 (Sprint UR — Undo + Reset Modules — planlandı; sekiz slice lockdown, implementation operator tarafından yapılacak, ben kontrol edeceğim).
+> Last updated: 2026-05-26 (Sprint UR — UR4 Undo + Reset sync gateway integration delivered; UR5 quest 4-reward destructive next).
 
 ---
 
 ## Active Sprint
 
-**Sprint UR — Undo + Reset Modules — planning closed, implementation
-pending.** Aynı Hint kalıbını Undo + Reset için iki yeni Kamil-faithful
-modüle uygulayacağız (`Modules/Undo/` + `Modules/Reset/`), aynı
-zamanda `QuestReward`'ı 4 alana çıkaracağız
-(`Energy + Hint + Undo + Reset`). Sekiz slice plan detayı
-`ROADMAP.md > Sprint UR`. Implementation operator tarafından
-yapılacak; bu oturum onaylama + review modunda.
+**Sprint UR — Undo + Reset Modules — implementation active.** UR1 →
+UR4 kapandı: Games aggregate artık Undo/Reset per-game allowance
+tutmuyor; `_undosUsed` + `_resetsUsed` plain counter olarak kaldı,
+`Modules/Undo/` + `Modules/Reset/` foundation'ları Hint kalıbıyla
+solution'a eklendi ve `PlayerRegisteredIntegrationEvent` sonrası iki
+inventory lazy-init oluyor. API host `IUndoGuard` / `IResetGuard`
+adapter'ları artık gerçek Undo/Reset module consume command'lerini
+çağırıyor. Sıradaki slice **UR5 — Quest 4-reward destructive**.
+Sprintin kalan hedefi `QuestReward`'ı 4 alana çıkarmak (`Energy +
+Hint + Undo + Reset`) ve admin/frontend yüzeylerini buna bağlamak.
 
 **Tasarım kararları (kilitli):**
 
@@ -24,9 +27,9 @@ yapılacak; bu oturum onaylama + review modunda.
   csproj, 2 yeni schema, 2 yeni outbox tablosu.
 - **Per-game free quota tamamen kaldırılır.** `UndoAllowance` +
   `ResetAllowance` VO'ları ve ilgili rule'ları silinir;
-  `Game.UseUndo()` + `Game.ResetToStart()` her çağrıda doğrudan
-  `IUndoGuard` / `IResetGuard` invoke eder. **Hint'ten farkı:**
-  branching yok (`HasFreeXRemaining` Game'de yok).
+  `UndoCommandHandler` + `ResetCommandHandler` her çağrıda domain
+  mutation'dan önce `IUndoGuard` / `IResetGuard` invoke eder.
+  **Hint'ten farkı:** branching yok (`HasFreeXRemaining` Game'de yok).
 - **`Game._undosUsed` + `_resetsUsed` int counter olarak kalır**
   (istatistik + scoring). Allowance VO + rule yok.
 - **QuestReward 4 alan** (`EnergyReward, HintReward, UndoReward,
@@ -39,20 +42,19 @@ yapılacak; bu oturum onaylama + review modunda.
   Quests.IntegrationEvents`).
 - **Player inventory başlangıç stoğu 0** (Hint defaultu).
   `Undo:InitialBalance` + `Reset:InitialBalance` configurable.
-- **Slice ordering:** önce `Game.cs` reshape (UR1), sonra
-  modüller. UR1 sırasında API host no-op `AlwaysAllowing*Guard`
-  adapter'ları geçici olarak çalışır; gerçek adapter'lar UR4'te
-  iner.
+- **Slice ordering:** önce `Game.cs` reshape (UR1), sonra modüller
+  ve sync gateway. UR4 itibarıyla API host guard adapter'ları gerçek
+  module consume command'lerine bağlı.
 
 **Slice listesi:**
 
 | Slice | İçerik |
 |-------|--------|
-| UR1 | Game.cs destructive reshape (Allowance VO'lar + rule sil, int counter ekle, IUndoGuard/IResetGuard contract'ları + UseUndoWithExternalInventory + ResetWithExternalInventory + Games.IT stub'ları + no-op API host adapter'ları). |
-| UR2 | İki modül foundation (Hint scaffolding x2). |
-| UR3 | Lazy init from PlayerRegistered. |
-| UR4 | Real IUndoGuard + IResetGuard API host adapter'ları + Games.IT'de Recording*Guard + fall-through integration tests. |
-| UR5 | Quest 4-reward destructive (QuestDefinition + PlayerQuest + IntegrationEvent reshape + iki yeni consumer + grant commands + DbUp). |
+| UR1 ✅ | Game.cs destructive reshape (Allowance VO'lar + rule sil, int counter ekle, IUndoGuard/IResetGuard contract'ları + UseUndoWithExternalInventory + ResetWithExternalInventory + Games.IT stub'ları + no-op API host adapter'ları). |
+| UR2 ✅ | İki modül foundation (Hint scaffolding x2). |
+| UR3 ✅ | Lazy init from PlayerRegistered. |
+| UR4 ✅ | Real IUndoGuard + IResetGuard API host adapter'ları + Games.IT'de Recording*Guard + fall-through integration tests. |
+| UR5 ⏭ | Quest 4-reward destructive (QuestDefinition + PlayerQuest + IntegrationEvent reshape + iki yeni consumer + grant commands + DbUp). |
 | UR6 | Admin Set/Grant/Reset + audit + GET endpoints (`/{undo,reset}/me` + `/admin/players/{id}/{undo,reset}/*`). |
 | UR7 | Frontend (4 badge HomeScreen, 4 reward quest form, 2 admin console, undo+reset player feature). |
 | UR8 | Tests + quality gate + manuel verification (4 golden flow) + docs. |
@@ -67,6 +69,37 @@ yapılacak; bu oturum onaylama + review modunda.
 
 Detaylı slice plan, rationale ve trade-off notları `ROADMAP.md >
 Sprint UR — Undo + Reset Modules`.
+
+### Recently closed (Sprint UR session, 2026-05-26)
+
+- **Game.cs destructive reshape (UR1).** `UndoAllowance` +
+  `ResetAllowance` VO/rule/test surface removed. `Game` keeps only
+  `_undosUsed` + `_resetsUsed` counters; command handlers call
+  `IUndoGuard` / `IResetGuard` before domain mutation. API and test
+  composition roots used temporary no-op guard adapters before UR4.
+- **Undo + Reset module foundation (UR2).** Added
+  `Modules/Undo/` and `Modules/Reset/` with Domain/Application/
+  Infrastructure/Tests/IntegrationTests projects, inventory aggregate
+  foundations, rules/events/repositories, EF mappings, schema +
+  outbox DbUp scripts, API startup wiring, solution registration, and
+  ArchitectureTest coverage. Unit tests: 19 Undo + 19 Reset.
+- **Lazy init from PlayerRegistered (UR3).** Added
+  `EnsurePlayerUndoInventoryExistsCommand` +
+  `EnsurePlayerResetInventoryExistsCommand`, idempotent handlers,
+  validators, `I{Undo,Reset}ConfigurationService.InitialBalance`
+  contracts + infrastructure config services, and
+  `PlayerRegisteredIntegrationEventHandler` consumers in both modules.
+  Undo/Reset Application now has a granular public-contract dependency
+  on `Players.IntegrationEvents`. Integration tests prove outbox
+  registration creates inventory rows and replayed events do not
+  duplicate them.
+- **Sync gateway integration (UR4).** Added
+  `ConsumePlayerUndoCommand` + `ConsumePlayerResetCommand`, real API
+  `UndoGuard` / `ResetGuard` adapters, Games.IT
+  `RecordingUndoGuard` / `RecordingResetGuard`, and fall-through
+  tests proving every in-game Undo/Reset call invokes the gateway.
+  Undo/Reset integration tests now cover consume success and empty
+  balance rejection. No DbUp migration was needed.
 
 ### Recently closed (Sprint H session, 2026-05-25 → 2026-05-26)
 
@@ -536,50 +569,42 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Sprint UR — Undo + Reset Modules — implementation operator tarafından
-başlatılacak; ben kontrol modundayım.** Sekiz slice'ın detayı
-`ROADMAP.md > Sprint UR` içinde kilitli. UR1 (Game.cs destructive
-reshape) ilk commit. Slice sırası UR1 → UR8.
+**Sprint UR — Undo + Reset Modules — UR1 → UR4 kapandı.** Sekiz
+slice'ın detayı `ROADMAP.md > Sprint UR` içinde kilitli. Slice sırası
+UR1 → UR8.
 
-İlk somut adım: **UR1 — Game.cs reshape.**
+Sıradaki somut adım: **UR5 — Quest 4-reward destructive.**
 
-Etkilenen dosyalar:
+UR5 scope:
 
-- `src/Modules/Games/Domain/Games/Allowances/UndoAllowance.cs` (sil)
-- `src/Modules/Games/Domain/Games/Allowances/ResetAllowance.cs` (sil)
-- `src/Modules/Games/Domain/Games/Allowances/Rules/UndoAllowanceMustHaveRemainingRule.cs` (sil)
-- `src/Modules/Games/Domain/Games/Allowances/Rules/ResetAllowanceMustHaveRemainingRule.cs` (sil)
-- `src/Modules/Games/Domain/Games/Game.cs` — `_undoAllowance` +
-  `_resetAllowance` field'larını sil; `_undosUsed` + `_resetsUsed`
-  int counter ekle; `UseUndo()` + `ResetToStart()` reshape;
-  `UseUndoWithExternalInventory()` + `ResetWithExternalInventory()`
-  ekle.
-- `src/Modules/Games/Infrastructure/Domain/Games/GameEntityTypeConfiguration.cs`
-  — `OwnsOne<UndoAllowance>` + `OwnsOne<ResetAllowance>` sil; plain
-  int kolon mapping ekle.
-- `src/Modules/Games/Application/Configuration/CrossModule/IUndoGuard.cs`
-  (yeni)
-- `src/Modules/Games/Application/Configuration/CrossModule/IResetGuard.cs`
-  (yeni)
-- `src/Modules/Games/Application/Games/UseUndo/UseUndoCommandHandler.cs` —
-  her zaman `IUndoGuard.EnsureUndoAvailableAsync` çağır.
-- `src/Modules/Games/Application/Games/Reset/ResetCommandHandler.cs` —
-  her zaman `IResetGuard.EnsureResetAvailableAsync` çağır.
-- `src/API/LexiLink.API/CrossModule/UndoGuard.cs` (no-op stub)
-- `src/API/LexiLink.API/CrossModule/ResetGuard.cs` (no-op stub)
-- `src/Modules/Games/IntegrationTests/SeedWork/TestBase.cs` —
-  `AlwaysAllowingUndoGuard` + `AlwaysAllowingResetGuard` stub'ları.
-- `src/Database/LexiLink.Database/Structure/games/Tables/050_DropUndoResetAllowanceColumns.sql`
-  (idempotent ALTER DROP COLUMN).
-- `src/Modules/Games/Tests/Games/Allowances/UndoAllowanceTests.cs` (sil)
-- `src/Modules/Games/Tests/Games/Allowances/ResetAllowanceTests.cs` (sil)
-- Game lifecycle testlerinde Undo/Reset senaryoları (`GameUndoTests`,
-  `GameResetTests`) — `Allowance.MustHaveRemaining` assertion'ları
-  kalkar; counter increment + event emission assertion'ları kalır.
+- Quests reward shape'i 4 alana genişlet:
+  `EnergyReward`, `HintReward`, `UndoReward`, `ResetReward`.
+- `QuestRewardMustHaveAtLeastOnePositiveRule` dört alanı kapsamalı:
+  hepsi `>= 0`, en az biri `> 0`.
+- `QuestDefinition.Create/Update`, EF mapping, DTO/request/endpoint,
+  admin command validator'ları ve tests dört reward alanına taşınmalı.
+- `PlayerQuest.Claim` ve `PlayerQuestClaimedDomainEvent` dört reward
+  taşımalı; `QuestClaimedIntegrationEvent` public contract'ı da aynı
+  şekilde reshape edilmeli.
+- Undo/Reset Application yeni `Quests.IntegrationEvents` consumer'ları
+  ekleyecek; her consumer kendi reward'ı `> 0` ise
+  `Grant{Undo,Reset}Command` dispatch edecek.
+- `GrantUndoCommand` + `GrantResetCommand` aggregate `GrantBonus`
+  path'ini kullanmalı.
+- DbUp: `quests/Tables/050_ExpandQuestRewardsWithUndoReset.sql`
+  idempotent destructive ALTER; existing rows için yeni reward
+  kolonları default 0.
+- Architecture tests: Undo/Reset Application için
+  `Quests.IntegrationEvents` granular allow ekle; Quests module diğer
+  reward module internals'ına bağımlı kalmamalı.
+- Quality gate: `dotnet build LexiLink.sln`, Quests/Undo/Reset/Energy/
+  Hint targeted tests, ArchitectureTests, full `./scripts/test.sh`.
 
-UR1 acceptance: `dotnet test LexiLink.sln` yeşil; Game.UseUndo ve
-Game.ResetToStart dev stack'te no-op adapter sayesinde her zaman
-çalışır.
+UR4 acceptance geçti: `dotnet build LexiLink.sln --no-restore
+--disable-build-servers -m:1 /clp:ErrorsOnly` yeşil ve
+`./scripts/test.sh --no-restore --no-build /clp:ErrorsOnly` yeşil.
+UR4 yeni migration gerektirmedi; UR1 + UR2 DbUp migration'ları local
+`lexilink` DB'de uygulanmış durumda.
 
 Sıradaki tüm sprint adayları (UR sonrası) `ROADMAP.md > Beyond
 Sprint 7` ve önceki notlardaki backlog kalemleri:

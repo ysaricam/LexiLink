@@ -71,10 +71,12 @@ public abstract class TestBase
             sp.GetRequiredService<TestAdminAuthorizationContext>());
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
-        // Cross-module gateway stubs — Quests IT doesn't boot Energy or Hint
+        // Cross-module gateway stubs — Quests IT doesn't boot resource modules
         // and doesn't depend on Stats / Players counters being populated.
         services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
         services.AddSingleton<IHintGuard>(new AlwaysAllowingHintGuard());
+        services.AddSingleton<IUndoGuard>(new AlwaysAllowingUndoGuard());
+        services.AddSingleton<IResetGuard>(new AlwaysAllowingResetGuard());
         services.AddSingleton<MutableQuestCounterReader>();
         services.AddSingleton<IQuestCounterReader>(sp => sp.GetRequiredService<MutableQuestCounterReader>());
 
@@ -155,6 +157,18 @@ public abstract class TestBase
             Task.CompletedTask;
     }
 
+    private sealed class AlwaysAllowingUndoGuard : IUndoGuard
+    {
+        public Task EnsureUndoAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AlwaysAllowingResetGuard : IResetGuard
+    {
+        public Task EnsureResetAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
     private static async Task ClearDatabaseAsync()
     {
         await using var connection = new NpgsqlConnection(_connectionString);
@@ -178,6 +192,8 @@ public abstract class TestBase
                     "Threshold" = 3,
                     "EnergyReward" = 5,
                     "HintReward" = 0,
+                    "UndoReward" = 0,
+                    "ResetReward" = 0,
                     "PrerequisiteQuestDefinitionId" = NULL,
                     "ProgressBaseline" = 'FromSnapshot'
                 WHERE "Id" = '11111111-0000-0000-0000-000000000010';

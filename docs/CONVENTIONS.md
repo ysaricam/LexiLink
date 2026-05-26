@@ -61,7 +61,7 @@ DTO sharing across queries is **not** done. If `GetLinksByCategoryQuery` and `Ge
 | Typed IDs | `CategoryId`, `LinkId`, `GameId` | Inherit `TypedIdValueBase`. Reject `Guid.Empty`. |
 | Domain events | `CategoryCreatedDomainEvent`, `OutgoingLinkAddedDomainEvent` | Past tense. Suffix always `DomainEvent`. |
 | Business rules | `GameMustBeInProgressRule`, `LinkCannotPointToItselfRule` | Imperative phrasing. Suffix always `Rule`. |
-| Allowance VOs | `HintAllowance`, `UndoAllowance`, `ResetAllowance` | Suffix `Allowance`. Each has `Of(int total)` factory + `Consume()` method. |
+| Allowance VOs | `HintAllowance` | Suffix `Allowance`. `UndoAllowance` and `ResetAllowance` were removed in Sprint UR1; Undo/Reset persistent balances move to their own modules. |
 | Domain services | `IPathFinderService`, `IScoreCalculator`, `ILinkNeighborResolver` | Suffixes: `Service`, `Calculator`, `Resolver`, `Finder`. Lives in `Domain/Services/` if pure, `Infrastructure/Services/` if I/O-bound. |
 | Repository | `ICategoryRepository`, `ILinkRepository`, `IGameRepository` | One per aggregate root. Suffix `Repository`. |
 | Commands | `CreateCategoryCommand`, `EditCategoryCommand`, `RemoveOutgoingLinkCommand` | Imperative verb + noun. Suffix `Command`. |

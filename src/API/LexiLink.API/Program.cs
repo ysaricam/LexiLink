@@ -34,7 +34,9 @@ using LexiLink.Modules.Hint.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
 using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Infrastructure.Configuration;
+using LexiLink.Modules.Reset.Infrastructure.Configuration;
 using LexiLink.Modules.Stats.Infrastructure.Configuration;
+using LexiLink.Modules.Undo.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MediatR;
@@ -88,6 +90,8 @@ EnergyStartup.Initialize(builder.Services, connectionString);
 QuestsStartup.Initialize(builder.Services, connectionString);
 AdministrationStartup.Initialize(builder.Services, connectionString);
 HintStartup.Initialize(builder.Services, connectionString);
+UndoStartup.Initialize(builder.Services, connectionString);
+ResetStartup.Initialize(builder.Services, connectionString);
 builder.Services.Configure<AdministrationBootstrapOptions>(
     builder.Configuration.GetSection(AdministrationBootstrapOptions.SectionName));
 builder.Services.AddHostedService<AdministrationBootstrapHostedService>();
@@ -218,6 +222,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     QuestsStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     AdministrationStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     HintStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+    UndoStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+    ResetStartup.InitializeCompositionRoot(containerBuilder, connectionString);
 
     containerBuilder.RegisterType<EnergyGuard>()
         .As<IEnergyGuard>()
@@ -225,6 +231,14 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
     containerBuilder.RegisterType<HintGuard>()
         .As<IHintGuard>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<UndoGuard>()
+        .As<IUndoGuard>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<ResetGuard>()
+        .As<IResetGuard>()
         .InstancePerLifetimeScope();
 
     containerBuilder.RegisterType<AdminLookup>()
@@ -252,6 +266,8 @@ EnergyStartup.CheckMappings();
 QuestsStartup.CheckMappings();
 AdministrationStartup.CheckMappings();
 HintStartup.CheckMappings();
+UndoStartup.CheckMappings();
+ResetStartup.CheckMappings();
 
 if (app.Environment.IsDevelopment())
 {

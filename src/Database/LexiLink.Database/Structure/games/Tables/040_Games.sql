@@ -13,9 +13,7 @@ CREATE TABLE IF NOT EXISTS "games"."Games"
     "StepsTaken"       integer        NOT NULL,
     "HintsRemaining"   integer        NOT NULL,
     "HintsUsed"        integer        NOT NULL,
-    "UndosRemaining"   integer        NOT NULL,
     "UndosUsed"        integer        NOT NULL,
-    "ResetsRemaining"  integer        NOT NULL,
     "ResetsUsed"       integer        NOT NULL,
     CONSTRAINT "PK_Games" PRIMARY KEY ("Id")
 );

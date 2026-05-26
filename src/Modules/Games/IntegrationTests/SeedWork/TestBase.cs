@@ -61,14 +61,17 @@ public abstract class TestBase
         services.AddSingleton<Serilog.ILogger>(Serilog.Core.Logger.None);
 
         // Cross-module gateway stubs — Games integration tests exercise the Games
-        // module in isolation; the real Energy and Hint modules are not booted here.
-        // The HintGuard stub is recording + configurable: by default it allows
-        // every call, but per-test code can flip it to reject (RejectNext flag)
-        // and inspect the CallCount. Tests still use the default unless they
-        // resolve and reconfigure it.
+        // module in isolation; the real resource modules are not booted here.
+        // Resource guards are recording + configurable: by default they allow
+        // every call, but per-test code can flip them to reject (RejectNext flag)
+        // and inspect CallCount.
         services.AddSingleton<IEnergyGuard>(new AlwaysAllowingEnergyGuard());
         services.AddSingleton<RecordingHintGuard>();
         services.AddSingleton<IHintGuard>(sp => sp.GetRequiredService<RecordingHintGuard>());
+        services.AddSingleton<RecordingUndoGuard>();
+        services.AddSingleton<IUndoGuard>(sp => sp.GetRequiredService<RecordingUndoGuard>());
+        services.AddSingleton<RecordingResetGuard>();
+        services.AddSingleton<IResetGuard>(sp => sp.GetRequiredService<RecordingResetGuard>());
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
@@ -91,6 +94,8 @@ public abstract class TestBase
         Guid.Parse("99999999-0000-0000-0000-000000000001");
 
     protected RecordingHintGuard HintGuard { get; private set; } = null!;
+    protected RecordingUndoGuard UndoGuard { get; private set; } = null!;
+    protected RecordingResetGuard ResetGuard { get; private set; } = null!;
 
     [SetUp]
     public async Task SetUp()
@@ -103,6 +108,10 @@ public abstract class TestBase
         AdminContext.LoginAs(DefaultAdminId);
         HintGuard = Scope.Resolve<RecordingHintGuard>();
         HintGuard.Reset();
+        UndoGuard = Scope.Resolve<RecordingUndoGuard>();
+        UndoGuard.Reset();
+        ResetGuard = Scope.Resolve<RecordingResetGuard>();
+        ResetGuard.Reset();
 
         await ClearDatabaseAsync();
     }
@@ -165,6 +174,52 @@ public abstract class TestBase
             {
                 throw new InvalidOperationException(
                     "Stubbed IHintGuard configured to reject this call.");
+            }
+            return Task.CompletedTask;
+        }
+
+        public void Reset()
+        {
+            CallCount = 0;
+            RejectNext = false;
+        }
+    }
+
+    public sealed class RecordingUndoGuard : IUndoGuard
+    {
+        public int CallCount { get; private set; }
+        public bool RejectNext { get; set; }
+
+        public Task EnsureUndoAvailableAsync(Guid playerId, CancellationToken cancellationToken = default)
+        {
+            CallCount++;
+            if (RejectNext)
+            {
+                throw new InvalidOperationException(
+                    "Stubbed IUndoGuard configured to reject this call.");
+            }
+            return Task.CompletedTask;
+        }
+
+        public void Reset()
+        {
+            CallCount = 0;
+            RejectNext = false;
+        }
+    }
+
+    public sealed class RecordingResetGuard : IResetGuard
+    {
+        public int CallCount { get; private set; }
+        public bool RejectNext { get; set; }
+
+        public Task EnsureResetAvailableAsync(Guid playerId, CancellationToken cancellationToken = default)
+        {
+            CallCount++;
+            if (RejectNext)
+            {
+                throw new InvalidOperationException(
+                    "Stubbed IResetGuard configured to reject this call.");
             }
             return Task.CompletedTask;
         }

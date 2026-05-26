@@ -11,6 +11,8 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
     public int Threshold { get; }
     public int EnergyReward { get; }
     public int HintReward { get; }
+    public int UndoReward { get; }
+    public int ResetReward { get; }
     public Guid? PrerequisiteQuestDefinitionId { get; }
     public ProgressBaseline ProgressBaseline { get; }
 
@@ -20,6 +22,8 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
         int threshold,
         int energyReward,
         int hintReward,
+        int undoReward,
+        int resetReward,
         Guid? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline)
     {
@@ -28,6 +32,8 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
         Threshold = threshold;
         EnergyReward = energyReward;
         HintReward = hintReward;
+        UndoReward = undoReward;
+        ResetReward = resetReward;
         PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         ProgressBaseline = progressBaseline;
     }

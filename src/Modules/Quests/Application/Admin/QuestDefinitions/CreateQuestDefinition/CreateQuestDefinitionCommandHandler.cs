@@ -40,6 +40,8 @@ internal sealed class CreateQuestDefinitionCommandHandler
             request.Threshold,
             request.EnergyReward,
             request.HintReward,
+            request.UndoReward,
+            request.ResetReward,
             prereqId,
             request.ProgressBaseline,
             prerequisiteWouldCreateCycle: false);

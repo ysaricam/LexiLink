@@ -133,15 +133,15 @@ public class GetGameOptionsIntegrationTests : TestBase
                 "Difficulty", "StartLinkId", "TargetLinkId",
                 "Score", "MaxSteps", "StepsTaken",
                 "HintsRemaining", "HintsUsed",
-                "UndosRemaining", "UndosUsed",
-                "ResetsRemaining", "ResetsUsed"
+                "UndosUsed",
+                "ResetsUsed"
             ) VALUES (
                 {0}, {1}, {2}, 'InProgress', {3},
                 'Easy', {4}, {5},
                 NULL, 20, 0,
                 3, 0,
-                3, 0,
-                1, 0
+                0,
+                0
             );
             """,
             gameId, playerId, centerId, categoryId, centerId, targetLinkId);
@@ -190,15 +190,15 @@ public class GetGameOptionsIntegrationTests : TestBase
                 "Difficulty", "StartLinkId", "TargetLinkId",
                 "Score", "MaxSteps", "StepsTaken",
                 "HintsRemaining", "HintsUsed",
-                "UndosRemaining", "UndosUsed",
-                "ResetsRemaining", "ResetsUsed"
+                "UndosUsed",
+                "ResetsUsed"
             ) VALUES (
                 {0}, {1}, {2}, 'InProgress', {3},
                 'Easy', {4}, {5},
                 NULL, 20, 0,
                 3, 0,
-                3, 0,
-                1, 0
+                0,
+                0
             );
             """,
             gameId, playerId, startLinkId, categoryId, startLinkId, targetLinkId);

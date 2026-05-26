@@ -1,6 +1,10 @@
 # GLOSSARY.md
 
-Ubiquitous language for the LexiLink Games, Players, Energy, Quests, and Hint modules. Every term below appears in code as a class, interface, enum, or namespace; this file gives it a one-paragraph definition so a new contributor can read the code without spelunking.
+Ubiquitous language for the LexiLink Games, Players, Energy, Quests,
+Hint, Undo, and Reset modules. Every term below appears in code as a
+class, interface, enum, or namespace; this file gives it a
+one-paragraph definition so a new contributor can read the code
+without spelunking.
 
 ---
 
@@ -13,7 +17,13 @@ A named set of words from which a game can be seeded (e.g., *animals*, *colors*)
 A word node in the directed word-graph. Aggregate root. Holds `_categoryId` (the Category the word belongs to), `_value` (the word itself), `_description`, `_isActive`, and `_outgoingLinks` (a list of `LinkId`s pointing to neighbor words). Content (`_value`, `_description`) is **immutable** — to change a word's text, deactivate the old Link and create a new one. Outgoing topology *is* mutable through `AddOutgoingLink` / `RemoveOutgoingLink` (graph-relationship management). Activation flips through `Activate()` / `Deactivate()`.
 
 ### Game — `Modules/Games/Domain/Games/Game.cs`
-A single player's session solving one Puzzle. Aggregate root. The most complex aggregate in the module. Owns a `Puzzle` value object, three `*Allowance` VOs, an optional `Score`, a `_history` of `LinkId`s walked, a `StepBudget`, and a `GameState`. Drives an explicit state machine — see *Game States* below.
+A single player's session solving one Puzzle. Aggregate root. The most
+complex aggregate in the module. Owns a `Puzzle` value object,
+`HintAllowance`, optional `Score`, a `_history` of `LinkId`s walked, a
+`StepBudget`, a `GameState`, and plain Undo/Reset usage counters.
+Sprint UR1 removed `UndoAllowance` and `ResetAllowance`; every Undo or
+Reset now goes through `IUndoGuard` / `IResetGuard` before Game mutates.
+Drives an explicit state machine — see *Game States* below.
 
 ### PlayerEnergy — `Modules/Energy/Domain/PlayerEnergies/PlayerEnergy.cs`
 A player's energy account in the Energy module. Aggregate root, identified by `PlayerEnergyId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Holds `_currentAmount`, `_maximumAmount`, `_rechargeIntervalSeconds`, and `_lastRefilledOn`. Lifecycle: `InitializeFor(playerId, max, intervalSeconds, initializedAt)` (called by `EnsurePlayerEnergyExistsCommand` after a `PlayerRegisteredIntegrationEvent`). Behavior: `Consume(amount, now)` recharges first via `RechargeBasedOnElapsedTime(now)`, then checks `EnergyMustBeSufficientToConsumeRule`, then debits; the refill timer is armed **only when consume crosses the bucket from at/above max to below max** (so 10/5 → 9/5 and 6/5 → 5/5 leave the timer idle, while 5/5 → 4/5 sets it). `GrantBonus(amount, now)` adds `amount` without checking max — it is the reward path invoked by `QuestClaimedIntegrationEvent`; over-max balance is preserved and the timer stays idle until the bucket drains back below max. Emits `PlayerEnergyConsumedDomainEvent` and `PlayerEnergyRefilledDomainEvent`.
@@ -26,6 +36,47 @@ Catalog entry describing how a quest is issued and rewarded. Aggregate root iden
 
 ### PlayerHintInventory — `Modules/Hint/Domain/PlayerHintInventories/PlayerHintInventory.cs`
 A player's persistent hint account in the Hint module. Aggregate root, identified by `PlayerHintInventoryId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Sprint H ships this as Energy's stripped-down sibling: a single `int _balance`, no maximum cap, no refill timer (hints are earned, not regenerated). Lifecycle: `InitializeFor(playerId, initialBalance)` (called by `EnsurePlayerHintInventoryExistsCommand` after a `PlayerRegisteredIntegrationEvent` — `Hint:InitialBalance` config drives the seed; default 0). Behavior: `Consume(amount, now)` — checks `HintAmountMustBePositiveRule` then `HintBalanceMustBeSufficientRule`, decrements, emits `PlayerHintConsumedDomainEvent`. `GrantBonus(amount, now)` — bonus reward path; adds without checking max (over-cap balance is *intentional* and the parallel to `PlayerEnergy.GrantBonus`). Invoked from two places: `Hint.Application/QuestClaimedIntegrationEventHandler` when a claimed quest carries `HintReward > 0`, and `GrantBonusHintCommand` for admin grants. `AdminSet(newBalance, now)` snaps to exact value (must be ≥0); `AdminReset(now)` snaps to zero. The per-game free hint quota (1 charge across all difficulties) lives on the `Game` aggregate's `HintAllowance` and is consumed first — see `Game.HasFreeHintRemaining` + `UseHintWithExternalInventory()`. Emits `PlayerHintInventoryInitializedDomainEvent`, `PlayerHintConsumedDomainEvent`, `PlayerHintGrantedDomainEvent`, `PlayerHintAdminSetDomainEvent`, `PlayerHintAdminResetDomainEvent`.
+
+### PlayerUndoInventory — `Modules/Undo/Domain/PlayerUndoInventories/PlayerUndoInventory.cs`
+A player's persistent undo account in the Undo module. Aggregate root,
+identified by `PlayerUndoInventoryId` (same Guid value as the owning
+`PlayerId` — cross-module reference by id only). Sprint UR2 ships this
+as a Hint-style inventory: a single `int _balance`, no maximum cap, no
+refill timer. Lifecycle: `InitializeFor(playerId, initialBalance)`;
+Sprint UR3 wires that lifecycle to `PlayerRegisteredIntegrationEvent`
+via `EnsurePlayerUndoInventoryExistsCommand` and an idempotent
+integration-event handler.
+Behavior: `Consume(amount, now)` checks
+`UndoAmountMustBePositiveRule` and `UndoBalanceMustBeSufficientRule`,
+then decrements. `GrantBonus(amount, now)` adds without checking max.
+`AdminSet(newBalance, now)` snaps to an exact non-negative value and
+`AdminReset(now)` snaps to zero. Games has no per-game free undo quota
+after UR1; every in-game undo consumes this inventory through the UR4
+`IUndoGuard` adapter (`ConsumePlayerUndoCommand(playerId, 1)`). Emits
+`PlayerUndoInventoryInitializedDomainEvent`,
+`PlayerUndoConsumedDomainEvent`, `PlayerUndoGrantedDomainEvent`,
+`PlayerUndoAdminSetDomainEvent`, `PlayerUndoAdminResetDomainEvent`.
+
+### PlayerResetInventory — `Modules/Reset/Domain/PlayerResetInventories/PlayerResetInventory.cs`
+A player's persistent reset account in the Reset module. Aggregate
+root, identified by `PlayerResetInventoryId` (same Guid value as the
+owning `PlayerId` — cross-module reference by id only). Sprint UR2
+ships this as a Hint-style inventory: a single `int _balance`, no
+maximum cap, no refill timer. Lifecycle:
+`InitializeFor(playerId, initialBalance)`; Sprint UR3 wires that
+lifecycle to `PlayerRegisteredIntegrationEvent` via
+`EnsurePlayerResetInventoryExistsCommand` and an idempotent
+integration-event handler. Behavior: `Consume(amount, now)`
+checks `ResetAmountMustBePositiveRule` and
+`ResetBalanceMustBeSufficientRule`, then decrements.
+`GrantBonus(amount, now)` adds without checking max.
+`AdminSet(newBalance, now)` snaps to an exact non-negative value and
+`AdminReset(now)` snaps to zero. Games has no per-game free reset quota
+after UR1; every in-game reset consumes this inventory through the UR4
+`IResetGuard` adapter (`ConsumePlayerResetCommand(playerId, 1)`). Emits
+`PlayerResetInventoryInitializedDomainEvent`,
+`PlayerResetConsumedDomainEvent`, `PlayerResetGrantedDomainEvent`,
+`PlayerResetAdminSetDomainEvent`, `PlayerResetAdminResetDomainEvent`.
 
 ---
 
@@ -58,8 +109,8 @@ Enum: `Active`, `Claimed`. Persisted state shrunk in Sprint Q1 — `ReadyToClaim
 ### QuestCounters — `Quests/Application/Configuration/CrossModule/IQuestCounterReader.cs`
 Record `QuestCounters(int GamesCompletedTotal, int GamesCompletedToday, bool AuthProviderLinked)`. Returned by `IQuestCounterReader.ReadAsync(playerId, nowUtc)` in a single call. Owned by Stats (Total/Daily) and Players (AuthLinked); read through the sync gateway whose implementation lives in `LexiLink.API/CrossModule/QuestCounterReader.cs`.
 
-### HintAllowance, UndoAllowance, ResetAllowance — `Games/Allowances/`
-Three immutable VOs sharing the same shape: `Of(int total)` factory, `Remaining` and `Used` getters, `Consume()` returning a new instance after `CheckRule(*MustHaveRemainingRule)`. Three separate types instead of one generic — semantic distinction is preserved in the type system. Game uses field reassignment: `_hintAllowance = _hintAllowance.Consume();`. Sprint H decision: `HintAllowance.Of(1)` for every game regardless of difficulty (`IGameConfigurationService.ResolveHints` returns 1) — additional charges beyond the free quota come from the player's `PlayerHintInventory` via the `IHintGuard` sync gateway. `Game.HintsUsed` (in `GameDetailsDto`) tracks **only** the free quota; inventory consumption does not advance it.
+### HintAllowance + Undo/Reset usage counters — `Games/`
+`HintAllowance` remains an immutable VO with `Of(int total)`, `Remaining`, `Used`, and `Consume()`; Game uses field reassignment: `_hintAllowance = _hintAllowance.Consume();`. Sprint H decision: `HintAllowance.Of(1)` for every game regardless of difficulty (`IGameConfigurationService.ResolveHints` returns 1) — additional charges beyond the free quota come from the player's `PlayerHintInventory` via the `IHintGuard` sync gateway. `Game.HintsUsed` (in `GameDetailsDto`) tracks **only** the free quota; inventory consumption does not advance it. Sprint UR1 removed `UndoAllowance` and `ResetAllowance`; Undo/Reset now keep only `_undosUsed` + `_resetsUsed` counters in Game, while the persistent player inventories will live in the new Undo and Reset modules.
 
 ### StepBudget — `Games/StepBudget.cs`
 Encapsulates `Max` + `Taken` plus the `Step()`, `UndoStep()`, `Reset()` methods and the `IsExhausted` / `IsAtLastWarning` / `IsBelowLastWarning` predicates. Replaced loose `_maxSteps` int + `history.Count` arithmetic that used to live across `Game.cs`.
@@ -90,7 +141,7 @@ Every transition is guarded by `CheckRule(...)` and emits a `*DomainEvent`. `Ini
 
 ---
 
-## Domain Events (29 total)
+## Domain Events
 
 ### Game (10) — `Games/Events/`
 - `GameCreatedDomainEvent` — game session created (Initial state).
@@ -133,20 +184,35 @@ Every transition is guarded by `CheckRule(...)` and emits a `*DomainEvent`. `Ini
 - `PlayerHintAdminSetDomainEvent` — emitted by `AdminSet(newBalance, now)`; carries `PlayerId`, `NewBalance`, `SetOn`.
 - `PlayerHintAdminResetDomainEvent` — emitted by `AdminReset(now)`; carries `PlayerId`, `ResetOn`.
 
+### PlayerUndoInventory (5) — `Undo/Domain/PlayerUndoInventories/Events/`
+- `PlayerUndoInventoryInitializedDomainEvent` — emitted by `InitializeFor(playerId, initialBalance)`; carries `PlayerId`, `InitialBalance`.
+- `PlayerUndoConsumedDomainEvent` — emitted by `Consume(amount, now)`; carries `PlayerId`, `Amount`, `RemainingBalance`, `ConsumedOn`.
+- `PlayerUndoGrantedDomainEvent` — emitted by `GrantBonus(amount, now)`; carries `PlayerId`, `Amount`, `NewBalance`, `GrantedOn`.
+- `PlayerUndoAdminSetDomainEvent` — emitted by `AdminSet(newBalance, now)`; carries `PlayerId`, `NewBalance`, `SetOn`.
+- `PlayerUndoAdminResetDomainEvent` — emitted by `AdminReset(now)`; carries `PlayerId`, `ResetOn`.
+
+### PlayerResetInventory (5) — `Reset/Domain/PlayerResetInventories/Events/`
+- `PlayerResetInventoryInitializedDomainEvent` — emitted by `InitializeFor(playerId, initialBalance)`; carries `PlayerId`, `InitialBalance`.
+- `PlayerResetConsumedDomainEvent` — emitted by `Consume(amount, now)`; carries `PlayerId`, `Amount`, `RemainingBalance`, `ConsumedOn`.
+- `PlayerResetGrantedDomainEvent` — emitted by `GrantBonus(amount, now)`; carries `PlayerId`, `Amount`, `NewBalance`, `GrantedOn`.
+- `PlayerResetAdminSetDomainEvent` — emitted by `AdminSet(newBalance, now)`; carries `PlayerId`, `NewBalance`, `SetOn`.
+- `PlayerResetAdminResetDomainEvent` — emitted by `AdminReset(now)`; carries `PlayerId`, `ResetOn`.
+
 All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which extends `IDomainEvent : INotification` — so they're MediatR-compatible without further wiring.
 
 ---
 
-## Business Rules (32 total)
+## Business Rules
 
 ### Category (3) — `Categories/Rules/`
 - `CategoryNameMustNotBeEmptyRule`
 - `CategoryNameMustNotExceedMaxLengthRule` (≤ 100)
 - `CategoryDescriptionMustNotExceedMaxLengthRule` (≤ 500, null OK)
 
-### Link (5) — `Links/Rules/`
+### Link (6) — `Links/Rules/`
 - `LinkCannotPointToItselfRule` — no self-loops.
 - `LinkOutgoingAlreadyExistsRule` — can't add an edge that already exists.
+- `LinkOutgoingMustBeSameCategoryRule` — outgoing edges must stay inside the source Link's category.
 - `LinkOutgoingMustExistRule` — can't remove an edge that doesn't exist.
 - `LinkMustBeInactiveToActivateRule`
 - `LinkMustBeActiveToDeactivateRule`
@@ -160,10 +226,8 @@ All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which exte
 - `CategoryMustHaveEnoughLinksToStartGameRule` — Puzzle creation invariant.
 - `PuzzleTargetLinkMustBeReachableRule` — Puzzle creation invariant.
 
-### Allowance (3) — `Games/Allowances/Rules/`
+### Allowance (1) — `Games/Allowances/Rules/`
 - `HintAllowanceMustHaveRemainingRule`
-- `UndoAllowanceMustHaveRemainingRule`
-- `ResetAllowanceMustHaveRemainingRule`
 
 ### PlayerEnergy (5) — `Energy/Domain/PlayerEnergies/Rules/`
 - `EnergyConfigurationMustBeValidRule` — `maxAmount > 0` and `rechargeIntervalSeconds > 0` at initialization.
@@ -172,7 +236,7 @@ All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which exte
 - `EnergyMustBeSufficientToConsumeRule` — `_currentAmount >= requestedAmount`; the rule whose violation propagates as `BusinessRuleValidationException` and is what blocks a `StartGameCommand` when energy is empty.
 - `BonusAmountMustBePositiveRule` — `GrantBonus(amount, now)` requires `amount > 0` (zero or negative bonuses are nonsensical).
 
-### PlayerQuest (1) + QuestDefinition (5) — `Quests/Domain/PlayerQuests/Rules/`
+### PlayerQuest (1) + QuestDefinition (6) — `Quests/Domain/PlayerQuests/Rules/`
 - `QuestMustBeReadyToBeClaimedRule` — `Claim(now, isReadyToClaim, energyReward, hintReward)` requires `_state == Active && isReadyToClaim` (caller-supplied flag computed from Stats counter vs threshold + not past expiry).
 - `QuestThresholdMustBePositiveRule` — `QuestDefinition.Create` / `Update` require `threshold > 0`.
 - `QuestRewardMustHaveAtLeastOnePositiveRule` — Sprint H reshape: replaces the older `QuestRewardMustBePositiveRule`. `Create` / `Update` require both `energyReward ≥ 0` and `hintReward ≥ 0` **and** at least one of them > 0. Empty-reward quests would be inert and are rejected.
@@ -184,6 +248,16 @@ All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which exte
 - `HintAmountMustBePositiveRule` — `Consume(amount)` and `GrantBonus(amount)` require `amount > 0`.
 - `HintAmountMustBeNonNegativeRule` — `InitializeFor(initialBalance)` and `AdminSet(newBalance)` require `≥ 0`.
 - `HintBalanceMustBeSufficientRule` — `Consume(amount)` requires `_balance >= amount`. The rule whose violation propagates as `BusinessRuleValidationException` and is what blocks a fall-through `UseHintCommand` when the player inventory is empty.
+
+### PlayerUndoInventory (3) — `Undo/Domain/PlayerUndoInventories/Rules/`
+- `UndoAmountMustBePositiveRule` — `Consume(amount)` and `GrantBonus(amount)` require `amount > 0`.
+- `UndoAmountMustBeNonNegativeRule` — `InitializeFor(initialBalance)` and `AdminSet(newBalance)` require `≥ 0`.
+- `UndoBalanceMustBeSufficientRule` — `Consume(amount)` requires `_balance >= amount`; this is the rule that blocks in-game Undo when player inventory is empty.
+
+### PlayerResetInventory (3) — `Reset/Domain/PlayerResetInventories/Rules/`
+- `ResetAmountMustBePositiveRule` — `Consume(amount)` and `GrantBonus(amount)` require `amount > 0`.
+- `ResetAmountMustBeNonNegativeRule` — `InitializeFor(initialBalance)` and `AdminSet(newBalance)` require `≥ 0`.
+- `ResetBalanceMustBeSufficientRule` — `Consume(amount)` requires `_balance >= amount`; this is the rule that blocks in-game Reset when player inventory is empty.
 
 All are `IBusinessRule` and dispatch through `CheckRule(...)`, throwing `BusinessRuleValidationException` on failure.
 
@@ -202,6 +276,12 @@ Domain services are received as method parameters — never stored on aggregates
 
 `IEnergyConfigurationService` (`Modules/Energy/Domain/PlayerEnergies/`) exposes `MaximumAmount`, `RechargeIntervalSeconds`, and `GameStartCost`. Read from `IConfiguration` keys `Energy:MaxAmount`, `Energy:RechargeIntervalSeconds`, and `Energy:GameStartCost` with safe defaults (5 / 900 / 1).
 
+`IUndoConfigurationService` and `IResetConfigurationService` expose
+`InitialBalance` for fresh inventory initialization. Infrastructure
+reads `Undo:InitialBalance` and `Reset:InitialBalance` respectively;
+both default to 0 so new players earn these charges through future
+quest/admin reward paths.
+
 `IQuestCatalog` (Quests domain service surface; implementation lives in Quests.Infrastructure) — see Cross-Module Gateways section.
 
 ---
@@ -213,6 +293,28 @@ The first synchronous cross-module gateway in LexiLink. Contract lives in **Game
 
 ### IHintGuard — `Modules/Games/Application/Configuration/CrossModule/IHintGuard.cs`
 Sprint H sync gateway following the exact `IEnergyGuard` pattern. Contract lives in **Games.Application** so Games depends only on its own surface (`EnsureHintAvailableAsync(playerId, ct)`). The adapter (`LexiLink.API/CrossModule/HintGuard.cs`) is composed in the API host and translates the call into `IHintModule.ExecuteCommandAsync(new ConsumePlayerHintCommand(playerId, 1))`. `UseHintCommandHandler` invokes the guard **only when the per-game free quota is exhausted** (`!game.HasFreeHintRemaining`): the empty-inventory case throws `HintBalanceMustBeSufficientRule` via the Hint module and the puzzle state does not advance. Same dual-write tradeoff as `IEnergyGuard`. Architecture tests forbid Games.Application from depending on any Hint namespace; Games.IT exercises the contract via a configurable `RecordingHintGuard` stub.
+
+### IUndoGuard — `Modules/Games/Application/Configuration/CrossModule/IUndoGuard.cs`
+Sprint UR sync gateway contract for in-game Undo inventory spending.
+Contract lives in **Games.Application** (`EnsureUndoAvailableAsync`)
+so Games depends only on its own surface. `UndoCommandHandler` invokes
+the guard before `Game.UseUndoWithExternalInventory()`, and Game then
+increments only its `_undosUsed` statistic counter. The API host
+adapter (`LexiLink.API/CrossModule/UndoGuard.cs`) calls
+`IUndoModule.ExecuteCommandAsync(new ConsumePlayerUndoCommand(playerId,
+1))`; insufficient inventory propagates `UndoBalanceMustBeSufficientRule`
+and Game does not mutate.
+
+### IResetGuard — `Modules/Games/Application/Configuration/CrossModule/IResetGuard.cs`
+Sprint UR sync gateway contract for in-game Reset inventory spending.
+Contract lives in **Games.Application** (`EnsureResetAvailableAsync`)
+so Games depends only on its own surface. `ResetCommandHandler` invokes
+the guard before `Game.ResetWithExternalInventory()`, and Game then
+increments only its `_resetsUsed` statistic counter. The API host
+adapter (`LexiLink.API/CrossModule/ResetGuard.cs`) calls
+`IResetModule.ExecuteCommandAsync(new ConsumePlayerResetCommand(playerId,
+1))`; insufficient inventory propagates `ResetBalanceMustBeSufficientRule`
+and Game does not mutate.
 
 ### IQuestCatalog — `Modules/Quests/Domain/PlayerQuests/IQuestCatalog.cs`
 Resolves a `QuestDefinitionId` to its `QuestDefinition` (returns null for deactivated entries so issuance/claim handlers can no-op). Implementation in Quests.Infrastructure (`QuestCatalog`) reads through `IQuestDefinitionRepository`. Registered scoped in `QuestsAutofacModule`.
@@ -236,6 +338,8 @@ Public contract emitted by Quests' outbox after `PlayerQuestClaimedDomainEvent` 
 | `IPlayerQuestRepository` | `PlayerQuest` | `GetByIdAsync`, `GetActiveOrClaimedByPlayerAndDefinitionAsync`, `GetByPlayerAsync`, `HasClaimedAsync(QuestDefinitionId)`, `AddAsync` |
 | `IQuestDefinitionRepository` | `QuestDefinition` | `GetByIdAsync`, `GetAllAsync`, `AddAsync` |
 | `IPlayerHintInventoryRepository` | `PlayerHintInventory` | `GetByIdAsync`, `AddAsync` |
+| `IPlayerUndoInventoryRepository` | `PlayerUndoInventory` | `GetByIdAsync`, `AddAsync` |
+| `IPlayerResetInventoryRepository` | `PlayerResetInventory` | `GetByIdAsync`, `AddAsync` |
 
 No `Update` / `Delete` methods — aggregates mutate in place; `IUnitOfWork.CommitAsync()` persists changes through EF Core's change tracker. Soft-delete uses state methods on the aggregate (see SKILLS.md rule #12).
 

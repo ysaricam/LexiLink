@@ -160,7 +160,7 @@ public class Game
 
 ## 6. Value Objects are Immutable and Self-Validating
 
-Value objects don't mutate; they return new instances. Allowance VOs (`HintAllowance`, `UndoAllowance`, `ResetAllowance`) demonstrate the canonical pattern: an `Of(int total)` factory creates the initial state, a `Consume()` method validates via `CheckRule` and returns the next state. The aggregate uses field reassignment: `_hintAllowance = _hintAllowance.Consume();`.
+Value objects don't mutate; they return new instances. `HintAllowance` demonstrates the canonical allowance pattern: an `Of(int total)` factory creates the initial state, a `Consume()` method validates via `CheckRule` and returns the next state. The aggregate uses field reassignment: `_hintAllowance = _hintAllowance.Consume();`. Sprint UR1 removed the former Undo/Reset allowance VOs; those resources move to module-owned persistent inventories.
 
 This pushes invariants into the VO itself, so the aggregate doesn't repeat allowance arithmetic, and it makes "have we run out?" a property of the VO rather than a magic number on the aggregate.
 

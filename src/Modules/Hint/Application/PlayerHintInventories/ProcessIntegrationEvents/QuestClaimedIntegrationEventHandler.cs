@@ -7,12 +7,9 @@ using LexiLink.Modules.Quests.IntegrationEvents;
 namespace LexiLink.Modules.Hint.Application.PlayerHintInventories.ProcessIntegrationEvents;
 
 /// <summary>
-/// Sprint H reverse cross-module event dependency: Hint module
-/// consumes <see cref="QuestClaimedIntegrationEvent"/> and grants
+/// Hint consumes <see cref="QuestClaimedIntegrationEvent"/> and grants
 /// the player <c>HintReward</c> charges. Mirrors Energy's consumer.
-/// Both fire on the same outbox-dispatched event; either guard
-/// no-ops when its share of the reward is zero so a hint-only quest
-/// doesn't touch energy and vice versa.
+/// Each resource handler no-ops when its share of the reward is zero.
 /// </summary>
 internal class QuestClaimedIntegrationEventHandler :
     IIntegrationEventHandler<QuestClaimedIntegrationEvent>

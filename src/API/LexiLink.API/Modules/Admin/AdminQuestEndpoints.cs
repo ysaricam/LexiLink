@@ -38,6 +38,8 @@ public static class AdminQuestEndpoints
                         body.Threshold,
                         body.EnergyReward,
                         body.HintReward,
+                        body.UndoReward,
+                        body.ResetReward,
                         body.PrerequisiteQuestDefinitionId,
                         body.ProgressBaseline),
                     ct);
@@ -57,6 +59,8 @@ public static class AdminQuestEndpoints
                         body.Threshold,
                         body.EnergyReward,
                         body.HintReward,
+                        body.UndoReward,
+                        body.ResetReward,
                         body.PrerequisiteQuestDefinitionId,
                         body.ProgressBaseline),
                     ct);
@@ -95,6 +99,8 @@ public sealed record CreateQuestDefinitionRequest(
     int Threshold,
     int EnergyReward,
     int HintReward,
+    int UndoReward,
+    int ResetReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline);
 
@@ -105,5 +111,7 @@ public sealed record UpdateQuestDefinitionRequest(
     int Threshold,
     int EnergyReward,
     int HintReward,
+    int UndoReward,
+    int ResetReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline);
