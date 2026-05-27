@@ -23,7 +23,8 @@ public class QuestRewardDeliveryTests : TestBase
             EnergyReward: 0,
             HintReward: 0,
             UndoReward: 0,
-            ResetReward: 2));
+            ResetReward: 2,
+            DiamondReward: 0));
 
         var balance = await ReadBalanceAsync(playerId);
         balance.Should().Be(2);
@@ -43,7 +44,8 @@ public class QuestRewardDeliveryTests : TestBase
             EnergyReward: 5,
             HintReward: 1,
             UndoReward: 1,
-            ResetReward: 0));
+            ResetReward: 0,
+            DiamondReward: 0));
 
         var rowCount = await QuerySingleOrDefaultAsync<long>("""
             SELECT COUNT(*)

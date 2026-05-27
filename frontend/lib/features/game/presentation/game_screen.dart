@@ -10,6 +10,12 @@ import 'package:lexilink_app/features/game/application/game_details_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_details.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/game/data/outgoing_link.dart';
+import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
+import 'package:lexilink_app/features/hint/data/hint_repository.dart';
+import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
+import 'package:lexilink_app/features/reset/data/reset_repository.dart';
+import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
+import 'package:lexilink_app/features/undo/data/undo_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -83,6 +89,9 @@ class _GameProviders extends StatefulWidget {
 class _GameProvidersState extends State<_GameProviders> {
   late final http.Client _httpClient;
   late final GameDetailsCubit _gameDetailsCubit;
+  late final HintCubit _hintCubit;
+  late final UndoCubit _undoCubit;
+  late final ResetCubit _resetCubit;
 
   @override
   void initState() {
@@ -96,11 +105,20 @@ class _GameProvidersState extends State<_GameProviders> {
     _gameDetailsCubit = GameDetailsCubit(
       gameRepository: GameRepository(apiClient: apiClient),
     );
+    _hintCubit = HintCubit(hintRepository: HintRepository(apiClient: apiClient));
+    _undoCubit = UndoCubit(undoRepository: UndoRepository(apiClient: apiClient));
+    _resetCubit = ResetCubit(resetRepository: ResetRepository(apiClient: apiClient));
     unawaited(_gameDetailsCubit.loadGame(widget.gameId));
+    unawaited(_hintCubit.loadHint());
+    unawaited(_undoCubit.loadUndo());
+    unawaited(_resetCubit.loadReset());
   }
 
   @override
   void dispose() {
+    _resetCubit.close();
+    _undoCubit.close();
+    _hintCubit.close();
     _gameDetailsCubit.close();
     _httpClient.close();
     super.dispose();
@@ -108,8 +126,13 @@ class _GameProvidersState extends State<_GameProviders> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _gameDetailsCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _gameDetailsCubit),
+        BlocProvider.value(value: _hintCubit),
+        BlocProvider.value(value: _undoCubit),
+        BlocProvider.value(value: _resetCubit),
+      ],
       child: _GameView(gameId: widget.gameId),
     );
   }
@@ -743,23 +766,37 @@ class _SecondaryActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hintBalance =
+        context.watch<HintCubit>().state.hint?.balance ?? 0;
+    final undoBalance =
+        context.watch<UndoCubit>().state.undo?.balance ?? 0;
     return Row(
       children: [
         Expanded(
           child: AppSecondaryButton(
-            label: 'Hint (${game.hintsLeft})',
-            onPressed: isBusy || game.hintsLeft <= 0
+            label: 'Hint ($hintBalance)',
+            onPressed: isBusy || game.isFinished || hintBalance <= 0
                 ? null
-                : () => context.read<GameDetailsCubit>().useHint(),
+                : () async {
+                    await context.read<GameDetailsCubit>().useHint();
+                    if (context.mounted) {
+                      await context.read<HintCubit>().loadHint();
+                    }
+                  },
           ),
         ),
         const SizedBox(width: 10),
         Expanded(
           child: AppSecondaryButton(
-            label: 'Undo (${game.undosLeft})',
-            onPressed: isBusy || game.undosLeft <= 0
+            label: 'Undo ($undoBalance)',
+            onPressed: isBusy || game.isFinished || undoBalance <= 0
                 ? null
-                : () => context.read<GameDetailsCubit>().undo(),
+                : () async {
+                    await context.read<GameDetailsCubit>().undo();
+                    if (context.mounted) {
+                      await context.read<UndoCubit>().loadUndo();
+                    }
+                  },
           ),
         ),
       ],
@@ -775,22 +812,27 @@ class _OverflowMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final resetBalance =
+        context.watch<ResetCubit>().state.reset?.balance ?? 0;
     final resetEnabled =
-        !game.isFinished && !isBusy && game.resetsLeft > 0;
+        !game.isFinished && !isBusy && resetBalance > 0;
 
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert),
       tooltip: 'More actions',
-      onSelected: (value) {
+      onSelected: (value) async {
         if (value == 'reset') {
-          context.read<GameDetailsCubit>().reset();
+          await context.read<GameDetailsCubit>().reset();
+          if (context.mounted) {
+            await context.read<ResetCubit>().loadReset();
+          }
         }
       },
       itemBuilder: (popupContext) => [
         PopupMenuItem<String>(
           value: 'reset',
           enabled: resetEnabled,
-          child: Text('Reset progress (${game.resetsLeft})'),
+          child: Text('Reset progress ($resetBalance)'),
         ),
       ],
     );

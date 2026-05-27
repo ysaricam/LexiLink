@@ -24,6 +24,7 @@ const _readyQuest = '''
   "hintReward": 0,
   "undoReward": 0,
   "resetReward": 0,
+  "diamondReward": 0,
   "issuedAt": "2026-05-15T09:00:00Z",
   "claimedAt": null,
   "expiresAt": null
@@ -45,6 +46,7 @@ const _claimedQuest = '''
   "hintReward": 0,
   "undoReward": 0,
   "resetReward": 0,
+  "diamondReward": 0,
   "issuedAt": "2026-05-15T09:00:00Z",
   "claimedAt": "2026-05-15T09:10:00Z",
   "expiresAt": null

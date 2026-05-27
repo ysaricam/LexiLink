@@ -12,6 +12,7 @@ public class QuestDefinitionCreatedDomainEvent : DomainEvent
     public int HintReward { get; }
     public int UndoReward { get; }
     public int ResetReward { get; }
+    public int DiamondReward { get; }
     public Guid? PrerequisiteQuestDefinitionId { get; }
     public string ProgressBaseline { get; }
 
@@ -24,6 +25,7 @@ public class QuestDefinitionCreatedDomainEvent : DomainEvent
         int hintReward,
         int undoReward,
         int resetReward,
+        int diamondReward,
         Guid? prerequisiteQuestDefinitionId,
         string progressBaseline)
     {
@@ -35,6 +37,7 @@ public class QuestDefinitionCreatedDomainEvent : DomainEvent
         HintReward = hintReward;
         UndoReward = undoReward;
         ResetReward = resetReward;
+        DiamondReward = diamondReward;
         PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         ProgressBaseline = progressBaseline;
     }

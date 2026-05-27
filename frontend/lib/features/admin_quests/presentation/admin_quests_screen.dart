@@ -91,8 +91,7 @@ class _AdminQuestsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminQuestsCubit, AdminQuestsState>(
       listenWhen: (prev, curr) =>
-          prev.errorMessage != curr.errorMessage &&
-          curr.errorMessage != null,
+          prev.errorMessage != curr.errorMessage && curr.errorMessage != null,
       listener: (context, state) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(state.errorMessage!)),
@@ -200,6 +199,7 @@ class _AdminQuestsView extends StatelessWidget {
       hintReward: result.hintReward,
       undoReward: result.undoReward,
       resetReward: result.resetReward,
+      diamondReward: result.diamondReward,
       progressBaseline: result.progressBaseline,
       prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );
@@ -220,9 +220,9 @@ class _QuestRow extends StatelessWidget {
     final prereqName = definition.prerequisiteQuestDefinitionId == null
         ? null
         : allDefinitions
-            .where((d) => d.id == definition.prerequisiteQuestDefinitionId)
-            .map((d) => d.name)
-            .firstOrNull;
+              .where((d) => d.id == definition.prerequisiteQuestDefinitionId)
+              .map((d) => d.name)
+              .firstOrNull;
     final subtitleParts = <String>[
       '${definition.trigger.displayLabel} · ${definition.threshold}',
       if (prereqName != null) 'Ön koşul: $prereqName',
@@ -257,6 +257,13 @@ class _QuestRow extends StatelessWidget {
             _RewardBadge(
               label: '+${definition.resetReward}↻',
               color: Theme.of(context).colorScheme.error,
+            ),
+            const SizedBox(width: 4),
+          ],
+          if (definition.diamondReward > 0) ...[
+            _RewardBadge(
+              label: '+${definition.diamondReward}💎',
+              color: Theme.of(context).colorScheme.primary,
             ),
             const SizedBox(width: 4),
           ],
@@ -313,6 +320,7 @@ class _QuestRow extends StatelessWidget {
       hintReward: result.hintReward,
       undoReward: result.undoReward,
       resetReward: result.resetReward,
+      diamondReward: result.diamondReward,
       progressBaseline: result.progressBaseline,
       prerequisiteQuestDefinitionId: result.prerequisiteQuestDefinitionId,
     );

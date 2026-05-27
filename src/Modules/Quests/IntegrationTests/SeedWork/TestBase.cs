@@ -194,6 +194,7 @@ public abstract class TestBase
                     "HintReward" = 0,
                     "UndoReward" = 0,
                     "ResetReward" = 0,
+                    "DiamondReward" = 0,
                     "PrerequisiteQuestDefinitionId" = NULL,
                     "ProgressBaseline" = 'FromSnapshot'
                 WHERE "Id" = '11111111-0000-0000-0000-000000000010';

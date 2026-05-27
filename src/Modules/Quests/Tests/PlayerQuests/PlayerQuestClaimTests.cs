@@ -17,7 +17,8 @@ public class PlayerQuestClaimTests : PlayerQuestTestsBase
             energyReward: SampleEnergyReward,
             hintReward: SampleHintReward,
             undoReward: SampleUndoReward,
-            resetReward: SampleResetReward);
+            resetReward: SampleResetReward,
+            diamondReward: 0);
 
         quest.State.Should().Be(QuestState.Claimed);
         quest.ClaimedAt.Should().Be(claimedAt);
@@ -32,13 +33,15 @@ public class PlayerQuestClaimTests : PlayerQuestTestsBase
             energyReward: 7,
             hintReward: 3,
             undoReward: 2,
-            resetReward: 1);
+            resetReward: 1,
+            diamondReward: 0);
 
         var evt = AssertPublishedDomainEvent<PlayerQuestClaimedDomainEvent>(quest);
         evt.EnergyReward.Should().Be(7);
         evt.HintReward.Should().Be(3);
         evt.UndoReward.Should().Be(2);
         evt.ResetReward.Should().Be(1);
+        evt.DiamondReward.Should().Be(0);
         evt.QuestDefinitionId.Should().Be(quest.QuestDefinitionId);
         evt.PlayerQuestId.Should().Be(quest.Id);
     }
@@ -53,7 +56,8 @@ public class PlayerQuestClaimTests : PlayerQuestTestsBase
                 energyReward: SampleEnergyReward,
                 hintReward: SampleHintReward,
                 undoReward: SampleUndoReward,
-                resetReward: SampleResetReward));
+                resetReward: SampleResetReward,
+                diamondReward: SampleDiamondReward));
     }
 
     [Test]
@@ -64,13 +68,15 @@ public class PlayerQuestClaimTests : PlayerQuestTestsBase
             energyReward: SampleEnergyReward,
             hintReward: SampleHintReward,
             undoReward: SampleUndoReward,
-            resetReward: SampleResetReward);
+            resetReward: SampleResetReward,
+            diamondReward: 0);
 
         AssertBrokenRule<QuestMustBeReadyToBeClaimedRule>(() =>
             quest.Claim(FixedIssuedAt.AddSeconds(20), isReadyToClaim: true,
                 energyReward: SampleEnergyReward,
                 hintReward: SampleHintReward,
                 undoReward: SampleUndoReward,
-                resetReward: SampleResetReward));
+                resetReward: SampleResetReward,
+                diamondReward: SampleDiamondReward));
     }
 }

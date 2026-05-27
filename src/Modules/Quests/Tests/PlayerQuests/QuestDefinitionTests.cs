@@ -20,6 +20,7 @@ public class QuestDefinitionTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false);
@@ -32,6 +33,7 @@ public class QuestDefinitionTests : TestBase
         definition.HintReward.Should().Be(0);
         definition.UndoReward.Should().Be(0);
         definition.ResetReward.Should().Be(0);
+        definition.DiamondReward.Should().Be(0);
         definition.PrerequisiteQuestDefinitionId.Should().BeNull();
         definition.ProgressBaseline.Should().Be(ProgressBaseline.FromSnapshot);
         definition.IsActive.Should().BeTrue();
@@ -45,6 +47,7 @@ public class QuestDefinitionTests : TestBase
         created.HintReward.Should().Be(0);
         created.UndoReward.Should().Be(0);
         created.ResetReward.Should().Be(0);
+        created.DiamondReward.Should().Be(0);
         created.PrerequisiteQuestDefinitionId.Should().BeNull();
         created.ProgressBaseline.Should().Be(nameof(ProgressBaseline.FromSnapshot));
     }
@@ -72,23 +75,39 @@ public class QuestDefinitionTests : TestBase
     [Test]
     public void Create_Should_AllowResetOnlyReward()
     {
-        var definition = Create(energyReward: 0, hintReward: 0, resetReward: 1);
+        var definition = Create(energyReward: 0, hintReward: 0, resetReward: 1,
+            diamondReward: 0);
 
         definition.EnergyReward.Should().Be(0);
         definition.HintReward.Should().Be(0);
         definition.UndoReward.Should().Be(0);
         definition.ResetReward.Should().Be(1);
+        definition.DiamondReward.Should().Be(0);
+    }
+
+    [Test]
+    public void Create_Should_AllowDiamondOnlyReward()
+    {
+        var definition = Create(energyReward: 0, hintReward: 0, diamondReward: 3);
+
+        definition.EnergyReward.Should().Be(0);
+        definition.HintReward.Should().Be(0);
+        definition.UndoReward.Should().Be(0);
+        definition.ResetReward.Should().Be(0);
+        definition.DiamondReward.Should().Be(3);
     }
 
     [Test]
     public void Create_Should_AllowMixedReward()
     {
-        var definition = Create(energyReward: 5, hintReward: 2, undoReward: 1, resetReward: 1);
+        var definition = Create(energyReward: 5, hintReward: 2, undoReward: 1, resetReward: 1,
+            diamondReward: 0);
 
         definition.EnergyReward.Should().Be(5);
         definition.HintReward.Should().Be(2);
         definition.UndoReward.Should().Be(1);
         definition.ResetReward.Should().Be(1);
+        definition.DiamondReward.Should().Be(0);
     }
 
     [Test]
@@ -105,6 +124,7 @@ public class QuestDefinitionTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false);
@@ -175,6 +195,13 @@ public class QuestDefinitionTests : TestBase
     }
 
     [Test]
+    public void Create_Should_RejectNegativeDiamondReward()
+    {
+        AssertBrokenRule<QuestRewardMustHaveAtLeastOnePositiveRule>(() =>
+            Create(energyReward: 5, diamondReward: -1));
+    }
+
+    [Test]
     public void Create_Should_RejectCycleWhenHandlerSignalsIt()
     {
         AssertBrokenRule<QuestPrerequisiteMustNotCreateCycleRule>(() =>
@@ -194,6 +221,7 @@ public class QuestDefinitionTests : TestBase
             hintReward: 2,
             undoReward: 3,
             resetReward: 4,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: newPrereq,
             progressBaseline: ProgressBaseline.FromExistingTotal,
             prerequisiteWouldCreateCycle: false);
@@ -204,6 +232,7 @@ public class QuestDefinitionTests : TestBase
         definition.HintReward.Should().Be(2);
         definition.UndoReward.Should().Be(3);
         definition.ResetReward.Should().Be(4);
+        definition.DiamondReward.Should().Be(0);
         definition.PrerequisiteQuestDefinitionId.Should().Be(newPrereq);
         definition.ProgressBaseline.Should().Be(ProgressBaseline.FromExistingTotal);
 
@@ -214,6 +243,7 @@ public class QuestDefinitionTests : TestBase
         updated.HintReward.Should().Be(2);
         updated.UndoReward.Should().Be(3);
         updated.ResetReward.Should().Be(4);
+        updated.DiamondReward.Should().Be(0);
         updated.PrerequisiteQuestDefinitionId.Should().Be(newPrereq.Value);
         updated.ProgressBaseline.Should().Be(nameof(ProgressBaseline.FromExistingTotal));
     }
@@ -230,6 +260,7 @@ public class QuestDefinitionTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: false));
@@ -247,6 +278,7 @@ public class QuestDefinitionTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: new QuestDefinitionId(Guid.NewGuid()),
             progressBaseline: ProgressBaseline.FromSnapshot,
             prerequisiteWouldCreateCycle: true));
@@ -300,6 +332,7 @@ public class QuestDefinitionTests : TestBase
         int hintReward = 0,
         int undoReward = 0,
         int resetReward = 0,
+        int diamondReward = 0,
         QuestDefinitionId? prerequisiteQuestDefinitionId = null,
         ProgressBaseline progressBaseline = ProgressBaseline.FromSnapshot,
         bool prerequisiteWouldCreateCycle = false) =>
@@ -312,6 +345,7 @@ public class QuestDefinitionTests : TestBase
             hintReward,
             undoReward,
             resetReward,
+            diamondReward,
             prerequisiteQuestDefinitionId,
             progressBaseline,
             prerequisiteWouldCreateCycle);

@@ -15,12 +15,14 @@ internal sealed class UpdateQuestDefinitionCommandValidator : AbstractValidator<
         RuleFor(x => x.HintReward).GreaterThanOrEqualTo(0);
         RuleFor(x => x.UndoReward).GreaterThanOrEqualTo(0);
         RuleFor(x => x.ResetReward).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.DiamondReward).GreaterThanOrEqualTo(0);
         RuleFor(x => x)
             .Must(x =>
                 x.EnergyReward > 0 ||
                 x.HintReward > 0 ||
                 x.UndoReward > 0 ||
-                x.ResetReward > 0)
+                x.ResetReward > 0 ||
+                x.DiamondReward > 0)
             .WithMessage("At least one reward amount must be positive.");
     }
 }

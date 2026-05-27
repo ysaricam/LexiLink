@@ -67,6 +67,12 @@ class _AppAdminShellState extends State<AppAdminShell> {
       route: '/admin/reset',
     ),
     _AdminDestination(
+      label: 'Diamond',
+      icon: Icons.diamond_outlined,
+      selectedIcon: Icons.diamond,
+      route: '/admin/diamond',
+    ),
+    _AdminDestination(
       label: 'Audit',
       icon: Icons.fact_check_outlined,
       selectedIcon: Icons.fact_check,
@@ -81,8 +87,9 @@ class _AppAdminShellState extends State<AppAdminShell> {
   }
 
   Future<void> _resolveStore() async {
-    final store = await (widget.tokenStoreFactory?.call() ??
-        SharedPreferencesAdminTokenStore.create());
+    final store =
+        await (widget.tokenStoreFactory?.call() ??
+            SharedPreferencesAdminTokenStore.create());
     if (!mounted) return;
     setState(() => _tokenStore = store);
   }

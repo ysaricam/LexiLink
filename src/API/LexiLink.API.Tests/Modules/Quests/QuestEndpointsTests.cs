@@ -84,6 +84,9 @@ public sealed class QuestEndpointsTests
             first.GetProperty("threshold").GetInt32().Should().Be(3);
             first.GetProperty("energyReward").GetInt32().Should().Be(5);
             first.GetProperty("hintReward").GetInt32().Should().Be(0);
+            first.GetProperty("undoReward").GetInt32().Should().Be(0);
+            first.GetProperty("resetReward").GetInt32().Should().Be(0);
+            first.GetProperty("diamondReward").GetInt32().Should().Be(0);
             first.GetProperty("displayState").GetString().Should().Be("Active");
         }
         finally

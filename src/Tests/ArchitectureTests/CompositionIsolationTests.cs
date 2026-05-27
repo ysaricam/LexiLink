@@ -9,6 +9,7 @@ using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Common.Infrastructure.Time;
 using LexiLink.Modules.Administration.Infrastructure.Configuration;
+using LexiLink.Modules.Diamond.Infrastructure.Configuration;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
 using LexiLink.Modules.Stats.Infrastructure.Configuration;
@@ -36,7 +37,7 @@ public class CompositionIsolationTests
         scope.ResolveOptional<IDomainEventsDispatcher>().Should().BeNull();
         scope.ResolveOptional<Common.Application.Outbox.IOutbox>().Should().BeNull();
 
-        scope.Resolve<IEnumerable<IOutboxProcessor>>().Should().HaveCount(3);
+        scope.Resolve<IEnumerable<IOutboxProcessor>>().Should().HaveCount(4);
     }
 
     [Test]
@@ -69,6 +70,7 @@ public class CompositionIsolationTests
         PlayersStartup.Initialize(services, ConnectionString);
         StatsStartup.Initialize(services, ConnectionString);
         AdministrationStartup.Initialize(services, ConnectionString);
+        DiamondStartup.Initialize(services, ConnectionString);
 
         var containerBuilder = new ContainerBuilder();
         containerBuilder.Populate(services);
@@ -76,6 +78,7 @@ public class CompositionIsolationTests
         PlayersStartup.InitializeCompositionRoot(containerBuilder, ConnectionString);
         StatsStartup.InitializeCompositionRoot(containerBuilder, ConnectionString);
         AdministrationStartup.InitializeCompositionRoot(containerBuilder, ConnectionString);
+        DiamondStartup.InitializeCompositionRoot(containerBuilder, ConnectionString);
 
         return containerBuilder.Build();
     }

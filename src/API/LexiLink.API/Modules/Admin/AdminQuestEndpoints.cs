@@ -40,6 +40,7 @@ public static class AdminQuestEndpoints
                         body.HintReward,
                         body.UndoReward,
                         body.ResetReward,
+                        body.DiamondReward,
                         body.PrerequisiteQuestDefinitionId,
                         body.ProgressBaseline),
                     ct);
@@ -61,6 +62,7 @@ public static class AdminQuestEndpoints
                         body.HintReward,
                         body.UndoReward,
                         body.ResetReward,
+                        body.DiamondReward,
                         body.PrerequisiteQuestDefinitionId,
                         body.ProgressBaseline),
                     ct);
@@ -101,6 +103,7 @@ public sealed record CreateQuestDefinitionRequest(
     int HintReward,
     int UndoReward,
     int ResetReward,
+    int DiamondReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline);
 
@@ -113,5 +116,6 @@ public sealed record UpdateQuestDefinitionRequest(
     int HintReward,
     int UndoReward,
     int ResetReward,
+    int DiamondReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline);

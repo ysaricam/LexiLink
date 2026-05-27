@@ -13,6 +13,7 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
     public int HintReward { get; }
     public int UndoReward { get; }
     public int ResetReward { get; }
+    public int DiamondReward { get; }
     public Guid? PrerequisiteQuestDefinitionId { get; }
     public ProgressBaseline ProgressBaseline { get; }
 
@@ -24,6 +25,7 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
         int hintReward,
         int undoReward,
         int resetReward,
+        int diamondReward,
         Guid? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline)
     {
@@ -34,6 +36,7 @@ public sealed class UpdateQuestDefinitionCommand : CommandBase, IAdminCommand
         HintReward = hintReward;
         UndoReward = undoReward;
         ResetReward = resetReward;
+        DiamondReward = diamondReward;
         PrerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         ProgressBaseline = progressBaseline;
     }

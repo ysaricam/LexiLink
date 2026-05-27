@@ -18,6 +18,7 @@ class QuestDefinitionFormResult {
     required this.hintReward,
     required this.undoReward,
     required this.resetReward,
+    required this.diamondReward,
     required this.progressBaseline,
     this.prerequisiteQuestDefinitionId,
   });
@@ -30,6 +31,7 @@ class QuestDefinitionFormResult {
   final int hintReward;
   final int undoReward;
   final int resetReward;
+  final int diamondReward;
   final ProgressBaseline progressBaseline;
   final String? prerequisiteQuestDefinitionId;
 }
@@ -63,6 +65,7 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
   late final TextEditingController _hintRewardController;
   late final TextEditingController _undoRewardController;
   late final TextEditingController _resetRewardController;
+  late final TextEditingController _diamondRewardController;
   final _formKey = GlobalKey<FormState>();
 
   QuestTrigger? _trigger;
@@ -77,20 +80,30 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     super.initState();
     final initial = widget.initial;
     _nameController = TextEditingController(text: initial?.name ?? '');
-    _descriptionController =
-        TextEditingController(text: initial?.description ?? '');
-    _thresholdController =
-        TextEditingController(text: initial?.threshold.toString() ?? '');
-    _energyRewardController =
-        TextEditingController(text: initial?.energyReward.toString() ?? '0');
-    _hintRewardController =
-        TextEditingController(text: initial?.hintReward.toString() ?? '0');
-    _undoRewardController =
-        TextEditingController(text: initial?.undoReward.toString() ?? '0');
-    _resetRewardController =
-        TextEditingController(text: initial?.resetReward.toString() ?? '0');
+    _descriptionController = TextEditingController(
+      text: initial?.description ?? '',
+    );
+    _thresholdController = TextEditingController(
+      text: initial?.threshold.toString() ?? '',
+    );
+    _energyRewardController = TextEditingController(
+      text: initial?.energyReward.toString() ?? '0',
+    );
+    _hintRewardController = TextEditingController(
+      text: initial?.hintReward.toString() ?? '0',
+    );
+    _undoRewardController = TextEditingController(
+      text: initial?.undoReward.toString() ?? '0',
+    );
+    _resetRewardController = TextEditingController(
+      text: initial?.resetReward.toString() ?? '0',
+    );
+    _diamondRewardController = TextEditingController(
+      text: initial?.diamondReward.toString() ?? '0',
+    );
     _trigger = initial?.trigger;
-    _progressBaseline = initial?.progressBaseline ?? ProgressBaseline.fromSnapshot;
+    _progressBaseline =
+        initial?.progressBaseline ?? ProgressBaseline.fromSnapshot;
     _prerequisiteId = initial?.prerequisiteQuestDefinitionId;
   }
 
@@ -103,6 +116,7 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     _hintRewardController.dispose();
     _undoRewardController.dispose();
     _resetRewardController.dispose();
+    _diamondRewardController.dispose();
     super.dispose();
   }
 
@@ -110,8 +124,8 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
   Widget build(BuildContext context) {
     final prereqs = _isEdit
         ? widget.availablePrerequisites
-            .where((d) => d.id != widget.initial!.id)
-            .toList(growable: false)
+              .where((d) => d.id != widget.initial!.id)
+              .toList(growable: false)
         : widget.availablePrerequisites;
     final showProgressBaseline = _trigger == QuestTrigger.gameCompletedTotal;
 
@@ -176,11 +190,8 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   for (final t in QuestTrigger.values)
                     DropdownMenuItem(value: t, child: Text(t.displayLabel)),
                 ],
-                onChanged: _isEdit
-                    ? null
-                    : (v) => setState(() => _trigger = v),
-                validator: (v) =>
-                    v == null ? 'Tetikleyici zorunlu' : null,
+                onChanged: _isEdit ? null : (v) => setState(() => _trigger = v),
+                validator: (v) => v == null ? 'Tetikleyici zorunlu' : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -248,6 +259,16 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   ),
                 ],
               ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _diamondRewardController,
+                decoration: const InputDecoration(
+                  labelText: 'Elmas ödülü 💎',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                validator: _validateNonNegative,
+              ),
               if (_rewardSumError != null) ...[
                 const SizedBox(height: 4),
                 Text(
@@ -265,8 +286,7 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   decoration: const InputDecoration(
                     labelText: 'İlerleme başlangıcı',
                     border: OutlineInputBorder(),
-                    helperText:
-                        'Yalnız "Toplam oyun" için anlamlıdır.',
+                    helperText: 'Yalnız "Toplam oyun" için anlamlıdır.',
                   ),
                   items: [
                     for (final b in ProgressBaseline.values)
@@ -317,7 +337,7 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     if (v == null || v.trim().isEmpty) return 'Zorunlu';
     final parsed = int.tryParse(v.trim());
     if (parsed == null) return 'Sayı olmalı';
-    if (parsed <= 0) return '0\'dan büyük olmalı';
+    if (parsed <= 0) return "0'dan büyük olmalı";
     return null;
   }
 
@@ -325,7 +345,7 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     if (v == null || v.trim().isEmpty) return 'Zorunlu';
     final parsed = int.tryParse(v.trim());
     if (parsed == null) return 'Sayı olmalı';
-    if (parsed < 0) return '0\'dan küçük olamaz';
+    if (parsed < 0) return "0'dan küçük olamaz";
     return null;
   }
 
@@ -335,12 +355,14 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     final hint = int.tryParse(_hintRewardController.text.trim()) ?? -1;
     final undo = int.tryParse(_undoRewardController.text.trim()) ?? -1;
     final reset = int.tryParse(_resetRewardController.text.trim()) ?? -1;
+    final diamond = int.tryParse(_diamondRewardController.text.trim()) ?? -1;
     final atLeastOnePositive =
-        energy > 0 || hint > 0 || undo > 0 || reset > 0;
+        energy > 0 || hint > 0 || undo > 0 || reset > 0 || diamond > 0;
     setState(() {
       _rewardSumError = atLeastOnePositive
           ? null
-          : 'En az bir ödül (enerji, ipucu, geri al, sıfırla) > 0 olmalı.';
+          : 'En az bir ödül '
+                '(enerji, ipucu, geri al, sıfırla, elmas) > 0 olmalı.';
     });
     if (!formValid || !atLeastOnePositive) return;
     Navigator.of(context).pop(
@@ -353,6 +375,7 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
         hintReward: hint,
         undoReward: undo,
         resetReward: reset,
+        diamondReward: diamond,
         progressBaseline: _progressBaseline,
         prerequisiteQuestDefinitionId: _prerequisiteId,
       ),

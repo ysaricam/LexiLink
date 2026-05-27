@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-26 (Sprint H frontend slice H6 closed; full Sprint H + manual verification kapanışı tamamlandı)
+> Last updated: 2026-05-27 (Sprint D frontend slice D5 closed; D7 manual verification completed)
 
 ---
 
@@ -113,23 +113,25 @@ ayrimidir.
 
 ## Next Action
 
-**Sprint H frontend leg kapandı.** Slice H6 commit'lendi (4109a93);
-manuel doğrulama 2026-05-26'da geçildi (HintBadge HomeScreen'de
-gözüküyor, admin hint console set/grant/reset çalışıyor, multi-reward
-quest formu iki ödül alıyor, player quest tile iki rozeti yan yana
-gösteriyor, claim sonrası ikisi de güncelleniyor). 103/103 Flutter
-test pass, `flutter analyze` pre-existing info-level uyarılar.
+**Sprint D frontend leg kapandı.** Slice D5 Diamond player badge,
+admin Diamond console, `/admin/diamond` navigation, and 5-reward Quest
+UI shipped. D7 manual verification 2026-05-27'de geçildi: single
+reward quest claim ×5, mixed 5-reward claim, Diamond admin
+Set/Grant/Reset + audit, `Diamond:InitialBalance` override, and
+Diamond badge reload/JWT persistence. Current Flutter gate:
+107/107 test pass; `flutter analyze` only pre-existing info-level
+warnings.
 
 Sıradaki aday slice'lar (operator backlog'undan, sıra yok henüz):
-- **Power-up / shop ekranı.** Enerji + hint iki para birimi gibi
-  ayrı; satın alma / reklam-watch / IAP akışları doğal sonraki
-  adım.
+- **Shop / Diamond spend ekranı.** Diamond artık kalıcı currency;
+  katalog fiyatları, purchase/checkout, ad reward/IAP sleeve doğal
+  sonraki adım.
 - **Player profili genişleme.** Tüm rozet türlerini (energy +
-  hint + level + streak) birleşik bir status widget'ında
+  hint + undo + reset + diamond + level + streak) birleşik bir status widget'ında
   toplamak.
-- **Game UseHint UI iyileştirme.** Player hint stoğu varken
-  "X ipucun var" overlay'i ekleyip free → inventory geçişini
-  görünür yapmak; şu an silent fall-through.
+- **Game UseHint UI iyileştirme.** Post-UR1 modelde ilk hint dahil
+  her hint inventory tüketiyor; oyun ekranında kalan hint stoğunu ve
+  tüketimi görünür yapmak.
 
 Son tamamlanan frontend implementation slice:
 

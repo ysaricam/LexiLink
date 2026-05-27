@@ -38,6 +38,7 @@ void main() {
     "hintReward": 0,
     "undoReward": 0,
     "resetReward": 0,
+    "diamondReward": 0,
     "issuedAt": "2026-05-15T09:00:00Z",
     "claimedAt": null,
     "expiresAt": null
@@ -56,6 +57,7 @@ void main() {
     "hintReward": 2,
     "undoReward": 1,
     "resetReward": 0,
+    "diamondReward": 4,
     "issuedAt": "2026-05-15T09:00:00Z",
     "claimedAt": null,
     "expiresAt": "2026-05-16T00:00:00Z"
@@ -78,6 +80,7 @@ void main() {
     expect(quests[1].threshold, 3);
     expect(quests[1].energyReward, 5);
     expect(quests[1].hintReward, 2);
+    expect(quests[1].diamondReward, 4);
     expect(quests[1].expiresAt, DateTime.parse('2026-05-16T00:00:00Z'));
   });
 

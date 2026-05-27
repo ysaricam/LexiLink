@@ -50,6 +50,7 @@ internal sealed class UpdateQuestDefinitionCommandHandler : ICommandHandler<Upda
             request.HintReward,
             request.UndoReward,
             request.ResetReward,
+            request.DiamondReward,
             prereqId,
             request.ProgressBaseline,
             prerequisiteWouldCreateCycle: wouldCycle);

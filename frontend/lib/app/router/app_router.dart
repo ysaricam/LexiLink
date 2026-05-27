@@ -86,6 +86,10 @@ final appRouter = GoRouter(
           builder: (context, state) => const AdminResetPage(),
         ),
         GoRoute(
+          path: '/admin/diamond',
+          builder: (context, state) => const AdminDiamondPage(),
+        ),
+        GoRoute(
           path: '/admin/audit',
           builder: (context, state) => const AdminAuditPage(),
         ),

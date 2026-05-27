@@ -13,7 +13,7 @@ namespace LexiLink.Modules.Quests.Domain.PlayerQuests;
 /// snapshots.
 ///
 /// Sprint H expanded the single reward int into Energy + Hint; UR5
-/// adds Undo + Reset. All reward amounts are non-negative and at
+/// adds Undo + Reset; D3 adds Diamond. All reward amounts are non-negative and at
 /// least one must be positive. Each resource module consumes
 /// <c>QuestClaimedIntegrationEvent</c> independently and grants its
 /// portion.
@@ -30,6 +30,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
     private int _hintReward;
     private int _undoReward;
     private int _resetReward;
+    private int _diamondReward;
     private QuestDefinitionId? _prerequisiteQuestDefinitionId;
     private ProgressBaseline _progressBaseline;
     private bool _isActive;
@@ -42,6 +43,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
     public int HintReward => _hintReward;
     public int UndoReward => _undoReward;
     public int ResetReward => _resetReward;
+    public int DiamondReward => _diamondReward;
     public QuestDefinitionId? PrerequisiteQuestDefinitionId => _prerequisiteQuestDefinitionId;
     public ProgressBaseline ProgressBaseline => _progressBaseline;
     public bool IsActive => _isActive;
@@ -61,6 +63,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         int hintReward,
         int undoReward,
         int resetReward,
+        int diamondReward,
         QuestDefinitionId? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline,
         bool prerequisiteWouldCreateCycle)
@@ -73,7 +76,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             energyReward,
             hintReward,
             undoReward,
-            resetReward));
+            resetReward,
+            diamondReward));
         CheckRule(new QuestPrerequisiteMustNotCreateCycleRule(prerequisiteWouldCreateCycle));
 
         Id = id;
@@ -85,6 +89,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         _hintReward = hintReward;
         _undoReward = undoReward;
         _resetReward = resetReward;
+        _diamondReward = diamondReward;
         _prerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         _progressBaseline = progressBaseline;
         _isActive = true;
@@ -98,6 +103,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             hintReward,
             undoReward,
             resetReward,
+            diamondReward,
             prerequisiteQuestDefinitionId?.Value,
             progressBaseline.ToString()));
     }
@@ -111,6 +117,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         int hintReward,
         int undoReward,
         int resetReward,
+        int diamondReward,
         QuestDefinitionId? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline,
         bool prerequisiteWouldCreateCycle)
@@ -125,6 +132,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             hintReward,
             undoReward,
             resetReward,
+            diamondReward,
             prerequisiteQuestDefinitionId,
             progressBaseline,
             prerequisiteWouldCreateCycle);
@@ -143,6 +151,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         int hintReward,
         int undoReward,
         int resetReward,
+        int diamondReward,
         QuestDefinitionId? prerequisiteQuestDefinitionId,
         ProgressBaseline progressBaseline,
         bool prerequisiteWouldCreateCycle)
@@ -153,7 +162,8 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             energyReward,
             hintReward,
             undoReward,
-            resetReward));
+            resetReward,
+            diamondReward));
         CheckRule(new QuestPrerequisiteMustNotCreateCycleRule(prerequisiteWouldCreateCycle));
 
         _description = description ?? string.Empty;
@@ -162,6 +172,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
         _hintReward = hintReward;
         _undoReward = undoReward;
         _resetReward = resetReward;
+        _diamondReward = diamondReward;
         _prerequisiteQuestDefinitionId = prerequisiteQuestDefinitionId;
         _progressBaseline = progressBaseline;
 
@@ -173,6 +184,7 @@ public sealed class QuestDefinition : Entity, IAggregateRoot
             hintReward,
             undoReward,
             resetReward,
+            diamondReward,
             prerequisiteQuestDefinitionId?.Value,
             progressBaseline.ToString()));
     }

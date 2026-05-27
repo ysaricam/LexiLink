@@ -4,11 +4,27 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-26 (Sprint UR — UR4 Undo + Reset sync gateway integration delivered; UR5 quest 4-reward destructive next).
+> Last updated: 2026-05-27 (Sprint D closed — Diamond module + Quest 5-reward delivered).
 
 ---
 
 ## Active Sprint
+
+**Sprint D — Diamond Module + Quest 5-Reward — closed.** D1-D8
+delivered Diamond end-to-end: backend bounded context, lazy init from
+`PlayerRegisteredIntegrationEvent`, destructive Quest reward reshape
+from 4 to 5 reward fields, Diamond reward delivery through
+`QuestClaimedIntegrationEvent`, admin set/grant/reset + player/admin
+GET endpoints, audit projection, frontend Diamond badge/admin console,
+5-reward quest UI, tests, manual verification, and docs. Local DbUp
+migration `quests/060_ExpandQuestRewardsWithDiamond.sql` has been
+applied.
+
+Final quality gate: **502 .NET tests + 107 Flutter tests green**.
+`flutter analyze` still reports only unrelated pre-existing
+info-level warnings.
+
+### Previous Sprint Context
 
 **Sprint UR — Undo + Reset Modules + Quest 4-Reward — closed
 end-to-end.** Sekiz slice (UR1 → UR8) 2026-05-26 günü dört commit
@@ -174,12 +190,10 @@ Sprint UR — Undo + Reset Modules`.
 
 ### Lessons captured this session (Sprint H, 2026-05-25 → 2026-05-26)
 
-- **HintsUsed counts only the free quota by design.** The
-  per-game `HintAllowance.Used` counter is unrelated to player
-  inventory consumption. `UseHintWithExternalInventory()`
-  deliberately does **not** advance the counter. Surfaces in
-  `GameDetailsDto.HintsUsed` as the *free* count, not the *total*
-  count. Codified in `UseHintFallThroughTests`.
+- **HintsUsed is legacy/free-quota count, not inventory usage.**
+  Sprint D sets `ResolveHints() == 0`, so every hint goes through
+  `IHintGuard` and `GameDetailsDto.HintsUsed` stays 0 for normal
+  inventory-backed hints. Codified in `UseHintFallThroughTests`.
 - **Reverse event dependency justifies a granular ArchTest
   allow.** Hint.Application needs `Quests.IntegrationEvents` for
   its consumer; Hint.Infrastructure needs
@@ -596,16 +610,67 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Sprint UR kapandı.** Sekiz slice (UR1 → UR8) tamamı dört commit
-ile teslim edildi. Manuel doğrulama operator tarafından yapıldı.
-Quality gate 464/464 .NET + 103/103 Flutter.
+**Sprint D kapandı.** Detaylı teslim notları `progress.md > Sprint D`
+ve frontend detayı `frontendProgress.md > Slice D5` içinde. D1-D8
+durumu:
 
-Sıradaki sprint adayları (UR sonrası backlog'undan):
+- **D1 ✅** Diamond module foundation + DB schema/outbox +
+  ArchitectureTest/API composition wiring.
+- **D2 ✅** Lazy init from `PlayerRegisteredIntegrationEvent` +
+  idempotent ensure command.
+- **D3 ✅** Quest reward 4→5 destructive reshape +
+  `DiamondReward` outbox delivery consumer.
+- **D4 ✅** Diamond admin operations + GET endpoints + audit
+  projection.
+- **D5 ✅** Frontend Diamond player badge/admin console + 5-reward
+  quest form/tile reshape.
+- **D6 ✅** Diamond/Quest/resource/API/frontend test kapsamı tamamlandı.
+  Games.IT free-hint beklentileri yeni modele güncellendi:
+  `ResolveHints() == 0`, her hint `IHintGuard` üzerinden geçer.
+  Tam `scripts/test.sh` yeşil.
+- **D7 ✅** Operator manual verification geçti: single-reward ×5,
+  mixed 5-reward, Diamond admin Set/Grant/Reset + audit, initial
+  balance override, reload/JWT persistence.
+- **D8 ✅** Sprint close docs: progress, glossary, roadmap,
+  activeContext, frontend active/progress.
 
-- **Power-up / shop ekonomisi.** 4 inventory (Energy, Hint, Undo,
-  Reset) artık ayrı para birimi gibi davranıyor — satın alma /
-  IAP / reklam-bazlı bonus akışları doğal sonraki adım. Shop
-  ekranı + reward catalog'una price + currency type eklenmesi.
+D6 doğrulama sonucu:
+
+- **Geçti:** `./scripts/test.sh` full .NET gate: 502 test.
+  `flutter test`: 106 test.
+- **Not:** `flutter analyze` sadece D dışı/pre-existing 12 info
+  uyarısıyla başarısız; özellikle `game_screen.dart` hâlihazırda kirli
+  olduğu için D6'da dokunulmadı.
+- **Eklendi:** Hint.IT `QuestRewardDeliveryTests` 5-reward
+  `QuestClaimedIntegrationEvent` kapsamı.
+- **Genişletildi:** API.Tests
+  `GetQuestsMe_FreshPlayer_LazilyReturnsSeededDaily` artık
+  `undoReward`, `resetReward`, `diamondReward` alanlarını da assert eder.
+- **Güncellendi:** Games.IT `UseHint` testleri post-UR1 sözleşmesine
+  hizalandı; ilk hint dahil her hint `IHintGuard` çağırır ve
+  `HintsUsed == 0` kalır.
+
+Next action candidates:
+
+- **Shop modülü.** Diamond spend path, reward catalog pricing, future
+  IAP/ad reward integration.
+- **Game completion → Diamond bonus.** New reverse event dependency:
+  `Diamond.Application → Games.IntegrationEvents.GameCompletedIntegrationEvent`.
+- **Analyzer cleanup.** Pre-existing Flutter info warnings if the
+  project wants `flutter analyze` green, including currently dirty
+  `game_screen.dart`.
+
+Sprint D dışında bilinçli **non-action**'lar:
+
+- **Shop modülü** ayrı sprint (Diamond bittikten sonra).
+- **Game completion → Diamond bonus** D sonrası mini-slice (yeni
+  reverse event dep: `Diamond.Application →
+  Games.IntegrationEvents.GameCompletedIntegrationEvent`).
+- **IAP / real-money** mobile platform sleeve, modülün kendisinin
+  kapsamı dışı.
+
+Sprint UR sonrası diğer backlog adayları (D sonrası):
+
 - **Quest yeni trigger türleri.** `StreakReached`,
   `CategoryMastered`, `LeaderboardReached`. Her biri
   `IQuestCounterReader` adapter'ına yeni read path ekler;
@@ -616,9 +681,7 @@ Sıradaki sprint adayları (UR sonrası backlog'undan):
 - **Game scoring formula reshape.** Scoring şu an Hint allowance
   kullanımına bağlı; Undo/Reset counter'ları artık inventory
   consumption'a karşılık geliyor. Score formülünün 4 inventory
-  arasında nasıl ayrılacağını gözden geçirmek (önceden Undo/Reset
-  ücretsizdi, şimdi player envanteri tüketiyorlar — penalty
-  semantik değişti).
+  arasında nasıl ayrılacağını gözden geçirmek.
 
 ---
 

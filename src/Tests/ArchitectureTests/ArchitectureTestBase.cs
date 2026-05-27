@@ -39,6 +39,10 @@ public abstract class ArchitectureTestBase
     protected static readonly Assembly AdministrationApplicationAssembly = typeof(Modules.Administration.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly AdministrationInfrastructureAssembly = typeof(Modules.Administration.Infrastructure.AdministrationContext).Assembly;
 
+    protected static readonly Assembly DiamondDomainAssembly = typeof(Modules.Diamond.Domain.PlayerDiamondInventories.PlayerDiamondInventory).Assembly;
+    protected static readonly Assembly DiamondApplicationAssembly = typeof(Modules.Diamond.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly DiamondInfrastructureAssembly = typeof(Modules.Diamond.Infrastructure.DiamondContext).Assembly;
+
     protected static readonly Assembly HintDomainAssembly = typeof(Modules.Hint.Domain.PlayerHintInventories.PlayerHintInventory).Assembly;
     protected static readonly Assembly HintApplicationAssembly = typeof(Modules.Hint.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly HintInfrastructureAssembly = typeof(Modules.Hint.Infrastructure.HintContext).Assembly;
@@ -70,6 +74,9 @@ public abstract class ArchitectureTestBase
         AdministrationDomainAssembly,
         AdministrationApplicationAssembly,
         AdministrationInfrastructureAssembly,
+        DiamondDomainAssembly,
+        DiamondApplicationAssembly,
+        DiamondInfrastructureAssembly,
         HintDomainAssembly,
         HintApplicationAssembly,
         HintInfrastructureAssembly,

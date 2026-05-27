@@ -127,12 +127,12 @@ public class Game : Entity, IAggregateRoot
     /// </summary>
     public bool HasFreeHintRemaining => _hintAllowance.Remaining > 0;
 
-    public HintResult UseHint()
+    public HintResult UseHint(ILinkNeighborResolver neighborResolver)
     {
         CheckRule(new GameMustBeInProgressRule(_gameState));
 
         _hintAllowance = _hintAllowance.Consume();
-        var hintResult = _puzzle.RequestHint(_currentLinkId);
+        var hintResult = _puzzle.RequestHint(_currentLinkId, neighborResolver);
 
         AddDomainEvent(new HintUsedDomainEvent(Id, hintResult));
 
@@ -145,11 +145,11 @@ public class Game : Entity, IAggregateRoot
     /// consumed one charge from the player's persistent
     /// PlayerHintInventory via <c>IHintGuard.EnsureHintAvailableAsync</c>.
     /// </summary>
-    public HintResult UseHintWithExternalInventory()
+    public HintResult UseHintWithExternalInventory(ILinkNeighborResolver neighborResolver)
     {
         CheckRule(new GameMustBeInProgressRule(_gameState));
 
-        var hintResult = _puzzle.RequestHint(_currentLinkId);
+        var hintResult = _puzzle.RequestHint(_currentLinkId, neighborResolver);
 
         AddDomainEvent(new HintUsedDomainEvent(Id, hintResult));
 

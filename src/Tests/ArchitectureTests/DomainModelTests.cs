@@ -44,6 +44,7 @@ public class DomainModelTests : ArchitectureTestBase
             "Player",
             "AdminUser",
             "QuestDefinition",
+            "PlayerDiamondInventory",
             "PlayerHintInventory",
             "PlayerUndoInventory",
             "PlayerResetInventory"

@@ -43,6 +43,9 @@
     <ProjectReference Include="..\..\Modules\Administration\IntegrationEvents\LexiLink.Modules.Administration.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\Modules\Administration\Application\LexiLink.Modules.Administration.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Administration\Infrastructure\LexiLink.Modules.Administration.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Diamond\Domain\LexiLink.Modules.Diamond.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Diamond\Application\LexiLink.Modules.Diamond.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Diamond\Infrastructure\LexiLink.Modules.Diamond.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Hint\Domain\LexiLink.Modules.Hint.Domain.csproj" />
     <ProjectReference Include="..\..\Modules\Hint\Application\LexiLink.Modules.Hint.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Hint\Infrastructure\LexiLink.Modules.Hint.Infrastructure.csproj" />

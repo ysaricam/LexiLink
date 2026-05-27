@@ -20,6 +20,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Energy.Infrastructure",
                 "LexiLink.Modules.Quests.Infrastructure",
                 "LexiLink.Modules.Administration.Infrastructure",
+                "LexiLink.Modules.Diamond.Infrastructure",
                 "LexiLink.Modules.Undo.Infrastructure",
                 "LexiLink.Modules.Reset.Infrastructure")
             .GetResult();
@@ -38,6 +39,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Energy.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Quests.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Administration.Infrastructure.Configuration.Outbox",
+                "LexiLink.Modules.Diamond.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Undo.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Reset.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Games.Infrastructure.GamesContext",
@@ -45,6 +47,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Energy.Infrastructure.EnergyContext",
                 "LexiLink.Modules.Quests.Infrastructure.QuestsContext",
                 "LexiLink.Modules.Administration.Infrastructure.AdministrationContext",
+                "LexiLink.Modules.Diamond.Infrastructure.DiamondContext",
                 "LexiLink.Modules.Undo.Infrastructure.UndoContext",
                 "LexiLink.Modules.Reset.Infrastructure.ResetContext",
                 "Microsoft.EntityFrameworkCore")
@@ -401,6 +404,78 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Stats",
                 "LexiLink.Modules.Energy",
                 "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.API"
+            });
+
+        // Diamond.Domain — fully isolated; no other module's namespace allowed.
+        yield return new TestCaseData(
+            "Diamond.Domain",
+            DiamondDomainAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Diamond.Application",
+                "LexiLink.Modules.Diamond.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Dapper",
+                "Npgsql"
+            });
+
+        // Diamond.Application MAY reference Players.IntegrationEvents
+        // (D2 lazy init consumer) and Quests.IntegrationEvents (D3 reward
+        // consumer). Other module internals remain forbidden.
+        yield return new TestCaseData(
+            "Diamond.Application",
+            DiamondApplicationAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Diamond.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players.Domain",
+                "LexiLink.Modules.Players.Application",
+                "LexiLink.Modules.Players.Infrastructure",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests.Domain",
+                "LexiLink.Modules.Quests.Application",
+                "LexiLink.Modules.Quests.Infrastructure",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Npgsql"
+            });
+
+        // Diamond.Infrastructure MAY reference Administration.IntegrationEvents
+        // (public contract assembly) for admin audit publication. Other
+        // Administration internals remain forbidden.
+        yield return new TestCaseData(
+            "Diamond.Infrastructure",
+            DiamondInfrastructureAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
                 "LexiLink.Modules.Hint",
                 "LexiLink.Modules.Undo",
                 "LexiLink.Modules.Reset",

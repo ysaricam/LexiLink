@@ -29,7 +29,8 @@ internal class PlayerQuestClaimedDomainEventNotificationHandler :
                 notification.EnergyReward,
                 notification.HintReward,
                 notification.UndoReward,
-                notification.ResetReward),
+                notification.ResetReward,
+                notification.DiamondReward),
             cancellationToken);
     }
 }

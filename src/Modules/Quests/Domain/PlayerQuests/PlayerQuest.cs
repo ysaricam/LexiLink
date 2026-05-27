@@ -80,7 +80,7 @@ public class PlayerQuest : Entity, IAggregateRoot
     /// the row is not already past <see cref="ExpiresAt"/>. Reward
     /// values live on <see cref="QuestDefinition"/> and are carried
     /// into the claimed domain event by the handler so Energy, Hint,
-    /// Undo, and Reset can each grant their portion event-driven.
+    /// Undo, Reset, and Diamond can each grant their portion event-driven.
     /// </summary>
     internal void Claim(
         DateTime now,
@@ -88,7 +88,8 @@ public class PlayerQuest : Entity, IAggregateRoot
         int energyReward,
         int hintReward,
         int undoReward,
-        int resetReward)
+        int resetReward,
+        int diamondReward)
     {
         CheckRule(new QuestMustBeReadyToBeClaimedRule(_state, isReadyToClaim));
 
@@ -102,6 +103,7 @@ public class PlayerQuest : Entity, IAggregateRoot
             energyReward,
             hintReward,
             undoReward,
-            resetReward));
+            resetReward,
+            diamondReward));
     }
 }

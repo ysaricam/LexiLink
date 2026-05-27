@@ -5,6 +5,66 @@ yeniden yazilmaz.
 
 ---
 
+## Slice D5 — Diamond feature + quest 5-reward UI ✅ closed (2026-05-27, working tree)
+
+Sprint D frontend leg. Added Diamond as the fifth visible inventory,
+added the admin Diamond console, and widened quest UI/test fixtures
+from 4 rewards to 5. Quality gate after D6/D7 follow-up:
+**107/107 Flutter tests pass**. `flutter analyze` still reports only
+pre-existing info-level warnings outside the Diamond slice.
+
+### New player feature
+
+- `features/diamond/`: `PlayerDiamond { playerId, balance }` DTO,
+  `DiamondRepository.getMe()` (`GET /diamond/me`), `DiamondCubit`,
+  and `DiamondBadge` using `Icons.diamond_outlined`.
+- `home_screen.dart`: creates/provides `DiamondCubit`, loads it on
+  authenticated session, disposes it with the rest of the inventory
+  cubits, and renders Diamond in the top-right inventory badge row.
+
+### New admin console
+
+- `features/admin_diamond/`: `PlayerDiamondSnapshot` DTO,
+  `AdminDiamondRepository` (`fetchSnapshot`, `setBalance`, `grant`,
+  `reset`), `AdminDiamondCubit`, and `AdminDiamondScreen`.
+- `/admin/diamond` route added; admin shell gets a Diamond
+  NavigationRail/Drawer destination; `AdminDiamondPage` wrapper added.
+- D7 regression fix: Diamond number dialogs own their
+  `TextEditingController` inside a dialog `StatefulWidget`, preventing
+  the runtime error "A TextEditingController was used after being
+  disposed" when Set balance / Grant diamonds is submitted.
+
+### Quest 5-reward UI
+
+- `admin_quests/data/quest_definition.dart`: added `diamondReward`.
+- `admin_quests/data/admin_quests_repository.dart`: Create/Update
+  bodies send `diamondReward`.
+- `admin_quests/application/admin_quests_cubit.dart`: Create/Update
+  signatures widened to five rewards.
+- `admin_quests/presentation/quest_definition_form.dart`: fifth
+  number input added for `Elmas` and the client-side
+  at-least-one-positive validation spans all five rewards.
+- `admin_quests/presentation/admin_quests_screen.dart`: row renders
+  a Diamond reward badge when positive.
+- `quests/data/player_quest.dart` and `quests_screen.dart`: player
+  quest DTO/tile render the fifth reward in the existing `Wrap`.
+
+### Tests
+
+- `admin_diamond/data/admin_diamond_repository_test.dart` covers
+  admin endpoint paths and request bodies.
+- `admin_diamond/presentation/admin_diamond_screen_test.dart` covers
+  the Set balance dialog lifecycle regression.
+- Admin shell test covers `/admin/diamond` destination.
+- Quest/admin quest fixture tests include `diamondReward`.
+
+### Manual verification
+
+Operator verified D7 golden flows on 2026-05-27: single-reward claim
+per reward type, mixed 5-reward claim, Diamond admin Set/Grant/Reset
+with audit log assertion, `Diamond:InitialBalance` override, and
+Diamond badge persistence across reload/JWT refresh.
+
 ## Slice UR7 — Undo + Reset features + quest 4-reward UI ✅ closed (2026-05-26, commit 277fcad)
 
 Sprint UR frontend leg. Two new player features, two new admin

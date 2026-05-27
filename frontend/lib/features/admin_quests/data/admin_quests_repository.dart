@@ -25,6 +25,7 @@ class AdminQuestsRepository {
     required int hintReward,
     required int undoReward,
     required int resetReward,
+    required int diamondReward,
     required ProgressBaseline progressBaseline,
     String? prerequisiteQuestDefinitionId,
   }) async {
@@ -39,6 +40,7 @@ class AdminQuestsRepository {
         'hintReward': hintReward,
         'undoReward': undoReward,
         'resetReward': resetReward,
+        'diamondReward': diamondReward,
         'prerequisiteQuestDefinitionId': prerequisiteQuestDefinitionId,
         'progressBaseline': progressBaseline.wire,
       },
@@ -60,6 +62,7 @@ class AdminQuestsRepository {
     required int hintReward,
     required int undoReward,
     required int resetReward,
+    required int diamondReward,
     required ProgressBaseline progressBaseline,
     String? prerequisiteQuestDefinitionId,
   }) async {
@@ -72,6 +75,7 @@ class AdminQuestsRepository {
         'hintReward': hintReward,
         'undoReward': undoReward,
         'resetReward': resetReward,
+        'diamondReward': diamondReward,
         'prerequisiteQuestDefinitionId': prerequisiteQuestDefinitionId,
         'progressBaseline': progressBaseline.wire,
       },

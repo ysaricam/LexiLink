@@ -74,9 +74,11 @@ public class GameIntegrationTests : TestBase
 
         hint.Should().NotBeNull();
         hint.RecommendedLinkId.Should().NotBe(Guid.Empty);
+        HintGuard.CallCount.Should().Be(1,
+            "post-UR1 every hint should be served from the player's external inventory");
 
         var details = await ExecuteQueryAsync(new GetGameByIdQuery(setup.GameId));
-        details.HintsUsed.Should().Be(1);
+        details.HintsUsed.Should().Be(0);
     }
 
     [Test]

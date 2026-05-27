@@ -42,6 +42,7 @@ internal sealed class CreateQuestDefinitionCommandHandler
             request.HintReward,
             request.UndoReward,
             request.ResetReward,
+            request.DiamondReward,
             prereqId,
             request.ProgressBaseline,
             prerequisiteWouldCreateCycle: false);

@@ -20,9 +20,8 @@ public sealed class StandardGameConfigurationService : IGameConfigurationService
         _ => throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null)
     };
 
-    // Sprint H decision (locked): every game ships with exactly one
-    // free hint regardless of difficulty. Players who want more spend
-    // from their persistent PlayerHintInventory via the IHintGuard
-    // sync gateway.
-    public int ResolveHints(Difficulty difficulty) => 1;
+    // No free hints per game — every hint spends from the player's
+    // persistent PlayerHintInventory via the IHintGuard sync gateway.
+    // Matches the same model already used for Undo and Reset post-UR1.
+    public int ResolveHints(Difficulty difficulty) => 0;
 }

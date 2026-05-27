@@ -32,6 +32,7 @@ internal sealed class QuestDefinitionEntityTypeConfiguration : IEntityTypeConfig
         builder.Property<int>("_hintReward").HasColumnName("HintReward");
         builder.Property<int>("_undoReward").HasColumnName("UndoReward");
         builder.Property<int>("_resetReward").HasColumnName("ResetReward");
+        builder.Property<int>("_diamondReward").HasColumnName("DiamondReward");
 
         builder.Property<QuestDefinitionId?>("_prerequisiteQuestDefinitionId")
             .HasColumnName("PrerequisiteQuestDefinitionId");

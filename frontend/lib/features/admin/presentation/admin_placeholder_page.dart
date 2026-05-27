@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lexilink_app/features/admin_audit/presentation/admin_audit_screen.dart';
+import 'package:lexilink_app/features/admin_diamond/presentation/admin_diamond_screen.dart';
 import 'package:lexilink_app/features/admin_energy/presentation/admin_energy_screen.dart';
 import 'package:lexilink_app/features/admin_hint/presentation/admin_hint_screen.dart';
 import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
@@ -51,6 +52,13 @@ class AdminResetPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const AdminResetScreen();
+}
+
+class AdminDiamondPage extends StatelessWidget {
+  const AdminDiamondPage({super.key});
+
+  @override
+  Widget build(BuildContext context) => const AdminDiamondScreen();
 }
 
 class AdminAuditPage extends StatelessWidget {

@@ -8,8 +8,7 @@ import 'package:lexilink_app/shared/storage/token_store.dart';
 /// shell behavior (nav, sign-out) — the real admin destination pages
 /// mount cubits that resolve SharedPreferences, which is not wired up
 /// in widget tests.
-Widget _stubPage(String marker) =>
-    Scaffold(body: Center(child: Text(marker)));
+Widget _stubPage(String marker) => Scaffold(body: Center(child: Text(marker)));
 
 GoRouter _buildRouter({
   required String initialLocation,
@@ -40,6 +39,22 @@ GoRouter _buildRouter({
           GoRoute(
             path: '/admin/energy',
             builder: (_, _) => _stubPage('PAGE_ENERGY'),
+          ),
+          GoRoute(
+            path: '/admin/hint',
+            builder: (_, _) => _stubPage('PAGE_HINT'),
+          ),
+          GoRoute(
+            path: '/admin/undo',
+            builder: (_, _) => _stubPage('PAGE_UNDO'),
+          ),
+          GoRoute(
+            path: '/admin/reset',
+            builder: (_, _) => _stubPage('PAGE_RESET'),
+          ),
+          GoRoute(
+            path: '/admin/diamond',
+            builder: (_, _) => _stubPage('PAGE_DIAMOND'),
           ),
           GoRoute(
             path: '/admin/audit',
@@ -86,6 +101,7 @@ void main() {
       expect(find.text('Quests'), findsWidgets);
       expect(find.text('Players'), findsWidgets);
       expect(find.text('Energy'), findsWidgets);
+      expect(find.text('Diamond'), findsWidgets);
       expect(find.text('Audit'), findsWidgets);
       expect(find.text('PAGE_QUESTS'), findsOneWidget);
     });
@@ -103,8 +119,9 @@ void main() {
       expect(find.text('Admin · Players'), findsOneWidget);
     });
 
-    testWidgets('tapping a rail destination navigates to that route',
-        (tester) async {
+    testWidgets('tapping a rail destination navigates to that route', (
+      tester,
+    ) async {
       await _pumpShell(
         tester,
         initialLocation: '/admin/quests',
@@ -119,8 +136,9 @@ void main() {
       expect(find.text('PAGE_ENERGY'), findsOneWidget);
     });
 
-    testWidgets('sign-out clears token store and routes to /admin/login',
-        (tester) async {
+    testWidgets('sign-out clears token store and routes to /admin/login', (
+      tester,
+    ) async {
       final store = InMemoryTokenStore();
       await store.saveAccessToken('jwt-admin');
 

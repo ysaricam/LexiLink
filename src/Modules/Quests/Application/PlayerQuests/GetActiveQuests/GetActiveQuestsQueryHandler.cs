@@ -70,6 +70,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
                 "HintReward",
                 "UndoReward",
                 "ResetReward",
+                "DiamondReward",
                 "PrerequisiteQuestDefinitionId",
                 "ProgressBaseline",
                 "IsActive"
@@ -185,7 +186,8 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
                 qd."EnergyReward"             AS "EnergyReward",
                 qd."HintReward"               AS "HintReward",
                 qd."UndoReward"               AS "UndoReward",
-                qd."ResetReward"              AS "ResetReward"
+                qd."ResetReward"              AS "ResetReward",
+                qd."DiamondReward"            AS "DiamondReward"
             FROM "quests"."PlayerQuests" AS pq
             INNER JOIN "quests"."QuestDefinitions" AS qd
                 ON qd."Id" = pq."QuestDefinitionId"
@@ -222,6 +224,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
             HintReward: row.HintReward,
             UndoReward: row.UndoReward,
             ResetReward: row.ResetReward,
+            DiamondReward: row.DiamondReward,
             IssuedAt: DateTime.SpecifyKind(row.IssuedAt, DateTimeKind.Utc),
             ClaimedAt: row.ClaimedAt is null
                 ? null
@@ -265,8 +268,8 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
 
     private static DateTime NextUtcMidnight(DateTime now)
     {
-        var todayUtcMidnight = new DateTime(now.Year, now.Month, now.Day, 0, 0, 0, DateTimeKind.Utc);
-        return todayUtcMidnight.AddDays(1);
+        var utcNow = now.Kind == DateTimeKind.Utc ? now : now.ToUniversalTime();
+        return DateTime.SpecifyKind(utcNow.Date.AddDays(1), DateTimeKind.Unspecified);
     }
 
     private sealed class RawQuestDefinitionRow
@@ -280,6 +283,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         public int HintReward { get; init; }
         public int UndoReward { get; init; }
         public int ResetReward { get; init; }
+        public int DiamondReward { get; init; }
         public Guid? PrerequisiteQuestDefinitionId { get; init; }
         public string ProgressBaseline { get; init; } = string.Empty;
         public bool IsActive { get; init; }
@@ -303,5 +307,6 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         public int HintReward { get; init; }
         public int UndoReward { get; init; }
         public int ResetReward { get; init; }
+        public int DiamondReward { get; init; }
     }
 }

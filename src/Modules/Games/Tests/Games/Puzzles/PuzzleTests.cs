@@ -133,16 +133,20 @@ public class PuzzleTests : TestBase
         var fiveLinks = new List<LinkId> { NewLinkId(), n1, n2, target, NewLinkId() };
         var puzzle = Puzzle.Create(categoryId, fiveLinks, Difficulty.Easy,
             PathFinder(target, [n1, n2, target]), GameConfig(), new Random(0));
+        var resolver = Resolver((n1, [n2]), (n2, [target]));
 
-        var hint = puzzle.RequestHint(n1);
+        var hint = puzzle.RequestHint(n1, resolver);
 
         hint.Type.Should().Be(HintType.OnCorrectPath);
         hint.RecommendedLinkId.Should().Be(n2);
     }
 
     [Test]
-    public void RequestHint_WhenCurrentLinkIsNotOnOptimalPath_ReturnsWrongPathWithFirstOptimalStep()
+    public void RequestHint_WhenCurrentLinkIsNotOnOptimalPath_ReturnsWrongPathWithFirstHopFromCurrent()
     {
+        // Player wandered off path entirely. Live BFS still finds a
+        // route from currentLink to target through n1 — the FIRST HOP
+        // is what gets returned, not the original optimalPath[0].
         var categoryId = NewCategoryId();
         var n1 = NewLinkId();
         var target = NewLinkId();
@@ -150,27 +154,44 @@ public class PuzzleTests : TestBase
         var fiveLinks = new List<LinkId> { someOtherLink, n1, target, NewLinkId(), NewLinkId() };
         var puzzle = Puzzle.Create(categoryId, fiveLinks, Difficulty.Easy,
             PathFinder(target, [n1, target]), GameConfig(), new Random(0));
+        var resolver = Resolver((someOtherLink, [n1]), (n1, [target]));
 
-        var hint = puzzle.RequestHint(someOtherLink);
+        var hint = puzzle.RequestHint(someOtherLink, resolver);
 
         hint.Type.Should().Be(HintType.OnWrongPath);
         hint.RecommendedLinkId.Should().Be(n1);
     }
 
     [Test]
-    public void RequestHint_WhenCurrentIsTargetLink_ReturnsWrongPath()
+    public void RequestHint_WhenCurrentIsTargetLink_ReturnsWrongPathWithSelf()
     {
+        // Standing on target means there is no "next" step to recommend.
+        // The hint returns WrongPath with current (target) as the
+        // recommendation; the UI never asks for hint after Complete,
+        // but this keeps the contract total.
         var categoryId = NewCategoryId();
         var n1 = NewLinkId();
         var target = NewLinkId();
         var fiveLinks = new List<LinkId> { NewLinkId(), n1, target, NewLinkId(), NewLinkId() };
         var puzzle = Puzzle.Create(categoryId, fiveLinks, Difficulty.Easy,
             PathFinder(target, [n1, target]), GameConfig(), new Random(0));
+        var resolver = Resolver();
 
-        // Target is the last element of the optimal path, so requesting a hint while
-        // standing on it has no "next step" — falls through to the wrong-path branch.
-        var hint = puzzle.RequestHint(target);
+        var hint = puzzle.RequestHint(target, resolver);
 
         hint.Type.Should().Be(HintType.OnWrongPath);
+        hint.RecommendedLinkId.Should().Be(target);
+    }
+
+    private static ILinkNeighborResolver Resolver(
+        params (LinkId From, IReadOnlyCollection<LinkId> To)[] mappings)
+    {
+        var resolver = Substitute.For<ILinkNeighborResolver>();
+        resolver.GetOutgoingLinkIds(Arg.Any<LinkId>()).Returns(Array.Empty<LinkId>());
+        foreach (var (from, to) in mappings)
+        {
+            resolver.GetOutgoingLinkIds(from).Returns(to);
+        }
+        return resolver;
     }
 }

@@ -15,7 +15,12 @@ public sealed class Puzzle : ValueObject
     public LinkId StartLinkId { get; }
     public LinkId TargetLinkId { get; }
 
-    public IReadOnlyList<LinkId> OptimalPath => _optimalPath.Select(s => s.LinkId).ToList().AsReadOnly();
+    public IReadOnlyList<LinkId> OptimalPath =>
+        _optimalPath
+            .OrderBy(s => s.Position)
+            .Select(s => s.LinkId)
+            .ToList()
+            .AsReadOnly();
     public int Depth => _optimalPath.Count;
 
     private Puzzle()
@@ -85,16 +90,80 @@ public sealed class Puzzle : ValueObject
         return null!;
     }
 
-    public HintResult RequestHint(LinkId currentLinkId)
+    public HintResult RequestHint(LinkId currentLinkId, ILinkNeighborResolver neighborResolver)
     {
-        var currentIndex = _optimalPath.FindIndex(s => s.LinkId == currentLinkId);
-        if (currentIndex >= 0 && currentIndex < _optimalPath.Count - 1)
+        // Live BFS from currentLink to target. The first hop on the
+        // shortest path is the recommendation. This is robust to the
+        // player going off the precomputed _optimalPath — we just find
+        // the best move from wherever they are now. The same BFS is run
+        // by GetGameOptionsQueryHandler's reachability lock, so the
+        // returned link is always one of the 6 displayed options.
+        if (currentLinkId == TargetLinkId)
         {
-            return HintResult.CorrectPath(_optimalPath[currentIndex + 1].LinkId);
+            return HintResult.WrongPath(currentLinkId);
         }
 
-        var closestCorrectLinkId = _optimalPath.Count > 0 ? _optimalPath[0].LinkId : StartLinkId;
-        return HintResult.WrongPath(closestCorrectLinkId);
+        var ordered = _optimalPath.OrderBy(s => s.Position).ToList();
+        var onOptimalPathIndex = ordered.FindIndex(s => s.LinkId == currentLinkId);
+        var isOnOptimalPath =
+            onOptimalPathIndex >= 0 && onOptimalPathIndex < ordered.Count - 1;
+
+        var firstHop = FindFirstHopToTarget(currentLinkId, neighborResolver);
+        if (firstHop is not null)
+        {
+            return isOnOptimalPath
+                ? HintResult.CorrectPath(firstHop)
+                : HintResult.WrongPath(firstHop);
+        }
+
+        // Target unreachable from currentLink (graph disconnected). Fall
+        // back to the persisted optimal path's first step so the API
+        // still returns *something*, even if the link won't be among
+        // the visible 6 options.
+        var fallback = ordered.Count > 0 ? ordered[0].LinkId : StartLinkId;
+        return HintResult.WrongPath(fallback);
+    }
+
+    private LinkId? FindFirstHopToTarget(
+        LinkId currentLinkId,
+        ILinkNeighborResolver neighborResolver)
+    {
+        var firstHopByNode = new Dictionary<LinkId, LinkId>();
+        var queue = new Queue<LinkId>();
+
+        foreach (var neighbor in neighborResolver.GetOutgoingLinkIds(currentLinkId))
+        {
+            if (firstHopByNode.ContainsKey(neighbor))
+            {
+                continue;
+            }
+            firstHopByNode[neighbor] = neighbor;
+            if (neighbor == TargetLinkId)
+            {
+                return neighbor;
+            }
+            queue.Enqueue(neighbor);
+        }
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            foreach (var neighbor in neighborResolver.GetOutgoingLinkIds(current))
+            {
+                if (neighbor == currentLinkId || firstHopByNode.ContainsKey(neighbor))
+                {
+                    continue;
+                }
+                firstHopByNode[neighbor] = firstHopByNode[current];
+                if (neighbor == TargetLinkId)
+                {
+                    return firstHopByNode[neighbor];
+                }
+                queue.Enqueue(neighbor);
+            }
+        }
+
+        return null;
     }
 
     private static IReadOnlyList<LinkId> Shuffle(IReadOnlyList<LinkId> linkIds, Random random) =>

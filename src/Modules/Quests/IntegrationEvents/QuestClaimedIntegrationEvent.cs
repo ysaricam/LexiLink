@@ -11,4 +11,5 @@ public sealed record QuestClaimedIntegrationEvent(
     int EnergyReward,
     int HintReward,
     int UndoReward,
-    int ResetReward) : IIntegrationEvent;
+    int ResetReward,
+    int DiamondReward) : IIntegrationEvent;

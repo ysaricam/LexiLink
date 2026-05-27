@@ -4,6 +4,103 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Sprint D ✅ closed — Diamond Module + Quest 5-Reward
+
+Goal: ship the 5th inventory module — **Diamond**, the in-game
+currency that the future shop will charge against. Mechanically
+identical to the existing inventory shape (Hint/Undo/Reset template),
+but semantically different: Diamond is earned (quest rewards, future
+game-completion bonus, future IAP) and spent (future shop checkout),
+never invoked during gameplay invariants. Therefore **no sync
+gateway** — Game module remains untouched.
+
+This sprint extends the QuestReward shape from 4 fields to 5,
+mirroring the Sprint H (2-reward) → Sprint UR (4-reward) progression.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Module name | **Diamond** — separate bounded context, schema `diamond`, microservice extraction candidate. |
+| Sync gateway | **None.** Diamond is currency, not a gameplay invariant. Shop integration (future sprint) will be event-driven via outbox/inbox. |
+| InitialBalance | **0** (configurable via `Diamond:InitialBalance`). Player earns Diamond through quest rewards, admin grants, and eventually game-completion bonus + IAP. |
+| Max cap | **None.** Currency accumulates freely. `GrantBonus` permits any balance — same semantics as the Hint inventory. |
+| Earn paths (phase 1) | Quest reward (5th reward field) + admin grant. Same reverse-event-dep template Hint/Undo/Reset use. |
+| Earn paths (phase 2, deferred) | Game completion bonus (new reverse dep: `Diamond.Application → Games.IntegrationEvents.GameCompletedIntegrationEvent`), IAP. |
+| Spend path | **None in this sprint.** Admin Set/Reset for testing only. Shop module is a separate sprint. |
+| Quest reshape | **Destructive ALTER ADD COLUMN** with `DEFAULT 0` backfill — same pattern as Sprint H (2-reward) and Sprint UR (4-reward). No production data yet; local DB existing quest definitions keep their other rewards and inherit `DiamondReward=0`. |
+
+### Architecture notes
+
+- **5th inventory module.** Follows the Hint/Undo/Reset template
+  exactly (lazy init via `PlayerRegisteredIntegrationEvent`, per-module
+  Application contracts, per-module Autofac module + UnitOfWork +
+  decorator chain + outbox).
+- **5th outbox consumer for QuestClaimed.** Each reward type has its
+  own consumer guarded on `reward > 0`. A Diamond outage doesn't block
+  Energy/Hint/Undo/Reset reward delivery and vice versa.
+- **Reverse cross-module event dep.** `Diamond.Application →
+  Quests.IntegrationEvents.QuestClaimedIntegrationEvent`. Granular
+  ArchTest allow — `Diamond.Domain` and `Diamond.Infrastructure`
+  stay forbidden from any Quests namespace.
+- **`PlayerDiamondInventory.GrantBonus` permits over-balance** — same
+  rule-bypass shape as Hint and Energy bonus paths. Currency
+  accumulation is intentional, not a defensive invariant.
+- **No Game module changes.** Unlike Hint/Undo/Reset (which integrate
+  via `IHintGuard`/`IUndoGuard`/`IResetGuard` sync gateways at
+  `UseHint`/`Undo`/`Reset` time), Diamond never participates in
+  gameplay path execution. The Game module is not aware Diamond
+  exists.
+- **Frontend HomeScreen 5 badges.** Existing `Wrap` from Sprint UR
+  handles overflow on narrow screens.
+
+### Slice plan (8 slices — mirrors Sprint UR cadence)
+
+| Slice | Content |
+| --- | --- |
+| **D1 ✅** | Diamond module foundation. 5 csproj (Domain/Application/Infrastructure/Tests/IntegrationTests). `PlayerDiamondInventory` aggregate (Id == PlayerId), single `_balance`, no cap, no refill. 3 rules (`DiamondAmountMustBePositiveRule`, `DiamondAmountMustBeNonNegativeRule`, `DiamondBalanceMustBeSufficientRule`). 5 domain events (`Initialized`, `Consumed`, `Granted`, `AdminSet`, `AdminReset`). EF mapping, DbUp scripts (`diamond/Schema/001_CreateSchema.sql`, `Tables/010_PlayerDiamondInventories.sql`, `Tables/070_OutboxMessages.sql`). Autofac module + Startup + UoW + DomainEventsDispatcher + decorator chain (Logging/Validation/UnitOfWork) + outbox accessor. sln registration. ArchTests genişletilir (Diamond Domain/Application/Infrastructure rules, aggregate naming, per-layer dependency, API composition-root boundaries). |
+| **D2 ✅** | Lazy init from `PlayerRegisteredIntegrationEvent`. `EnsurePlayerDiamondInventoryExistsCommand` + handler + validator (idempotent: existing row short-circuits). `IDiamondConfigurationService.InitialBalance` (default 0, configurable via `Diamond:InitialBalance`). `PlayerRegisteredIntegrationEventHandler` consumer. `Diamond.Application.csproj` → `Players.IntegrationEvents` granular ArchTest allow. |
+| **D3 ✅** | **Destructive: Quest 5-reward.** `QuestDefinition._diamondReward` field. `Create(name, description, trigger, threshold, energyReward, hintReward, undoReward, resetReward, diamondReward, prereqId, progressBaseline)` 9-arg signature (was 8). `Update` mirror. `QuestRewardMustHaveAtLeastOnePositiveRule` widens to 5 fields (each ≥ 0, at least one > 0). `PlayerQuestClaimedDomainEvent` + `QuestClaimedIntegrationEvent` carry 5 reward fields. `PlayerQuest.Claim(now, ready, energy, hint, undo, reset, diamond)` 7-arg. New `GrantDiamondCommand` in Diamond.Application. New `QuestClaimedIntegrationEventHandler` in Diamond.Application (5th outbox consumer; guards on `DiamondReward > 0`). DbUp `quests/060_ExpandQuestRewardsWithDiamond.sql` — idempotent `ALTER TABLE ... ADD COLUMN "DiamondReward" int NOT NULL DEFAULT 0` with `information_schema` guard. Canonical `020_QuestDefinitions.sql` + `021_SeedQuestDefinitions.sql` updated for cold-start. Admin Quest commands (Create/Update) + validators + DTOs + endpoint requests reshape to 5 rewards. |
+| **D4 ✅** | Admin operations + GET endpoints + audit. 3 admin commands marked `IAdminCommand` with `AuditTargetType = "Diamond.PlayerDiamondInventory"`: `SetPlayerDiamondCommand`, `GrantBonusDiamondCommand` (wraps internal `GrantDiamondCommand`), `ResetPlayerDiamondCommand`. `GetPlayerDiamondQuery` + handler + `PlayerDiamondSnapshotDto(PlayerId, Balance)`. 9th per-module copy of `AdminAuditingCommandHandlerDecorator`. `DiamondAdminActionPerformedNotification` + handler publishes `AdminActionPerformedIntegrationEvent` through Diamond outbox. `Diamond.Infrastructure.csproj` → `Administration.IntegrationEvents` granular ArchTest allow. API endpoints: `GET /diamond/me` (player), `GET /admin/players/{id}/diamond` + `POST .../set\|grant\|reset` (admin). Program.cs wires `MapDiamondEndpoints` + `MapAdminDiamondEndpoints`. |
+| **D5 ✅** | Frontend reshape. `lib/features/diamond/` (player feature: `PlayerDiamond` DTO + `DiamondRepository` + `DiamondCubit` + `DiamondBadge`). HomeScreen 5th badge in the top-right row. `lib/features/admin_diamond/` console (lookup + set/grant/reset, mirroring `admin_hint`/`admin_undo`/`admin_reset`). `/admin/diamond` route + nav destination. Admin quest form 5 reward inputs (Enerji ⚡ + İpucu 💡 + Geri al ↶ + Sıfırla ↻ + Elmas 💎); form-level at-least-one-positive rule covers all 5. Player quest tile `Wrap` already handles 5 badges; just add the 5th. Game screen unchanged (Diamond not used in gameplay). |
+| **D6 ✅** | Tests + quality gate. Diamond unit tests (19: aggregate Consume / GrantBonus / AdminSet / AdminReset + rule violations + Initialize). Diamond integration tests (12: lifecycle from PlayerRegistered, idempotency, consume success + empty rejection, QuestClaimed → bonus delivery, admin Set/Grant/Reset with audit row assertions). **Updated 4-reward fixtures to 5-reward:** Energy.IT, Hint.IT, Undo.IT, Reset.IT `QuestRewardDeliveryTests`; Quests.IT admin Quest tests; API.Tests `GetQuestsMe_FreshPlayer_LazilyReturnsSeededDaily`. `scripts/test.sh` registers Diamond.Tests + Diamond.IntegrationTests and passes the full local .NET gate. Games.IT free-hint expectations were updated to the post-UR1 model: `ResolveHints() == 0`, so every hint goes through `IHintGuard`. |
+| **D7 ✅** | Flutter test updates + manual verification. 5 quest-area test fixtures reshape (add `diamondReward` field). 5 golden flows manually verified by operator: (1) single-reward quest claim × 5 (one per reward type), (2) mixed 5-reward quest (all 5 deliver), (3) admin Set/Grant/Reset on the new console with audit log assertion, (4) `Diamond:InitialBalance` config override produces non-zero starting balance for new guest, (5) Diamond inventory persists across reload + JWT refresh. |
+| **D8 ✅** | Docs polish + sprint close. Updates: `activeContext.md > Active Sprint` pivots to "Sprint D closed", `progress.md` Sprint D entry with per-slice delivery notes, `GLOSSARY.md` (Diamond aggregate / events / rules, widened `QuestRewardMustHaveAtLeastOnePositiveRule`, `PlayerQuest.Claim` 7-arg, `QuestClaimedIntegrationEvent` 5-consumer fan-out), `ROADMAP.md > Sprint D ✅ closed`, `frontendActiveContext.md` + `frontendProgress.md > Slice D5`. |
+
+### Deliberate non-actions
+
+- **No shop module.** Diamond spend path is a separate bounded
+  context (likely `Shop` module) — its own sprint after Sprint D
+  closes.
+- **No game-completion → Diamond bonus.** Adds a new reverse event
+  dep (`Diamond.Application → Games.IntegrationEvents`) and a scoring
+  formula coupling. Deferred to a small follow-up slice once Diamond
+  baseline is stable.
+- **No IAP / real-money integration.** Mobile-only platform sleeve,
+  needs Apple/Google IAP receipt verification — out of scope for the
+  inventory module itself.
+- **No `IDiamondGuard` sync gateway.** Diamond is not consumed during
+  any Game/Players/Stats invariant check. If a future feature
+  requires synchronous spend (e.g., immediate unlock check at content
+  load), revisit then.
+- **No max balance cap.** Currency accumulates freely. Re-evaluation
+  trigger: real product requirement to cap balance (e.g., anti-cheat
+  rule).
+- **No frontend changes to Game screen.** Diamond is invisible during
+  gameplay; only HomeScreen badge + admin console + quest form
+  surface it.
+
+### Slice ordering rationale
+
+Same ordering as Sprint UR: foundation → lazy init → destructive
+quest reshape → admin + audit → frontend → tests → manual verify →
+docs. The destructive Quest 5-reward must come before admin/audit
+slice because the admin Quest endpoints already expose
+`diamondReward` in their request shape and the audit decorator needs
+the new domain event shape.
+
+---
+
 ## Administration Module
 
 Goal: ship the sixth backend module — a back-office bounded context that

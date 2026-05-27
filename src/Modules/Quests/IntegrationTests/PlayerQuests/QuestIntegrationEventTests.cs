@@ -84,6 +84,7 @@ public class QuestIntegrationEventTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
         var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
@@ -95,6 +96,7 @@ public class QuestIntegrationEventTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot));
         AdminContext.Logout();
@@ -120,6 +122,7 @@ public class QuestIntegrationEventTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
         var downstreamId = await QuestsModule.ExecuteCommandAsync(new CreateQuestDefinitionCommand(
@@ -131,6 +134,7 @@ public class QuestIntegrationEventTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: prereqId,
             progressBaseline: ProgressBaseline.FromSnapshot));
         AdminContext.Logout();
@@ -202,6 +206,7 @@ public class QuestIntegrationEventTests : TestBase
             hintReward: 2,
             undoReward: 1,
             resetReward: 1,
+            diamondReward: 3,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
         AdminContext.Logout();
@@ -235,6 +240,7 @@ public class QuestIntegrationEventTests : TestBase
             root.GetProperty("HintReward").GetInt32().Should().Be(2);
             root.GetProperty("UndoReward").GetInt32().Should().Be(1);
             root.GetProperty("ResetReward").GetInt32().Should().Be(1);
+            root.GetProperty("DiamondReward").GetInt32().Should().Be(3);
         }
 
         await ProcessOutboxAsync();

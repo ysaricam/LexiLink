@@ -19,6 +19,7 @@ public abstract class PlayerQuestTestsBase : TestBase
     protected const int SampleHintReward = 0;
     protected const int SampleUndoReward = 0;
     protected const int SampleResetReward = 0;
+    protected const int SampleDiamondReward = 0;
 
     protected static PlayerQuest Issue(
         QuestDefinitionId? questDefinitionId = null,

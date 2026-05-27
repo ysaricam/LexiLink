@@ -29,6 +29,7 @@ internal sealed class GetQuestDefinitionsQueryHandler
                 d.HintReward,
                 d.UndoReward,
                 d.ResetReward,
+                d.DiamondReward,
                 d.PrerequisiteQuestDefinitionId?.Value,
                 d.ProgressBaseline,
                 d.IsActive))

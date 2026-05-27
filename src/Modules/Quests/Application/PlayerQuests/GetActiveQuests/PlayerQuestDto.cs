@@ -5,7 +5,7 @@ namespace LexiLink.Modules.Quests.Application.PlayerQuests.GetActiveQuests;
 /// computed at read time from the Stats counter — they are not
 /// persisted columns on PlayerQuests. DisplayState is one of
 /// "Active" / "ReadyToClaim" / "Claimed". Rewards are split across
-/// Energy, Hint, Undo, and Reset; any combination can be positive on
+/// Energy, Hint, Undo, Reset, and Diamond; any combination can be positive on
 /// a given definition.
 /// </summary>
 public record PlayerQuestDto(
@@ -22,6 +22,7 @@ public record PlayerQuestDto(
     int HintReward,
     int UndoReward,
     int ResetReward,
+    int DiamondReward,
     DateTime IssuedAt,
     DateTime? ClaimedAt,
     DateTime? ExpiresAt);

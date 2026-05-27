@@ -39,12 +39,13 @@ public sealed class QuestAdminCommandTests : TestBase
             hintReward: 2,
             undoReward: 1,
             resetReward: 4,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
         var row = await QuerySingleOrDefaultAsync<QuestDefinitionRow>("""
             SELECT "Id", "Name", "Trigger", "Threshold",
-                   "EnergyReward", "HintReward", "UndoReward", "ResetReward",
+                   "EnergyReward", "HintReward", "UndoReward", "ResetReward", "DiamondReward",
                    "ProgressBaseline", "IsActive"
             FROM "quests"."QuestDefinitions" WHERE "Id" = @Id
             """, new { Id = id });
@@ -56,6 +57,7 @@ public sealed class QuestAdminCommandTests : TestBase
         row.HintReward.Should().Be(2);
         row.UndoReward.Should().Be(1);
         row.ResetReward.Should().Be(4);
+        row.DiamondReward.Should().Be(0);
         row.ProgressBaseline.Should().Be("FromSnapshot");
         row.IsActive.Should().BeTrue();
 
@@ -86,12 +88,13 @@ public sealed class QuestAdminCommandTests : TestBase
             hintReward: 3,
             undoReward: 4,
             resetReward: 2,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: null,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
         var row = await QuerySingleOrDefaultAsync<QuestDefinitionRow>("""
             SELECT "Id", "Name", "Trigger", "Threshold",
-                   "EnergyReward", "HintReward", "UndoReward", "ResetReward",
+                   "EnergyReward", "HintReward", "UndoReward", "ResetReward", "DiamondReward",
                    "ProgressBaseline", "IsActive"
             FROM "quests"."QuestDefinitions" WHERE "Id" = @Id
             """, new { Id = SeedDailyQuestDefinitionId });
@@ -101,6 +104,7 @@ public sealed class QuestAdminCommandTests : TestBase
         row.HintReward.Should().Be(3);
         row.UndoReward.Should().Be(4);
         row.ResetReward.Should().Be(2);
+        row.DiamondReward.Should().Be(0);
 
         await ProcessOutboxAsync();
 
@@ -166,6 +170,7 @@ public sealed class QuestAdminCommandTests : TestBase
             hintReward: 0,
             undoReward: 0,
             resetReward: 0,
+            diamondReward: 0,
             prerequisiteQuestDefinitionId: SeedDailyQuestDefinitionId,
             progressBaseline: ProgressBaseline.FromSnapshot));
 
@@ -203,6 +208,7 @@ public sealed class QuestAdminCommandTests : TestBase
         int HintReward,
         int UndoReward,
         int ResetReward,
+        int DiamondReward,
         string ProgressBaseline,
         bool IsActive);
 

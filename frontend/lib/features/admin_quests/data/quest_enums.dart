@@ -13,16 +13,15 @@ enum QuestTrigger {
   final String wire;
 
   String get displayLabel => switch (this) {
-        QuestTrigger.gameCompletedTotal => 'Toplam oyun',
-        QuestTrigger.gameCompletedDaily => 'Günlük oyun',
-        QuestTrigger.authProviderLinked => 'Hesap bağlandı',
-      };
+    QuestTrigger.gameCompletedTotal => 'Toplam oyun',
+    QuestTrigger.gameCompletedDaily => 'Günlük oyun',
+    QuestTrigger.authProviderLinked => 'Hesap bağlandı',
+  };
 
-  static QuestTrigger fromWire(String value) =>
-      QuestTrigger.values.firstWhere(
-        (t) => t.wire == value,
-        orElse: () => throw FormatException('Unknown quest trigger: $value'),
-      );
+  static QuestTrigger fromWire(String value) => QuestTrigger.values.firstWhere(
+    (t) => t.wire == value,
+    orElse: () => throw FormatException('Unknown quest trigger: $value'),
+  );
 }
 
 enum ProgressBaseline {
@@ -34,13 +33,14 @@ enum ProgressBaseline {
   final String wire;
 
   String get displayLabel => switch (this) {
-        ProgressBaseline.fromSnapshot => 'Bu noktadan sonra',
-        ProgressBaseline.fromExistingTotal => 'Tüm zamanlar',
-      };
+    ProgressBaseline.fromSnapshot => 'Bu noktadan sonra',
+    ProgressBaseline.fromExistingTotal => 'Tüm zamanlar',
+  };
 
   static ProgressBaseline fromWire(String value) =>
       ProgressBaseline.values.firstWhere(
         (b) => b.wire == value,
-        orElse: () => throw FormatException('Unknown progress baseline: $value'),
+        orElse: () =>
+            throw FormatException('Unknown progress baseline: $value'),
       );
 }

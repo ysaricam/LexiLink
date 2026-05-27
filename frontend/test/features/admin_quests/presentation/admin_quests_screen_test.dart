@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -30,8 +32,9 @@ AdminQuestsCubit _buildCubitWithScript(
 }
 
 void main() {
-  testWidgets('renders quest list and opens create dialog from FAB',
-      (tester) async {
+  testWidgets('renders quest list and opens create dialog from FAB', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(1200, 800);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -39,25 +42,18 @@ void main() {
 
     final cubit = _buildCubitWithScript([
       (_) => http.Response(
-            '['
-            '{"id":"00000000-0000-0000-0000-000000000001",'
-            '"name":"Daily Three",'
-            '"description":"Three today",'
-            '"trigger":"GameCompletedDaily",'
-            '"threshold":3,"energyReward":15,"hintReward":0,"undoReward":0,"resetReward":0,'
-            '"prerequisiteQuestDefinitionId":null,'
-            '"progressBaseline":"FromSnapshot",'
-            '"isActive":true}'
-            ']',
-            200,
-          ),
+        jsonEncode([_dailyDefinitionPayload]),
+        200,
+      ),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminQuestsScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: AdminQuestsScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     // Async init + load completes.
     await tester.pumpAndSettle();
 
@@ -84,11 +80,13 @@ void main() {
       (_) => http.Response('[]', 200),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminQuestsScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: AdminQuestsScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(
@@ -97,3 +95,19 @@ void main() {
     );
   });
 }
+
+const Map<String, Object?> _dailyDefinitionPayload = {
+  'id': '00000000-0000-0000-0000-000000000001',
+  'name': 'Daily Three',
+  'description': 'Three today',
+  'trigger': 'GameCompletedDaily',
+  'threshold': 3,
+  'energyReward': 15,
+  'hintReward': 0,
+  'undoReward': 0,
+  'resetReward': 0,
+  'diamondReward': 0,
+  'prerequisiteQuestDefinitionId': null,
+  'progressBaseline': 'FromSnapshot',
+  'isActive': true,
+};

@@ -11,6 +11,7 @@ class QuestDefinition {
     required this.hintReward,
     required this.undoReward,
     required this.resetReward,
+    required this.diamondReward,
     required this.progressBaseline,
     required this.isActive,
     this.prerequisiteQuestDefinitionId,
@@ -27,10 +28,12 @@ class QuestDefinition {
       hintReward: json['hintReward'] as int,
       undoReward: json['undoReward'] as int,
       resetReward: json['resetReward'] as int,
+      diamondReward: json['diamondReward'] as int,
       prerequisiteQuestDefinitionId:
           json['prerequisiteQuestDefinitionId'] as String?,
-      progressBaseline:
-          ProgressBaseline.fromWire(json['progressBaseline'] as String),
+      progressBaseline: ProgressBaseline.fromWire(
+        json['progressBaseline'] as String,
+      ),
       isActive: json['isActive'] as bool,
     );
   }
@@ -44,6 +47,7 @@ class QuestDefinition {
   final int hintReward;
   final int undoReward;
   final int resetReward;
+  final int diamondReward;
   final String? prerequisiteQuestDefinitionId;
   final ProgressBaseline progressBaseline;
   final bool isActive;

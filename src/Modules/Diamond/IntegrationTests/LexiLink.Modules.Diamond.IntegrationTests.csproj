@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" />
+    <PackageReference Include="coverlet.collector" />
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="MediatR" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="Npgsql" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="NSubstitute" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit3TestAdapter" />
+    <PackageReference Include="Serilog" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="NUnit.Framework" />
+    <Using Include="FluentAssertions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\LexiLink.Modules.Diamond.Domain.csproj" />
+    <ProjectReference Include="..\Application\LexiLink.Modules.Diamond.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\LexiLink.Modules.Diamond.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Administration\Infrastructure\LexiLink.Modules.Administration.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Players\Application\LexiLink.Modules.Players.Application.csproj" />
+    <ProjectReference Include="..\..\Players\IntegrationEvents\LexiLink.Modules.Players.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Players\Infrastructure\LexiLink.Modules.Players.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Quests\IntegrationEvents\LexiLink.Modules.Quests.IntegrationEvents.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -41,16 +43,7 @@ AdminQuestsRepository _repoFromScript(_Script script) {
 }
 
 const _emptyList = '[]';
-const _oneDailyDef = '['
-    '{"id":"00000000-0000-0000-0000-000000000001",'
-    '"name":"Daily Three",'
-    '"description":"Three today",'
-    '"trigger":"GameCompletedDaily",'
-    '"threshold":3,"energyReward":15,"hintReward":0,"undoReward":0,"resetReward":0,'
-    '"prerequisiteQuestDefinitionId":null,'
-    '"progressBaseline":"FromSnapshot",'
-    '"isActive":true}'
-    ']';
+final String _oneDailyDef = jsonEncode([_dailyDefinitionPayload(true)]);
 
 void main() {
   group('AdminQuestsCubit', () {
@@ -92,10 +85,12 @@ void main() {
       'create reloads list after success',
       build: () {
         final script = _Script()
-          ..enqueue((_) => http.Response(
-                '{"id":"00000000-0000-0000-0000-000000000099"}',
-                201,
-              ))
+          ..enqueue(
+            (_) => http.Response(
+              '{"id":"00000000-0000-0000-0000-000000000099"}',
+              201,
+            ),
+          )
           ..enqueue((_) => http.Response(_oneDailyDef, 200));
         return AdminQuestsCubit(repository: _repoFromScript(script));
       },
@@ -108,6 +103,7 @@ void main() {
         hintReward: 0,
         undoReward: 0,
         resetReward: 0,
+        diamondReward: 0,
         progressBaseline: ProgressBaseline.fromSnapshot,
       ),
       verify: (cubit) {
@@ -121,23 +117,15 @@ void main() {
       build: () {
         final script = _Script()
           ..enqueue((_) => http.Response('', 204))
-          ..enqueue((_) => http.Response(
-                '['
-                '{"id":"00000000-0000-0000-0000-000000000001",'
-                '"name":"Daily Three",'
-                '"description":"Three today",'
-                '"trigger":"GameCompletedDaily",'
-                '"threshold":3,"energyReward":15,"hintReward":0,"undoReward":0,"resetReward":0,'
-                '"prerequisiteQuestDefinitionId":null,'
-                '"progressBaseline":"FromSnapshot",'
-                '"isActive":false}'
-                ']',
-                200,
-              ));
+          ..enqueue(
+            (_) => http.Response(
+              jsonEncode([_dailyDefinitionPayload(false)]),
+              200,
+            ),
+          );
         return AdminQuestsCubit(repository: _repoFromScript(script));
       },
-      act: (cubit) => cubit
-          .deactivate('00000000-0000-0000-0000-000000000001'),
+      act: (cubit) => cubit.deactivate('00000000-0000-0000-0000-000000000001'),
       verify: (cubit) {
         expect(cubit.state.status, AdminQuestsStatus.loaded);
         expect(cubit.state.definitions.first.isActive, isFalse);
@@ -160,6 +148,7 @@ void main() {
         hintReward: 0,
         undoReward: 0,
         resetReward: 0,
+        diamondReward: 0,
         progressBaseline: ProgressBaseline.fromSnapshot,
       ),
       verify: (cubit) {
@@ -168,3 +157,19 @@ void main() {
     );
   });
 }
+
+Map<String, Object?> _dailyDefinitionPayload(bool isActive) => {
+  'id': '00000000-0000-0000-0000-000000000001',
+  'name': 'Daily Three',
+  'description': 'Three today',
+  'trigger': 'GameCompletedDaily',
+  'threshold': 3,
+  'energyReward': 15,
+  'hintReward': 0,
+  'undoReward': 0,
+  'resetReward': 0,
+  'diamondReward': 0,
+  'prerequisiteQuestDefinitionId': null,
+  'progressBaseline': 'FromSnapshot',
+  'isActive': isActive,
+};

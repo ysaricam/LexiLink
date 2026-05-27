@@ -4,10 +4,10 @@
 -- so the chain-building UX is exercised end-to-end. Deterministic
 -- id + ON CONFLICT DO NOTHING keep the script idempotent. Sprint H
 -- split Reward into EnergyReward + HintReward; UR5 added UndoReward
--- + ResetReward. The daily quest keeps 5 energy and zero for the
+-- + ResetReward; D3 added DiamondReward. The daily quest keeps 5 energy and zero for the
 -- other rewards.
 INSERT INTO "quests"."QuestDefinitions"
-    ("Id",                                   "Name",          "Description",            "Trigger",            "Threshold", "EnergyReward", "HintReward", "UndoReward", "ResetReward", "PrerequisiteQuestDefinitionId", "ProgressBaseline", "IsActive")
+    ("Id",                                   "Name",          "Description",            "Trigger",            "Threshold", "EnergyReward", "HintReward", "UndoReward", "ResetReward", "DiamondReward", "PrerequisiteQuestDefinitionId", "ProgressBaseline", "IsActive")
 VALUES
-    ('11111111-0000-0000-0000-000000000010', 'Günlük 3 Oyun', 'Bugün 3 oyun tamamla.',  'GameCompletedDaily', 3,           5,              0,            0,            0,             NULL,                            'FromSnapshot',     TRUE)
+    ('11111111-0000-0000-0000-000000000010', 'Günlük 3 Oyun', 'Bugün 3 oyun tamamla.',  'GameCompletedDaily', 3,           5,              0,            0,            0,             0,               NULL,                            'FromSnapshot',     TRUE)
 ON CONFLICT ("Id") DO NOTHING;

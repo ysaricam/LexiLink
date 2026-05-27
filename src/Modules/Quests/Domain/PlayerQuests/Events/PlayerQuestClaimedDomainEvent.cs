@@ -11,6 +11,7 @@ public class PlayerQuestClaimedDomainEvent : DomainEvent
     public int HintReward { get; }
     public int UndoReward { get; }
     public int ResetReward { get; }
+    public int DiamondReward { get; }
 
     public PlayerQuestClaimedDomainEvent(
         PlayerQuestId playerQuestId,
@@ -19,7 +20,8 @@ public class PlayerQuestClaimedDomainEvent : DomainEvent
         int energyReward,
         int hintReward,
         int undoReward,
-        int resetReward)
+        int resetReward,
+        int diamondReward)
     {
         PlayerQuestId = playerQuestId;
         PlayerId = playerId;
@@ -28,5 +30,6 @@ public class PlayerQuestClaimedDomainEvent : DomainEvent
         HintReward = hintReward;
         UndoReward = undoReward;
         ResetReward = resetReward;
+        DiamondReward = diamondReward;
     }
 }

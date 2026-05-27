@@ -12,6 +12,7 @@ public sealed record QuestDefinitionDto(
     int HintReward,
     int UndoReward,
     int ResetReward,
+    int DiamondReward,
     Guid? PrerequisiteQuestDefinitionId,
     ProgressBaseline ProgressBaseline,
     bool IsActive);

@@ -18,15 +18,19 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
     emit(state.copyWith(status: AdminQuestsStatus.loading, clearError: true));
     try {
       final defs = await _repository.fetchDefinitions();
-      emit(state.copyWith(
-        status: AdminQuestsStatus.loaded,
-        definitions: defs,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminQuestsStatus.loaded,
+          definitions: defs,
+        ),
+      );
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminQuestsStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminQuestsStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -39,6 +43,7 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
     required int hintReward,
     required int undoReward,
     required int resetReward,
+    required int diamondReward,
     required ProgressBaseline progressBaseline,
     String? prerequisiteQuestDefinitionId,
   }) async {
@@ -53,15 +58,18 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
         hintReward: hintReward,
         undoReward: undoReward,
         resetReward: resetReward,
+        diamondReward: diamondReward,
         progressBaseline: progressBaseline,
         prerequisiteQuestDefinitionId: prerequisiteQuestDefinitionId,
       );
       await _reload();
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminQuestsStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminQuestsStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -73,6 +81,7 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
     required int hintReward,
     required int undoReward,
     required int resetReward,
+    required int diamondReward,
     required ProgressBaseline progressBaseline,
     String? prerequisiteQuestDefinitionId,
   }) async {
@@ -86,15 +95,18 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
         hintReward: hintReward,
         undoReward: undoReward,
         resetReward: resetReward,
+        diamondReward: diamondReward,
         progressBaseline: progressBaseline,
         prerequisiteQuestDefinitionId: prerequisiteQuestDefinitionId,
       );
       await _reload();
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminQuestsStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminQuestsStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -104,10 +116,12 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
       await _repository.deactivateDefinition(id);
       await _reload();
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminQuestsStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminQuestsStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -117,19 +131,23 @@ class AdminQuestsCubit extends Cubit<AdminQuestsState> {
       await _repository.reactivateDefinition(id);
       await _reload();
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminQuestsStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminQuestsStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
   Future<void> _reload() async {
     final defs = await _repository.fetchDefinitions();
-    emit(state.copyWith(
-      status: AdminQuestsStatus.loaded,
-      definitions: defs,
-    ));
+    emit(
+      state.copyWith(
+        status: AdminQuestsStatus.loaded,
+        definitions: defs,
+      ),
+    );
   }
 }
 

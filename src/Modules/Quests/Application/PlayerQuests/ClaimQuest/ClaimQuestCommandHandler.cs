@@ -55,7 +55,8 @@ internal class ClaimQuestCommandHandler : ICommandHandler<ClaimQuestCommand>
             definition.EnergyReward,
             definition.HintReward,
             definition.UndoReward,
-            definition.ResetReward);
+            definition.ResetReward,
+            definition.DiamondReward);
     }
 
     private static bool ComputeIsReadyToClaim(

@@ -137,10 +137,10 @@ class _QuestsView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               if (state.isLoading && state.quests.isEmpty)
-                const AppLoadingState(message: 'Quest\'ler yükleniyor...')
+                const AppLoadingState(message: "Quest'ler yükleniyor...")
               else if (state.status == QuestsStatus.failure)
                 AppErrorState(
-                  title: 'Quest\'ler yüklenemedi',
+                  title: "Quest'ler yüklenemedi",
                   message: state.message ?? 'Tekrar dene.',
                   onRetry: () => context.read<QuestsCubit>().loadQuests(),
                 )
@@ -149,7 +149,7 @@ class _QuestsView extends StatelessWidget {
                 AppEmptyState(
                   title: 'Henüz quest yok',
                   message:
-                      'Bir oyun tamamla, quest\'ler burada görünmeye başlasın.',
+                      "Bir oyun tamamla, quest'ler burada görünmeye başlasın.",
                   actionLabel: 'Yenile',
                   onAction: () => context.read<QuestsCubit>().loadQuests(),
                 )
@@ -268,8 +268,7 @@ class _QuestTile extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: progressFraction,
                 minHeight: 6,
-                backgroundColor:
-                    colorScheme.outline.withValues(alpha: 0.18),
+                backgroundColor: colorScheme.outline.withValues(alpha: 0.18),
                 color: colorScheme.primary,
               ),
             ),
@@ -312,6 +311,13 @@ class _QuestTile extends StatelessWidget {
                         '+${quest.resetReward}↻',
                         style: textTheme.labelLarge?.copyWith(
                           color: colorScheme.error,
+                        ),
+                      ),
+                    if (quest.diamondReward > 0)
+                      Text(
+                        '+${quest.diamondReward}💎',
+                        style: textTheme.labelLarge?.copyWith(
+                          color: colorScheme.primary,
                         ),
                       ),
                   ],

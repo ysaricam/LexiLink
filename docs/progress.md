@@ -4,6 +4,131 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Sprint D — Diamond Module + Quest 5-Reward (2026-05-27, closed)
+
+Tenth full-stack sprint. Added the fifth inventory module,
+**Diamond**, as uncapped in-game currency and expanded Quest rewards
+from `(Energy, Hint, Undo, Reset)` to
+`(Energy, Hint, Undo, Reset, Diamond)`. Diamond follows the
+Hint/Undo/Reset inventory module template but intentionally has no
+Game sync gateway: it is earned through quests/admin grants and is
+reserved for future Shop/IAP spend paths.
+
+Final quality gate: **502 .NET tests + 107 Flutter tests green**.
+`flutter analyze` still reports only unrelated pre-existing
+info-level warnings. Detailed plan in `ROADMAP.md > Sprint D`;
+frontend slice detail in `frontendProgress.md > Slice D5`.
+
+### Slice D8 — Docs polish + sprint close (2026-05-27, working tree)
+
+- `activeContext.md` pivots Sprint D from active work to closed state
+  and points the next backend action at post-D backlog candidates.
+- `ROADMAP.md > Sprint D` marks D1-D8 complete.
+- `GLOSSARY.md` updates the ubiquitous language to the 5-reward
+  shape: `PlayerDiamondInventory`, 5-field `QuestDefinition`,
+  `PlayerQuest.Claim(...)`, `QuestRewardMustHaveAtLeastOnePositiveRule`,
+  and `QuestClaimedIntegrationEvent` 5-consumer fan-out.
+- `frontendActiveContext.md` + `frontendProgress.md` document the
+  Diamond frontend leg and D7 manual verification result.
+
+### Slice D7 — Manual verification (2026-05-27)
+
+Operator manual verification passed:
+
+- Single-reward quest claim for each reward type: Energy, Hint, Undo,
+  Reset, Diamond.
+- Mixed 5-reward quest delivers all five rewards.
+- Diamond admin Set / Grant / Reset works and audit rows are visible.
+- `Diamond:InitialBalance` override can seed new guest Diamond
+  inventory.
+- Diamond badge persists across reload/JWT refresh.
+
+### Slice D6 — Tests + quality gate (2026-05-27)
+
+- Diamond unit tests: 19 aggregate/rule tests covering Initialize,
+  Consume, GrantBonus, AdminSet, AdminReset and violation paths.
+- Diamond integration tests: 12 lifecycle/quest/admin/audit tests.
+- Existing reward delivery fixtures widened to 5 rewards:
+  Energy.IT, Hint.IT, Undo.IT, Reset.IT `QuestRewardDeliveryTests`,
+  Quests.IT admin tests, and API.Tests
+  `GetQuestsMe_FreshPlayer_LazilyReturnsSeededDaily`.
+- Added missing Hint.IT `QuestRewardDeliveryTests`.
+- Games.IT `UseHint` assertions updated to the post-UR1 model:
+  `ResolveHints() == 0`, so every hint, including the first one,
+  goes through `IHintGuard`; `HintsUsed` remains 0.
+- `scripts/test.sh` registers Diamond unit/integration projects and
+  passes the full local .NET gate.
+- Frontend regression fix: Diamond admin number dialogs now own their
+  `TextEditingController` inside the dialog widget lifecycle; the
+  disposed-controller browser/runtime error is covered by
+  `admin_diamond_screen_test.dart`.
+
+### Slice D5 — Frontend reshape (2026-05-27)
+
+See `frontendProgress.md > Slice D5` for the full slice.
+Highlights:
+
+- New player feature `features/diamond/` with DTO, repository,
+  cubit, and `DiamondBadge`.
+- HomeScreen now shows five inventory badges.
+- New admin console `features/admin_diamond/` with lookup, set,
+  grant, reset.
+- `/admin/diamond` route and NavigationRail/Drawer destination.
+- Admin quest form and player quest tile widened to five reward
+  fields/badges.
+
+### Slice D4 — Admin operations + GET endpoints + audit (2026-05-27)
+
+- Diamond admin commands: Set, GrantBonus, Reset, all marked
+  `IAdminCommand` with `AuditTargetType =
+  "Diamond.PlayerDiamondInventory"`.
+- `GetPlayerDiamondQuery` + `PlayerDiamondSnapshotDto`.
+- Diamond admin audit outbox notification and publisher.
+- API endpoints: `GET /diamond/me`,
+  `GET /admin/players/{id}/diamond`,
+  `POST .../set`, `POST .../grant`, `POST .../reset`.
+
+### Slice D3 — Quest 5-reward (destructive) (2026-05-27)
+
+- `QuestDefinition` gained `_diamondReward`; Create/Update signatures
+  and validators widened to 5 reward fields.
+- `QuestRewardMustHaveAtLeastOnePositiveRule` spans Energy, Hint,
+  Undo, Reset, Diamond.
+- `PlayerQuestClaimedDomainEvent` and
+  `QuestClaimedIntegrationEvent` carry all five reward fields.
+- Diamond.Application adds `GrantDiamondCommand` and
+  `QuestClaimedIntegrationEventHandler`, guarded by
+  `DiamondReward > 0`.
+- DbUp script
+  `quests/060_ExpandQuestRewardsWithDiamond.sql` adds
+  `DiamondReward int NOT NULL DEFAULT 0`; canonical QuestDefinition
+  scripts were updated for cold-start DBs.
+
+### Slice D2 — Lazy init (2026-05-27)
+
+- `EnsurePlayerDiamondInventoryExistsCommand` is idempotent and runs
+  from `PlayerRegisteredIntegrationEvent`.
+- `IDiamondConfigurationService.InitialBalance` defaults to 0 and is
+  configurable with `Diamond:InitialBalance`.
+- Diamond.Application references only
+  `Players.IntegrationEvents`; ArchitectureTests enforce the granular
+  public-contract dependency.
+
+### Slice D1 — Diamond foundation (2026-05-27)
+
+- Added `src/Modules/Diamond/` with Domain, Application,
+  Infrastructure, Tests, and IntegrationTests projects.
+- `PlayerDiamondInventory` aggregate: `Id == PlayerId`, single
+  `_balance`, no cap, no refill timer.
+- Rules: `DiamondAmountMustBePositiveRule`,
+  `DiamondAmountMustBeNonNegativeRule`,
+  `DiamondBalanceMustBeSufficientRule`.
+- Domain events: Initialized, Consumed, Granted, AdminSet, AdminReset.
+- EF mapping, schema/table/outbox DbUp scripts, Autofac module,
+  startup, unit of work, domain events dispatcher, and standard
+  decorator chain.
+- Solution and ArchitectureTests registration completed.
+
 ## Sprint UR — Undo + Reset Modules + Quest 4-Reward (2026-05-26, closed)
 
 Ninth full-stack sprint. Extracted Undo and Reset into two new

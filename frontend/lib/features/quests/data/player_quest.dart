@@ -38,6 +38,7 @@ class PlayerQuest extends Equatable {
     required this.hintReward,
     required this.undoReward,
     required this.resetReward,
+    required this.diamondReward,
     required this.issuedAt,
     required this.claimedAt,
     required this.expiresAt,
@@ -57,6 +58,7 @@ class PlayerQuest extends Equatable {
     final hintReward = json['hintReward'];
     final undoReward = json['undoReward'];
     final resetReward = json['resetReward'];
+    final diamondReward = json['diamondReward'];
     final issuedAt = json['issuedAt'];
     final claimedAt = json['claimedAt'];
     final expiresAt = json['expiresAt'];
@@ -79,6 +81,7 @@ class PlayerQuest extends Equatable {
         hintReward is! int ||
         undoReward is! int ||
         resetReward is! int ||
+        diamondReward is! int ||
         issuedAt is! String ||
         (description != null && description is! String) ||
         (claimedAt != null && claimedAt is! String) ||
@@ -100,13 +103,10 @@ class PlayerQuest extends Equatable {
       hintReward: hintReward,
       undoReward: undoReward,
       resetReward: resetReward,
+      diamondReward: diamondReward,
       issuedAt: DateTime.parse(issuedAt),
-      claimedAt: claimedAt == null
-          ? null
-          : DateTime.parse(claimedAt as String),
-      expiresAt: expiresAt == null
-          ? null
-          : DateTime.parse(expiresAt as String),
+      claimedAt: claimedAt == null ? null : DateTime.parse(claimedAt as String),
+      expiresAt: expiresAt == null ? null : DateTime.parse(expiresAt as String),
     );
   }
 
@@ -123,6 +123,7 @@ class PlayerQuest extends Equatable {
   final int hintReward;
   final int undoReward;
   final int resetReward;
+  final int diamondReward;
   final DateTime issuedAt;
   final DateTime? claimedAt;
   final DateTime? expiresAt;
@@ -145,6 +146,7 @@ class PlayerQuest extends Equatable {
     hintReward,
     undoReward,
     resetReward,
+    diamondReward,
     issuedAt,
     claimedAt,
     expiresAt,

@@ -11,21 +11,24 @@ import 'package:lexilink_app/features/auth/data/guest_player_repository.dart';
 import 'package:lexilink_app/features/categories/application/category_list_cubit.dart';
 import 'package:lexilink_app/features/categories/data/category.dart';
 import 'package:lexilink_app/features/categories/data/category_repository.dart';
+import 'package:lexilink_app/features/diamond/application/diamond_cubit.dart';
+import 'package:lexilink_app/features/diamond/data/diamond_repository.dart';
+import 'package:lexilink_app/features/diamond/presentation/diamond_badge.dart';
 import 'package:lexilink_app/features/energy/application/energy_cubit.dart';
 import 'package:lexilink_app/features/energy/data/energy_repository.dart';
 import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
+import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
+import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
 import 'package:lexilink_app/features/hint/data/hint_repository.dart';
 import 'package:lexilink_app/features/hint/presentation/hint_badge.dart';
-import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
-import 'package:lexilink_app/features/undo/data/undo_repository.dart';
-import 'package:lexilink_app/features/undo/presentation/undo_badge.dart';
 import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
 import 'package:lexilink_app/features/reset/data/reset_repository.dart';
 import 'package:lexilink_app/features/reset/presentation/reset_badge.dart';
-import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
-import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/session/application/session_cubit.dart';
+import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
+import 'package:lexilink_app/features/undo/data/undo_repository.dart';
+import 'package:lexilink_app/features/undo/presentation/undo_badge.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -99,6 +102,7 @@ class _HomeProvidersState extends State<_HomeProviders> {
   late final GuestEntryCubit _guestEntryCubit;
   late final CategoryListCubit _categoryListCubit;
   late final EnergyCubit _energyCubit;
+  late final DiamondCubit _diamondCubit;
   late final HintCubit _hintCubit;
   late final UndoCubit _undoCubit;
   late final ResetCubit _resetCubit;
@@ -125,6 +129,9 @@ class _HomeProvidersState extends State<_HomeProviders> {
     _energyCubit = EnergyCubit(
       energyRepository: EnergyRepository(apiClient: apiClient),
     );
+    _diamondCubit = DiamondCubit(
+      diamondRepository: DiamondRepository(apiClient: apiClient),
+    );
     _hintCubit = HintCubit(
       hintRepository: HintRepository(apiClient: apiClient),
     );
@@ -148,6 +155,7 @@ class _HomeProvidersState extends State<_HomeProviders> {
     _resetCubit.close();
     _undoCubit.close();
     _hintCubit.close();
+    _diamondCubit.close();
     _energyCubit.close();
     _categoryListCubit.close();
     _guestEntryCubit.close();
@@ -164,6 +172,7 @@ class _HomeProvidersState extends State<_HomeProviders> {
         BlocProvider.value(value: _guestEntryCubit),
         BlocProvider.value(value: _categoryListCubit),
         BlocProvider.value(value: _energyCubit),
+        BlocProvider.value(value: _diamondCubit),
         BlocProvider.value(value: _hintCubit),
         BlocProvider.value(value: _undoCubit),
         BlocProvider.value(value: _resetCubit),
@@ -186,8 +195,7 @@ class _HomeView extends StatelessWidget {
     return MultiBlocListener(
       listeners: [
         BlocListener<SessionCubit, SessionState>(
-          listenWhen: (previous, current) =>
-              previous.status != current.status,
+          listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             if (state.status == SessionStatus.unauthenticated) {
               context.read<GuestEntryCubit>().continueAsGuest(
@@ -198,6 +206,7 @@ class _HomeView extends StatelessWidget {
             } else if (state.status == SessionStatus.authenticated) {
               context.read<CategoryListCubit>().loadCategories();
               context.read<EnergyCubit>().loadEnergy();
+              context.read<DiamondCubit>().loadDiamond();
               context.read<HintCubit>().loadHint();
               context.read<UndoCubit>().loadUndo();
               context.read<ResetCubit>().loadReset();
@@ -205,8 +214,7 @@ class _HomeView extends StatelessWidget {
           },
         ),
         BlocListener<GameStartCubit, GameStartState>(
-          listenWhen: (previous, current) =>
-              previous.status != current.status,
+          listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
             if (state.status == GameStartStatus.success &&
                 state.gameId != null) {
@@ -246,6 +254,8 @@ class _HomeScaffold extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  DiamondBadge(),
+                  SizedBox(width: 8),
                   ResetBadge(),
                   SizedBox(width: 8),
                   UndoBadge(),
@@ -301,8 +311,7 @@ class _HomeContent extends StatelessWidget {
             child: AppErrorState(
               title: 'Could not load categories',
               message: state.message ?? 'Try again.',
-              onRetry: () =>
-                  context.read<CategoryListCubit>().loadCategories(),
+              onRetry: () => context.read<CategoryListCubit>().loadCategories(),
             ),
           );
         }
@@ -338,9 +347,9 @@ class _CategoryDeckState extends State<_CategoryDeck> {
     _controller = PageController(viewportFraction: 0.82);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || widget.categories.isEmpty) return;
-      context
-          .read<CategoryListCubit>()
-          .selectCategory(widget.categories[_currentIndex].id);
+      context.read<CategoryListCubit>().selectCategory(
+        widget.categories[_currentIndex].id,
+      );
     });
   }
 
@@ -352,9 +361,9 @@ class _CategoryDeckState extends State<_CategoryDeck> {
 
   void _onPageChanged(int index) {
     setState(() => _currentIndex = index);
-    context
-        .read<CategoryListCubit>()
-        .selectCategory(widget.categories[index].id);
+    context.read<CategoryListCubit>().selectCategory(
+      widget.categories[index].id,
+    );
   }
 
   @override
@@ -393,15 +402,18 @@ class _CategoryDeckState extends State<_CategoryDeck> {
                           builder: (context, child) {
                             var offsetFromCenter = 0.0;
                             if (_controller.position.haveDimensions) {
-                              final page = _controller.page ??
+                              final page =
+                                  _controller.page ??
                                   _controller.initialPage.toDouble();
                               offsetFromCenter = page - index;
                             } else {
-                              offsetFromCenter =
-                                  (_currentIndex - index).toDouble();
+                              offsetFromCenter = (_currentIndex - index)
+                                  .toDouble();
                             }
-                            final distance =
-                                offsetFromCenter.abs().clamp(0.0, 1.0);
+                            final distance = offsetFromCenter.abs().clamp(
+                              0.0,
+                              1.0,
+                            );
                             final scale = 1 - distance * 0.06;
                             return Transform.scale(
                               scale: scale,
@@ -425,8 +437,9 @@ class _CategoryDeckState extends State<_CategoryDeck> {
                 SizedBox(
                   width: cardSize,
                   child: AppPrimaryButton(
-                    label:
-                        gameStartState.isSubmitting ? 'Starting...' : 'Start',
+                    label: gameStartState.isSubmitting
+                        ? 'Starting...'
+                        : 'Start',
                     onPressed: gameStartState.isSubmitting
                         ? null
                         : () => context.read<GameStartCubit>().startGame(
@@ -473,11 +486,11 @@ class _DragScrollBehavior extends MaterialScrollBehavior {
 
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.trackpad,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.stylus,
+    PointerDeviceKind.trackpad,
+  };
 }
 
 class _CategoryCard extends StatelessWidget {
