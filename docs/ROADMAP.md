@@ -4,6 +4,145 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Sprint M ✅ closed — Market Module
+
+Goal: ship the **Market** bounded context — a single module owning
+the SKU catalog and the purchase log, where players spend Diamond
+to top up Energy / Hint / Undo / Reset inventories. First module
+that synchronously charges Diamond at runtime — introduces the
+`IDiamondGuard` sync gateway plus four new `IXxxGrant` gateways
+(one per spendable inventory module), and a saga-light
+compensating refund when the grant call fails after Diamond is
+already debited. Categories carry an optional visibility window
+for limited-time campaigns; SKUs carry an optional `Promotion` VO
+plus `MaxStock` and per-player limits — the two patterns campaigns
+typically need.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Module name | **Market** — single bounded context, schema `market`, microservice extraction candidate. |
+| Aggregates | **3 in one module:** `Category` (admin-managed grouping + optional visibility window), `ShopItem` (SKU with price + promotion + stock + per-player limit), `PurchaseOrder` (idempotent purchase log). |
+| Currency | **Diamond only.** No multi-currency, no real money, no localized pricing. Diamond is debited synchronously via the new `IDiamondGuard`. |
+| Sync gateways | **6 new contracts.** `IDiamondGuard` (consume) + `IDiamondGrant` (refund), and `IEnergyGrant`, `IHintGrant`, `IUndoGrant`, `IResetGrant` for the buy targets. Existing `IEnergyGuard`/`IHintGuard`/`IUndoGuard`/`IResetGuard` (game-side consume) are unaffected. |
+| `ItemType` enum | `Energy / Hint / Undo / Reset / Diamond` — Diamond reserved for future IAP, **not purchasable via Diamond currency in v1**. Buy handler rejects `ItemType.Diamond` with an explicit rule. |
+| `Category.VisibilityWindow` | Optional `VO(StartsAt, EndsAt)`. Null = always visible. Window closed = entire category hidden from `/market/categories` and all its SKUs unbuyable. |
+| `ShopItem.Promotion` | Optional `VO(PromoPrice, StartsAt, EndsAt)`. Domain rule `PromoPrice < Price`. Outside window the base `Price` is charged. **At most one Promotion per item** — no stacking. |
+| Stock limit | `MaxStock?` (null = unlimited) + `SoldCount` counter. Domain rule `SoldCount < MaxStock`. EF Core `RowVersion` optimistic concurrency on the ShopItem row — concurrent buyers race; loser retries or fails. |
+| Per-player limit | `PerPlayerLimit?` + `PerPlayerLimitWindow` enum (`Lifetime / Daily / PerPromo`). Buy handler counts purchases in window from `PurchaseOrder` and blocks if at/over limit. |
+| Idempotency | `PurchaseOrder.IdempotencyKey` unique per `(PlayerId, IdempotencyKey)`. Duplicate `BuyShopItem` with the same key returns the existing order without re-charging. |
+| Failure handling | **Saga-light compensating refund.** Buy flow: `IDiamondGuard.Consume` → target `IXxxGrant.Grant` (in try). On grant exception: `IDiamondGrant.Grant` refund + rethrow. Each module commits its own transaction; the refund is a separate cross-module call. |
+| Audit | Both `Category` and `ShopItem` admin commands marked `IAdminCommand` with distinct `AuditTargetType`s. `PurchaseOrder` is **not** auditable — every purchase is its own outbox event. |
+| Bundle SKUs | **None in v1.** Each `ShopItem` has exactly one `ItemType` and one `Quantity`. Composite/bundle SKUs spanning multiple inventory types are a separate future sprint. |
+
+### Architecture notes
+
+- **6 new sync gateway contracts** but only **5 new modules to
+  modify** — `IDiamondGuard` and `IDiamondGrant` both go into
+  `Diamond.Application` (its first sync-gateway contracts). `IEnergyGrant`/
+  `IHintGrant`/`IUndoGrant`/`IResetGrant` each land in their
+  respective module's `Application/Configuration/CrossModule/`,
+  mirroring the existing `IXxxGuard` shape. API host
+  `CrossModule/` ships 6 adapters consuming module commands. New
+  granular ArchTest allows: `Market.Application` → each of the
+  6 contracts.
+- **Buy command is the saga.** A single command handler
+  orchestrates three module boundaries (Diamond consume → target
+  grant → Market commit). No `IPipelineBehavior`, no orchestration
+  service — explicit try/catch inside the handler. Refund is a
+  best-effort compensating `IDiamondGrant.Grant` in the catch
+  block; the handler re-throws the original exception so the
+  caller sees the failure.
+- **No game-screen impact.** Market is invisible during gameplay;
+  it's a separate HomeScreen entry / shop screen. Game module is
+  untouched. No additions to the existing `IXxxGuard` (game-side
+  consume) gateways — those keep checking Game-aggregate
+  invariants during `UseHint`/`Undo`/`Reset`.
+- **`ItemType.Diamond` reserved for future IAP.** The enum slot
+  exists so Apple/Google IAP integration can drop in without an
+  enum-reshape sprint, but the v1 buy command rejects it
+  explicitly. The future IAP sprint will add a `BuyDiamondBundleCommand`
+  with receipt verification — separate code path from `BuyShopItem`.
+- **Stock-concurrency race is OK to lose.** `MaxStock = 1` items
+  are inherently first-to-commit-wins. EF `RowVersion` makes the
+  loser fail loudly rather than silently double-sell. Frontend
+  treats the failure as "sold out" and refreshes the catalog.
+- **PurchaseOrder is append-only.** No update path, no delete
+  path. Refunds (compensating or admin-triggered) are recorded
+  as separate `Diamond.GrantBonus` + `IXxxConsume` calls on each
+  module's audit trail — Market doesn't model "cancelled" orders.
+- **Audit-vs-outbox split.** Admin CRUD on Category/ShopItem flows
+  through the same `AdminAuditingCommandHandlerDecorator` template
+  the other modules use (10th per-module copy). Individual buys
+  do **not** go through admin audit (they're player actions) but
+  every `PurchaseOrder` is its own outbox `PurchaseCompletedIntegrationEvent`
+  for downstream BI / notifications.
+- **Empty PurchaseOrder index is the idempotency contract.** A
+  unique index on `(PlayerId, IdempotencyKey)` enforces it at the
+  DB level. The handler does a pre-check SELECT for friendly
+  "duplicate, here's the existing order" responses; the unique
+  index is the actual safety net under concurrency.
+
+### Slice plan (8 slices — mirrors Sprint UR / Sprint D cadence)
+
+| Slice | Content |
+| --- | --- |
+| **M1 ✅ delivered** | Market module foundation. 5 csproj (`Domain/Application/Infrastructure/Tests/IntegrationTests`). 3 aggregates: `Category` (`Id, Name, SortOrder, Icon?, IsActive, VisibilityWindow?`), `ShopItem` (`Id, CategoryId, ItemType, Quantity, Price, Promotion?, MaxStock?, SoldCount, PerPlayerLimit?, PerPlayerLimitWindow, IsActive, RowVersion`), `PurchaseOrder` (`Id, PlayerId, ShopItemId, ItemType, Quantity, DiamondsPaid, PurchasedAt, IdempotencyKey`). VOs: `VisibilityWindow`, `Promotion`. Enums: `ItemType {Energy, Hint, Undo, Reset, Diamond}`, `PerPlayerLimitWindow {Lifetime, Daily, PerPromo}`. Domain rules: `PromotionPriceMustBeLessThanPriceRule`, `WindowMustBeOrderedRule` (reused for Promotion + VisibilityWindow), `MaxStockMustBePositiveRule`, `ShopItemMustBeActiveRule`, `CategoryMustBeVisibleNowRule`, `ShopItemMustHaveStockRemainingRule`, `PlayerMustNotExceedShopItemLimitRule`, `DiamondSkusNotPurchasableInV1Rule`, `IdempotencyKeyMustBeUniqueForPlayerRule`. Aggregate events. EF mappings (RowVersion concurrency token on `ShopItem`). DbUp `market/Schema/001_CreateSchema.sql`, `Tables/010_Categories.sql`, `Tables/020_ShopItems.sql`, `Tables/030_PurchaseOrders.sql` (unique index on `(PlayerId, IdempotencyKey)`), `Tables/070_OutboxMessages.sql`. Autofac module + Startup + UoW + DomainEventsDispatcher + decorator chain (Logging/Validation/UnitOfWork) + outbox accessor. sln registration. ArchTests widen (Market Domain/Application/Infrastructure rules, aggregate naming, layer dependency, API composition-root boundaries). |
+| **M2 ✅ delivered** | Six new cross-module sync gateways. `IDiamondGuard.EnsureDiamondAvailableAsync(playerId, amount)` + `IDiamondGrant.GrantAsync(playerId, amount)` in `Diamond.Application/Configuration/CrossModule/` (first sync-gateway contracts on Diamond — Sprint D deliberately had none). `IEnergyGrant`, `IHintGrant`, `IUndoGrant`, `IResetGrant` in respective modules' `Application/Configuration/CrossModule/`, each wrapping the existing `GrantBonus*` domain method via a module-internal command. API host `CrossModule/` adapters for all 6 — same shape as existing `*GuardAdapter`s. `Market.Application.csproj` → 6 granular ArchTest allows. |
+| **M3 ✅ delivered** | `BuyShopItemCommand` + saga orchestration. Player endpoint `POST /market/items/{id}/buy` body `{ idempotencyKey }`. Handler flow: load ShopItem + Category → validate (active + category visible + stock remaining + per-player limit not exceeded + idempotency key unused + not `ItemType.Diamond`) → compute effective price (Promotion if window open else `Price`) → `IDiamondGuard.EnsureDiamondAvailableAsync(playerId, effectivePrice)` (debits diamond) → target `IXxxGrant.GrantAsync(playerId, item.Quantity)` inside try → on grant exception: `IDiamondGrant.GrantAsync(playerId, effectivePrice)` compensating refund + rethrow → on success: `ShopItem.RecordPurchase()` (`SoldCount++`, RowVersion bump) + `PurchaseOrder.Create(...)` + emit `PurchaseCompletedIntegrationEvent` → commit. Pre-flight SELECT on `(PlayerId, IdempotencyKey)` for friendly duplicate response; unique index catches the race. Player + admin endpoint test coverage in M7. |
+| **M4 ✅ delivered** | Admin Category + ShopItem CRUD + audit. Six commands marked `IAdminCommand`: `CreateCategoryCommand`, `UpdateCategoryCommand`, `DeactivateCategoryCommand` (`AuditTargetType = "Market.Category"`); `CreateShopItemCommand`, `UpdateShopItemCommand`, `DeactivateShopItemCommand` (`AuditTargetType = "Market.ShopItem"`). 10th per-module copy of `AdminAuditingCommandHandlerDecorator`. `MarketAdminActionPerformedNotification` + handler publishes `AdminActionPerformedIntegrationEvent` through Market outbox. `Market.Infrastructure.csproj` → `Administration.IntegrationEvents` granular ArchTest allow. Promotion / stock / per-player limit are all mutable via `UpdateShopItemCommand` (single command updates the whole SKU). |
+| **M5 ✅ delivered** | Player + admin GET endpoints. Player: `GET /market/categories` (currently-visible categories sorted by `SortOrder`, each with their currently-visible items including effective price + remaining stock + per-player remaining for caller), `GET /market/items/{id}` (single-item detail), `GET /market/orders/me` (caller's purchase history newest first, paged). Admin: `GET /admin/market/categories`, `GET /admin/market/items` (filter by category / item type / active), `GET /admin/market/items/{id}`, `GET /admin/market/orders/{playerId}` (per-player history for support). Program.cs wires `MapMarketEndpoints` + `MapAdminMarketEndpoints`. |
+| **M6 ✅ delivered** | Frontend. `lib/features/market/` player shop feature with category tabs, item tiles showing promo badge + stock counter + per-player remaining + diamond price, buy confirmation modal, success snackbar, and post-buy inventory + diamond badge refresh when parent cubits are present. HomeScreen now has a "Market" entry. `lib/features/admin_market/` console ships category list + create/edit form with `VisibilityWindow` ISO fields; item list + create/edit form with Promotion price/window, MaxStock, PerPlayerLimit, and LimitWindow; plus per-player orders viewer. Routes wired: `/market`, `/admin/market/categories`, `/admin/market/items`, `/admin/market/orders`, `/admin/market/orders/:playerId`. |
+| **M7 ✅ delivered** | Tests + manual verification. Market unit tests (per-aggregate + each rule). Market integration tests cover the active smoke path; operator manual verification exercised the Market/admin flows before close. One manual-test usability revision was folded into the frontend admin console: ShopItem creation now separates Normal vs Promotion setup, Normal hides campaign-only fields, Promotion Start/End use calendar pickers, and Save is disabled until required/valid fields are complete. Quality gate at close: Market unit tests 6/6, Market integration smoke 1/1, ArchitectureTests 61/61, Flutter tests 107/107. `flutter analyze` has no new Market-specific findings; only pre-existing info-level frontend warnings remain. |
+| **M8 ✅ delivered** | Docs polish + sprint close. Updates: `activeContext.md > Active Sprint` pivots to "Sprint M closed", `progress.md` Sprint M entry with per-slice delivery notes, `GLOSSARY.md` (Market aggregates / VOs / rules, `BuyShopItem` saga flow, 6 new sync gateway contracts, compensating refund pattern, idempotency contract), `ROADMAP.md > Sprint M ✅ closed`, `frontendActiveContext.md` + `frontendProgress.md > Slice M6`. |
+
+### Deliberate non-actions
+
+- **No IAP / real-money integration.** Apple/Google receipt
+  verification + platform sleeves are a separate future sprint.
+  `ItemType.Diamond` is the forward-compat hook.
+- **No bundle SKUs.** Each ShopItem is one ItemType × one
+  Quantity. Composite bundles spanning multiple inventory types
+  (e.g., "Starter Pack: 50 Energy + 10 Hint") are a future
+  sprint — likely a new `BundleShopItem` aggregate sharing the
+  buy command surface.
+- **No admin "cancel order" / refund tool.** Manual refund =
+  admin Grant on the affected inventory module + admin Grant
+  on Diamond. Each side is audited; Market doesn't model
+  cancellation.
+- **No wishlist / favorites / shopping cart.** Single-item buy
+  only. Cart UX would require a separate aggregate.
+- **No multi-currency, no localized pricing, no regional SKUs.**
+  Diamond is the universal price.
+- **No promo stacking.** Each ShopItem carries at most one
+  `Promotion`. Overlapping campaigns on the same item are an
+  admin-policy problem, not a domain feature.
+- **No purchase rate-limiting beyond `PerPlayerLimit`.** Global
+  per-minute caps / abuse detection live in the API gateway
+  layer if needed.
+- **No analytics / BI reports.** Outbox `PurchaseCompletedIntegrationEvent`
+  is the raw stream; downstream reporting is out of scope.
+- **No frontend changes to Game screen.** Market is reachable
+  from HomeScreen only; gameplay is uninterrupted.
+
+### Slice ordering rationale
+
+Foundation (M1) defines every domain shape the rest of the
+sprint touches. Sync gateways (M2) precede the buy orchestration
+(M3) because the handler depends on the 6 new contracts existing.
+Admin CRUD (M4) before GET endpoints (M5) because GETs return
+data the admin must create first. Frontend (M6) once backend is
+feature-complete. Tests + manual verification (M7) gate the
+sprint close (M8). Unlike Sprint D, there is **no destructive
+cross-module reshape** in Sprint M — every existing module
+gains a new sync gateway contract but no existing domain shape
+changes. This keeps the merge surface narrow and the rollback
+story simple (revert M1-M8 in any order without breaking other
+sprints' invariants).
+
+---
+
 ## Sprint D ✅ closed — Diamond Module + Quest 5-Reward
 
 Goal: ship the 5th inventory module — **Diamond**, the in-game

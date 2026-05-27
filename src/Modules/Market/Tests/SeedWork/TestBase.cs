@@ -1,0 +1,25 @@
+using LexiLink.Common.Domain;
+
+namespace LexiLink.Modules.Market.Tests.SeedWork;
+
+public abstract class TestBase
+{
+    protected static T AssertPublishedDomainEvent<T>(Entity aggregate) where T : IDomainEvent
+    {
+        var domainEvent = aggregate.DomainEvents.OfType<T>().SingleOrDefault();
+        if (domainEvent is null)
+        {
+            throw new AssertionException($"{typeof(T).Name} was not published.");
+        }
+
+        return domainEvent;
+    }
+
+    protected static void AssertBrokenRule<TRule>(TestDelegate testDelegate)
+        where TRule : class, IBusinessRule
+    {
+        var ex = Assert.Catch<BusinessRuleValidationException>(testDelegate);
+        ex.Should().NotBeNull();
+        ex!.BrokenRule.Should().BeOfType<TRule>();
+    }
+}

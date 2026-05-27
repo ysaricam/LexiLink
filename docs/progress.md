@@ -4,6 +4,122 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Sprint M — Market Module (2026-05-27, closed)
+
+Eleventh full-stack sprint. Added the **Market** bounded context:
+a Diamond-spend catalog and purchase log where players buy Energy,
+Hint, Undo, or Reset inventory top-ups. This is the first runtime
+Diamond spend path and introduces synchronous Diamond debit plus
+target-inventory grant orchestration with a compensating Diamond
+refund when the grant side fails.
+
+Final quality gate: Market unit tests **6/6**, Market integration
+smoke **1/1**, ArchitectureTests **61/61**, and **107/107 Flutter
+tests green**. `flutter analyze` has no Market-specific findings;
+only older info-level frontend warnings remain. Detailed plan in
+`ROADMAP.md > Sprint M`; frontend slice detail in
+`frontendProgress.md > Slice M6`.
+
+### Slice M8 — Docs polish + sprint close (2026-05-27, working tree)
+
+- `activeContext.md` pivots Sprint M from active M7 verification to
+  closed state.
+- `ROADMAP.md > Sprint M` marks M1-M8 complete.
+- `GLOSSARY.md` adds Market ubiquitous language: `Category`,
+  `ShopItem`, `PurchaseOrder`, `VisibilityWindow`, `Promotion`,
+  `ItemType`, per-player limits, buy saga, sync gateway contracts,
+  idempotency, and `PurchaseCompletedIntegrationEvent`.
+- `frontendActiveContext.md` + `frontendProgress.md` document the
+  Market frontend leg and the M7 admin item-form revision.
+
+### Slice M7 — Tests + manual verification (2026-05-27)
+
+- Market unit test gate: **6/6**.
+- Market integration smoke gate: **1/1**.
+- ArchitectureTests gate: **61/61**.
+- Flutter regression gate: **107/107**.
+- Operator manual verification exercised the Market/admin flows.
+- Manual-test revision folded into frontend: admin ShopItem creation
+  now separates Normal vs Promotion setup; Normal hides campaign-only
+  fields; Promotion Start/End use calendar pickers; Save is disabled
+  until required/valid fields are complete.
+
+### Slice M6 — Frontend (2026-05-27)
+
+See `frontendProgress.md > Slice M6` for the full slice.
+Highlights:
+
+- New player feature `features/market/` with category tabs, item
+  tiles, Diamond prices, promo badges, stock/per-player remaining,
+  buy confirmation, and success feedback.
+- HomeScreen now links to `/market`; successful buys refresh Diamond
+  and affected inventory badges when parent cubits are available.
+- New admin feature `features/admin_market/` with category CRUD,
+  item CRUD, and per-player order lookup.
+- Routes added:
+  `/market`, `/admin/market/categories`, `/admin/market/items`,
+  `/admin/market/orders`, `/admin/market/orders/:playerId`.
+
+### Slice M5 — Player + admin GET endpoints (2026-05-27)
+
+- Player reads:
+  `GET /market/categories`, `GET /market/items/{id}`,
+  `GET /market/orders/me`.
+- Admin reads:
+  `GET /admin/market/categories`, `GET /admin/market/items`,
+  `GET /admin/market/items/{id}`,
+  `GET /admin/market/orders/{playerId}`.
+- Dapper read models expose effective price, promo/stock/limit
+  metadata, and purchase history.
+
+### Slice M4 — Admin CRUD + audit (2026-05-27)
+
+- Category admin commands: Create, Update, Deactivate.
+- ShopItem admin commands: Create, Update, Deactivate.
+- Commands implement `IAdminCommand` with Market-specific target
+  types.
+- Market adds its per-module admin auditing decorator and
+  `MarketAdminActionPerformedNotification`, publishing through the
+  Market outbox to Administration audit projection.
+
+### Slice M3 — Buy orchestration (2026-05-27)
+
+- Added `BuyShopItemCommand` and `POST /market/items/{id}/buy`.
+- Handler flow: load item/category, apply active/visible/stock/limit
+  checks, compute effective price, debit Diamond through
+  `IDiamondGuard`, grant the target inventory through the matching
+  `IXxxGrant`, then record `PurchaseOrder` and increment `SoldCount`.
+- Grant failure triggers compensating `IDiamondGrant.GrantAsync`
+  refund and rethrows the original failure.
+- Duplicate `(PlayerId, IdempotencyKey)` replays return the existing
+  order without a second charge.
+- `ItemType.Diamond` remains reserved for future IAP and is rejected
+  by the v1 buy path.
+
+### Slice M2 — Cross-module sync gateways (2026-05-27)
+
+- Diamond.Application adds `IDiamondGuard` for debit and
+  `IDiamondGrant` for refund.
+- Energy, Hint, Undo, and Reset Application surfaces add
+  `IEnergyGrant`, `IHintGrant`, `IUndoGrant`, and `IResetGrant`.
+- API host adapters translate those six contracts to existing module
+  commands, keeping Market.Application dependent only on public
+  contract surfaces.
+
+### Slice M1 — Market foundation (2026-05-27)
+
+- Added `src/Modules/Market/` with Domain, Application,
+  Infrastructure, Tests, and IntegrationTests projects.
+- Aggregates: `Category`, `ShopItem`, `PurchaseOrder`.
+- Value objects/enums: `VisibilityWindow`, `Promotion`,
+  `ItemType`, `PerPlayerLimitWindow`.
+- DbUp schema/tables/outbox under `market`, including the unique
+  `(PlayerId, IdempotencyKey)` purchase-order index and ShopItem
+  optimistic concurrency token.
+- Autofac startup, unit of work, domain events dispatcher, standard
+  decorator chain, API startup registration, solution registration,
+  and ArchitectureTest coverage completed.
+
 ## Sprint D — Diamond Module + Quest 5-Reward (2026-05-27, closed)
 
 Tenth full-stack sprint. Added the fifth inventory module,

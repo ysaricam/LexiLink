@@ -3,6 +3,7 @@ import 'package:lexilink_app/features/admin_audit/presentation/admin_audit_scree
 import 'package:lexilink_app/features/admin_diamond/presentation/admin_diamond_screen.dart';
 import 'package:lexilink_app/features/admin_energy/presentation/admin_energy_screen.dart';
 import 'package:lexilink_app/features/admin_hint/presentation/admin_hint_screen.dart';
+import 'package:lexilink_app/features/admin_market/presentation/admin_market_screen.dart';
 import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
 import 'package:lexilink_app/features/admin_reset/presentation/admin_reset_screen.dart';
@@ -59,6 +60,23 @@ class AdminDiamondPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => const AdminDiamondScreen();
+}
+
+class AdminMarketPage extends StatelessWidget {
+  const AdminMarketPage({
+    super.key,
+    this.initialTab = AdminMarketTab.categories,
+    this.initialPlayerId,
+  });
+
+  final AdminMarketTab initialTab;
+  final String? initialPlayerId;
+
+  @override
+  Widget build(BuildContext context) => AdminMarketScreen(
+    initialTab: initialTab,
+    initialPlayerId: initialPlayerId,
+  );
 }
 
 class AdminAuditPage extends StatelessWidget {

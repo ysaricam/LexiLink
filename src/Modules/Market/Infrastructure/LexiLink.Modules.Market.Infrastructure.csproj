@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Application\LexiLink.Modules.Market.Application.csproj" />
+    <ProjectReference Include="..\..\..\Common\Infrastructure\LexiLink.Common.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Administration\IntegrationEvents\LexiLink.Modules.Administration.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\IntegrationEvents\LexiLink.Modules.Market.IntegrationEvents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <PackageReference Include="Serilog" />
+  </ItemGroup>
+
+</Project>

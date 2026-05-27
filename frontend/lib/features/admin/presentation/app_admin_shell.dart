@@ -5,9 +5,8 @@ import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 /// Admin console shell. NavigationRail on >= 600 viewports, modal
-/// drawer below. Wraps the four admin pages (Quests / Players /
-/// Energy / Audit). Sign-out clears the admin token store and goes
-/// back to /admin/login; the player session is untouched.
+/// drawer below. Wraps admin module pages. Sign-out clears the admin token
+/// store and goes back to /admin/login; the player session is untouched.
 class AppAdminShell extends StatefulWidget {
   const AppAdminShell({
     required this.child,
@@ -71,6 +70,12 @@ class _AppAdminShellState extends State<AppAdminShell> {
       icon: Icons.diamond_outlined,
       selectedIcon: Icons.diamond,
       route: '/admin/diamond',
+    ),
+    _AdminDestination(
+      label: 'Market',
+      icon: Icons.storefront_outlined,
+      selectedIcon: Icons.storefront,
+      route: '/admin/market',
     ),
     _AdminDestination(
       label: 'Audit',

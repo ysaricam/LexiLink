@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>LexiLink.Modules.Market.Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\LexiLink.Modules.Market.Domain.csproj" />
+    <ProjectReference Include="..\..\..\Common\Application\LexiLink.Common.Application.csproj" />
+    <ProjectReference Include="..\..\Diamond\Application\LexiLink.Modules.Diamond.Application.csproj" />
+    <ProjectReference Include="..\..\Energy\Application\LexiLink.Modules.Energy.Application.csproj" />
+    <ProjectReference Include="..\..\Hint\Application\LexiLink.Modules.Hint.Application.csproj" />
+    <ProjectReference Include="..\..\Undo\Application\LexiLink.Modules.Undo.Application.csproj" />
+    <ProjectReference Include="..\..\Reset\Application\LexiLink.Modules.Reset.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" />
+    <PackageReference Include="FluentValidation" />
+  </ItemGroup>
+
+</Project>

@@ -6,9 +6,11 @@ import 'package:lexilink_app/features/admin/presentation/admin_placeholder_page.
 import 'package:lexilink_app/features/admin/presentation/app_admin_shell.dart';
 import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
 import 'package:lexilink_app/features/admin_auth/presentation/admin_login_screen.dart';
+import 'package:lexilink_app/features/admin_market/presentation/admin_market_screen.dart';
 import 'package:lexilink_app/features/categories/presentation/category_selection_screen.dart';
 import 'package:lexilink_app/features/game/presentation/game_screen.dart';
 import 'package:lexilink_app/features/home/presentation/home_screen.dart';
+import 'package:lexilink_app/features/market/presentation/market_screen.dart';
 import 'package:lexilink_app/features/profile/presentation/leaderboard_screen.dart';
 import 'package:lexilink_app/features/profile/presentation/profile_summary_screen.dart';
 import 'package:lexilink_app/features/quests/presentation/quests_screen.dart';
@@ -45,6 +47,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/quests',
       builder: (context, state) => const QuestsScreen(),
+    ),
+    GoRoute(
+      path: '/market',
+      builder: (context, state) => const MarketScreen(),
     ),
     GoRoute(
       path: '/admin/login',
@@ -88,6 +94,33 @@ final appRouter = GoRouter(
         GoRoute(
           path: '/admin/diamond',
           builder: (context, state) => const AdminDiamondPage(),
+        ),
+        GoRoute(
+          path: '/admin/market',
+          redirect: (_, _) => '/admin/market/categories',
+        ),
+        GoRoute(
+          path: '/admin/market/categories',
+          builder: (context, state) => const AdminMarketPage(),
+        ),
+        GoRoute(
+          path: '/admin/market/items',
+          builder: (context, state) => const AdminMarketPage(
+            initialTab: AdminMarketTab.items,
+          ),
+        ),
+        GoRoute(
+          path: '/admin/market/orders',
+          builder: (context, state) => const AdminMarketPage(
+            initialTab: AdminMarketTab.orders,
+          ),
+        ),
+        GoRoute(
+          path: '/admin/market/orders/:playerId',
+          builder: (context, state) => AdminMarketPage(
+            initialTab: AdminMarketTab.orders,
+            initialPlayerId: state.pathParameters['playerId'],
+          ),
         ),
         GoRoute(
           path: '/admin/audit',

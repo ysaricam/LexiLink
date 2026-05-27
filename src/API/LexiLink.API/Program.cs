@@ -17,6 +17,7 @@ using LexiLink.API.Modules.Diamond;
 using LexiLink.API.Modules.Energy;
 using LexiLink.API.Modules.Games;
 using LexiLink.API.Modules.Hint;
+using LexiLink.API.Modules.Market;
 using LexiLink.API.Modules.Operations;
 using LexiLink.API.Modules.Players;
 using LexiLink.API.Modules.Quests;
@@ -29,17 +30,23 @@ using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
+using LexiLink.Modules.Diamond.Application.Configuration.CrossModule;
 using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Diamond.Infrastructure.Configuration;
+using LexiLink.Modules.Energy.Application.Configuration.CrossModule;
 using LexiLink.Modules.Energy.Infrastructure.Configuration;
 using LexiLink.Modules.Games.Application.Configuration.CrossModule;
+using LexiLink.Modules.Hint.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
 using LexiLink.Modules.Hint.Infrastructure.Configuration;
+using LexiLink.Modules.Market.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
 using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Infrastructure.Configuration;
+using LexiLink.Modules.Reset.Application.Configuration.CrossModule;
 using LexiLink.Modules.Reset.Infrastructure.Configuration;
 using LexiLink.Modules.Stats.Infrastructure.Configuration;
+using LexiLink.Modules.Undo.Application.Configuration.CrossModule;
 using LexiLink.Modules.Undo.Infrastructure.Configuration;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -97,6 +104,7 @@ DiamondStartup.Initialize(builder.Services, connectionString);
 HintStartup.Initialize(builder.Services, connectionString);
 UndoStartup.Initialize(builder.Services, connectionString);
 ResetStartup.Initialize(builder.Services, connectionString);
+MarketStartup.Initialize(builder.Services, connectionString);
 builder.Services.Configure<AdministrationBootstrapOptions>(
     builder.Configuration.GetSection(AdministrationBootstrapOptions.SectionName));
 builder.Services.AddHostedService<AdministrationBootstrapHostedService>();
@@ -230,6 +238,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     HintStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     UndoStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     ResetStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+    MarketStartup.InitializeCompositionRoot(containerBuilder, connectionString);
 
     containerBuilder.RegisterType<EnergyGuard>()
         .As<IEnergyGuard>()
@@ -245,6 +254,30 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
     containerBuilder.RegisterType<ResetGuard>()
         .As<IResetGuard>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<DiamondGuard>()
+        .As<IDiamondGuard>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<DiamondGrant>()
+        .As<IDiamondGrant>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<EnergyGrant>()
+        .As<IEnergyGrant>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<HintGrant>()
+        .As<IHintGrant>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<UndoGrant>()
+        .As<IUndoGrant>()
+        .InstancePerLifetimeScope();
+
+    containerBuilder.RegisterType<ResetGrant>()
+        .As<IResetGrant>()
         .InstancePerLifetimeScope();
 
     containerBuilder.RegisterType<AdminLookup>()
@@ -310,6 +343,7 @@ app.MapAdminHintEndpoints();
 app.MapAdminUndoEndpoints();
 app.MapAdminResetEndpoints();
 app.MapAdminDiamondEndpoints();
+app.MapAdminMarketEndpoints();
 app.MapAdminPlayerEndpoints();
 app.MapAdminContentEndpoints();
 app.MapCategoryEndpoints();
@@ -322,6 +356,7 @@ app.MapHintEndpoints();
 app.MapUndoEndpoints();
 app.MapResetEndpoints();
 app.MapDiamondEndpoints();
+app.MapMarketEndpoints();
 app.MapQuestEndpoints();
 app.MapOperationsEndpoints();
 

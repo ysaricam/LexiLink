@@ -4,90 +4,149 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-27 (Sprint D closed — Diamond module + Quest 5-reward delivered).
+> Last updated: 2026-05-27 (Sprint M closed — Market module delivered).
 
 ---
 
 ## Active Sprint
 
-**Sprint D — Diamond Module + Quest 5-Reward — closed.** D1-D8
-delivered Diamond end-to-end: backend bounded context, lazy init from
-`PlayerRegisteredIntegrationEvent`, destructive Quest reward reshape
-from 4 to 5 reward fields, Diamond reward delivery through
-`QuestClaimedIntegrationEvent`, admin set/grant/reset + player/admin
-GET endpoints, audit projection, frontend Diamond badge/admin console,
-5-reward quest UI, tests, manual verification, and docs. Local DbUp
-migration `quests/060_ExpandQuestRewardsWithDiamond.sql` has been
-applied.
+**Sprint M — Market Module — closed. M1-M8 delivered.** 8 slices
+(M1 → M8) locked in `ROADMAP.md > Sprint M`. Ships the
+**Market** bounded context — single module with 3 aggregates
+(`Category`, `ShopItem`, `PurchaseOrder`) where players spend
+Diamond to top up Energy / Hint / Undo / Reset inventories.
+First module that synchronously charges Diamond at runtime —
+introduces **6 new sync gateway contracts** (`IDiamondGuard`,
+`IDiamondGrant`, `IEnergyGrant`, `IHintGrant`, `IUndoGrant`,
+`IResetGrant`) and a **saga-light compensating refund** when the
+grant call fails after Diamond is already debited. Categories
+carry an optional `VisibilityWindow` for limited-time campaigns;
+SKUs carry optional `Promotion` (PromoPrice + window) plus
+`MaxStock` (RowVersion concurrency) and per-player limits
+(`Lifetime / Daily / PerPromo`). `ItemType.Diamond` reserved in
+the enum but **not purchasable** via Diamond currency in v1 —
+forward-compat hook for the future IAP sprint.
 
-Final quality gate: **502 .NET tests + 107 Flutter tests green**.
-`flutter analyze` still reports only unrelated pre-existing
-info-level warnings.
+**Locked decisions (excerpt; full table in ROADMAP):**
+
+- **3 aggregates, 1 module.** `Category` + `ShopItem` +
+  `PurchaseOrder` all live in `Modules/Market/`. Catalog vs
+  order split as separate modules is rejected as over-decomposition
+  for this scope.
+- **Sync orchestration, not eventual consistency.** Buy command
+  charges diamond and grants the target inventory inside a single
+  HTTP request via sync gateways. On grant failure, compensating
+  `IDiamondGrant.GrantAsync` refunds the diamond and rethrows.
+- **Idempotency at DB level.** `PurchaseOrder` carries an
+  `IdempotencyKey`; unique index on `(PlayerId, IdempotencyKey)`
+  is the safety net. Pre-check SELECT gives friendly duplicate
+  responses.
+- **Optimistic concurrency on stock.** `ShopItem.RowVersion`
+  token; the loser of a race fails loudly. Frontend treats the
+  failure as "sold out" + refresh.
+- **`PurchaseOrder` append-only.** No update / no delete. Manual
+  refunds are recorded as separate Grant/Consume calls on the
+  affected inventory + diamond modules — each audited
+  independently.
+- **At most one Promotion per item.** No promo stacking; admin
+  policy decides which Promotion is live.
+
+**Current delivery note:** M1 added `Modules/Market` with
+Domain/Application/Infrastructure/Tests/IntegrationTests projects,
+the 3 aggregate foundations, VOs/enums/rules/events/repositories,
+EF mappings, `market` DbUp schema/tables/outbox, Autofac Startup
++ UnitOfWork + DomainEventsDispatcher + Logging/Validation/UoW
+decorator chain, API host startup registration, sln registration,
+Market unit/integration smoke tests, and ArchitectureTest coverage.
+M2 added 6 cross-module sync gateway contracts:
+`IDiamondGuard`, `IDiamondGrant`, `IEnergyGrant`, `IHintGrant`,
+`IUndoGrant`, `IResetGrant`; API host adapters translate them to
+existing module commands (`ConsumePlayerDiamondCommand`,
+`GrantDiamondCommand`, `GrantEnergyCommand`, `GrantHintCommand`,
+`GrantUndoCommand`, `GrantResetCommand`). `Market.Application`
+now references the 5 public Application contract surfaces needed
+by M3, while ArchTests keep domains/infrastructure and module
+internals forbidden. M3 added `BuyShopItemCommand`, player endpoint
+`POST /market/items/{id}/buy`, idempotency replay, effective price
+calculation, stock/per-player/category checks, Diamond debit,
+target inventory grant, compensating Diamond refund on grant
+failure, `PurchaseCompletedIntegrationEvent`, and Market outbox
+notification mapping. M4 added admin Category + ShopItem CRUD
+commands/endpoints, `IAdminCommand` audit metadata, Market's
+per-module admin audit decorator, `MarketAdminActionPerformedNotification`,
+and the granular `Administration.IntegrationEvents` infrastructure
+allow. M5 added player GETs (`/market/categories`, `/market/items/{id}`,
+`/market/orders/me`) and admin GETs (`/admin/market/categories`,
+`/admin/market/items`, `/admin/market/items/{id}`,
+`/admin/market/orders/{playerId}`) backed by Dapper read models.
+M6 added the player Market frontend (`/market`), HomeScreen Market
+entry, buy confirmation flow, post-buy badge refresh hooks, and the
+admin Market console (`/admin/market/categories`,
+`/admin/market/items`, `/admin/market/orders`,
+`/admin/market/orders/:playerId`) with category/item forms and
+per-player order lookup. M7 closed tests + operator manual
+verification for Market. During manual admin-console testing, the
+ShopItem form was tightened: Normal vs Promotion item mode is now
+explicit, Normal hides campaign-only fields, Promotion start/end use
+calendar pickers, and Save is disabled until required/valid fields
+are complete.
+M8 closed the sprint docs: `progress.md`, `GLOSSARY.md`,
+`ROADMAP.md`, `activeContext.md`, `frontendActiveContext.md`, and
+`frontendProgress.md`.
+Quality gate run this session: Market unit tests **6/6**, Market
+integration smoke **1/1**, ArchitectureTests **61/61**, Flutter
+tests **107/107**. `flutter analyze` has no M7-specific findings;
+it still reports pre-existing info-level warnings in older frontend
+files.
+
+**Slice cadence mirrors Sprint UR / Sprint D** (8 slices: domain
+foundation → sync gateways → buy orchestration → admin CRUD →
+GETs → frontend → tests/manual verify → docs close-out). Full
+slice table + architecture notes + deliberate non-actions in
+`ROADMAP.md > Sprint M`.
 
 ### Previous Sprint Context
 
-**Sprint UR — Undo + Reset Modules + Quest 4-Reward — closed
-end-to-end.** Sekiz slice (UR1 → UR8) 2026-05-26 günü dört commit
-ile teslim edildi: UR1-UR5 bulk (`ba9e42d`), UR6 admin
-(`725c7d2`), UR7 frontend (`277fcad`), UR8 admin IT + docs (bu
-oturumun son commit'i). Game aggregate'inden `UndoAllowance` +
-`ResetAllowance` VO'ları + ilgili rule'lar silindi; `_undosUsed` +
-`_resetsUsed` plain int counter olarak istatistik için kaldı. Her
-`Game.UseUndo()` ve `Game.ResetToStart()` çağrısı doğrudan
-`IUndoGuard` / `IResetGuard` sync gateway'ine gider — Hint'tekinden
-farklı olarak hiç branching yok. `QuestReward` 4 alana çıkıldı
-(`Energy + Hint + Undo + Reset`); 4 outbox consumer her biri kendi
-reward'ında > 0 guard'ı yapar. Final quality gate **464 .NET +
-103 Flutter tests pass**.
+**Sprint D — Diamond Module + Quest 5-Reward — closed
+2026-05-27, commit `30b3971` (single Sprint D commit covering
+D1-D8 + the hint algorithm reshape found during D7 manual
+verification).** Delivered the 5th inventory module — Diamond,
+the in-game currency Sprint M will spend against. Mechanically
+mirrors the Hint/Undo/Reset template (lazy init from
+`PlayerRegisteredIntegrationEvent`, per-module Autofac module,
+outbox, decorator chain) but **without a sync gateway** — Sprint
+D explicitly deferred sync spend to a later sprint. Sprint M is
+that sprint and introduces `IDiamondGuard` + `IDiamondGrant` as
+Diamond's first cross-module sync contracts.
 
-**Tasarım kararları (kilitli):**
+The same commit folded in two gameplay fixes triggered by D7
+testing:
 
-- **İki ayrı modül** (Hint şablonunun birebir kopyası). 10 yeni
-  csproj, 2 yeni schema, 2 yeni outbox tablosu.
-- **Per-game free quota tamamen kaldırılır.** `UndoAllowance` +
-  `ResetAllowance` VO'ları ve ilgili rule'ları silinir;
-  `UndoCommandHandler` + `ResetCommandHandler` her çağrıda domain
-  mutation'dan önce `IUndoGuard` / `IResetGuard` invoke eder.
-  **Hint'ten farkı:** branching yok (`HasFreeXRemaining` Game'de yok).
-- **`Game._undosUsed` + `_resetsUsed` int counter olarak kalır**
-  (istatistik + scoring). Allowance VO + rule yok.
-- **QuestReward 4 alan** (`EnergyReward, HintReward, UndoReward,
-  ResetReward`). `QuestRewardMustHaveAtLeastOnePositiveRule` 4
-  alanı kapsayacak şekilde genişler. Destructive DbUp ALTER.
-- **4 outbox consumer** (her reward türü için bir tane), her biri
-  kendi reward'ında > 0 guard'ı yapar. İki yeni reverse cross-
-  module event dependency (`Undo.Application →
-  Quests.IntegrationEvents`, `Reset.Application →
-  Quests.IntegrationEvents`).
-- **Player inventory başlangıç stoğu 0** (Hint defaultu).
-  `Undo:InitialBalance` + `Reset:InitialBalance` configurable.
-- **Slice ordering:** önce `Game.cs` reshape (UR1), sonra modüller
-  ve sync gateway. UR4 itibarıyla API host guard adapter'ları gerçek
-  module consume command'lerine bağlı.
+- **`StandardGameConfigurationService.ResolveHints() == 0`** —
+  per-game free hint allowance dropped to zero. Every hint now
+  routes through `IHintGuard` and the player's inventory; the
+  legacy `HasFreeHintRemaining` branch in `UseHintCommandHandler`
+  is kept for tests but the production path always falls through
+  to the gateway.
+- **`Puzzle.RequestHint` rewritten with live BFS over
+  `LinkNeighborResolver`.** Previous implementation returned
+  `_optimalPath[0]` for off-path positions, which gave a useless
+  hint pointing back to start. New flow does a fresh BFS from
+  `currentLinkId` to `TargetLinkId`; the **first hop** of that
+  path is the hint. `LinkNeighborResolver` returns outgoing link
+  ids **sorted** so BFS is deterministic and matches
+  `OptionsHandler`'s 6-option panel ordering.
 
-**Slice listesi:**
+Quality gate at close: **502 .NET tests + 107 Flutter tests
+green**. Local DbUp migration
+`quests/060_ExpandQuestRewardsWithDiamond.sql` applied.
+Detailed Sprint D slice notes, architecture rationale, and
+deliberate non-actions remain in `ROADMAP.md > Sprint D` and
+`progress.md`.
 
-| Slice | İçerik |
-|-------|--------|
-| UR1 ✅ | Game.cs destructive reshape (Allowance VO'lar + rule sil, int counter ekle, IUndoGuard/IResetGuard contract'ları + UseUndoWithExternalInventory + ResetWithExternalInventory + Games.IT stub'ları + no-op API host adapter'ları). |
-| UR2 ✅ | İki modül foundation (Hint scaffolding x2). |
-| UR3 ✅ | Lazy init from PlayerRegistered. |
-| UR4 ✅ | Real IUndoGuard + IResetGuard API host adapter'ları + Games.IT'de Recording*Guard + fall-through integration tests. |
-| UR5 ✅ | Quest 4-reward destructive (QuestDefinition + PlayerQuest + IntegrationEvent reshape + iki yeni consumer + grant commands + DbUp). |
-| UR6 ✅ | Admin Set/Grant/Reset + audit + GET endpoints (`/{undo,reset}/me` + `/admin/players/{id}/{undo,reset}/*`). |
-| UR7 ✅ | Frontend (4 badge HomeScreen, 4 reward quest form, 2 admin console, undo+reset player feature). |
-| UR8 ✅ | Tests + quality gate + manuel verification (4 golden flow) + docs. |
-
-**Manuel verification scope:**
-
-1. Multi-reward quest claim (4 ayrı quest, her biri tek reward türü).
-2. Karma reward quest (tek quest, 4 reward birden, hepsi delivered).
-3. Empty inventory fall-through (admin reset → in-game Undo/Reset
-   blocks).
-4. Admin Set / Grant / Reset her iki console'da audit log doğrulamalı.
-
-Detaylı slice plan, rationale ve trade-off notları `ROADMAP.md >
-Sprint UR — Undo + Reset Modules`.
+Older sprint context (Sprint UR — Undo + Reset Modules, Sprint H
+— Hint module, Sprint Q1 — Quests redesign, etc.) lives in
+`progress.md`.
 
 ### Recently closed (Sprint UR session, 2026-05-26)
 
@@ -610,50 +669,33 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Sprint D kapandı.** Detaylı teslim notları `progress.md > Sprint D`
-ve frontend detayı `frontendProgress.md > Slice D5` içinde. D1-D8
-durumu:
+**Sprint M kapandı.** Market module M1-M8 delivered. Operator
+manual verification passed after exercising the Market/admin flows;
+one frontend usability revision was folded into M7: admin ShopItem
+creation now separates Normal vs Promotion item setup, uses calendar
+pickers for Promotion Start/End, and blocks Save until required fields
+are valid.
 
-- **D1 ✅** Diamond module foundation + DB schema/outbox +
-  ArchitectureTest/API composition wiring.
-- **D2 ✅** Lazy init from `PlayerRegisteredIntegrationEvent` +
-  idempotent ensure command.
-- **D3 ✅** Quest reward 4→5 destructive reshape +
-  `DiamondReward` outbox delivery consumer.
-- **D4 ✅** Diamond admin operations + GET endpoints + audit
-  projection.
-- **D5 ✅** Frontend Diamond player badge/admin console + 5-reward
-  quest form/tile reshape.
-- **D6 ✅** Diamond/Quest/resource/API/frontend test kapsamı tamamlandı.
-  Games.IT free-hint beklentileri yeni modele güncellendi:
-  `ResolveHints() == 0`, her hint `IHintGuard` üzerinden geçer.
-  Tam `scripts/test.sh` yeşil.
-- **D7 ✅** Operator manual verification geçti: single-reward ×5,
-  mixed 5-reward, Diamond admin Set/Grant/Reset + audit, initial
-  balance override, reload/JWT persistence.
-- **D8 ✅** Sprint close docs: progress, glossary, roadmap,
-  activeContext, frontend active/progress.
+M7 doğrulama sonucu:
 
-D6 doğrulama sonucu:
+- **Geçti:** Market unit tests 6/6, Market integration smoke 1/1,
+  ArchitectureTests 61/61, `flutter test` 107/107.
+- **Not:** `flutter analyze` yeni Market bulgusu üretmedi; yalnızca
+  eski frontend dosyalarındaki 12 info-level uyarı duruyor.
+- **Runtime:** Local API `http://127.0.0.1:5099` ready/healthy;
+  Flutter web `http://127.0.0.1:5173` güncel kodla çalışıyor.
 
-- **Geçti:** `./scripts/test.sh` full .NET gate: 502 test.
-  `flutter test`: 106 test.
-- **Not:** `flutter analyze` sadece D dışı/pre-existing 12 info
-  uyarısıyla başarısız; özellikle `game_screen.dart` hâlihazırda kirli
-  olduğu için D6'da dokunulmadı.
-- **Eklendi:** Hint.IT `QuestRewardDeliveryTests` 5-reward
-  `QuestClaimedIntegrationEvent` kapsamı.
-- **Genişletildi:** API.Tests
-  `GetQuestsMe_FreshPlayer_LazilyReturnsSeededDaily` artık
-  `undoReward`, `resetReward`, `diamondReward` alanlarını da assert eder.
-- **Güncellendi:** Games.IT `UseHint` testleri post-UR1 sözleşmesine
-  hizalandı; ilk hint dahil her hint `IHintGuard` çağırır ve
-  `HintsUsed == 0` kalır.
+M8 docs close-out:
+
+- `ROADMAP.md > Sprint M` marked closed.
+- `progress.md` records M1-M8 delivery notes.
+- `GLOSSARY.md` records Market aggregates, value objects, rules,
+  sync gateways, buy saga, integration event, and repositories.
+- `frontendActiveContext.md` and `frontendProgress.md` record the
+  Market player/admin frontend slice and M7 usability revision.
 
 Next action candidates:
 
-- **Shop modülü.** Diamond spend path, reward catalog pricing, future
-  IAP/ad reward integration.
 - **Game completion → Diamond bonus.** New reverse event dependency:
   `Diamond.Application → Games.IntegrationEvents.GameCompletedIntegrationEvent`.
 - **Analyzer cleanup.** Pre-existing Flutter info warnings if the

@@ -47,7 +47,9 @@ public class DomainModelTests : ArchitectureTestBase
             "PlayerDiamondInventory",
             "PlayerHintInventory",
             "PlayerUndoInventory",
-            "PlayerResetInventory"
+            "PlayerResetInventory",
+            "ShopItem",
+            "PurchaseOrder"
         };
 
         var failingTypes = ModuleAssemblies

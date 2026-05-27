@@ -55,6 +55,10 @@
     <ProjectReference Include="..\..\Modules\Reset\Domain\LexiLink.Modules.Reset.Domain.csproj" />
     <ProjectReference Include="..\..\Modules\Reset\Application\LexiLink.Modules.Reset.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Reset\Infrastructure\LexiLink.Modules.Reset.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Market\Domain\LexiLink.Modules.Market.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Market\IntegrationEvents\LexiLink.Modules.Market.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Modules\Market\Application\LexiLink.Modules.Market.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Market\Infrastructure\LexiLink.Modules.Market.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

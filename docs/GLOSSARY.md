@@ -1,7 +1,7 @@
 # GLOSSARY.md
 
 Ubiquitous language for the LexiLink Games, Players, Energy, Quests,
-Hint, Undo, Reset, and Diamond modules. Every term below appears in code as a
+Hint, Undo, Reset, Diamond, and Market modules. Every term below appears in code as a
 class, interface, enum, or namespace; this file gives it a
 one-paragraph definition so a new contributor can read the code
 without spelunking.
@@ -40,7 +40,41 @@ Catalog entry describing how a quest is issued and rewarded. Aggregate root iden
 A player's persistent hint account in the Hint module. Aggregate root, identified by `PlayerHintInventoryId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Sprint H ships this as Energy's stripped-down sibling: a single `int _balance`, no maximum cap, no refill timer (hints are earned, not regenerated). Lifecycle: `InitializeFor(playerId, initialBalance)` (called by `EnsurePlayerHintInventoryExistsCommand` after a `PlayerRegisteredIntegrationEvent` — `Hint:InitialBalance` config drives the seed; default 0). Behavior: `Consume(amount, now)` — checks `HintAmountMustBePositiveRule` then `HintBalanceMustBeSufficientRule`, decrements, emits `PlayerHintConsumedDomainEvent`. `GrantBonus(amount, now)` — bonus reward path; adds without checking max (over-cap balance is *intentional* and the parallel to `PlayerEnergy.GrantBonus`). Invoked from two places: `Hint.Application/QuestClaimedIntegrationEventHandler` when a claimed quest carries `HintReward > 0`, and `GrantBonusHintCommand` for admin grants. `AdminSet(newBalance, now)` snaps to exact value (must be ≥0); `AdminReset(now)` snaps to zero. Sprint D removed the last per-game free hint quota from Games: first hint included, every in-game hint goes through `IHintGuard` and consumes this inventory before Game mutates. Emits `PlayerHintInventoryInitializedDomainEvent`, `PlayerHintConsumedDomainEvent`, `PlayerHintGrantedDomainEvent`, `PlayerHintAdminSetDomainEvent`, `PlayerHintAdminResetDomainEvent`.
 
 ### PlayerDiamondInventory — `Modules/Diamond/Domain/PlayerDiamondInventories/PlayerDiamondInventory.cs`
-A player's persistent Diamond currency account in the Diamond module. Aggregate root, identified by `PlayerDiamondInventoryId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Sprint D ships this as a Hint/Undo/Reset-style inventory: single `int _balance`, no maximum cap, no refill timer. Lifecycle: `InitializeFor(playerId, initialBalance)`; `Diamond:InitialBalance` defaults to 0 and is wired through `PlayerRegisteredIntegrationEvent` via `EnsurePlayerDiamondInventoryExistsCommand`. Behavior: `Consume(amount, now)` supports future spend paths, checks `DiamondAmountMustBePositiveRule` and `DiamondBalanceMustBeSufficientRule`, and decrements. `GrantBonus(amount, now)` is the quest/admin earn path and adds without a cap. `AdminSet(newBalance, now)` snaps to an exact non-negative value; `AdminReset(now)` snaps to zero. Diamond has no `IDiamondGuard` in Games: it is currency for future Shop/IAP, not a gameplay invariant. Emits `PlayerDiamondInventoryInitializedDomainEvent`, `PlayerDiamondConsumedDomainEvent`, `PlayerDiamondGrantedDomainEvent`, `PlayerDiamondAdminSetDomainEvent`, `PlayerDiamondAdminResetDomainEvent`.
+A player's persistent Diamond currency account in the Diamond module. Aggregate root, identified by `PlayerDiamondInventoryId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Sprint D ships this as a Hint/Undo/Reset-style inventory: single `int _balance`, no maximum cap, no refill timer. Lifecycle: `InitializeFor(playerId, initialBalance)`; `Diamond:InitialBalance` defaults to 0 and is wired through `PlayerRegisteredIntegrationEvent` via `EnsurePlayerDiamondInventoryExistsCommand`. Behavior: `Consume(amount, now)` supports spend paths, checks `DiamondAmountMustBePositiveRule` and `DiamondBalanceMustBeSufficientRule`, and decrements. `GrantBonus(amount, now)` is the quest/admin earn path and adds without a cap. `AdminSet(newBalance, now)` snaps to an exact non-negative value; `AdminReset(now)` snaps to zero. Sprint M adds `IDiamondGuard` + `IDiamondGrant` in Diamond.Application for Market checkout; Games still has no Diamond guard because Diamond is not a gameplay invariant. Emits `PlayerDiamondInventoryInitializedDomainEvent`, `PlayerDiamondConsumedDomainEvent`, `PlayerDiamondGrantedDomainEvent`, `PlayerDiamondAdminSetDomainEvent`, `PlayerDiamondAdminResetDomainEvent`.
+
+### Market Category — `Modules/Market/Domain/Category.cs`
+Admin-managed grouping for Market SKUs, separate from the Games
+`Category` aggregate. Holds `_name`, `_sortOrder`, optional `_icon`,
+`_isActive`, and optional `VisibilityWindow`. Lifecycle: `Create`,
+`Update`, `Deactivate`. `IsVisibleAt(now)` combines active state and
+the optional visibility window; when a Market category is closed, its
+SKUs are hidden from player catalog reads and unbuyable. Emits
+`MarketCategoryCreatedDomainEvent`, `MarketCategoryUpdatedDomainEvent`,
+and `MarketCategoryDeactivatedDomainEvent`.
+
+### ShopItem — `Modules/Market/Domain/ShopItem.cs`
+SKU sold for Diamond in the Market module. Aggregate root. Holds
+`CategoryId`, `ItemType`, `Quantity`, base `Price`, optional
+`Promotion`, optional `MaxStock`, `SoldCount`, optional
+`PerPlayerLimit`, `PerPlayerLimitWindow`, active state, and an EF
+optimistic concurrency `Version`. `EffectivePriceAt(now)` returns the
+promo price only while the promotion window is open; otherwise it
+returns the base price. `RecordPurchase()` increments `SoldCount` and
+bumps the concurrency token. `ItemType.Diamond` exists as a
+forward-compat hook for IAP but is rejected by the v1 Diamond-spend buy
+path. Emits `ShopItemCreatedDomainEvent`,
+`ShopItemUpdatedDomainEvent`, and `ShopItemDeactivatedDomainEvent`.
+
+### PurchaseOrder — `Modules/Market/Domain/PurchaseOrder.cs`
+Append-only purchase log for a completed Market checkout. Aggregate
+root. Captures `PlayerId`, `ShopItemId`, `ItemType`, `Quantity`,
+`DiamondsPaid`, `PurchasedAt`, and `IdempotencyKey`. The database
+enforces a unique `(PlayerId, IdempotencyKey)` index; the buy handler
+does a friendly pre-check, but the unique index is the concurrency
+safety net. Purchase orders are never updated or deleted; manual
+refunds are modeled as separate inventory/Diamond admin operations.
+Emits `PurchaseOrderCreatedDomainEvent`, mapped to
+`PurchaseCompletedIntegrationEvent`.
 
 ### PlayerUndoInventory — `Modules/Undo/Domain/PlayerUndoInventories/PlayerUndoInventory.cs`
 A player's persistent undo account in the Undo module. Aggregate root,
@@ -122,6 +156,27 @@ Encapsulates `Max` + `Taken` plus the `Step()`, `UndoStep()`, `Reset()` methods 
 
 ### EnergyRefillCalculator — `Modules/Energy/Domain/PlayerEnergies/EnergyRefillProjection.cs`
 `internal static` pure-math helper. `Project(current, max, lastRefilledOn, intervalSeconds, now)` returns an `EnergyRefillProjection(currentAmount, lastRefilledOn)` after applying time-elapsed refills. Capped at max; partial intervals are preserved (the leftover seconds carry into the next refill). Used by both `PlayerEnergy.RechargeBasedOnElapsedTime` (write path) and `GetPlayerEnergyQueryHandler` (read path, via `InternalsVisibleTo`) so the math has one source of truth.
+
+### VisibilityWindow — `Modules/Market/Domain/VisibilityWindow.cs`
+Optional value object on Market `Category`. Holds `StartsAt` and
+`EndsAt`; `WindowMustBeOrderedRule` enforces start before end.
+`IsOpenAt(now)` is inclusive at start and exclusive at end. Null means
+always visible.
+
+### Promotion — `Modules/Market/Domain/Promotion.cs`
+Optional value object on `ShopItem`. Holds `PromoPrice`, `StartsAt`,
+and `EndsAt`. `PromotionPriceMustBeLessThanPriceRule` ensures the
+promo price is below the base price, and `WindowMustBeOrderedRule`
+guards the window. There is at most one promotion per item; no promo
+stacking exists in v1.
+
+### ItemType + PerPlayerLimitWindow — `Modules/Market/Domain/`
+`ItemType` enum values: `Energy`, `Hint`, `Undo`, `Reset`, `Diamond`.
+Only the first four are purchasable via Diamond in v1. `Diamond` is
+reserved for future Apple/Google IAP receipt-backed Diamond bundles.
+`PerPlayerLimitWindow` enum values: `Lifetime`, `Daily`, `PerPromo`;
+the buy handler counts prior `PurchaseOrder` rows in the selected
+window before allowing a purchase.
 
 ---
 
@@ -274,7 +329,23 @@ All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which exte
 ### PlayerDiamondInventory (3) — `Diamond/Domain/PlayerDiamondInventories/Rules/`
 - `DiamondAmountMustBePositiveRule` — `Consume(amount)` and `GrantBonus(amount)` require `amount > 0`.
 - `DiamondAmountMustBeNonNegativeRule` — `InitializeFor(initialBalance)` and `AdminSet(newBalance)` require `≥ 0`.
-- `DiamondBalanceMustBeSufficientRule` — `Consume(amount)` requires `_balance >= amount`; reserved for future spend paths such as Shop checkout.
+- `DiamondBalanceMustBeSufficientRule` — `Consume(amount)` requires `_balance >= amount`; this is the rule Market checkout hits through `IDiamondGuard`.
+
+### Market (14) — `Market/Domain/Rules/`
+- `NameMustNotBeEmptyRule`
+- `NameMustNotExceedMaxLengthRule`
+- `IconMustNotExceedMaxLengthRule`
+- `PositiveAmountRule`
+- `NonNegativeAmountRule`
+- `WindowMustBeOrderedRule`
+- `PromotionPriceMustBeLessThanPriceRule`
+- `MaxStockMustBePositiveRule`
+- `ShopItemMustBeActiveRule`
+- `ShopItemMustHaveStockRemainingRule`
+- `CategoryMustBeVisibleNowRule`
+- `PlayerMustNotExceedShopItemLimitRule`
+- `DiamondSkusNotPurchasableInV1Rule`
+- `IdempotencyKeyMustBeUniqueForPlayerRule`
 
 All are `IBusinessRule` and dispatch through `CheckRule(...)`, throwing `BusinessRuleValidationException` on failure.
 
@@ -338,6 +409,26 @@ adapter (`LexiLink.API/CrossModule/ResetGuard.cs`) calls
 1))`; insufficient inventory propagates `ResetBalanceMustBeSufficientRule`
 and Game does not mutate.
 
+### Market sync grants — `*/Application/Configuration/CrossModule/`
+Sprint M adds six synchronous contracts used by Market checkout:
+`IDiamondGuard` debits Diamond, `IDiamondGrant` refunds Diamond, and
+`IEnergyGrant`, `IHintGrant`, `IUndoGrant`, `IResetGrant` grant the
+purchased inventory type. Each contract lives in the owning inventory
+module's Application public surface; API host adapters translate calls
+to module commands. Market.Application references only these public
+contract assemblies, and ArchitectureTests keep domains/infrastructure
+and module internals isolated.
+
+### BuyShopItem saga — `Modules/Market/Application/ShopItems/BuyShopItem/`
+Synchronous checkout command. Flow: load `ShopItem` + Market
+`Category`, replay existing order by `(PlayerId, IdempotencyKey)` if
+present, validate item/category/stock/per-player limits and
+`ItemType.Diamond` rejection, compute effective price, debit Diamond
+through `IDiamondGuard`, grant the target inventory through the
+matching `IXxxGrant`, then record `PurchaseOrder` and increment stock.
+If target grant throws after Diamond is debited, the handler calls
+`IDiamondGrant` to compensate and rethrows the original failure.
+
 ### IQuestCatalog — `Modules/Quests/Domain/PlayerQuests/IQuestCatalog.cs`
 Resolves a `QuestDefinitionId` to its `QuestDefinition` (returns null for deactivated entries so issuance/claim handlers can no-op). Implementation in Quests.Infrastructure (`QuestCatalog`) reads through `IQuestDefinitionRepository`. Registered scoped in `QuestsAutofacModule`.
 
@@ -346,6 +437,14 @@ The Sprint Q1 sync gateway. Contract lives in **Quests.Application** so Quests d
 
 ### QuestClaimedIntegrationEvent — `Modules/Quests/IntegrationEvents/QuestClaimedIntegrationEvent.cs`
 Public contract emitted by Quests' outbox after `PlayerQuestClaimedDomainEvent` lands. Sprint H added the `(EnergyReward, HintReward)` pair; Sprint UR widened the payload to four reward fields; Sprint D widened it to all five reward fields (`EnergyReward, HintReward, UndoReward, ResetReward, DiamondReward`) plus `PlayerId`, `PlayerQuestId`, `QuestDefinitionId`. Consumed by **five** independent handlers — Energy.Application, Hint.Application, Undo.Application, Reset.Application, and Diamond.Application each implement `QuestClaimedIntegrationEventHandler` and skip when their own reward field == 0, otherwise dispatching the matching `Grant*Command`. This is LexiLink's reverse cross-module event pattern: five modules carry granular ArchTest allows on `Quests.IntegrationEvents`. Quests.Domain/Application/Infrastructure remain forbidden from any consumer module.
+
+### PurchaseCompletedIntegrationEvent — `Modules/Market/IntegrationEvents/PurchaseCompletedIntegrationEvent.cs`
+Public contract emitted by Market's outbox after
+`PurchaseOrderCreatedDomainEvent` lands. Carries `PurchaseOrderId`,
+`PlayerId`, `ShopItemId`, `ItemType`, `Quantity`, `DiamondsPaid`,
+`PurchasedAt`, and `IdempotencyKey`. It is the raw downstream stream
+for future BI/notifications; admin audit is intentionally separate and
+only tracks admin CRUD, not player purchases.
 
 ---
 
@@ -363,6 +462,9 @@ Public contract emitted by Quests' outbox after `PlayerQuestClaimedDomainEvent` 
 | `IPlayerUndoInventoryRepository` | `PlayerUndoInventory` | `GetByIdAsync`, `AddAsync` |
 | `IPlayerResetInventoryRepository` | `PlayerResetInventory` | `GetByIdAsync`, `AddAsync` |
 | `IPlayerDiamondInventoryRepository` | `PlayerDiamondInventory` | `GetByIdAsync`, `AddAsync` |
+| `IMarketCategoryRepository` | `Market.Category` | `GetByIdAsync`, `AddAsync` |
+| `IShopItemRepository` | `ShopItem` | `GetByIdAsync`, `AddAsync` |
+| `IPurchaseOrderRepository` | `PurchaseOrder` | `GetByPlayerAndIdempotencyKeyAsync`, `CountByPlayerAndShopItemAsync`, `AddAsync` |
 
 No `Update` / `Delete` methods — aggregates mutate in place; `IUnitOfWork.CommitAsync()` persists changes through EF Core's change tracker. Soft-delete uses state methods on the aggregate (see SKILLS.md rule #12).
 

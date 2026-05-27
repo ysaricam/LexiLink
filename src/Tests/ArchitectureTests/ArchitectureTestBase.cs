@@ -55,6 +55,11 @@ public abstract class ArchitectureTestBase
     protected static readonly Assembly ResetApplicationAssembly = typeof(Modules.Reset.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly ResetInfrastructureAssembly = typeof(Modules.Reset.Infrastructure.ResetContext).Assembly;
 
+    protected static readonly Assembly MarketDomainAssembly = typeof(Modules.Market.Domain.ShopItem).Assembly;
+    protected static readonly Assembly MarketIntegrationEventsAssembly = typeof(Modules.Market.IntegrationEvents.PurchaseCompletedIntegrationEvent).Assembly;
+    protected static readonly Assembly MarketApplicationAssembly = typeof(Modules.Market.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly MarketInfrastructureAssembly = typeof(Modules.Market.Infrastructure.MarketContext).Assembly;
+
     protected static readonly Assembly[] ModuleAssemblies =
     [
         GamesDomainAssembly,
@@ -85,7 +90,10 @@ public abstract class ArchitectureTestBase
         UndoInfrastructureAssembly,
         ResetDomainAssembly,
         ResetApplicationAssembly,
-        ResetInfrastructureAssembly
+        ResetInfrastructureAssembly,
+        MarketDomainAssembly,
+        MarketApplicationAssembly,
+        MarketInfrastructureAssembly
     ];
 
     protected static void AssertArchTestResult(TestResult result)

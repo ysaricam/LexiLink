@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-27 (Sprint D frontend slice D5 closed; D7 manual verification completed)
+> Last updated: 2026-05-27 (Sprint M frontend slice M6 closed; M7 manual verification completed)
 
 ---
 
@@ -113,19 +113,19 @@ ayrimidir.
 
 ## Next Action
 
-**Sprint D frontend leg kapandı.** Slice D5 Diamond player badge,
-admin Diamond console, `/admin/diamond` navigation, and 5-reward Quest
-UI shipped. D7 manual verification 2026-05-27'de geçildi: single
-reward quest claim ×5, mixed 5-reward claim, Diamond admin
-Set/Grant/Reset + audit, `Diamond:InitialBalance` override, and
-Diamond badge reload/JWT persistence. Current Flutter gate:
-107/107 test pass; `flutter analyze` only pre-existing info-level
-warnings.
+**Sprint M frontend leg kapandı.** Slice M6 player Market shop,
+HomeScreen Market entry, and admin Market console shipped. M7 manual
+verification 2026-05-27'de geçildi; bu sırada admin ShopItem formu
+revize edildi: Normal vs Promotion item ayrımı, Promotion Start/End
+calendar picker, ve zorunlu/valid alanlar tamamlanmadan Save disabled.
+Current Flutter gate: 107/107 test pass; `flutter analyze` only
+pre-existing info-level warnings.
 
 Sıradaki aday slice'lar (operator backlog'undan, sıra yok henüz):
-- **Shop / Diamond spend ekranı.** Diamond artık kalıcı currency;
-  katalog fiyatları, purchase/checkout, ad reward/IAP sleeve doğal
-  sonraki adım.
+- **Game completion → Diamond bonus.** Diamond spend path artık Market
+  ile var; earn tarafında game completion bonus küçük bağımsız aday.
+- **Market polish.** Ürün görselleri, kampanya vitrinleri, sold-out
+  yenileme davranışı ve admin calendar/date-time precision pass'i.
 - **Player profili genişleme.** Tüm rozet türlerini (energy +
   hint + undo + reset + diamond + level + streak) birleşik bir status widget'ında
   toplamak.

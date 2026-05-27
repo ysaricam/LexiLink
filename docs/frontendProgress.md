@@ -5,6 +5,56 @@ yeniden yazilmaz.
 
 ---
 
+## Slice M6 — Market player shop + admin console ✅ closed (2026-05-27, working tree)
+
+Sprint M frontend leg. Added the Diamond-spend Market player shop,
+admin Market console, routes, and HomeScreen entry. Quality gate after
+M7 follow-up: **107/107 Flutter tests pass**. `flutter analyze` still
+reports only pre-existing info-level warnings outside the Market slice.
+
+### Player Market
+
+- `features/market/`: catalog DTOs, `MarketRepository`,
+  `MarketCubit`, and `/market` screen.
+- Player shop renders category tabs, item tiles, Diamond price,
+  promotion badge, stock remaining, and per-player remaining.
+- Buy flow uses a confirmation dialog, posts an idempotent buy request,
+  shows success feedback, and reloads the catalog.
+- HomeScreen links to Market.
+- After a successful buy, the screen refreshes Diamond plus the
+  affected inventory badge when the parent cubits are available.
+
+### Admin Market
+
+- `features/admin_market/`: category/item/order DTOs,
+  `AdminMarketRepository`, `AdminMarketCubit`, and
+  `AdminMarketScreen`.
+- Category admin supports list, create/edit, visibility window fields,
+  and deactivate.
+- Item admin supports list, create/edit, Promotion, stock,
+  per-player limits, and deactivate.
+- Orders admin supports per-player purchase lookup.
+- Routes added:
+  `/admin/market/categories`, `/admin/market/items`,
+  `/admin/market/orders`, `/admin/market/orders/:playerId`.
+
+### M7 usability revision
+
+- Admin ShopItem creation now separates `Normal` vs `Promotion`
+  setup.
+- Normal item mode hides campaign-only fields.
+- Promotion Start/End use calendar pickers instead of free-text ISO
+  fields.
+- Save is disabled until required/valid fields are complete; promo
+  price must be lower than base price, and Promotion End must be after
+  Promotion Start.
+
+### Tests / verification
+
+- Existing Flutter regression suite remains green: **107/107**.
+- Market admin form revision was verified during operator manual M7
+  testing.
+
 ## Slice D5 — Diamond feature + quest 5-reward UI ✅ closed (2026-05-27, working tree)
 
 Sprint D frontend leg. Added Diamond as the fifth visible inventory,
