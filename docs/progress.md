@@ -4,6 +4,139 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Sprint P — Payments / In-App Purchase (2026-05-28, closed locally)
+
+Twelfth full-stack sprint. Adds the **Payments** bounded context for
+real-money Apple/Google IAP Diamond bundles. Payments is separate from
+Market: Payments earns Diamond through platform commerce; Market
+spends Diamond on inventory top-ups.
+
+### Slice P8 — Verification/docs close-out (2026-05-28, working tree)
+
+- Re-ran final backend gates after local API startup verification.
+- Re-ran frontend regression suite.
+- Re-ran DbUp migrator against local PostgreSQL; 0 pending scripts.
+- Verified local API readiness: PostgreSQL reachable and 79/79 DbUp
+  scripts applied.
+- Corrected local API startup mode for the Flutter preview: use
+  Development environment with JWT token exchange, not
+  `DevelopmentBearer`, because the frontend stores `/auth/token` JWTs.
+- Updated `activeContext`, `ROADMAP`, `progress`,
+  `frontendActiveContext`, `frontendProgress`, `OPERATIONS`, and
+  `GLOSSARY`.
+- Apple sandbox purchase, Google internal test purchase, real
+  notification cryptographic verification, and native app-kill
+  recovery remain operator-owned credential/store-track checks before
+  production.
+
+Verification:
+
+- Payments unit tests: **20/20**.
+- Payments integration smoke: **1/1**.
+- ArchitectureTests: **64/64**.
+- Full Flutter suite: **113/113**.
+- DbUp migrator re-run: **0 pending scripts**.
+- API readiness: **Healthy**, 79/79 scripts applied.
+
+### Slice P7 — Frontend purchase UI (2026-05-28, working tree)
+
+- Added Flutter `in_app_purchase` dependency.
+- Added `features/payments/` data models, repository, store service,
+  Cubit state machine, and `/payments` screen.
+- Payment catalog loads backend active Diamond products and merges
+  localized store product display data from Apple/Google.
+- Purchase proof from the platform purchase stream is submitted to
+  `POST /payments/iap/verify`; Diamond grant remains backend-owned.
+- iOS transaction finish is gated by backend `CanFinishTransaction`;
+  Android remains backend-owned for consume/acknowledge.
+- Successful granted delivery refreshes the Diamond badge when the
+  parent cubit is available.
+- HomeScreen now has a Diamonds shortcut to `/payments`.
+- Web/unsupported platforms render a safe unavailable state instead
+  of purchase controls.
+
+Verification:
+
+- Payments Flutter tests: **6/6**.
+- Full Flutter suite: **113/113**.
+- `flutter analyze`: no Payments-specific findings; still reports
+  12 pre-existing info-level frontend warnings outside this slice.
+
+### Slice P6 — Notifications/reconciliation (2026-05-28, working tree)
+
+- Added Apple and Google notification endpoint surfaces:
+  `/payments/notifications/apple` and `/payments/notifications/google`.
+- Added `IAppleServerNotificationVerifier` and
+  `IGoogleRealTimeDeveloperNotificationVerifier` contracts plus
+  fail-closed infrastructure shells.
+- Notification command persists raw `PaymentNotification` before
+  processing.
+- Duplicate notification ids replay idempotently and do not reprocess.
+- Verified notification reconciliation can mark matching IAP purchases
+  `Refunded`, `Revoked`, or `Failed`; v1 still does not create
+  negative Diamond clawback.
+- Added `IapPurchaseStatusChangedIntegrationEvent` through Payments
+  outbox as support/audit signal for status transitions.
+- Tests cover Apple refund reconciliation and Google notification
+  idempotency.
+
+Verification:
+
+- Payments unit tests: **20/20**.
+- Payments integration smoke: **1/1**.
+- ArchitectureTests: **64/64**.
+
+### Slice P5 — Platform post-processing + recovery (2026-05-28, working tree)
+
+- Expanded `IapPurchase` ledger with post-processing action/status,
+  processed timestamp, and post-processing failure reason.
+- `VerifyIapPurchaseCommand` now maps store post-processing action
+  into the ledger and invokes backend-owned Google acknowledge/consume
+  after Diamond grant.
+- iOS verify responses now expose whether the client may finish the
+  StoreKit transaction via `CanFinishTransaction`.
+- Google post-processing failures are tracked without rolling back the
+  already-granted payment.
+- Added `RetryIapPurchaseDeliveryCommand` and admin endpoint
+  `POST /admin/payments/purchases/{id}/retry-delivery` to retry
+  `VerifiedButGrantFailed` delivery or failed Google post-processing.
+- Admin IAP purchase DTO/read SQL now surfaces post-processing
+  action/status/failure fields.
+- Added idempotent DbUp expansion
+  `payments/Tables/050_ExpandIapPurchasesWithPostProcessing.sql`.
+
+Verification:
+
+- Payments unit tests: **18/18**.
+- Payments integration smoke: **1/1**.
+- ArchitectureTests: **64/64**.
+
+### Slice P4 — Verify + grant command (2026-05-28, working tree)
+
+- Added `VerifyIapPurchaseCommand` and authenticated
+  `POST /payments/iap/verify`.
+- Handler validates product catalog state, platform availability,
+  store proof, store verification result, purchase state, account
+  binding, and idempotency.
+- Successful verified purchases create `IapPurchase`, call
+  `IDiamondGrant.GrantAsync`, mark `Granted`, and publish
+  `IapPurchaseGrantedIntegrationEvent` through the Payments outbox.
+- Duplicate `(PlayerId, ClientRequestId)`, Apple transaction id, or
+  Google purchase token replays return the existing payment result
+  without a second Diamond grant.
+- Store verification failures record `Failed` without Diamond grant.
+- Diamond grant exceptions record recoverable
+  `VerifiedButGrantFailed` and return that status so P5 retry can pick
+  the purchase up.
+- Architecture allowlist widened only for
+  `Payments.Application -> Diamond.Application.Configuration.CrossModule`.
+
+Verification:
+
+- Payments unit tests: **15/15**.
+- Payments integration smoke: **1/1**.
+- ArchitectureTests: **64/64**.
+
 ## Sprint M — Market Module (2026-05-27, closed)
 
 Eleventh full-stack sprint. Added the **Market** bounded context:

@@ -1,7 +1,7 @@
 # GLOSSARY.md
 
 Ubiquitous language for the LexiLink Games, Players, Energy, Quests,
-Hint, Undo, Reset, Diamond, and Market modules. Every term below appears in code as a
+Hint, Undo, Reset, Diamond, Market, and Payments modules. Every term below appears in code as a
 class, interface, enum, or namespace; this file gives it a
 one-paragraph definition so a new contributor can read the code
 without spelunking.
@@ -75,6 +75,32 @@ safety net. Purchase orders are never updated or deleted; manual
 refunds are modeled as separate inventory/Diamond admin operations.
 Emits `PurchaseOrderCreatedDomainEvent`, mapped to
 `PurchaseCompletedIntegrationEvent`.
+
+### PaymentProduct — `Modules/Payments/Domain/PaymentProducts/PaymentProduct.cs`
+Backend-owned catalog row for a real-money Diamond bundle. It maps an
+Apple/Google store product id (for example `diamond_100`) to a
+Diamond amount and platform availability. The backend never trusts
+client-supplied amount, price, or currency; localized price stays
+storefront/client display data, while `PaymentProduct` is the grant
+authority.
+
+### IapPurchase — `Modules/Payments/Domain/IapPurchases/IapPurchase.cs`
+Append-mostly ledger row for an Apple/Google in-app purchase. Captures
+player id, platform, product, store transaction id or purchase token,
+status, environment, failure reason, client request id, and
+post-processing state. Successful verification grants Diamond exactly
+once through `IDiamondGrant`; duplicate store proof or client request
+replays return the existing result without a second grant. Recoverable
+delivery failures use `VerifiedButGrantFailed`, and refund/revocation
+notifications transition the ledger without deleting history.
+
+### PaymentNotification — `Modules/Payments/Domain/PaymentNotifications/PaymentNotification.cs`
+Raw persisted App Store Server Notification V2 or Google RTDN ingress.
+Payments stores the notification before processing so support/audit can
+inspect what arrived and duplicate notification ids can be replayed
+idempotently. Notification handling reconciles out-of-band store
+changes such as refund, revocation, or failure; it is not the normal
+first-grant path.
 
 ### PlayerUndoInventory — `Modules/Undo/Domain/PlayerUndoInventories/PlayerUndoInventory.cs`
 A player's persistent undo account in the Undo module. Aggregate root,

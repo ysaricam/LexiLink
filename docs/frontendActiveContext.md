@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-27 (Sprint M frontend slice M6 closed; M7 manual verification completed)
+> Last updated: 2026-05-28 (Sprint P frontend closed locally; store verification operator-owned)
 
 ---
 
@@ -113,25 +113,18 @@ ayrimidir.
 
 ## Next Action
 
-**Sprint M frontend leg kapandı.** Slice M6 player Market shop,
-HomeScreen Market entry, and admin Market console shipped. M7 manual
-verification 2026-05-27'de geçildi; bu sırada admin ShopItem formu
-revize edildi: Normal vs Promotion item ayrımı, Promotion Start/End
-calendar picker, ve zorunlu/valid alanlar tamamlanmadan Save disabled.
-Current Flutter gate: 107/107 test pass; `flutter analyze` only
-pre-existing info-level warnings.
-
-Sıradaki aday slice'lar (operator backlog'undan, sıra yok henüz):
-- **Game completion → Diamond bonus.** Diamond spend path artık Market
-  ile var; earn tarafında game completion bonus küçük bağımsız aday.
-- **Market polish.** Ürün görselleri, kampanya vitrinleri, sold-out
-  yenileme davranışı ve admin calendar/date-time precision pass'i.
-- **Player profili genişleme.** Tüm rozet türlerini (energy +
-  hint + undo + reset + diamond + level + streak) birleşik bir status widget'ında
-  toplamak.
-- **Game UseHint UI iyileştirme.** Post-UR1 modelde ilk hint dahil
-  her hint inventory tüketiyor; oyun ekranında kalan hint stoğunu ve
-  tüketimi görünür yapmak.
+**Sprint P frontend leg kapandı.** Payments purchase UI shipped:
+`features/payments/` data/store/application/presentation layers,
+Flutter `in_app_purchase`, `/payments` route, HomeScreen Diamonds
+shortcut, Diamond bundle cards with localized store price display,
+backend verify call, Diamond badge refresh, transaction finish gated
+by backend `CanFinishTransaction`, and web-safe unavailable state.
+Current Flutter gate: 113/113 test pass; `flutter analyze` has no
+Payments-specific findings and still reports only pre-existing
+info-level warnings. P8 docs/verification close-out is complete for
+repo-local work. Apple sandbox, Google internal test purchase,
+notification cryptographic verification, and native app-kill recovery
+are operator-owned because they require store credentials/test tracks.
 
 Son tamamlanan frontend implementation slice:
 

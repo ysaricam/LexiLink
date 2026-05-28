@@ -11,6 +11,7 @@ import 'package:lexilink_app/features/categories/presentation/category_selection
 import 'package:lexilink_app/features/game/presentation/game_screen.dart';
 import 'package:lexilink_app/features/home/presentation/home_screen.dart';
 import 'package:lexilink_app/features/market/presentation/market_screen.dart';
+import 'package:lexilink_app/features/payments/presentation/payment_screen.dart';
 import 'package:lexilink_app/features/profile/presentation/leaderboard_screen.dart';
 import 'package:lexilink_app/features/profile/presentation/profile_summary_screen.dart';
 import 'package:lexilink_app/features/quests/presentation/quests_screen.dart';
@@ -51,6 +52,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/market',
       builder: (context, state) => const MarketScreen(),
+    ),
+    GoRoute(
+      path: '/payments',
+      builder: (context, state) => const PaymentScreen(),
     ),
     GoRoute(
       path: '/admin/login',

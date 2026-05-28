@@ -59,6 +59,10 @@
     <ProjectReference Include="..\..\Modules\Market\IntegrationEvents\LexiLink.Modules.Market.IntegrationEvents.csproj" />
     <ProjectReference Include="..\..\Modules\Market\Application\LexiLink.Modules.Market.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Market\Infrastructure\LexiLink.Modules.Market.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Payments\Domain\LexiLink.Modules.Payments.Domain.csproj" />
+    <ProjectReference Include="..\..\Modules\Payments\IntegrationEvents\LexiLink.Modules.Payments.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\Modules\Payments\Application\LexiLink.Modules.Payments.Application.csproj" />
+    <ProjectReference Include="..\..\Modules\Payments\Infrastructure\LexiLink.Modules.Payments.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -47,12 +47,21 @@ Local development uses:
 
 ```bash
 ConnectionStrings__LexiLinkDb='Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852'
-Authentication__Mode=DevelopmentBearer
+Authentication__Mode=ProductionJwt
+Authentication__Jwt__Issuer=LexiLink
+Authentication__Jwt__Audience=LexiLink.Api
+Authentication__Jwt__SigningKey=local-dev-signing-key-must-be-at-least-32-chars
 Authentication__TokenExchange__Mode=DevelopmentExternalToken
 ```
 
+The Flutter app uses `/players/guest` followed by `/auth/token`, then stores
+the returned JWT. Keep local preview API runs in JWT mode unless intentionally
+running backend-only smoke tests.
+
 `DevelopmentBearer` accepts `Authorization: Bearer <player-guid>` and exists
-only as a local/test convenience. Do not use it for production traffic.
+only as a backend local/test convenience. Do not use it for production traffic
+or normal Flutter preview sessions; stale JWTs will 401 against a
+`DevelopmentBearer` API.
 
 ## Administration Module Settings
 
@@ -91,6 +100,53 @@ Bootstrap behavior:
 All three keys are read by `EnergyConfigurationService` via `IConfiguration`.
 Missing or unparseable values fall back to the defaults above.
 
+## Payments Module Settings
+
+Payments owns Apple/Google IAP verification, server notification
+reconciliation, and support-facing purchase history. The local/dev adapter
+shells are intentionally fail-closed until real store credentials are
+configured.
+
+| Setting | Default | Notes |
+| --- | --- | --- |
+| `Payments__Apple__BundleId` | empty | iOS app bundle id expected in App Store verification responses. |
+| `Payments__Apple__Environment` | `Sandbox` | Store environment for verification. Production must match the App Store deployment target. |
+| `Payments__Apple__SharedSecret` / credential material | empty | App Store Server API / notification verification secrets. Store in secret config, not source. |
+| `Payments__Google__PackageName` | empty | Android package name expected in Google Play verification responses. |
+| `Payments__Google__Environment` | `Sandbox` | Store environment for verification. |
+| `Payments__Google__ServiceAccountJson` / credential material | empty | Google Play Developer API credentials. Store in secret config, not source. |
+
+Operational notes:
+
+- `GET /payments/products?platform=Apple|Google` returns the active backend
+  Diamond bundle catalog. Storefront price/currency stays client/store-owned.
+- `POST /payments/iap/verify` is the normal grant path. The backend ignores
+  client-supplied amount/price and resolves Diamond amount from
+  `payments.PaymentProducts`.
+- Duplicate Apple transaction ids, Google purchase tokens, or player
+  client-request ids replay the existing purchase result without double grant.
+- iOS clients finish StoreKit transactions only when the response returns
+  `canFinishTransaction=true`.
+- Google consume/acknowledge is backend-owned after Diamond delivery.
+- `POST /admin/payments/purchases/{id}/retry-delivery` retries stuck
+  `VerifiedButGrantFailed` deliveries and failed Google post-processing.
+- Apple App Store Server Notifications V2 and Google RTDN endpoint surfaces
+  persist raw notifications before idempotent processing. Real cryptographic
+  verification requires production store credentials.
+
+Pre-production manual store checks:
+
+- Apple sandbox purchase grants Diamond once and allows transaction finish only
+  after backend delivery.
+- Google internal-test purchase grants Diamond once and backend
+  consume/acknowledge succeeds.
+- Replaying the same Apple transaction or Google purchase token does not grant
+  twice.
+- App kill/restart during a pending purchase replays the store proof and
+  reaches a final delivered or retryable state.
+- Store refund/revocation notifications update the ledger to
+  `Refunded`/`Revoked` without automatic Diamond clawback in v1.
+
 ## Background Processing Defaults
 
 Outbox and inbox processing is scheduled by Quartz from the API host.
@@ -119,6 +175,11 @@ Processor logs include structured fields for operational search:
 | `GET /operations/processors` | `AuthenticatedPlayer` | Backlog/error visibility for `games-outbox`, `players-outbox`, `stats-inbox`, and `stats-internal-commands`. |
 | `GET /energy/me` | `AuthenticatedPlayer` | Current player's energy snapshot: `currentAmount`, `maximumAmount`, `isFull`, `rechargeIntervalSeconds`, `lastRefilledOn`, `secondsUntilNextRefill`, `fullyRefilledAt`. Returns 404 ProblemDetails when the energy aggregate hasn't been initialized yet (normally a brief race after registration before the outbox processes `PlayerRegisteredIntegrationEvent`). |
 | `GET /quests/me` | `AuthenticatedPlayer` | Current player's quests (`Active`, `ReadyToClaim`, `Claimed`, `Expired`) as a `PlayerQuestDto[]`. Lazy expiry projection is applied at read time. |
+| `GET /payments/products?platform=Apple\|Google` | `AuthenticatedPlayer` | Active Diamond bundle catalog for the requested store platform. Backend returns product id/store product id/Diamond amount; localized price comes from Apple/Google on the client. |
+| `POST /payments/iap/verify` | `AuthenticatedPlayer` | Verifies an Apple transaction JWS/id or Google purchase token, records the IAP ledger row, grants Diamond exactly once, applies backend-owned post-processing where needed, and returns delivery/finish status. |
+| `POST /payments/notifications/apple` | anonymous | App Store Server Notifications V2 ingress. Persists raw notification before verifier/processor handling. Production requires cryptographic verification credentials. |
+| `POST /payments/notifications/google` | anonymous | Google RTDN ingress. Persists raw notification before verifier/processor handling. Production requires Pub/Sub/Google verification credentials. |
+| `POST /admin/payments/purchases/{id:guid}/retry-delivery` | `AuthenticatedAdmin` | Retries recoverable paid-but-not-delivered purchases and failed Google post-processing. |
 | `POST /quests/{id:guid}/claim` | `AuthenticatedPlayer` | Marks a `ReadyToClaim` quest as `Claimed`. Returns 204 NoContent. Cross-player or missing ids return 404 ProblemDetails (no id-leakage). Triggers `QuestClaimedIntegrationEvent` via the Quests outbox, which Energy consumes to grant the reward via `PlayerEnergy.GrantBonus`. |
 | `POST /auth/admin/token` | anonymous | Exchanges an external admin identity (currently `dev:admin:{email}` development verifier) for a first-party admin JWT (subject = AdminUserId, claims `role=Admin` + `admin_id`). 400 on missing fields, 401 on bad external token, 404 when email is not a registered active admin. `Authentication:AdminTokenExchange:Mode` controls the verifier; `DevelopmentExternalToken` is rejected in Production. |
 | `GET /admin/whoami` | `AuthenticatedAdmin` | Returns `{ adminUserId, role }` for the current admin. 401 anonymous, 403 player-only token. In dev-bearer mode any GUID that matches an Active `administration.AdminUsers.Id` is recognized; in production-JWT mode the role and admin_id claims are required and the AdminUser is re-checked for Active status (revoked tokens fail with 401). |

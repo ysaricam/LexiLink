@@ -23,7 +23,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Diamond.Infrastructure",
                 "LexiLink.Modules.Undo.Infrastructure",
                 "LexiLink.Modules.Reset.Infrastructure",
-                "LexiLink.Modules.Market.Infrastructure")
+                "LexiLink.Modules.Market.Infrastructure",
+                "LexiLink.Modules.Payments.Infrastructure")
             .GetResult();
 
         AssertArchTestResult(result);
@@ -44,6 +45,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Undo.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Reset.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Market.Infrastructure.Configuration.Outbox",
+                "LexiLink.Modules.Payments.Infrastructure.Configuration.Outbox",
                 "LexiLink.Modules.Games.Infrastructure.GamesContext",
                 "LexiLink.Modules.Players.Infrastructure.PlayersContext",
                 "LexiLink.Modules.Energy.Infrastructure.EnergyContext",
@@ -53,6 +55,7 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Undo.Infrastructure.UndoContext",
                 "LexiLink.Modules.Reset.Infrastructure.ResetContext",
                 "LexiLink.Modules.Market.Infrastructure.MarketContext",
+                "LexiLink.Modules.Payments.Infrastructure.PaymentsContext",
                 "Microsoft.EntityFrameworkCore")
             .GetResult();
 
@@ -778,6 +781,77 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Reset",
                 "LexiLink.API"
             });
+
+        yield return new TestCaseData(
+            "Payments.Domain",
+            PaymentsDomainAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Payments.Application",
+                "LexiLink.Modules.Payments.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Diamond",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.Modules.Market",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Dapper",
+                "Npgsql"
+            });
+
+        yield return new TestCaseData(
+            "Payments.Application",
+            PaymentsApplicationAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Payments.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Diamond.Domain",
+                "LexiLink.Modules.Diamond.Infrastructure",
+                "LexiLink.Modules.Diamond.Application.Admin",
+                "LexiLink.Modules.Diamond.Application.Contracts",
+                "LexiLink.Modules.Diamond.Application.PlayerDiamondInventories",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.Modules.Market",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Npgsql"
+            });
+
+        yield return new TestCaseData(
+            "Payments.Infrastructure",
+            PaymentsInfrastructureAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration.Domain",
+                "LexiLink.Modules.Administration.Application",
+                "LexiLink.Modules.Administration.Infrastructure",
+                "LexiLink.Modules.Diamond",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.Modules.Market",
+                "LexiLink.API"
+            });
     }
 
     [Test]
@@ -788,7 +862,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 PlayersIntegrationEventsAssembly,
                 QuestsIntegrationEventsAssembly,
                 AdministrationIntegrationEventsAssembly,
-                MarketIntegrationEventsAssembly
+                MarketIntegrationEventsAssembly,
+                PaymentsIntegrationEventsAssembly
             ])
             .Should()
             .NotHaveDependencyOnAny(
@@ -808,6 +883,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Market.Domain",
                 "LexiLink.Modules.Market.Application",
                 "LexiLink.Modules.Market.Infrastructure",
+                "LexiLink.Modules.Payments.Domain",
+                "LexiLink.Modules.Payments.Application",
+                "LexiLink.Modules.Payments.Infrastructure",
                 "LexiLink.Modules.Administration.Domain",
                 "LexiLink.Modules.Administration.Application",
                 "LexiLink.Modules.Administration.Infrastructure",

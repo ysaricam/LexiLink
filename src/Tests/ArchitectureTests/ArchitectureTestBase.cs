@@ -60,6 +60,11 @@ public abstract class ArchitectureTestBase
     protected static readonly Assembly MarketApplicationAssembly = typeof(Modules.Market.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly MarketInfrastructureAssembly = typeof(Modules.Market.Infrastructure.MarketContext).Assembly;
 
+    protected static readonly Assembly PaymentsDomainAssembly = typeof(Modules.Payments.Domain.IapPurchase).Assembly;
+    protected static readonly Assembly PaymentsIntegrationEventsAssembly = typeof(Modules.Payments.IntegrationEvents.IapPurchaseGrantedIntegrationEvent).Assembly;
+    protected static readonly Assembly PaymentsApplicationAssembly = typeof(Modules.Payments.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly PaymentsInfrastructureAssembly = typeof(Modules.Payments.Infrastructure.PaymentsContext).Assembly;
+
     protected static readonly Assembly[] ModuleAssemblies =
     [
         GamesDomainAssembly,
@@ -93,7 +98,10 @@ public abstract class ArchitectureTestBase
         ResetInfrastructureAssembly,
         MarketDomainAssembly,
         MarketApplicationAssembly,
-        MarketInfrastructureAssembly
+        MarketInfrastructureAssembly,
+        PaymentsDomainAssembly,
+        PaymentsApplicationAssembly,
+        PaymentsInfrastructureAssembly
     ];
 
     protected static void AssertArchTestResult(TestResult result)

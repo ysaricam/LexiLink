@@ -4,6 +4,120 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Sprint P ✅ closed — Payments / In-App Purchase
+
+Goal: ship the real-money purchase path for iOS and Android: players
+buy **Diamond bundles** through Apple App Store / Google Play in-app
+purchase, backend verifies the store transaction server-side, records
+an append-only payment ledger, and grants Diamond exactly once. This is
+intentionally separate from Market: **Market spends Diamond** on
+Energy/Hint/Undo/Reset; **Payments earns Diamond** from platform
+commerce. Because real money is involved, correctness, idempotency,
+fraud resistance, and recoverability outrank UI speed.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Module name | **Payments** — separate bounded context, schema `payments`, microservice extraction candidate. |
+| First product type | **Consumable Diamond bundles only.** No subscriptions, no battle pass, no no-ads, no paid unlocks in v1. |
+| Store products | Apple/Google one-time consumable products mapped to backend `PaymentProduct` rows. Proposed IDs: `diamond_100`, `diamond_550`, `diamond_1200`, `diamond_2500`. |
+| Price authority | Storefronts own localized price/currency. Backend owns only ProductId → DiamondAmount and active/platform availability. Client price is display-only. |
+| Verification authority | Backend verifies every purchase with Apple/Google before Diamond grant. Client proof is input, never authority. |
+| Diamond grant | Payments calls Diamond via `IDiamondGrant.GrantAsync(playerId, amount)` only after successful store verification and idempotency check. |
+| Idempotency | Unique store transaction keys: `(Platform, StoreTransactionId)` for Apple where present, `(Platform, PurchaseToken)` for Google, plus optional `(PlayerId, ClientRequestId)` for friendly replay. Duplicate proof returns the existing result and never grants twice. |
+| Apple flow | StoreKit 2 on client; transaction JWS / transaction id sent to backend; backend verifies signed transaction / App Store Server API state; client finishes transaction only after backend confirms delivery. |
+| Google flow | Play Billing on client; purchase token + product id sent to backend; backend calls Google Play Developer API (`purchases.products` / products v2) and performs acknowledge/consume server-side where applicable. |
+| Notifications | Apple App Store Server Notifications V2 + Google RTDN are persisted raw and processed idempotently to update payment/refund/revocation state. |
+| Refund policy v1 | Do not automatically create negative Diamond. Mark payment `Refunded`/`Revoked`, emit audit/support signal, and defer automatic clawback until product policy is explicit. |
+| Payment ledger | `IapPurchase` is append-mostly. Corrections are status transitions with timestamps/reasons, not row deletion. |
+| External payment links | None. Use Apple/Google IAP only for mobile digital currency to avoid store policy risk. |
+
+### Architecture notes
+
+- **Payments is not Market.** A player buys Diamond with real money in
+  Payments, then spends Diamond in Market. This keeps platform receipt
+  verification, refunds, chargebacks, and support tooling out of the
+  game-economy purchase log.
+- **Server-side verification is mandatory.** The app can initiate the
+  store UI, but Diamond is granted only after the backend checks Apple
+  or Google. The backend ignores client-supplied amount/price/currency
+  and resolves the grant amount from `PaymentProduct`.
+- **Delivery before finish.** For iOS, the client must not finish the
+  StoreKit transaction until backend delivery is persisted and Diamond
+  is granted. For Android, backend acknowledge/consume is preferred so
+  the secure server owns post-purchase state changes.
+- **Recoverable grant failures.** If store verification succeeds but
+  `IDiamondGrant` fails, persist `VerifiedButGrantFailed` (or
+  equivalent) and retry from a background processor. A paid purchase
+  must not vanish because a downstream module was temporarily down.
+- **Store account binding.** Client purchase requests should attach a
+  stable player account token: Apple `appAccountToken`; Google
+  `obfuscatedAccountId` / profile id. Backend verifies it matches the
+  authenticated player when the platform response includes it.
+- **Notifications are reconciliation, not the first grant path.**
+  The normal path is client purchase → backend verify → grant. Apple
+  server notifications / Google RTDN reconcile out-of-band changes
+  such as cancellation, refund, revocation, and delayed purchase state.
+- **Supportability is a first-class acceptance criterion.** Admins must
+  be able to inspect payment history by player, platform transaction
+  id/token, product id, status, and failure reason before production.
+
+### Slice plan (8 slices)
+
+| Slice | Content |
+| --- | --- |
+| **P1 ✅ delivered** | Payments module foundation. Projects: Domain/Application/Infrastructure/IntegrationEvents/Tests/IntegrationTests. Aggregates: `PaymentProduct`, `IapPurchase`, `PaymentNotification`. VOs/enums: `PaymentPlatform {Apple, Google}`, `PaymentEnvironment {Sandbox, Production}`, `IapPurchaseStatus {Received, Verified, Granted, VerifiedButGrantFailed, Failed, Refunded, Revoked}`, `StoreProductId`, `StoreTransactionId`, `PurchaseToken`. DbUp `payments` schema/tables/outbox/inbox; unique indexes for Apple transaction id, Google purchase token, and optional player client request id. Autofac Startup + UoW + domain events dispatcher + decorators + outbox. API host startup registration, sln/test script registration, ArchitectureTests coverage. Verification: Payments unit tests 7/7, Payments integration smoke 1/1, ArchitectureTests 64/64, API build green. |
+| **P2 ✅ delivered** | Product catalog. Admin CRUD for `PaymentProduct` (create/update/deactivate) marked `IAdminCommand` and audited through Payments outbox → Administration `AdminActionPerformedIntegrationEvent`. Seed default Diamond bundles (`diamond_100`, `diamond_550`, `diamond_1200`, `diamond_2500`). Player `GET /payments/products?platform=...` returns active products by platform with backend product id and Diamond amount; localized price remains frontend/store-provided. Admin endpoints expose product list/detail/CRUD and IAP purchase lookup surfaces (`/admin/payments/purchases`) for support. Verification: Payments unit tests 9/9, Payments integration smoke 1/1, ArchitectureTests 64/64, full solution build green. |
+| **P3 ✅ delivered** | Platform verifier contracts. Application interfaces `IAppleIapVerifier`, `IGooglePlayIapVerifier`, `IGooglePlayPurchaseProcessor` (ack/consume), config objects for bundle id/package name/environment/credentials (`Payments:Apple`, `Payments:Google`), fake verifiers/processors for tests, and fail-closed infrastructure adapter shells behind interfaces. Production credentials stay env/secret-config only. Real App Store / Play Developer API calls are deferred; no Diamond grant yet. Verification: Payments unit tests 12/12, Payments integration smoke 1/1, ArchitectureTests 64/64, full solution build green. |
+| **P4 ✅ delivered** | Verify + grant command. `VerifyIapPurchaseCommand` / `POST /payments/iap/verify`. Handler validates authenticated player, product catalog, platform proof, idempotency, store verification result, account binding, and purchase state. On success records `IapPurchase`, calls `IDiamondGrant.GrantAsync`, marks `Granted`, emits `IapPurchaseGrantedIntegrationEvent`, and returns `{ paymentId, productId, diamondAmount, status, isReplay }`. Duplicate client request / Apple transaction id / Google purchase token returns existing result without double grant. Store verification failure records `Failed`; Diamond grant exception records recoverable `VerifiedButGrantFailed`. Verification: Payments unit tests 15/15, Payments integration smoke 1/1, ArchitectureTests 64/64. |
+| **P5 ✅ delivered** | Platform post-processing and recovery. Ledger now records `PostProcessingAction`, `PostProcessingStatus`, `PostProcessedAt`, and `PostProcessingFailureReason`. Android Google acknowledge/consume is invoked from backend after grant through `IGooglePlayPurchaseProcessor`; iOS verify responses include `CanFinishTransaction` once backend delivery is safely granted. `RetryIapPurchaseDeliveryCommand` + `POST /admin/payments/purchases/{id}/retry-delivery` retry stuck `VerifiedButGrantFailed` deliveries and failed Google post-processing. Admin purchase DTOs expose post-processing status/failure fields. Tests cover Google consume after grant, failed consume retry, and delivery-failure retry allowing iOS finish. Verification: Payments unit tests 18/18, Payments integration smoke 1/1, ArchitectureTests 64/64. |
+| **P6 ✅ delivered** | Notifications/reconciliation. Added Apple App Store Server Notifications V2 and Google RTDN endpoint surfaces (`/payments/notifications/apple`, `/payments/notifications/google`), verifier contracts plus fail-closed infrastructure shells, raw `PaymentNotification` persistence before processing, idempotent notification replay, refund/revocation/failure transitions on `IapPurchase`, and `IapPurchaseStatusChangedIntegrationEvent` support/audit signal. No automatic negative Diamond in v1. Real cryptographic verification remains behind fail-closed shells until production credentials/SDK integration are configured. Verification: Payments unit tests 20/20, Payments integration smoke 1/1, ArchitectureTests 64/64. |
+| **P7 ✅ delivered** | Frontend purchase UI. Added Flutter `in_app_purchase` integration behind `features/payments/`: product query, Diamond bundle cards, localized store price display, purchase state machine, pending purchase replay through the store purchase stream, backend verify call, Diamond badge refresh, error/retry UI, and transaction finish gated by backend `CanFinishTransaction`. HomeScreen links to `/payments`. Mobile-only purchase controls; web shows unavailable/state-safe copy. Verification: payments Flutter tests 6/6, full Flutter suite 113/113. `flutter analyze` has no Payments-specific findings; only pre-existing info-level frontend warnings remain. |
+| **P8 ✅ delivered** | Tests/manual verification/docs close. Final local gates: Payments unit tests 20/20, Payments integration smoke 1/1, ArchitectureTests 64/64, Flutter tests 113/113, DbUp migrator re-run 0 pending scripts, local API readiness healthy with 79/79 DbUp scripts applied, JWT-mode guest/category smoke passed. Docs updated: `activeContext`, `progress`, `GLOSSARY`, `OPERATIONS`, `ROADMAP`, frontend active/progress. Store-network manual verification is operator-owned and credential-gated: Apple sandbox purchase, Google internal test purchase, real notification cryptographic verification, and native app-kill recovery require App Store / Play Console credentials, product setup, and signed native builds outside this workspace. |
+
+### Acceptance criteria
+
+- A valid Apple/Google purchase grants the configured Diamond amount
+  exactly once.
+- Replaying the same Apple transaction or Google purchase token never
+  grants Diamond twice.
+- Client-supplied Diamond amount, price, or currency is ignored.
+- Invalid, pending, cancelled, refunded, or product-mismatched store
+  proofs do not grant Diamond.
+- Store verification success + Diamond grant failure is recoverable by
+  backend retry.
+- Android acknowledge/consume is idempotent and backend-owned.
+- iOS transaction finish happens only after backend delivery succeeds.
+- Pending purchases survive app restart and can be submitted again.
+- Admin/support can inspect purchase history and failure reasons.
+
+### Deliberate non-actions
+
+- **No subscriptions / battle pass / no-ads** in Payments v1.
+- **No external payment links** or alternate mobile payment providers.
+- **No automatic Diamond clawback on refund** until product/support
+  policy is explicitly decided.
+- **No regional price logic in backend.** Storefronts own localized
+  prices.
+- **No RevenueCat/IAP aggregator initially.** Use official platform
+  stores + backend verification; revisit only if operational cost
+  outweighs control.
+- **No web real-money checkout.** iOS/Android IAP only for this sprint.
+
+### Slice ordering rationale
+
+Foundation (P1) creates the ledger before any platform code. Product
+catalog (P2) defines what a verified purchase is allowed to grant.
+Verifier contracts (P3) isolate Apple/Google volatility before the
+grant command. Verify + grant (P4) is the critical money path.
+Post-processing/recovery (P5) closes the "paid but not delivered"
+gap. Notifications (P6) reconcile out-of-band store changes. Frontend
+(P7) comes only after backend semantics are fixed. P8 closes with
+sandbox/internal-store manual verification and operations docs.
+
+---
+
 ## Sprint M ✅ closed — Market Module
 
 Goal: ship the **Market** bounded context — a single module owning

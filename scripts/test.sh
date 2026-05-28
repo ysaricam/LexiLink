@@ -19,6 +19,7 @@ db_free_projects=(
   "src/Modules/Reset/Tests/LexiLink.Modules.Reset.Tests.csproj"
   "src/Modules/Administration/Tests/LexiLink.Modules.Administration.Tests.csproj"
   "src/Modules/Market/Tests/LexiLink.Modules.Market.Tests.csproj"
+  "src/Modules/Payments/Tests/LexiLink.Modules.Payments.Tests.csproj"
   "src/Tests/ArchitectureTests/LexiLink.ArchitectureTests.csproj"
 )
 
@@ -34,6 +35,7 @@ integration_projects=(
   "src/Modules/Reset/IntegrationTests/LexiLink.Modules.Reset.IntegrationTests.csproj"
   "src/Modules/Administration/IntegrationTests/LexiLink.Modules.Administration.IntegrationTests.csproj"
   "src/Modules/Market/IntegrationTests/LexiLink.Modules.Market.IntegrationTests.csproj"
+  "src/Modules/Payments/IntegrationTests/LexiLink.Modules.Payments.IntegrationTests.csproj"
 )
 
 echo "Running DB-free test projects..."

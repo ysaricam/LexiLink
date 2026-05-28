@@ -19,6 +19,7 @@ using LexiLink.API.Modules.Games;
 using LexiLink.API.Modules.Hint;
 using LexiLink.API.Modules.Market;
 using LexiLink.API.Modules.Operations;
+using LexiLink.API.Modules.Payments;
 using LexiLink.API.Modules.Players;
 using LexiLink.API.Modules.Quests;
 using LexiLink.API.Modules.Reset;
@@ -30,6 +31,7 @@ using LexiLink.Common.Application.IntegrationEvents;
 using LexiLink.Common.Application.Time;
 using LexiLink.Common.Infrastructure.IntegrationEvents;
 using LexiLink.Common.Infrastructure.Outbox;
+using LexiLink.Modules.Payments.Application.Configuration.Verification;
 using LexiLink.Modules.Diamond.Application.Configuration.CrossModule;
 using LexiLink.Modules.Administration.Infrastructure.Configuration;
 using LexiLink.Modules.Diamond.Infrastructure.Configuration;
@@ -40,6 +42,7 @@ using LexiLink.Modules.Hint.Application.Configuration.CrossModule;
 using LexiLink.Modules.Games.Infrastructure.Configuration;
 using LexiLink.Modules.Hint.Infrastructure.Configuration;
 using LexiLink.Modules.Market.Infrastructure.Configuration;
+using LexiLink.Modules.Payments.Infrastructure.Configuration;
 using LexiLink.Modules.Players.Infrastructure.Configuration;
 using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Infrastructure.Configuration;
@@ -105,6 +108,11 @@ HintStartup.Initialize(builder.Services, connectionString);
 UndoStartup.Initialize(builder.Services, connectionString);
 ResetStartup.Initialize(builder.Services, connectionString);
 MarketStartup.Initialize(builder.Services, connectionString);
+PaymentsStartup.Initialize(builder.Services, connectionString);
+builder.Services.Configure<AppleIapOptions>(
+    builder.Configuration.GetSection(AppleIapOptions.SectionName));
+builder.Services.Configure<GooglePlayIapOptions>(
+    builder.Configuration.GetSection(GooglePlayIapOptions.SectionName));
 builder.Services.Configure<AdministrationBootstrapOptions>(
     builder.Configuration.GetSection(AdministrationBootstrapOptions.SectionName));
 builder.Services.AddHostedService<AdministrationBootstrapHostedService>();
@@ -239,6 +247,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     UndoStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     ResetStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     MarketStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+    PaymentsStartup.InitializeCompositionRoot(containerBuilder, connectionString);
 
     containerBuilder.RegisterType<EnergyGuard>()
         .As<IEnergyGuard>()
@@ -308,6 +317,8 @@ DiamondStartup.CheckMappings();
 HintStartup.CheckMappings();
 UndoStartup.CheckMappings();
 ResetStartup.CheckMappings();
+MarketStartup.CheckMappings();
+PaymentsStartup.CheckMappings();
 
 if (app.Environment.IsDevelopment())
 {
@@ -344,6 +355,7 @@ app.MapAdminUndoEndpoints();
 app.MapAdminResetEndpoints();
 app.MapAdminDiamondEndpoints();
 app.MapAdminMarketEndpoints();
+app.MapAdminPaymentsEndpoints();
 app.MapAdminPlayerEndpoints();
 app.MapAdminContentEndpoints();
 app.MapCategoryEndpoints();
@@ -357,6 +369,7 @@ app.MapUndoEndpoints();
 app.MapResetEndpoints();
 app.MapDiamondEndpoints();
 app.MapMarketEndpoints();
+app.MapPaymentsEndpoints();
 app.MapQuestEndpoints();
 app.MapOperationsEndpoints();
 

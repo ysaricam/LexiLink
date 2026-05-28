@@ -49,7 +49,10 @@ public class DomainModelTests : ArchitectureTestBase
             "PlayerUndoInventory",
             "PlayerResetInventory",
             "ShopItem",
-            "PurchaseOrder"
+            "PurchaseOrder",
+            "PaymentProduct",
+            "IapPurchase",
+            "PaymentNotification"
         };
 
         var failingTypes = ModuleAssemblies

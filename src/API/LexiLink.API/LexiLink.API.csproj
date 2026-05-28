@@ -8,6 +8,7 @@
     <ProjectReference Include="..\..\Modules\Games\Infrastructure\LexiLink.Modules.Games.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Hint\Infrastructure\LexiLink.Modules.Hint.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Market\Infrastructure\LexiLink.Modules.Market.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Payments\Infrastructure\LexiLink.Modules.Payments.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Players\Infrastructure\LexiLink.Modules.Players.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Quests\Infrastructure\LexiLink.Modules.Quests.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Reset\Infrastructure\LexiLink.Modules.Reset.Infrastructure.csproj" />

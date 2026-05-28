@@ -289,6 +289,12 @@ class _HomeScaffold extends StatelessWidget {
                     tooltip: 'Market',
                     onPressed: () => context.go('/market'),
                   ),
+                  const SizedBox(height: 10),
+                  _SideIconButton(
+                    icon: Icons.diamond_outlined,
+                    tooltip: 'Diamonds',
+                    onPressed: () => context.go('/payments'),
+                  ),
                 ],
               ),
             ),

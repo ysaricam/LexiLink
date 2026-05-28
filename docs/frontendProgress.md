@@ -5,6 +5,54 @@ yeniden yazilmaz.
 
 ---
 
+## Slice P8 — Payments verification/docs close-out ✅ closed (2026-05-28, working tree)
+
+Sprint P frontend close-out. Re-ran the full Flutter regression suite
+after the Payments UI and local backend startup pass.
+
+Verification:
+
+- Full Flutter suite: **113/113**.
+- Payments-specific Flutter tests remain **6/6**.
+- `flutter analyze` has no Payments-specific findings; only
+  pre-existing info-level warnings remain outside this slice.
+- Store-network manual checks remain operator-owned: Apple sandbox,
+  Google internal test track, and native app-kill recovery require
+  configured store products, credentials, and signed native builds.
+
+## Slice P7 — Payments purchase UI ✅ closed (2026-05-28, working tree)
+
+Sprint P frontend leg. Added the Apple/Google in-app purchase surface
+for Diamond bundles. Quality gate: **113/113 Flutter tests pass**.
+`flutter analyze` has no Payments-specific findings; only
+pre-existing info-level warnings remain outside this slice.
+
+### Player Payments
+
+- Added `in_app_purchase` and new `features/payments/` layers:
+  `PaymentRepository`, `PaymentStoreService`, `PaymentCubit`, and
+  `PaymentScreen`.
+- `/payments` route renders Diamond bundle cards from backend
+  `GET /payments/products?platform=...`, merged with platform store
+  product details for localized display price.
+- Platform purchase stream submits Apple/Google proof to
+  `POST /payments/iap/verify`; backend remains the Diamond grant
+  authority.
+- Transaction completion is gated by backend `CanFinishTransaction`.
+- Successful granted delivery refreshes `DiamondCubit` when present.
+- Unsupported platforms and web show an unavailable state instead of
+  purchase controls.
+- HomeScreen now links to Diamonds with a side icon shortcut.
+
+### Tests
+
+- `payment_repository_test.dart` covers product query plus Apple and
+  Google verify request bodies.
+- `payment_cubit_test.dart` covers unsupported platform handling,
+  backend/store product merge, and verify+finish on granted purchase.
+- Payment tests: **6/6**.
+- Full Flutter suite: **113/113**.
+
 ## Slice M6 — Market player shop + admin console ✅ closed (2026-05-27, working tree)
 
 Sprint M frontend leg. Added the Diamond-spend Market player shop,

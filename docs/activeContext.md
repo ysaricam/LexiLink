@@ -4,108 +4,129 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-27 (Sprint M closed — Market module delivered).
+> Last updated: 2026-05-28 (Sprint P closed locally — store sandbox verification operator-owned).
 
 ---
 
 ## Active Sprint
 
-**Sprint M — Market Module — closed. M1-M8 delivered.** 8 slices
-(M1 → M8) locked in `ROADMAP.md > Sprint M`. Ships the
-**Market** bounded context — single module with 3 aggregates
-(`Category`, `ShopItem`, `PurchaseOrder`) where players spend
-Diamond to top up Energy / Hint / Undo / Reset inventories.
-First module that synchronously charges Diamond at runtime —
-introduces **6 new sync gateway contracts** (`IDiamondGuard`,
-`IDiamondGrant`, `IEnergyGrant`, `IHintGrant`, `IUndoGrant`,
-`IResetGrant`) and a **saga-light compensating refund** when the
-grant call fails after Diamond is already debited. Categories
-carry an optional `VisibilityWindow` for limited-time campaigns;
-SKUs carry optional `Promotion` (PromoPrice + window) plus
-`MaxStock` (RowVersion concurrency) and per-player limits
-(`Lifetime / Daily / PerPromo`). `ItemType.Diamond` reserved in
-the enum but **not purchasable** via Diamond currency in v1 —
-forward-compat hook for the future IAP sprint.
+**Sprint P — Payments / In-App Purchase — closed for repo-deliverable
+work; P1-P8 delivered.** 8 slices (P1 → P8) locked in
+`ROADMAP.md > Sprint P`. Shipped the real-money purchase path for
+iOS and Android: players buy **Diamond bundles** through Apple App
+Store / Google Play in-app purchase, backend verifies the store
+transaction server-side, records an append-mostly payment ledger, and
+grants Diamond exactly once. This is intentionally separate from
+Market: **Market spends Diamond** on Energy/Hint/Undo/Reset;
+**Payments earns Diamond** from platform commerce.
+
+**Why this sprint is high-risk:** real money is involved. Client data
+is never trusted for amount, price, or entitlement. Apple/Google store
+proof must be verified by the backend before any Diamond grant.
+Idempotency, recovery, audit/support visibility, and refund/revocation
+reconciliation are mandatory parts of the feature, not polish.
 
 **Locked decisions (excerpt; full table in ROADMAP):**
 
-- **3 aggregates, 1 module.** `Category` + `ShopItem` +
-  `PurchaseOrder` all live in `Modules/Market/`. Catalog vs
-  order split as separate modules is rejected as over-decomposition
-  for this scope.
-- **Sync orchestration, not eventual consistency.** Buy command
-  charges diamond and grants the target inventory inside a single
-  HTTP request via sync gateways. On grant failure, compensating
-  `IDiamondGrant.GrantAsync` refunds the diamond and rethrows.
-- **Idempotency at DB level.** `PurchaseOrder` carries an
-  `IdempotencyKey`; unique index on `(PlayerId, IdempotencyKey)`
-  is the safety net. Pre-check SELECT gives friendly duplicate
-  responses.
-- **Optimistic concurrency on stock.** `ShopItem.RowVersion`
-  token; the loser of a race fails loudly. Frontend treats the
-  failure as "sold out" + refresh.
-- **`PurchaseOrder` append-only.** No update / no delete. Manual
-  refunds are recorded as separate Grant/Consume calls on the
-  affected inventory + diamond modules — each audited
-  independently.
-- **At most one Promotion per item.** No promo stacking; admin
-  policy decides which Promotion is live.
+- **New bounded context: Payments.** Schema `payments`; separate from
+  Market and Diamond. Payments owns platform transaction state,
+  receipt/purchase-token verification, notification reconciliation,
+  and support-facing payment history.
+- **v1 product type: consumable Diamond bundles only.** Proposed
+  store product ids: `diamond_100`, `diamond_550`, `diamond_1200`,
+  `diamond_2500`. No subscription, battle pass, no-ads, or paid
+  unlocks in v1.
+- **Backend is verification authority.** iOS/Android clients only
+  initiate platform purchase and submit store proof. Backend resolves
+  ProductId → DiamondAmount from `PaymentProduct`; localized price is
+  storefront-owned display data.
+- **Diamond grant after verification only.** Payments calls
+  `IDiamondGrant.GrantAsync(playerId, amount)` after Apple/Google
+  verification and idempotency checks pass.
+- **Idempotency at store proof level.** Unique Apple transaction id
+  and Google purchase token indexes prevent double grant. Optional
+  `(PlayerId, ClientRequestId)` gives friendly replay responses.
+- **Recoverable delivery.** Store verification success + Diamond grant
+  failure must persist as a retryable state (for example
+  `VerifiedButGrantFailed`); a paid purchase cannot vanish because a
+  downstream module was temporarily unavailable.
+- **Refund/revocation v1 policy.** Mark payments refunded/revoked and
+  emit support/audit signal; do not automatically create negative
+  Diamond until product policy is explicit.
 
-**Current delivery note:** M1 added `Modules/Market` with
-Domain/Application/Infrastructure/Tests/IntegrationTests projects,
-the 3 aggregate foundations, VOs/enums/rules/events/repositories,
-EF mappings, `market` DbUp schema/tables/outbox, Autofac Startup
-+ UnitOfWork + DomainEventsDispatcher + Logging/Validation/UoW
-decorator chain, API host startup registration, sln registration,
-Market unit/integration smoke tests, and ArchitectureTest coverage.
-M2 added 6 cross-module sync gateway contracts:
-`IDiamondGuard`, `IDiamondGrant`, `IEnergyGrant`, `IHintGrant`,
-`IUndoGrant`, `IResetGrant`; API host adapters translate them to
-existing module commands (`ConsumePlayerDiamondCommand`,
-`GrantDiamondCommand`, `GrantEnergyCommand`, `GrantHintCommand`,
-`GrantUndoCommand`, `GrantResetCommand`). `Market.Application`
-now references the 5 public Application contract surfaces needed
-by M3, while ArchTests keep domains/infrastructure and module
-internals forbidden. M3 added `BuyShopItemCommand`, player endpoint
-`POST /market/items/{id}/buy`, idempotency replay, effective price
-calculation, stock/per-player/category checks, Diamond debit,
-target inventory grant, compensating Diamond refund on grant
-failure, `PurchaseCompletedIntegrationEvent`, and Market outbox
-notification mapping. M4 added admin Category + ShopItem CRUD
-commands/endpoints, `IAdminCommand` audit metadata, Market's
-per-module admin audit decorator, `MarketAdminActionPerformedNotification`,
-and the granular `Administration.IntegrationEvents` infrastructure
-allow. M5 added player GETs (`/market/categories`, `/market/items/{id}`,
-`/market/orders/me`) and admin GETs (`/admin/market/categories`,
-`/admin/market/items`, `/admin/market/items/{id}`,
-`/admin/market/orders/{playerId}`) backed by Dapper read models.
-M6 added the player Market frontend (`/market`), HomeScreen Market
-entry, buy confirmation flow, post-buy badge refresh hooks, and the
-admin Market console (`/admin/market/categories`,
-`/admin/market/items`, `/admin/market/orders`,
-`/admin/market/orders/:playerId`) with category/item forms and
-per-player order lookup. M7 closed tests + operator manual
-verification for Market. During manual admin-console testing, the
-ShopItem form was tightened: Normal vs Promotion item mode is now
-explicit, Normal hides campaign-only fields, Promotion start/end use
-calendar pickers, and Save is disabled until required/valid fields
-are complete.
-M8 closed the sprint docs: `progress.md`, `GLOSSARY.md`,
-`ROADMAP.md`, `activeContext.md`, `frontendActiveContext.md`, and
-`frontendProgress.md`.
-Quality gate run this session: Market unit tests **6/6**, Market
-integration smoke **1/1**, ArchitectureTests **61/61**, Flutter
-tests **107/107**. `flutter analyze` has no M7-specific findings;
-it still reports pre-existing info-level warnings in older frontend
-files.
+**Final delivery note:** P1 foundation, P2 product catalog, P3
+platform verifier contracts, P4 verify+grant, P5 post-processing
++ recovery, P6 notifications/reconciliation, and P7 frontend purchase
+UI are implemented. P8 closed the local/backend/frontend gates and
+docs. P3 added
+`IAppleIapVerifier`, `IGooglePlayIapVerifier`,
+`IGooglePlayPurchaseProcessor`, store verification request/result
+models, Apple/Google options (`Payments:Apple`, `Payments:Google`),
+test fake verifiers/processors, and fail-closed infrastructure adapter
+shells. P4 added `VerifyIapPurchaseCommand`,
+`POST /payments/iap/verify`, catalog/platform/account-binding
+validation, replay-safe store proof idempotency, `IDiamondGrant`
+delivery, `IapPurchaseGrantedIntegrationEvent`, and recoverable
+`VerifiedButGrantFailed` responses when Diamond grant fails. Real App
+Store / Play Developer API calls are still deferred behind fail-closed
+adapter shells. P5 added ledger fields for post-processing action/status,
+iOS `CanFinishTransaction` response semantics, backend-owned Google
+acknowledge/consume invocation after grant, post-processing failure
+tracking, `RetryIapPurchaseDeliveryCommand`, and
+`POST /admin/payments/purchases/{id}/retry-delivery` for stuck delivery
+or post-processing retries. Verification: Payments unit tests 18/18,
+Payments integration smoke 1/1, ArchitectureTests 64/64. P6 added
+Apple/Google notification endpoints, verifier contracts + fail-closed
+infrastructure shells, raw `PaymentNotification` persistence before
+processing, idempotent notification replay, refund/revocation/failure
+status transitions, and `IapPurchaseStatusChangedIntegrationEvent`
+support/audit signal. Real App Store Server Notifications V2 and
+Google RTDN cryptographic verification remain behind the fail-closed
+shells until production credentials/SDK integration are configured.
+Verification: Payments unit tests 20/20, Payments integration smoke
+1/1, ArchitectureTests 64/64. P7 added the Flutter `in_app_purchase`
+dependency, `features/payments/` data/store/application/presentation
+layers, `/payments` route, HomeScreen Diamonds shortcut, mobile-only
+purchase controls, web-safe unavailable state, backend verify call,
+Diamond badge refresh on granted delivery, and transaction finish via
+backend `CanFinishTransaction`. Verification: payments Flutter tests
+6/6, full Flutter suite 113/113. `flutter analyze` has no
+Payments-specific findings; it still reports 12 pre-existing
+info-level frontend warnings. P8 verification: Payments unit tests
+20/20, Payments integration smoke 1/1, ArchitectureTests 64/64,
+Flutter tests 113/113, DbUp migrator re-run 0 pending scripts, local
+API readiness healthy with 79/79 DbUp scripts applied, and JWT-mode
+guest/category smoke passed. Apple sandbox purchase, Google internal
+test purchase, real store notification cryptographic verification,
+and native app-kill recovery remain **operator-owned credential/store
+setup checks** before production because this workspace does not carry
+App Store / Play Console credentials or native signing/test tracks.
 
-**Slice cadence mirrors Sprint UR / Sprint D** (8 slices: domain
-foundation → sync gateways → buy orchestration → admin CRUD →
-GETs → frontend → tests/manual verify → docs close-out). Full
-slice table + architecture notes + deliberate non-actions in
-`ROADMAP.md > Sprint M`.
+**Next action:** operator manual store verification when Apple/Google
+credentials and test products are available. No additional repo slice
+is queued from Sprint P.
+
+**Slice cadence:** foundation → product catalog → platform verifier
+contracts → verify+grant command → post-processing/recovery →
+notifications/reconciliation → frontend purchase UI → tests/manual
+verification/docs close-out. Full slice table + architecture notes +
+deliberate non-actions live in `ROADMAP.md > Sprint P`.
 
 ### Previous Sprint Context
+
+**Sprint M — Market Module — closed 2026-05-27, commit `5c0f4e6`.**
+Delivered the Diamond-spend bounded context where players use Diamond
+to buy Energy / Hint / Undo / Reset inventory top-ups. M1-M8 added
+the 3 Market aggregates (`Category`, `ShopItem`, `PurchaseOrder`),
+6 sync gateway contracts (`IDiamondGuard`, `IDiamondGrant`,
+`IEnergyGrant`, `IHintGrant`, `IUndoGrant`, `IResetGrant`), buy
+saga orchestration with compensating Diamond refund, admin CRUD/audit,
+player/admin GET endpoints, player Market frontend, admin Market
+console, M7 manual verification, and M8 docs close-out. Final gate:
+Market unit tests 6/6, Market integration smoke 1/1,
+ArchitectureTests 61/61, Flutter tests 107/107. `flutter analyze`
+had no Market-specific findings; only pre-existing info-level
+frontend warnings remained.
 
 **Sprint D — Diamond Module + Quest 5-Reward — closed
 2026-05-27, commit `30b3971` (single Sprint D commit covering
@@ -669,47 +690,29 @@ içindedir. Önemli mimari değişiklikler:
 
 ## Next Action
 
-**Sprint M kapandı.** Market module M1-M8 delivered. Operator
-manual verification passed after exercising the Market/admin flows;
-one frontend usability revision was folded into M7: admin ShopItem
-creation now separates Normal vs Promotion item setup, uses calendar
-pickers for Promotion Start/End, and blocks Save until required fields
-are valid.
+**Sprint P next implementation action: P7 — frontend purchase UI.**
+Backend semantics now cover catalog, verify+grant, delivery retry,
+post-processing, and notification reconciliation shells.
 
-M7 doğrulama sonucu:
+P7 guardrails:
 
-- **Geçti:** Market unit tests 6/6, Market integration smoke 1/1,
-  ArchitectureTests 61/61, `flutter test` 107/107.
-- **Not:** `flutter analyze` yeni Market bulgusu üretmedi; yalnızca
-  eski frontend dosyalarındaki 12 info-level uyarı duruyor.
-- **Runtime:** Local API `http://127.0.0.1:5099` ready/healthy;
-  Flutter web `http://127.0.0.1:5173` güncel kodla çalışıyor.
+- Mobile-only purchase controls; web must show a safe unavailable
+  state, not a fake checkout.
+- Client displays store-localized price only; backend still owns
+  product id → Diamond amount.
+- Client must submit platform proof to `POST /payments/iap/verify`
+  and finish iOS transactions only when `CanFinishTransaction` is true.
+- Pending purchases should be replayed on app start.
+- Successful delivery refreshes Diamond badge.
 
-M8 docs close-out:
-
-- `ROADMAP.md > Sprint M` marked closed.
-- `progress.md` records M1-M8 delivery notes.
-- `GLOSSARY.md` records Market aggregates, value objects, rules,
-  sync gateways, buy saga, integration event, and repositories.
-- `frontendActiveContext.md` and `frontendProgress.md` record the
-  Market player/admin frontend slice and M7 usability revision.
-
-Next action candidates:
+Backlog candidates intentionally not active while Sprint P continues:
 
 - **Game completion → Diamond bonus.** New reverse event dependency:
   `Diamond.Application → Games.IntegrationEvents.GameCompletedIntegrationEvent`.
 - **Analyzer cleanup.** Pre-existing Flutter info warnings if the
-  project wants `flutter analyze` green, including currently dirty
-  `game_screen.dart`.
-
-Sprint D dışında bilinçli **non-action**'lar:
-
-- **Shop modülü** ayrı sprint (Diamond bittikten sonra).
-- **Game completion → Diamond bonus** D sonrası mini-slice (yeni
-  reverse event dep: `Diamond.Application →
-  Games.IntegrationEvents.GameCompletedIntegrationEvent`).
-- **IAP / real-money** mobile platform sleeve, modülün kendisinin
-  kapsamı dışı.
+  project wants `flutter analyze` green.
+- **Tutorial flow / Quest trigger expansion / scoring formula reshape**
+  remain product backlog candidates after real-money infrastructure.
 
 Sprint UR sonrası diğer backlog adayları (D sonrası):
 
