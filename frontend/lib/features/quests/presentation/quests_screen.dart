@@ -8,6 +8,7 @@ import 'package:lexilink_app/features/quests/data/player_quest.dart';
 import 'package:lexilink_app/features/quests/data/quest_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -330,7 +331,16 @@ class _QuestTile extends StatelessWidget {
                 label: isClaiming ? 'Alınıyor...' : 'Ödülü al',
                 onPressed: (isClaiming || claimDisabled)
                     ? null
-                    : () => context.read<QuestsCubit>().claim(quest.id),
+                    : () async {
+                        final audio = context.read<AudioService>();
+                        final cubit = context.read<QuestsCubit>();
+                        final claimed = await cubit.claim(quest.id);
+                        await audio.playEffect(
+                          claimed
+                              ? SoundEffect.questClaim
+                              : SoundEffect.error,
+                        );
+                      },
               ),
             ],
           ],

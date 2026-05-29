@@ -15,6 +15,7 @@ import 'package:lexilink_app/features/payments/presentation/payment_screen.dart'
 import 'package:lexilink_app/features/profile/presentation/leaderboard_screen.dart';
 import 'package:lexilink_app/features/profile/presentation/profile_summary_screen.dart';
 import 'package:lexilink_app/features/quests/presentation/quests_screen.dart';
+import 'package:lexilink_app/features/settings/presentation/settings_screen.dart';
 import 'package:lexilink_app/features/splash/presentation/splash_screen.dart';
 
 final appRouter = GoRouter(
@@ -56,6 +57,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/payments',
       builder: (context, state) => const PaymentScreen(),
+    ),
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const SettingsScreen(),
     ),
     GoRoute(
       path: '/admin/login',

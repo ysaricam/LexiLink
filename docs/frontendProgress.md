@@ -5,6 +5,55 @@ yeniden yazilmaz.
 
 ---
 
+## Sprint A — Audio (Sound & Music) ✅ closed (2026-05-30, working tree)
+
+Frontend-only sprint. SFX + looping background music via `audioplayers`,
+with device-local music/SFX on-off + volume preferences. A1–A7:
+
+- **A1** — `audioplayers` dep + `assets/audio/{sfx,music}/` placeholder
+  WAVs + pubspec registration. `lib/shared/audio/audio_service.dart`:
+  `AudioService` (one looping music player + 4-player round-robin SFX
+  pool, all playback best-effort), `SoundEffect` (10) + `MusicTrack` (2)
+  catalogs. `main.dart` init + `RepositoryProvider<AudioService>` above
+  the router. Smoke tests via injectable player factory.
+- **A2** — `features/settings/`: `AudioSettings` model,
+  `AudioPreferencesRepository` (SharedPreferences + InMemory),
+  `AudioSettingsCubit` (load→apply, persist + push to service, clamp +
+  no-op guard). Global `BlocProvider` in `app.dart`.
+- **A3** — `SettingsScreen` (music/SFX switches + 2 volume sliders +
+  SFX preview), `/settings` route, HomeScreen ⚙️ entry.
+- **A4** — pure `soundEffectForGameTransition(prev, cur)` mapping
+  (step/hint/undo/reset, outcome win/lose priority, error on failed
+  action) wired via `MultiBlocListener` in `game_screen`; home Start +
+  side-nav `buttonTap`; GameStart failure `error`.
+- **A5** — `music_routing` (`/games/*`→game, `/admin*` + splash→silent,
+  else menu) + `AudioMusicOrchestrator` wrapping `MaterialApp.router`:
+  route-driven track switch, `WidgetsBindingObserver` pause/resume, web
+  first-gesture autoplay deferral.
+- **A6** — reward/economy cues: quest claim → `questClaim`, market buy
+  → `purchase`, payment grant → `purchase`, failures → `error`. Music
+  spam-guard: requesting the active track is a no-op.
+- **A7** — gate + manual verification + docs.
+
+Verification: full Flutter suite **137/137**; `flutter analyze` adds no
+Audio findings (12 pre-existing info warnings remain). Operator manually
+verified on Chrome web against the live API (Spor content imported):
+menu/in-game music, first-gesture autoplay, all SFX, settings + volume +
+local persistence, and economy cues.
+
+**Bug found + fixed during manual verification:** audioplayers 6.7.0 on
+web calls `dart:io` `existsSync` on the 2nd+ play of the same asset,
+throwing `UnsupportedError`. Best-effort catches were `on Exception`,
+which does not catch `Error` — so it leaked as console spam and repeat
+plays were silent. Fix: widened catches to `on Object`; on web the cache
+entry is evicted before each play (`AudioCache.clear`) to skip the buggy
+recheck. No-op on native.
+
+**Remaining (intentional, not a slice):** shipped sounds are placeholder
+tones. Real SFX/music drop into `frontend/assets/audio/` under the same
+filenames with no code change — manifest in
+`frontend/assets/audio/README.md`.
+
 ## Slice P8 — Payments verification/docs close-out ✅ closed (2026-05-28, working tree)
 
 Sprint P frontend close-out. Re-ran the full Flutter regression suite

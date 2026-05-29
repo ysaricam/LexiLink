@@ -4,6 +4,105 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Sprint A ✅ closed — Audio (Sound & Music)
+
+Goal: add sound effects (SFX) and background music to the game, with
+per-player **music/SFX on-off and volume** preferences kept
+**device-local** (SharedPreferences) behind a repository abstraction
+that stays sync-ready. Uses `audioplayers` across iOS/Android/web/
+desktop, web-safe. Frontend-only sprint — no backend module, no schema.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Audio package | **audioplayers** — short SFX + simple looping music; least-surprise API, supports all target platforms. |
+| Asset strategy | **Placeholder / CC0 sounds first.** The audio infrastructure ships working against placeholders; real sounds later swap only the `assets/audio/` files, no code change. |
+| Preference persistence | **Local-only (SharedPreferences) behind `AudioPreferencesRepository`.** No backend in v1. If a real cross-device "sync all my settings" need appears later, the repository's backing store swaps to a backend `Preferences` module without rewriting the frontend. |
+| Defaults | Music ON, SFX ON; music volume ~0.5, SFX volume ~0.8 (tunable). |
+
+### Architecture notes
+
+- **Single global audio service.** `AudioService` is one instance,
+  initialized in `main.dart` and provided above `MaterialApp.router`
+  via `Provider`/`InheritedWidget` — the existing "genuinely global"
+  category (auth/session/theme). It manages one background-music
+  player + a short-lived SFX player pool and applies mute/volume by
+  listening to `AudioSettingsCubit`.
+- **Settings are entirely frontend.** `AudioPreferencesRepository`
+  reads/writes a SharedPreferences store (same shape as `TokenStore`).
+  The cubit reflects cache; no backend call. The abstraction keeps the
+  door open to backend sync later.
+- **SFX event points (verified in code).** `GameAction { step, hint,
+  undo, reset, abandon }`, game outcome `Completed/Failed/Abandoned`
+  (`game_screen._outcomeFor`), `AppPrimaryButton` tap, GameStart
+  success/failure, quest claim, market/payment success.
+- **Web autoplay policy.** Browsers block autoplay until a first user
+  gesture; background music starts only after the first tap. Isolated,
+  not spread through feature code.
+- **Lifecycle.** `AppLifecycleListener` pauses/resumes music on
+  background/foreground; route changes switch the menu↔game track.
+
+### Slice plan (7 slices)
+
+| Slice | Content |
+| --- | --- |
+| **A1** | Frontend audio infrastructure. `audioplayers` dependency, `assets/audio/{sfx,music}/` + placeholder files + pubspec asset registration. `AudioService` (bg player + SFX pool), `SoundEffect` + `MusicTrack` enum catalog. `main.dart` init + global provider wiring. Smoke: one test sound plays. Web-safe init. |
+| **A2** | Settings data + state. `AudioSettings` model, `AudioPreferencesRepository` + SharedPreferences store, `AudioSettingsCubit`. Global provider. `AudioService` binds to the cubit (mute/volume). |
+| **A3** | Settings UI. `features/settings/` screen: music/SFX toggles + 2 volume sliders. HomeScreen left icon column entry + `/settings` route. Changes apply to audio immediately + persist locally. Web-safe copy. |
+| **A4** | Gameplay SFX wiring. step/hint/undo/reset, win (Completed)/lose (Failed), button tap, GameStart success/failure. Only when `sfxEnabled`. |
+| **A5** | Background music lifecycle. Menu + in-game loop tracks, route-driven track switch, `AppLifecycleListener` pause/resume, web first-gesture start. Only when `musicEnabled`. |
+| **A6** | Reward/economy SFX + polish. Quest claim, market purchase, payment granted sounds. Optional music ducking during SFX. Spam/double-trigger guard. |
+| **A7** | Tests + manual verification + docs. Cubit/service/widget tests, `flutter test` + `flutter analyze` green. Manual: toggle/volume persistence, win/lose/step sounds, music lifecycle. Docs updated. |
+
+### Acceptance criteria
+
+- Music and SFX toggle independently with working volume; preference
+  survives app restart (local).
+- SFX fire at the correct events; background music switches menu↔game
+  and pauses on background.
+- Web autoplay block does not break the UI; music starts after the
+  first tap; everything is sound-safe when muted.
+- Swapping placeholder sounds for real ones requires no code change.
+
+### Deliberate non-actions
+
+- **No backend sync** (repository abstraction keeps the door open).
+- No haptics/vibration, no remote/streaming assets, no per-sound
+  mixer, no admin sound management, no voiceover.
+
+### Slice ordering rationale
+
+Infrastructure (A1) → settings data/state (A2) → settings UI (A3) so
+the toggles exist while testing SFX (A4) and music (A5). Reward SFX
+(A6) after the gameplay SFX template settles. A7 closes. Every slice
+is small, runnable, and reversible.
+
+### Closure note
+
+A1–A7 delivered. Final gate: Flutter tests **137/137**; `flutter
+analyze` adds no Audio findings (only the 12 pre-existing info
+warnings remain). Operator manually verified on Chrome web against the
+live API (Spor content imported): menu/in-game music, first-gesture
+autoplay start, button/step/hint/undo/reset/win/lose SFX, settings
+toggles + volume + local persistence, and quest/market/payment cues.
+
+**Bug found + fixed during manual verification:** audioplayers 6.7.0 on
+web calls `dart:io` `existsSync` on the **second+** play of the same
+asset (cache recheck), throwing `UnsupportedError` in the browser. Our
+best-effort `try/on Exception` did **not** catch it (it's an `Error`,
+not an `Exception`), so it leaked as console spam and repeat plays were
+silent. Fix: best-effort catches widened to `on Object`, and on web the
+cache entry is evicted before each play (`AudioCache.clear`) so playback
+takes the fresh-fetch path and skips the buggy recheck. No-op on native.
+
+**Remaining (intentional, not a repo slice):** the shipped sounds are
+**placeholder tones**. Real SFX/music drop into `frontend/assets/audio/`
+under the same filenames with **no code change** — see
+`frontend/assets/audio/README.md` for the file→effect manifest.
+
+---
+
 ## Sprint P ✅ closed — Payments / In-App Purchase
 
 Goal: ship the real-money purchase path for iOS and Android: players

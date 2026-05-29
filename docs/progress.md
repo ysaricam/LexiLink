@@ -4,6 +4,43 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Sprint A — Audio (Sound & Music) (2026-05-30, closed)
+
+First **frontend-only** sprint. Adds sound effects and looping
+background music via `audioplayers`, with per-player music/SFX on-off
+and volume kept **device-local** (SharedPreferences) behind
+`AudioPreferencesRepository` — no backend module/schema; cross-device
+sync deliberately deferred (audio settings are device-contextual; the
+repository abstraction keeps a future `Preferences` module open without
+a frontend rewrite).
+
+Delivered A1–A7: global `AudioService` (init in `main.dart`, provided
+above `MaterialApp.router`); `AudioSettings` + repository +
+`AudioSettingsCubit`; `SettingsScreen` (toggles + volume + `/settings`
+route + HomeScreen entry); gameplay SFX via the pure
+`soundEffectForGameTransition` mapping (step/hint/undo/reset, win/lose,
+error) plus home button/start cues; `AudioMusicOrchestrator` for
+route-driven track switching, lifecycle pause/resume, and web
+first-gesture autoplay; quest/market/payment economy cues; music
+spam-guard.
+
+Gate: Flutter **137/137**; `flutter analyze` adds no Audio findings (12
+pre-existing info warnings remain). Operator manually verified on Chrome
+web against the live local API with `docs/category-spor.json` imported
+(157 links / 1234 edges).
+
+**Bug found + fixed in close-out:** audioplayers 6.7.0 on web throws
+`UnsupportedError` (`dart:io` cache recheck) on the 2nd+ play of the same
+asset; best-effort `on Exception` catches did not catch the `Error`.
+Widened catches to `on Object` and evict the web cache entry before each
+play (`AudioCache.clear`); no-op on native.
+
+**Remaining (intentional, not a repo slice):** shipped sounds are
+placeholder tones. Real audio drops into `frontend/assets/audio/` under
+the same filenames with no code change — manifest in
+`frontend/assets/audio/README.md`. Detail in
+`ROADMAP.md > Sprint A`, `frontendProgress.md`, `frontendActiveContext.md`.
+
 ## Sprint P — Payments / In-App Purchase (2026-05-28, closed locally)
 
 Twelfth full-stack sprint. Adds the **Payments** bounded context for

@@ -12,6 +12,7 @@ import 'package:lexilink_app/features/payments/data/payment_repository.dart';
 import 'package:lexilink_app/features/payments/data/payment_store_service.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -98,7 +99,12 @@ class _PaymentView extends StatelessWidget {
           context,
         ).showSnackBar(SnackBar(content: Text(state.message!)));
         if (state.status == PaymentStatus.success) {
+          _readIfPresent<AudioService>(context)?.playEffect(
+            SoundEffect.purchase,
+          );
           _readIfPresent<DiamondCubit>(context)?.loadDiamond();
+        } else if (state.status == PaymentStatus.failure) {
+          _readIfPresent<AudioService>(context)?.playEffect(SoundEffect.error);
         }
       },
       builder: (context, state) {

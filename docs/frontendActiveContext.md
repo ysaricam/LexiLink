@@ -113,6 +113,41 @@ ayrimidir.
 
 ## Next Action
 
+**Sprint A — Audio (Sound & Music) — kapandı 2026-05-30 (frontend-only).**
+A1–A7 teslim edildi. SFX + arka plan müziği `audioplayers` ile; müzik/SFX
+aç-kapa + volume tercihleri **cihaz-local** (SharedPreferences),
+`AudioPreferencesRepository` soyutlaması arkasında (sync-ready, v1'de
+backend yok).
+
+- **A1** — `audioplayers` dep, `assets/audio/{sfx,music}/` + placeholder +
+  pubspec kaydı, `AudioService` (bg player + 4'lü SFX havuzu, best-effort),
+  `SoundEffect` (10) + `MusicTrack` (2) enum, `main.dart` init +
+  `RepositoryProvider<AudioService>`.
+- **A2** — `AudioSettings`, `AudioPreferencesRepository` (+ SharedPreferences
+  + InMemory), `AudioSettingsCubit` (optimistic local + apply), global
+  `BlocProvider`.
+- **A3** — `features/settings/` ekran (toggle + 2 volume slider + SFX
+  önizleme), `/settings` route, HomeScreen ⚙️ girişi.
+- **A4** — `soundEffectForGameTransition` saf eşleme: step/hint/undo/reset,
+  win/lose, error; home Start + side-nav tap; GameStart failure.
+- **A5** — `music_routing` (rota→track) + `AudioMusicOrchestrator`
+  (`MaterialApp.router` sarmalı): rota geçişi + lifecycle pause/resume +
+  web first-gesture autoplay.
+- **A6** — quest claim / market buy / payment grant → cue; müzik spam-guard
+  (aynı track no-op).
+- **A7** — gate + manuel doğrulama + docs.
+
+Gate: Flutter **137/137**, `flutter analyze` Audio'ya yeni bulgu eklemiyor
+(yalnız 12 önceden mevcut info). Operator Chrome web'de canlı API'ye karşı
+doğruladı (Spor içeriği import). **Kapanışta bulunan bug:** audioplayers
+6.7.0 web'de aynı asset'in 2.+ çalmasında `dart:io existsSync` → `UnsupportedError`.
+Best-effort catch'ler `on Object`'e genişletildi + web'de play öncesi
+`AudioCache.clear` (native'de no-op). **Bekleyen (bilinçli, slice değil):**
+sesler **placeholder ton** — gerçek ses `frontend/assets/audio/` altına aynı
+adla bırakılır, kod değişmez (manifest: `frontend/assets/audio/README.md`).
+
+### Önceki frontend sprint kapanışı
+
 **Sprint P frontend leg kapandı.** Payments purchase UI shipped:
 `features/payments/` data/store/application/presentation layers,
 Flutter `in_app_purchase`, `/payments` route, HomeScreen Diamonds

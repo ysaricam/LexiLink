@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:lexilink_app/app/theme/app_layout.dart';
 import 'package:lexilink_app/app/theme/app_palette.dart';
 import 'package:lexilink_app/features/game/application/game_details_cubit.dart';
+import 'package:lexilink_app/features/game/application/game_sound_effects.dart';
 import 'package:lexilink_app/features/game/data/game_details.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/game/data/outgoing_link.dart';
@@ -18,6 +19,7 @@ import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
 import 'package:lexilink_app/features/undo/data/undo_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -149,21 +151,32 @@ class _GameView extends StatefulWidget {
 
 class _GameViewState extends State<_GameView> {
   bool _resultShown = false;
+  GameDetailsState? _previousState;
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<GameDetailsCubit, GameDetailsState>(
-      listenWhen: (previous, current) {
-        final wasFinished = previous.game?.isFinished ?? false;
-        final isFinished = current.game?.isFinished ?? false;
-        return !wasFinished && isFinished;
-      },
-      listener: (context, state) {
-        final game = state.game;
-        if (game == null || _resultShown) return;
-        _resultShown = true;
-        _showResultSheet(context, game);
-      },
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<GameDetailsCubit, GameDetailsState>(
+          listener: (context, state) {
+            _playActionAudio(context, _previousState, state);
+            _previousState = state;
+          },
+        ),
+        BlocListener<GameDetailsCubit, GameDetailsState>(
+          listenWhen: (previous, current) {
+            final wasFinished = previous.game?.isFinished ?? false;
+            final isFinished = current.game?.isFinished ?? false;
+            return !wasFinished && isFinished;
+          },
+          listener: (context, state) {
+            final game = state.game;
+            if (game == null || _resultShown) return;
+            _resultShown = true;
+            _showResultSheet(context, game);
+          },
+        ),
+      ],
       child: AppScreen(
         size: AppScreenSize.game,
         child: BlocBuilder<GameDetailsCubit, GameDetailsState>(
@@ -192,6 +205,17 @@ class _GameViewState extends State<_GameView> {
         ),
       ),
     );
+  }
+
+  void _playActionAudio(
+    BuildContext context,
+    GameDetailsState? previous,
+    GameDetailsState current,
+  ) {
+    final effect = soundEffectForGameTransition(previous, current);
+    if (effect != null) {
+      context.read<AudioService>().playEffect(effect);
+    }
   }
 
   Future<void> _showResultSheet(BuildContext context, GameDetails game) async {

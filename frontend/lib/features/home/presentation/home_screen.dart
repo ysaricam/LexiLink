@@ -31,6 +31,7 @@ import 'package:lexilink_app/features/undo/data/undo_repository.dart';
 import 'package:lexilink_app/features/undo/presentation/undo_badge.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
 import 'package:lexilink_app/shared/widgets/app_error_state.dart';
@@ -220,6 +221,7 @@ class _HomeView extends StatelessWidget {
                 state.gameId != null) {
               context.go('/games/${state.gameId}');
             } else if (state.status == GameStartStatus.failure) {
+              context.read<AudioService>().playEffect(SoundEffect.error);
               context.read<EnergyCubit>().loadEnergy();
             }
           },
@@ -294,6 +296,12 @@ class _HomeScaffold extends StatelessWidget {
                     icon: Icons.diamond_outlined,
                     tooltip: 'Diamonds',
                     onPressed: () => context.go('/payments'),
+                  ),
+                  const SizedBox(height: 10),
+                  _SideIconButton(
+                    icon: Icons.settings_outlined,
+                    tooltip: 'Settings',
+                    onPressed: () => context.go('/settings'),
                   ),
                 ],
               ),
@@ -454,9 +462,14 @@ class _CategoryDeckState extends State<_CategoryDeck> {
                         : 'Start',
                     onPressed: gameStartState.isSubmitting
                         ? null
-                        : () => context.read<GameStartCubit>().startGame(
-                            categoryId: widget.categories[_currentIndex].id,
-                          ),
+                        : () {
+                            context.read<AudioService>().playEffect(
+                              SoundEffect.buttonTap,
+                            );
+                            context.read<GameStartCubit>().startGame(
+                              categoryId: widget.categories[_currentIndex].id,
+                            );
+                          },
                   ),
                 ),
                 if (gameStartState.status == GameStartStatus.failure) ...[
@@ -610,7 +623,10 @@ class _SideIconButton extends StatelessWidget {
       elevation: 1,
       child: InkWell(
         customBorder: const CircleBorder(),
-        onTap: onPressed,
+        onTap: () {
+          context.read<AudioService>().playEffect(SoundEffect.buttonTap);
+          onPressed();
+        },
         child: Tooltip(
           message: tooltip,
           child: Padding(

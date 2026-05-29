@@ -4,11 +4,33 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-28 (Sprint P closed locally — store sandbox verification operator-owned).
+> Last updated: 2026-05-30 (Sprint A — Audio closed; real sound assets pending as a content drop-in).
 
 ---
 
 ## Active Sprint
+
+**Sprint A — Audio (Sound & Music) — closed 2026-05-30.** A1–A7
+delivered. Frontend-only: SFX + background music via `audioplayers`,
+with music/SFX on-off + volume kept device-local (SharedPreferences)
+behind `AudioPreferencesRepository` (sync-ready, no backend in v1).
+`AudioService` is one global instance (init in `main.dart`, provided
+above `MaterialApp.router`); `AudioMusicOrchestrator` drives
+route-based track switching + lifecycle pause/resume + web
+first-gesture autoplay; SFX wired at gameplay
+(`soundEffectForGameTransition`), home, quest/market/payment cues.
+Gate: Flutter **137/137**, analyze adds no Audio findings. Operator
+verified on Chrome web against the live API. **Bug fixed in close-out:**
+audioplayers 6.7.0 web throws `UnsupportedError` on the 2nd+ play of an
+asset (`dart:io` cache recheck) — best-effort catches widened to
+`on Object` and web evicts the cache entry before each play
+(`AudioCache.clear`); no-op on native. **Remaining (intentional, not a
+slice):** shipped sounds are **placeholder tones** — real audio drops
+into `frontend/assets/audio/` under the same filenames with no code
+change (manifest in `frontend/assets/audio/README.md`). Full slice
+table in `ROADMAP.md > Sprint A`.
+
+### Previous Sprint Context
 
 **Sprint P — Payments / In-App Purchase — closed for repo-deliverable
 work; P1-P8 delivered.** 8 slices (P1 → P8) locked in
@@ -112,7 +134,7 @@ notifications/reconciliation → frontend purchase UI → tests/manual
 verification/docs close-out. Full slice table + architecture notes +
 deliberate non-actions live in `ROADMAP.md > Sprint P`.
 
-### Previous Sprint Context
+### Earlier Sprint Context
 
 **Sprint M — Market Module — closed 2026-05-27, commit `5c0f4e6`.**
 Delivered the Diamond-spend bounded context where players use Diamond

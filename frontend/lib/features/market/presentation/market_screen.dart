@@ -14,6 +14,7 @@ import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
 import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -101,6 +102,10 @@ class _MarketViewState extends State<_MarketView> {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(state.message!)));
+        final effect = state.status == MarketStatus.failure
+            ? SoundEffect.error
+            : SoundEffect.purchase;
+        _readIfPresent<AudioService>(context)?.playEffect(effect);
         _readIfPresent<DiamondCubit>(context)?.loadDiamond();
         _readIfPresent<EnergyCubit>(context)?.loadEnergy();
         _readIfPresent<HintCubit>(context)?.loadHint();
