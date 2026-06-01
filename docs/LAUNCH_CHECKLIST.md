@@ -26,10 +26,11 @@ yedekleme ve tam deploy/rollback runbook'u **GO5**'te
 Ubuntu kutusunda (SSH ile bağlan):
 
 - [ ] **Docker Engine + Compose plugin kur** (Docker'ın resmi apt deposu).
-- [ ] **Kodu/imajı kutuya getir** — repo'yu clone'la (yerinde build eder) ya
-      da GO6'dan sonra GHCR imajını çek.
-- [ ] **Secret dosyasını oluştur** `/opt/lexilink/.env` (`.env.example`'dan),
-      sonra `chmod 600`. Doldur:
+- [ ] **Kodu kutuya getir** — repo'yu `/opt/lexilink/app`'e clone'la (yerinde
+      build eder) ya da GO6'dan sonra GHCR imajını çek.
+- [ ] **Secret dosyasını oluştur** — repo klasöründe (`docker-compose.yml`
+      ile **aynı dizinde**) `cp .env.example .env`, sonra `chmod 600 .env`.
+      Doldur:
   - [ ] `LEXILINK_DOMAIN` = domain'in, `LEXILINK_ACME_EMAIL` = e-postan
   - [ ] `POSTGRES_PASSWORD` = uzun rastgele bir değer
   - [ ] `ConnectionStrings__LexiLinkDb` — `POSTGRES_*` değerleriyle aynı
@@ -39,8 +40,9 @@ Ubuntu kutusunda (SSH ile bağlan):
   - [ ] `Administration__Bootstrap__AdminEmails__0` = admin e-postan
   - [ ] `Authentication__TokenExchange__Mode=GuestDevice` olduğunu doğrula
         (guest login)
-- [ ] **Ayağa kaldır:** `docker compose --env-file /opt/lexilink/.env up -d --build`
-      (önce migrator çalışır, sonra API; Caddy TLS'i otomatik alır).
+- [ ] **Ayağa kaldır:** repo klasöründe `./scripts/deploy.sh` (build → migrator
+      → API → Caddy TLS; API sağlıklı olunca durur ve public health komutunu
+      yazdırır). Manuel istersen: `docker compose up -d --build`.
 - [ ] **Doğrula:** `curl https://api.<domain>/health/ready` healthy dönsün;
       ardından bir client/build ile guest→category smoke.
 
@@ -49,12 +51,11 @@ Ubuntu kutusunda (SSH ile bağlan):
 Deploy yalnızca **şemayı** oluşturur, **hiç Category/Link yoktur** — sen
 içerik yüklemezsen oyuncu boş bir oyun görür.
 
-- [ ] En az bir kategoriyi `CategoryImporter` ile prod DB'ye import et
-      (Postgres dışarı açık değil; bunu `postgres` container'ına SSH tüneliyle
-      ya da kutuda importer çalıştırarak yap). Komut ve JSON formatı için
-      `CONTENT_AUTHORING.md`. Repo'da hazır başlangıç içeriği:
-      `docs/category-spor.json` (tr-TR), `docs/category-animals-en.json`
-      (en-US).
+- [ ] Repo klasöründe en az bir kategoriyi import et:
+      `./scripts/seed-content.sh docs/category-spor.json` (istersen ek olarak
+      `docs/category-animals-en.json`). Script, compose ağına bağlı tek
+      seferlik bir .NET SDK container'ı ile importer'ı çalıştırır (host'a .NET
+      kurmaya gerek yok). Detay: `CONTENT_AUTHORING.md`.
 
 ## 3. Mobil uygulama + store build (GO3 → store'lar)
 
