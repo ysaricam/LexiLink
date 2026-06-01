@@ -23,6 +23,7 @@ internal class GetCategoryDetailsQueryHandler : IQueryHandler<GetCategoryDetails
                 "Category"."Id" AS "Id",
                 "Category"."Name" AS "Name",
                 "Category"."Description" AS "Description",
+                "Category"."Language" AS "Language",
                 (
                     SELECT COUNT(*)::int
                     FROM "games"."v_Links" AS "Link"

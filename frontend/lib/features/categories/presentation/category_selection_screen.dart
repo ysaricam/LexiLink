@@ -12,8 +12,10 @@ import 'package:lexilink_app/features/energy/data/energy_repository.dart';
 import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
 import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
+import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
 import 'package:lexilink_app/shared/widgets/app_empty_state.dart';
@@ -44,18 +46,18 @@ class _CategorySelectionScreenState extends State<CategorySelectionScreen> {
       future: _tokenStoreFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppScreen(
+          return AppScreen(
             child: AppErrorState(
-              title: 'Session storage failed',
-              message: 'Restart the app and try again.',
+              title: context.l10n.sessionStorageFailedTitle,
+              message: context.l10n.sessionStorageFailedMessage,
             ),
           );
         }
 
         final tokenStore = snapshot.data;
         if (tokenStore == null) {
-          return const AppScreen(
-            child: AppLoadingState(message: 'Preparing session...'),
+          return AppScreen(
+            child: AppLoadingState(message: context.l10n.preparingSession),
           );
         }
 
@@ -101,7 +103,8 @@ class _CategorySelectionProvidersState
     _energyCubit = EnergyCubit(
       energyRepository: EnergyRepository(apiClient: apiClient),
     );
-    unawaited(_categoryListCubit.loadCategories());
+    final contentLocale = context.read<LocaleCubit>().state.backendLocale;
+    unawaited(_categoryListCubit.loadCategories(locale: contentLocale));
     unawaited(_energyCubit.loadEnergy());
   }
 
@@ -152,13 +155,13 @@ class _CategorySelectionView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Choose category',
+                      context.l10n.chooseCategory,
                       style: Theme.of(context).textTheme.displaySmall,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Pick a word field for your next link path.',
+                      context.l10n.chooseCategorySubtitle,
                       style: Theme.of(context).textTheme.bodyLarge,
                       textAlign: TextAlign.center,
                     ),
@@ -166,21 +169,31 @@ class _CategorySelectionView extends StatelessWidget {
                     const Center(child: EnergyBadge()),
                     const SizedBox(height: 24),
                     if (state.isLoading)
-                      const AppLoadingState(message: 'Loading categories...')
+                      AppLoadingState(message: context.l10n.loadingCategories)
                     else if (state.status == CategoryListStatus.failure)
                       AppErrorState(
-                        title: 'Could not load categories',
-                        message: state.message ?? 'Try again.',
+                        title: context.l10n.couldNotLoadCategories,
+                        message: state.message ?? context.l10n.commonTryAgain,
                         onRetry: () =>
-                            context.read<CategoryListCubit>().loadCategories(),
+                            context.read<CategoryListCubit>().loadCategories(
+                              locale: context
+                                  .read<LocaleCubit>()
+                                  .state
+                                  .backendLocale,
+                            ),
                       )
                     else if (state.categories.isEmpty)
                       AppEmptyState(
-                        title: 'No categories yet',
-                        message: 'Add category content before starting a game.',
-                        actionLabel: 'Refresh',
+                        title: context.l10n.noCategoriesTitle,
+                        message: context.l10n.noCategoriesMessage,
+                        actionLabel: context.l10n.commonRefresh,
                         onAction: () =>
-                            context.read<CategoryListCubit>().loadCategories(),
+                            context.read<CategoryListCubit>().loadCategories(
+                              locale: context
+                                  .read<LocaleCubit>()
+                                  .state
+                                  .backendLocale,
+                            ),
                       )
                     else
                       _CategoryList(
@@ -191,8 +204,8 @@ class _CategorySelectionView extends StatelessWidget {
                       const SizedBox(height: 14),
                       AppPrimaryButton(
                         label: gameStartState.isSubmitting
-                            ? 'Starting...'
-                            : 'Start easy game',
+                            ? context.l10n.commonStarting
+                            : context.l10n.startEasyGame,
                         onPressed: gameStartState.isSubmitting
                             ? null
                             : () => context.read<GameStartCubit>().startGame(
@@ -203,8 +216,10 @@ class _CategorySelectionView extends StatelessWidget {
                     if (gameStartState.status == GameStartStatus.failure) ...[
                       const SizedBox(height: 12),
                       AppErrorState(
-                        title: 'Could not start game',
-                        message: gameStartState.message ?? 'Try again.',
+                        title: context.l10n.couldNotStartGame,
+                        message:
+                            gameStartState.message ??
+                            context.l10n.commonTryAgain,
                       ),
                     ],
                   ],

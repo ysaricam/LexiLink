@@ -21,30 +21,38 @@ class AdminHintCubit extends Cubit<AdminHintState> {
   final AdminHintRepository _repository;
 
   Future<void> load(String playerId) async {
-    emit(state.copyWith(
-      status: AdminHintStatus.loading,
-      currentPlayerId: playerId,
-      clearSnapshot: true,
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        status: AdminHintStatus.loading,
+        currentPlayerId: playerId,
+        clearSnapshot: true,
+        clearError: true,
+      ),
+    );
     try {
       final snapshot = await _repository.fetchSnapshot(playerId);
-      emit(state.copyWith(
-        status: AdminHintStatus.loaded,
-        snapshot: snapshot,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminHintStatus.loaded,
+          snapshot: snapshot,
+        ),
+      );
     } on ApiException catch (e) {
       if (e.statusCode == 404) {
-        emit(state.copyWith(
-          status: AdminHintStatus.notFound,
-          errorMessage: 'No hint inventory for player $playerId.',
-        ));
+        emit(
+          state.copyWith(
+            status: AdminHintStatus.notFound,
+            errorMessage: 'No hint inventory for player $playerId.',
+          ),
+        );
         return;
       }
-      emit(state.copyWith(
-        status: AdminHintStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminHintStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -72,15 +80,19 @@ class AdminHintCubit extends Cubit<AdminHintState> {
     try {
       await action();
       final snapshot = await _repository.fetchSnapshot(id);
-      emit(state.copyWith(
-        status: AdminHintStatus.loaded,
-        snapshot: snapshot,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminHintStatus.loaded,
+          snapshot: snapshot,
+        ),
+      );
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminHintStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminHintStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 }

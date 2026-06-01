@@ -25,6 +25,7 @@ public sealed class ValidationProblemDetailsTests
                 builder.UseSetting(
                     "ConnectionStrings:LexiLinkDb",
                     "Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852");
+                builder.UseSetting("Authentication:Mode", "DevelopmentBearer");
 
                 builder.ConfigureServices(services =>
                 {

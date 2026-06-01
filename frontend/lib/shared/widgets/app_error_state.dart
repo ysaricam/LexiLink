@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
 
 class AppErrorState extends StatelessWidget {
   const AppErrorState({
     required this.title,
     required this.message,
-    this.retryLabel = 'Try again',
+    this.retryLabel,
     this.onRetry,
     super.key,
   });
 
   final String title;
   final String message;
-  final String retryLabel;
+  final String? retryLabel;
   final VoidCallback? onRetry;
 
   @override
@@ -51,7 +52,10 @@ class AppErrorState extends StatelessWidget {
             ),
             if (onRetry != null) ...[
               const SizedBox(height: 16),
-              AppPrimaryButton(label: retryLabel, onPressed: onRetry),
+              AppPrimaryButton(
+                label: retryLabel ?? context.l10n.commonTryAgain,
+                onPressed: onRetry,
+              ),
             ],
           ],
         ),

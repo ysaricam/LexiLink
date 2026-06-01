@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 
 class AppLoadingState extends StatelessWidget {
   const AppLoadingState({
-    this.message = 'Loading...',
+    this.message,
     this.compact = false,
     super.key,
   });
 
-  final String message;
+  final String? message;
   final bool compact;
 
   @override
@@ -28,7 +29,10 @@ class AppLoadingState extends StatelessWidget {
         children: [
           indicator,
           const SizedBox(width: 10),
-          Text(message, style: textTheme.bodyMedium),
+          Text(
+            message ?? context.l10n.commonLoading,
+            style: textTheme.bodyMedium,
+          ),
         ],
       );
     }
@@ -46,7 +50,7 @@ class AppLoadingState extends StatelessWidget {
             indicator,
             const SizedBox(height: 12),
             Text(
-              message,
+              message ?? context.l10n.commonLoading,
               style: textTheme.bodyMedium?.copyWith(
                 color: colorScheme.onSurfaceVariant,
               ),

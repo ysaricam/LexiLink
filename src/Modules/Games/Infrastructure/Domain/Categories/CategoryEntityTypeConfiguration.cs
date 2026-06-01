@@ -14,5 +14,6 @@ internal class CategoryEntityTypeConfiguration : IEntityTypeConfiguration<Catego
 
         builder.Property<string>("_name").HasColumnName("Name");
         builder.Property<string>("_description").HasColumnName("Description");
+        builder.Property<string>("_language").HasColumnName("Language");
     }
 }

@@ -20,14 +20,17 @@ internal class GetCategoriesQueryHandler : IQueryHandler<GetCategoriesQuery, Lis
         const string sql = """
             SELECT
                 "Category"."Id" AS "Id",
-                "Category"."Name" AS "Name"
+                "Category"."Name" AS "Name",
+                "Category"."Language" AS "Language"
             FROM "games"."v_Categories" AS "Category"
+            WHERE (@Locale IS NULL OR "Category"."Language" = @Locale)
             ORDER BY "Category"."Name"
         """;
 
         var results = await connection.QueryAsync<CategoryListItemDto>(
             new CommandDefinition(
                 sql,
+                new { query.Locale },
                 cancellationToken: cancellationToken
             )
         );

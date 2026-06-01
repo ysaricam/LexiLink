@@ -8,6 +8,7 @@ environment:
   sdk: ^3.9.0
 
 dependencies:
+  app_tracking_transparency: ^2.0.6
   audioplayers: ^6.1.0
   bloc: ^9.0.0
   cupertino_icons: ^1.0.8
@@ -15,11 +16,15 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
   flutter_web_plugins:
     sdk: flutter
   go_router: ^16.2.5
+  google_mobile_ads: ^5.1.0
   http: ^1.6.0
   in_app_purchase: ^3.2.3
+  intl: any
   shared_preferences: ^2.5.5
 
 dev_dependencies:
@@ -31,6 +36,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
   assets:
     - assets/audio/sfx/
     - assets/audio/music/

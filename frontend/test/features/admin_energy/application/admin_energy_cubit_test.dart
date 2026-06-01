@@ -21,18 +21,19 @@ class _Script {
 }
 
 AdminEnergyRepository _repoFromScript(_Script s) => AdminEnergyRepository(
-      apiClient: ApiClient(
-        config: const ApiConfig(baseUrl: 'http://localhost:5000'),
-        tokenStore: InMemoryTokenStore(),
-        httpClient: MockClient((req) async => s.respond(req)),
-      ),
-    );
+  apiClient: ApiClient(
+    config: const ApiConfig(baseUrl: 'http://localhost:5000'),
+    tokenStore: InMemoryTokenStore(),
+    httpClient: MockClient((req) async => s.respond(req)),
+  ),
+);
 
 String _snapshot({
   int current = 3,
   int max = 5,
   bool isFull = false,
-}) => '{'
+}) =>
+    '{'
     '"playerId":"00000000-0000-0000-0000-000000000abc",'
     '"currentAmount":$current,"maximumAmount":$max,"isFull":$isFull,'
     '"rechargeIntervalSeconds":600,'

@@ -6,6 +6,8 @@ using LexiLink.Modules.Games.Application.Games.StartGame;
 using LexiLink.Modules.Games.Application.Games.Undo;
 using LexiLink.Modules.Games.Application.Games.UseHint;
 using LexiLink.Modules.Games.Domain.Games;
+using LexiLink.Modules.Games.IntegrationTests.Categories;
+using LexiLink.Modules.Games.IntegrationTests.Links;
 using LexiLink.Modules.Games.IntegrationTests.SeedWork;
 
 namespace LexiLink.Modules.Games.IntegrationTests.Games;
@@ -35,6 +37,37 @@ public class GameIntegrationTests : TestBase
         await ExecuteCommandAsync(new StartGameCommand(setup.GameId));
 
         var details = await ExecuteQueryAsync(new GetGameByIdQuery(setup.GameId));
+        details.State.Should().Be(GameState.InProgress);
+    }
+
+    [Test]
+    public async Task CreateAndStartGame_WithEnglishContent_Test()
+    {
+        var categoryId = await CategoryHelper.CreateCategoryAsync(
+            Sender,
+            name: "Animals",
+            description: "English animal words",
+            language: "en-US");
+        var ids = await LinkHelper.CreateLinksAsync(
+            Sender,
+            categoryId,
+            "cat",
+            "bat",
+            "rat",
+            "ram",
+            "ewe",
+            "elk");
+        for (var i = 0; i < ids.Count - 1; i++)
+        {
+            await LinkHelper.LinkBidirectionallyAsync(Sender, ids[i], ids[i + 1]);
+        }
+
+        var gameId = await GameHelper.CreateGameAsync(Sender, categoryId);
+
+        await ExecuteCommandAsync(new StartGameCommand(gameId));
+
+        var details = await ExecuteQueryAsync(new GetGameByIdQuery(gameId));
+        details.CategoryId.Should().Be(categoryId);
         details.State.Should().Be(GameState.InProgress);
     }
 

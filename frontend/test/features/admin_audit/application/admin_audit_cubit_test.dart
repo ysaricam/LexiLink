@@ -21,14 +21,15 @@ class _Script {
 }
 
 AdminAuditRepository _repoFromScript(_Script s) => AdminAuditRepository(
-      apiClient: ApiClient(
-        config: const ApiConfig(baseUrl: 'http://localhost:5000'),
-        tokenStore: InMemoryTokenStore(),
-        httpClient: MockClient((req) async => s.respond(req)),
-      ),
-    );
+  apiClient: ApiClient(
+    config: const ApiConfig(baseUrl: 'http://localhost:5000'),
+    tokenStore: InMemoryTokenStore(),
+    httpClient: MockClient((req) async => s.respond(req)),
+  ),
+);
 
-String _action(String id, {String? targetId}) => '{'
+String _action(String id, {String? targetId}) =>
+    '{'
     '"id":"$id",'
     '"occurredOn":"2026-05-22T10:00:00Z",'
     '"adminUserId":"00000000-0000-0000-0000-aaaaaaaaaaaa",'
@@ -59,8 +60,11 @@ void main() {
         expect(cubit.state.status, AdminAuditStatus.loaded);
         expect(cubit.state.actions, hasLength(2));
         expect(cubit.state.offset, 0);
-        expect(cubit.state.hasMore, isFalse,
-            reason: '2 actions < pageSize (50), no more pages');
+        expect(
+          cubit.state.hasMore,
+          isFalse,
+          reason: '2 actions < pageSize (50), no more pages',
+        );
       },
     );
 
@@ -129,8 +133,11 @@ void main() {
       },
       verify: (cubit) {
         expect(cubit.state.offset, 2);
-        expect(cubit.state.hasMore, isFalse,
-            reason: '1 < pageSize 2, no more pages');
+        expect(
+          cubit.state.hasMore,
+          isFalse,
+          reason: '1 < pageSize 2, no more pages',
+        );
       },
     );
 

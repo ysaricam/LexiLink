@@ -26,12 +26,16 @@ import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
 import 'package:lexilink_app/features/reset/data/reset_repository.dart';
 import 'package:lexilink_app/features/reset/presentation/reset_badge.dart';
 import 'package:lexilink_app/features/session/application/session_cubit.dart';
+import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
 import 'package:lexilink_app/features/undo/data/undo_repository.dart';
 import 'package:lexilink_app/features/undo/presentation/undo_badge.dart';
+import 'package:lexilink_app/shared/ads/ad_config.dart';
+import 'package:lexilink_app/shared/ads/ads_service.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
 import 'package:lexilink_app/shared/widgets/app_error_state.dart';
@@ -59,12 +63,12 @@ class _HomeScreenState extends State<HomeScreen> {
       future: _tokenStoreFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Scaffold(
+          return Scaffold(
             body: SafeArea(
               child: Center(
                 child: AppErrorState(
-                  title: 'Session storage failed',
-                  message: 'Restart the app and try again.',
+                  title: context.l10n.sessionStorageFailedTitle,
+                  message: context.l10n.sessionStorageFailedMessage,
                 ),
               ),
             ),
@@ -73,10 +77,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
         final tokenStore = snapshot.data;
         if (tokenStore == null) {
-          return const Scaffold(
+          return Scaffold(
             body: SafeArea(
               child: Center(
-                child: AppLoadingState(message: 'Preparing session...'),
+                child: AppLoadingState(message: context.l10n.preparingSession),
               ),
             ),
           );
@@ -189,7 +193,6 @@ class _HomeView extends StatelessWidget {
 
   static const _guestDeviceId = 'frontend-preview-device';
   static const _guestDisplayName = 'Guest Player';
-  static const _guestLocale = 'en-US';
 
   @override
   Widget build(BuildContext context) {
@@ -202,10 +205,12 @@ class _HomeView extends StatelessWidget {
               context.read<GuestEntryCubit>().continueAsGuest(
                 deviceId: _guestDeviceId,
                 displayName: _guestDisplayName,
-                locale: _guestLocale,
+                locale: context.read<LocaleCubit>().state.backendLocale,
               );
             } else if (state.status == SessionStatus.authenticated) {
-              context.read<CategoryListCubit>().loadCategories();
+              context.read<CategoryListCubit>().loadCategories(
+                locale: context.read<LocaleCubit>().state.backendLocale,
+              );
               context.read<EnergyCubit>().loadEnergy();
               context.read<DiamondCubit>().loadDiamond();
               context.read<HintCubit>().loadHint();
@@ -219,6 +224,11 @@ class _HomeView extends StatelessWidget {
           listener: (context, state) {
             if (state.status == GameStartStatus.success &&
                 state.gameId != null) {
+              // Interstitial @ game start (~1/3). Fire-and-forget and
+              // web-safe; never blocks navigation to the game.
+              context.read<AdsService>().maybeShowInterstitial(
+                InterstitialChance.gameStart,
+              );
               context.go('/games/${state.gameId}');
             } else if (state.status == GameStartStatus.failure) {
               context.read<AudioService>().playEffect(SoundEffect.error);
@@ -276,31 +286,37 @@ class _HomeScaffold extends StatelessWidget {
                 children: [
                   _SideIconButton(
                     icon: Icons.person_outline,
-                    tooltip: 'Profile',
+                    tooltip: context.l10n.navProfile,
                     onPressed: () => context.go('/profile'),
                   ),
                   const SizedBox(height: 10),
                   _SideIconButton(
                     icon: Icons.flag_outlined,
-                    tooltip: 'Quests',
+                    tooltip: context.l10n.navQuests,
                     onPressed: () => context.go('/quests'),
                   ),
                   const SizedBox(height: 10),
                   _SideIconButton(
                     icon: Icons.storefront_outlined,
-                    tooltip: 'Market',
+                    tooltip: context.l10n.navMarket,
                     onPressed: () => context.go('/market'),
                   ),
                   const SizedBox(height: 10),
                   _SideIconButton(
                     icon: Icons.diamond_outlined,
-                    tooltip: 'Diamonds',
+                    tooltip: context.l10n.navDiamonds,
                     onPressed: () => context.go('/payments'),
                   ),
                   const SizedBox(height: 10),
                   _SideIconButton(
+                    icon: Icons.ondemand_video_outlined,
+                    tooltip: context.l10n.navEarnDiamonds,
+                    onPressed: () => context.go('/earn-diamonds'),
+                  ),
+                  const SizedBox(height: 10),
+                  _SideIconButton(
                     icon: Icons.settings_outlined,
-                    tooltip: 'Settings',
+                    tooltip: context.l10n.navSettings,
                     onPressed: () => context.go('/settings'),
                   ),
                 ],
@@ -321,24 +337,26 @@ class _HomeContent extends StatelessWidget {
     return BlocBuilder<CategoryListCubit, CategoryListState>(
       builder: (context, state) {
         if (state.status == CategoryListStatus.initial || state.isLoading) {
-          return const Center(
-            child: AppLoadingState(message: 'Loading categories...'),
+          return Center(
+            child: AppLoadingState(message: context.l10n.loadingCategories),
           );
         }
 
         if (state.status == CategoryListStatus.failure) {
           return Center(
             child: AppErrorState(
-              title: 'Could not load categories',
-              message: state.message ?? 'Try again.',
-              onRetry: () => context.read<CategoryListCubit>().loadCategories(),
+              title: context.l10n.couldNotLoadCategories,
+              message: state.message ?? context.l10n.commonTryAgain,
+              onRetry: () => context.read<CategoryListCubit>().loadCategories(
+                locale: context.read<LocaleCubit>().state.backendLocale,
+              ),
             ),
           );
         }
 
         if (state.categories.isEmpty) {
-          return const Center(
-            child: AppLoadingState(message: 'Preparing categories...'),
+          return Center(
+            child: AppLoadingState(message: context.l10n.preparingCategories),
           );
         }
 
@@ -458,8 +476,8 @@ class _CategoryDeckState extends State<_CategoryDeck> {
                   width: cardSize,
                   child: AppPrimaryButton(
                     label: gameStartState.isSubmitting
-                        ? 'Starting...'
-                        : 'Start',
+                        ? context.l10n.commonStarting
+                        : context.l10n.commonStart,
                     onPressed: gameStartState.isSubmitting
                         ? null
                         : () {
@@ -475,8 +493,9 @@ class _CategoryDeckState extends State<_CategoryDeck> {
                 if (gameStartState.status == GameStartStatus.failure) ...[
                   const SizedBox(height: 12),
                   AppErrorState(
-                    title: 'Could not start game',
-                    message: gameStartState.message ?? 'Try again.',
+                    title: context.l10n.couldNotStartGame,
+                    message:
+                        gameStartState.message ?? context.l10n.commonTryAgain,
                   ),
                 ],
               ],

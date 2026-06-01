@@ -5,6 +5,207 @@ yeniden yazilmaz.
 
 ---
 
+## Sprint CL — Content Localization / Phase 2 — in progress
+
+### Slice CL3 — Admin content language controls (2026-06-01, working tree)
+
+- Added `features/admin_content` repository/cubit/screen for Games content
+  category administration.
+- Added `/admin/content` route and `AppAdminShell` navigation entry.
+- Content admins can filter categories by locale and create/edit categories
+  with an explicit language selector.
+- Added admin content l10n keys across `en/tr/de/fr/es` and regenerated
+  `AppLocalizations`.
+- Added repository/cubit coverage plus updated admin shell tests.
+- Gate: focused admin content/shell Flutter tests **11/11**; full Flutter
+  suite **173/173**; `flutter analyze` clean.
+
+### Slice CL1 — Locale-filtered categories (2026-06-01, working tree)
+
+- `CategoryRepository.getCategories(locale:)` now calls
+  `/categories?locale=xx-XX` and parses the returned category `language`.
+- `CategoryListCubit.loadCategories(locale:)` threads the active content
+  locale through category loading.
+- Home/category selection use `LocaleCubit.state.backendLocale`; guest
+  registration also uses the selected locale instead of hardcoded `en-US`.
+- Gate: `flutter analyze` clean; Flutter **166/166**.
+
+## Sprint L10N — Localization (App UI i18n) — closed for Phase 1 UI i18n (2026-06-01)
+
+### Slice L8 — Tests + analyze + docs close-out (2026-06-01, working tree)
+
+- Final frontend gate after L1–L7: Flutter **166/166**.
+- `flutter analyze`: **No issues found** after the analyzer-info cleanup.
+- Sprint docs closed across active/progress/roadmap/frontend docs.
+- Phase 1 boundary recorded: app UI strings localized; game content remains
+  Phase 2; cubit/API error-message localization remains Phase 3.
+
+### Slice L7 — Translation polish (2026-06-01, working tree)
+
+- Polished `tr`/`de`/`fr`/`es` ARBs for the stabilized L6 admin/shared key
+  set; regenerated `AppLocalizations`.
+- TR is authored/polished; DE/FR/ES are usable drafts. Remaining
+  same-as-English values are intentional brand/format/technical terms.
+- Gate: `flutter analyze` only has 6 pre-existing infos; Flutter **166/166**.
+
+### Slice L6 — String extraction: admin/shared (2026-06-01, working tree)
+
+- Added admin/shared ARB keys × 5 locales and regenerated
+  `AppLocalizations`.
+- Localized admin shell/login, quest catalog/form, players, energy/hint/
+  undo/reset/diamond, market admin, audit log, plus shared
+  `AppErrorState`/`AppLoadingState` default labels.
+- Quest/market enum labels are presentation-localized; cubit/API messages
+  remain Phase 3.
+- Gate: `flutter analyze` only has 6 pre-existing infos; Flutter **166/166**.
+
+### Slice L5 — String extraction: quests/profile/settings (2026-06-01, working tree)
+
+- ~38 more ARB keys × 5 languages, incl. ICU plural `providersLinked`.
+- `quests_screen` (fixed stray Turkish incl. state badges),
+  `profile_summary_screen` (stat/guest/provider labels),
+  `leaderboard_screen` (period subtitles/empty/tabs — `context` threaded
+  into the period helpers), `settings_screen` audio section.
+- `splash` keeps the `'LexiLink'` wordmark; auth has no screen.
+- Gate: `flutter analyze` clean; Flutter **166/166**.
+
+### Slice L4 — String extraction: economy surface (2026-06-01, working tree)
+
+- ~40 more ARB keys × 5 languages (ICU placeholders for prices, stock,
+  buy confirm, rewarded watch/card/today) + shared commons (buy,
+  unavailable, processing, check-back-later, unlimited).
+- Localized `market_screen` (incl. stray Turkish `'Mağaza'` →
+  `marketTitle`), `payment_screen`, `diamond_badge`, `earn_diamonds_screen`:
+  titles, loading/empty/error states, price pills, stock/remaining, buy
+  confirm dialog, bundle labels, rewarded watch button/card/footer/snackbar.
+- Scope boundary unchanged (cubit messages → Phase 3).
+- Gate: `flutter analyze` clean; Flutter **166/166** (no churn).
+
+### Slice L3 — String extraction: gameplay surface (2026-05-31, working tree)
+
+- ~55 ARB keys across en/tr/de/fr/es (incl. ICU placeholders for HUD
+  chips and outcome subtitles).
+- Localized all static strings in `game_screen`, `home_screen`,
+  `category_selection_screen` via `context.l10n.*` (titles, nav tooltips,
+  buttons, quit dialog, HUD, result sheet, outcomes, action loaders).
+  `context` threaded into `_actionMessage`/`_outcomeFor`. `'LexiLink'`
+  wordmark stays literal.
+- Scope: presentation strings only; cubit/error messages stay English →
+  Phase 3. Widget fallbacks `?? 'Try again.'` → `commonTryAgain`.
+- Gate: `flutter analyze` clean; Flutter **166/166** (no churn — `en`
+  mirrors prior copy).
+
+### Slice L2 — Locale preference + picker (2026-05-31, working tree)
+
+- `AppLanguage` enum (5 languages; ARB `code` + `backendLocale` `xx-XX` +
+  `nativeName`), `LocalePreferencesRepository` (SharedPreferences +
+  InMemory), `PlayerLocaleWriter` (`ApiPlayerLocaleWriter` preserves the
+  avatar via GET then `PATCH /players/{id}/profile`; `Noop` for tests),
+  `ApiClient.patchJson`.
+- `LocaleCubit`: load = stored → device language → English; setLanguage =
+  live emit + device-local persist + best-effort `Player.Locale` write.
+- Provided above the router (`MultiBlocProvider`); `MaterialApp.router`
+  `locale` driven by `BlocBuilder<LocaleCubit, AppLanguage>`.
+- `SettingsScreen` language dropdown (endonyms) + first real l10n keys
+  (`settingsTitle`/`languageLabel`).
+- Gate: `flutter analyze` clean; Flutter **166/166** (+8;
+  `settings_screen_test` updated for delegates + `LocaleCubit`).
+
+### Slice L1 — i18n infrastructure (2026-05-31, working tree)
+
+- `flutter_localizations` + `intl` + `generate: true`; `l10n.yaml`
+  (output `lib/l10n`, non-synthetic, non-nullable getter); `app_en.arb`
+  template + `tr/de/fr/es` ARBs (seed keys); `flutter gen-l10n` →
+  `AppLocalizations`. `context.l10n` extension in `lib/shared/l10n/`.
+- `MaterialApp.router` wired: `localizationsDelegates`,
+  `supportedLocales`, `onGenerateTitle`, and a device-language-match →
+  English-fallback `localeListResolutionCallback`. L2 adds the explicit
+  `LocaleCubit` override.
+- Locale codes are region-qualified (`tr-TR`/`en-US`/`de-DE`/`fr-FR`/
+  `es-ES`) to satisfy the backend `Player.Locale` regex; ARB resolution
+  uses the language code.
+- String extraction deferred to L3–L6 (this slice is infra only).
+- Gate: `flutter analyze` clean (12 pre-existing); Flutter **158/158**
+  (+2 l10n smoke).
+
+## Sprint AD — Advertising (AdMob) — closed for repo work (2026-05-31)
+
+### Slice AD7 — Tests + verification + docs close-out (2026-05-31, working tree)
+
+- Full Flutter suite **156/156**; `flutter analyze` adds no Ads findings
+  (12 pre-existing info warnings unchanged).
+- Backend gates re-run green (Ads unit 8/8, integration 1/1, ArchTests
+  67/67; DbUp 0 pending) — see `progress.md > AD7`.
+- Operator-owned manual device verification remaining: interstitial
+  probabilities, rewarded watch + SSV grant (dev path is manual since
+  Google can't reach localhost), daily cap, Diamond badge refresh,
+  UMP/ATT prompts. Real AdMob/SSV credentials operator-owned.
+
+### Slice AD6 — Consent + ATT (2026-05-31, working tree)
+
+- Added `app_tracking_transparency ^2.0.6` (resolved 2.0.7).
+- `AdsPlatform.gatherConsent()`: iOS ATT prompt (when `notDetermined`)
+  then AdMob UMP consent flow (`requestConsentInfoUpdate` →
+  `loadAndShowConsentFormIfRequired`), both best-effort.
+- `AdsService.initialize()` gathers consent **before** SDK init, so it
+  precedes any ad request. `AdsService` stays SDK-free behind the seam.
+- iOS `Info.plist` gains `NSUserTrackingUsageDescription`. UMP is part of
+  `google_mobile_ads`. Mobile-only; web/desktop skip consent.
+- Gate: `flutter analyze` clean on ads files; Flutter **156/156** (+2).
+
+### Slice AD5 — Rewarded ad → Diamond (2026-05-31, working tree)
+
+- `AdsPlatform.showRewarded({adUnitId, userId, onClosed})` +
+  `AdsService.showRewarded`. Player id passed as the SSV `user_id`
+  (`ServerSideVerificationOptions`); local `onUserEarnedReward` is a
+  no-op (grant is backend-owned via SSV). `onClosed` guaranteed once so
+  the UI never hangs.
+- `features/rewarded_ads/`: `RewardedAdStatus` + `RewardedAdRepository`
+  (`GET /ads/rewarded/status`) + `RewardedAdCubit` (load/watch, cap
+  guard, re-fetch + `rewardJustWatched`) + `EarnDiamondsScreen` (watch
+  button, daily-remaining display, capped-disabled, web unavailable).
+- On reward watched: refresh `DiamondCubit`, purchase SFX, "arrive once
+  verified" snackbar. Route `/earn-diamonds` + HomeScreen entry.
+- Gate: `flutter analyze` clean on ads/feature files; Flutter
+  **154/154** (+7).
+
+### Slice AD4 — Interstitial placements (2026-05-31, working tree)
+
+- `AdsPlatform.showInterstitial(adUnitId)` (load+show via
+  `InterstitialAd.load`, self-disposing, best-effort) +
+  `AdsService.maybeShowInterstitial(probability)` — probability gate over
+  an injectable `Random`; no-op when unsupported, not initialized, or the
+  roll misses.
+- `InterstitialChance` constants (`gameStart` 1/3, `gameEnd` 1/2).
+- Hooked at GameStart success (home, before navigation) and game finish
+  (game screen, alongside the result sheet). Fire-and-forget, web-safe;
+  never blocks the flow.
+- Gate: `flutter analyze` clean on touched files; Flutter **147/147**
+  (+5 probability-gate / no-op / chance-sanity tests).
+
+### Slice AD3 — Frontend ads infrastructure (2026-05-31, working tree)
+
+- Added `google_mobile_ads ^5.1.0` (resolved 5.3.1).
+- `lib/shared/ads/`: `AdsService` global facade over an `AdsPlatform`
+  seam. `MobileAdsPlatform` is the **only** file importing the SDK, so
+  `AdsService` stays SDK-free and unit-testable. Mobile-only/web-safe:
+  `isSupported` is false on web/desktop, `initialize()` no-ops there and
+  is best-effort (swallows failures) so app start never depends on the
+  ad network. `AdConfig` holds Google's public **test** ad-unit ids,
+  overridable via `--dart-define`.
+- AdMob **test** app ids added to `AndroidManifest.xml`
+  (`com.google.android.gms.ads.APPLICATION_ID`) and iOS `Info.plist`
+  (`GADApplicationIdentifier`).
+- Wired in `main.dart` (`unawaited` fire-and-forget init) and provided
+  above the router in `app.dart` (`RepositoryProvider<AdsService>`),
+  mirroring `AudioService` — ads are a genuinely global concern.
+- Smoke tests via the injectable platform seam: init-once on supported,
+  idempotent, no-op on unsupported, swallows init failure; plus
+  `AdConfig` non-empty test-id assertions.
+- Interstitial/rewarded **show** logic deliberately deferred to AD4/AD5.
+- Gate: `flutter analyze` clean on ads files (12 pre-existing info
+  warnings unchanged); Flutter **142/142** (+5).
+
 ## Sprint A — Audio (Sound & Music) ✅ closed (2026-05-30, working tree)
 
 Frontend-only sprint. SFX + looping background music via `audioplayers`,

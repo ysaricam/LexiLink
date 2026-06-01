@@ -15,5 +15,9 @@ internal class EditCategoryCommandValidator : AbstractValidator<EditCategoryComm
 
         RuleFor(x => x.Description)
             .MaximumLength(CategoryDescriptionMustNotExceedMaxLengthRule.MaxLength);
+
+        RuleFor(x => x.Language)
+            .NotEmpty()
+            .Matches("^[a-z]{2}-[A-Z]{2}$");
     }
 }

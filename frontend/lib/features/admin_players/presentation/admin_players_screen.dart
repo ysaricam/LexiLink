@@ -7,6 +7,7 @@ import 'package:lexilink_app/features/admin_players/data/admin_players_repositor
 import 'package:lexilink_app/features/admin_players/data/player_admin_detail.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 /// Admin player console. Search-by-handle requires a backend query
@@ -138,14 +139,12 @@ class _AdminPlayersViewState extends State<_AdminPlayersView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Player console',
+          context.l10n.adminPlayerConsoleTitle,
           style: Theme.of(context).textTheme.headlineSmall,
         ),
         const SizedBox(height: 4),
         Text(
-          'Lookup is by player GUID. Search-by-handle is a backend '
-          'follow-up — the Players module currently exposes only '
-          'GET /admin/players/{id}.',
+          context.l10n.adminPlayerConsoleHelp,
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ],
@@ -153,7 +152,8 @@ class _AdminPlayersViewState extends State<_AdminPlayersView> {
   }
 
   Widget _buildLookupRow(BuildContext context, AdminPlayersState state) {
-    final busy = state.status == AdminPlayersStatus.loading ||
+    final busy =
+        state.status == AdminPlayersStatus.loading ||
         state.status == AdminPlayersStatus.saving;
     return Row(
       children: [
@@ -161,9 +161,9 @@ class _AdminPlayersViewState extends State<_AdminPlayersView> {
           child: TextField(
             controller: _idController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Player GUID',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminPlayerGuid,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
             onSubmitted: busy ? null : (_) => _submit(context),
@@ -173,7 +173,7 @@ class _AdminPlayersViewState extends State<_AdminPlayersView> {
         FilledButton.icon(
           onPressed: busy ? null : () => _submit(context),
           icon: const Icon(Icons.search),
-          label: const Text('Look up'),
+          label: Text(context.l10n.adminLookUp),
         ),
       ],
     );
@@ -182,28 +182,28 @@ class _AdminPlayersViewState extends State<_AdminPlayersView> {
   Widget _buildBody(BuildContext context, AdminPlayersState state) {
     return switch (state.status) {
       AdminPlayersStatus.initial => const SizedBox.shrink(),
-      AdminPlayersStatus.loading ||
-      AdminPlayersStatus.saving =>
-        const Center(child: Padding(
+      AdminPlayersStatus.loading || AdminPlayersStatus.saving => const Center(
+        child: Padding(
           padding: EdgeInsets.all(24),
           child: CircularProgressIndicator(),
-        )),
+        ),
+      ),
       AdminPlayersStatus.notFound => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'No player found.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminNoPlayerFound,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
+      ),
       AdminPlayersStatus.failure when state.detail == null => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'Lookup failed.',
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminLookupFailed,
+          style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
-      AdminPlayersStatus.failure || AdminPlayersStatus.loaded =>
-        _PlayerDetailCard(detail: state.detail!),
+      ),
+      AdminPlayersStatus.failure ||
+      AdminPlayersStatus.loaded => _PlayerDetailCard(detail: state.detail!),
     };
   }
 
@@ -267,22 +267,31 @@ class _PlayerDetailCard extends StatelessWidget {
               ],
             ),
             const Divider(height: 32),
-            _kv(context, 'Id', detail.id),
-            _kv(context, 'Locale', detail.locale),
+            _kv(context, context.l10n.adminId, detail.id),
+            _kv(context, context.l10n.adminLocale, detail.locale),
             _kv(
               context,
-              'Auth providers linked',
+              context.l10n.adminAuthProvidersLinked,
               detail.authProvidersLinked.toString(),
             ),
-            _kv(context, 'Created', detail.createdAt.toUtc().toIso8601String()),
+            _kv(
+              context,
+              context.l10n.adminCreated,
+              detail.createdAt.toUtc().toIso8601String(),
+            ),
             if (detail.isBanned) ...[
               const Divider(height: 32),
               _kv(
                 context,
-                'Banned at',
-                detail.bannedAt?.toUtc().toIso8601String() ?? '—',
+                context.l10n.adminBannedAt,
+                detail.bannedAt?.toUtc().toIso8601String() ??
+                    context.l10n.commonNoDash,
               ),
-              _kv(context, 'Reason', detail.bannedReason ?? '—'),
+              _kv(
+                context,
+                context.l10n.adminReason,
+                detail.bannedReason ?? context.l10n.commonNoDash,
+              ),
             ],
             const SizedBox(height: 16),
             Align(
@@ -291,7 +300,7 @@ class _PlayerDetailCard extends StatelessWidget {
                   ? FilledButton.tonalIcon(
                       onPressed: () => _confirmUnban(context),
                       icon: const Icon(Icons.lock_open),
-                      label: const Text('Unban'),
+                      label: Text(context.l10n.adminUnban),
                     )
                   : FilledButton.icon(
                       style: FilledButton.styleFrom(
@@ -299,7 +308,7 @@ class _PlayerDetailCard extends StatelessWidget {
                       ),
                       onPressed: () => _confirmBan(context),
                       icon: const Icon(Icons.block),
-                      label: const Text('Ban'),
+                      label: Text(context.l10n.adminBan),
                     ),
             ),
           ],
@@ -344,20 +353,20 @@ class _PlayerDetailCard extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
-        title: const Text('Unban player?'),
+        title: Text(context.l10n.adminUnbanPlayerTitle),
         content: Text(
-          '${detail.handle}#${detail.discriminator} will be able to '
-          'sign in again. The ban reason history is preserved on the '
-          'audit log.',
+          context.l10n.adminUnbanPlayerMessage(
+            '${detail.handle}#${detail.discriminator}',
+          ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Unban'),
+            child: Text(context.l10n.adminUnban),
           ),
         ],
       ),
@@ -392,24 +401,24 @@ class _BanReasonDialogState extends State<_BanReasonDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Ban player'),
+      title: Text(context.l10n.adminBanPlayerTitle),
       content: TextField(
         controller: _controller,
         autofocus: true,
-        decoration: const InputDecoration(
-          labelText: 'Reason',
-          border: OutlineInputBorder(),
+        decoration: InputDecoration(
+          labelText: context.l10n.adminReason,
+          border: const OutlineInputBorder(),
         ),
         maxLines: 3,
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: () => Navigator.of(context).pop(_controller.text),
-          child: const Text('Ban'),
+          child: Text(context.l10n.adminBan),
         ),
       ],
     );
@@ -420,7 +429,10 @@ class _BannedBadge extends StatelessWidget {
   const _BannedBadge();
   @override
   Widget build(BuildContext context) {
-    return _Badge(label: 'Banned', color: Theme.of(context).colorScheme.error);
+    return _Badge(
+      label: context.l10n.adminBanned,
+      color: Theme.of(context).colorScheme.error,
+    );
   }
 }
 
@@ -428,9 +440,9 @@ class _GuestBadge extends StatelessWidget {
   const _GuestBadge();
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.only(left: 8),
-      child: _Badge(label: 'Guest', color: Colors.teal),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: _Badge(label: context.l10n.adminGuest, color: Colors.teal),
     );
   }
 }

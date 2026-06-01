@@ -63,6 +63,62 @@ only as a backend local/test convenience. Do not use it for production traffic
 or normal Flutter preview sessions; stale JWTs will 401 against a
 `DevelopmentBearer` API.
 
+## Localization And Locale
+
+Frontend UI localization supports Turkish, English, German, French, and
+Spanish. Flutter ARB files are keyed by language code (`tr`, `en`, `de`,
+`fr`, `es`) and unsupported device locales fall back to English.
+
+Backend profile locale uses the existing Players format:
+
+| Locale | Meaning |
+| --- | --- |
+| `tr-TR` | Turkish |
+| `en-US` | English |
+| `de-DE` | German |
+| `fr-FR` | French |
+| `es-ES` | Spanish |
+
+Operational notes:
+
+- Settings language changes apply live in the app, persist device-local via
+  SharedPreferences, and best-effort write `Player.Locale` by preserving the
+  current avatar and calling `PATCH /players/{id}/profile`.
+- `Player.Locale` is validated as `^[a-z]{2}-[A-Z]{2}$`; use the
+  region-qualified form when calling backend APIs.
+- Phase 1 localizes app UI strings only. Game content remains Turkish until
+  Phase 2 introduces per-language content/word graphs. Phase 2 has started:
+  `games.Categories.Language` stores the content locale, existing content
+  defaults to `tr-TR`, and `GET /categories?locale=xx-XX` filters player
+  category lists by language. Backend rule, validation, and mixed cubit/API
+  error messages remain English until Phase 3 error-code translation.
+
+Content import:
+
+```bash
+dotnet run --project src/Tools/LexiLink.Tools.CategoryImporter/LexiLink.Tools.CategoryImporter.csproj -- \
+  "$ConnectionStrings__LexiLinkDb" \
+  docs/category-animals-en.json
+```
+
+`category.language` in the JSON is optional for older files and defaults to
+`tr-TR`. Stable import ids include language, so the same category name can be
+authored independently per locale.
+
+For the full repeatable authoring handoff — JSON schema field reference,
+graph design rules, importer validation, per-language stable-id behavior,
+verify steps, and a content-ops checklist — see
+[`CONTENT_AUTHORING.md`](CONTENT_AUTHORING.md). Authoring per-language word
+graphs (DE/FR/ES) is a content-ops task; the code path is complete and needs
+no change.
+
+Admin content UI:
+
+- `/admin/content` lists Games content categories.
+- The language filter calls `GET /admin/content/categories?locale=xx-XX`.
+- Create/edit category sends the explicit `language` field to
+  `/admin/content/categories`.
+
 ## Administration Module Settings
 
 | Setting | Default | Notes |
@@ -147,6 +203,55 @@ Pre-production manual store checks:
 - Store refund/revocation notifications update the ledger to
   `Refunded`/`Revoked` without automatic Diamond clawback in v1.
 
+## Ads Module Settings
+
+Ads owns the rewarded-ad → Diamond grant path, verified through AdMob
+Server-Side Verification (SSV). The backend is the grant authority; the
+client only requests/shows the ad and passes the player id as the SSV
+`user_id`. Interstitial placements are pure frontend (no backend).
+
+| Setting | Default | Notes |
+| --- | --- | --- |
+| `Ads__RewardedDiamondAmount` | `5` | Backend-owned Diamond granted per verified rewarded ad. The ad-network/client reward value is ignored. |
+| `Ads__RewardedDailyLimit` | `10` | Max rewarded-ad grants per player per UTC day. Hitting the cap is a benign "no reward", not an error. |
+| `Ads__Ssv__Mode` | `Production` | `Production` selects the fail-closed `AdMobSsvVerifier` (rejects until real key verification is wired). `DevelopmentFailOpen` selects the fail-open dev verifier (set in `appsettings.Development.json`) because Google's SSV servers cannot reach `localhost`. **Never use `DevelopmentFailOpen` in production.** |
+| `Ads__Ssv__VerificationKeysUrl` | Google's verifier-keys URL | Source of AdMob's rotating public keys for signature verification (used by the real verifier once implemented). |
+
+Frontend ad-unit ids are Google **test** ids by default and override via
+`--dart-define` (`ADMOB_INTERSTITIAL_AD_UNIT_ID`,
+`ADMOB_REWARDED_AD_UNIT_ID`); AdMob **app** ids live in the Android
+`AndroidManifest.xml` and iOS `Info.plist` (also Google test ids until
+real credentials arrive).
+
+Operational notes:
+
+- `GET /ads/rewarded/callback?...&signature=...&key_id=...` is the AdMob
+  SSV ingress: **anonymous** but signature-verified inside the handler.
+  It always returns 200 (a non-2xx makes AdMob retry); the body reports
+  the outcome (`Granted` / `AlreadyGranted` / `DailyLimitReached` /
+  `VerificationFailed`).
+- Idempotency is on the SSV `transaction_id` (unique index): a replayed
+  callback never grants twice.
+- `GET /ads/rewarded/status` (authenticated player) returns the player's
+  grants today, the daily cap, remaining, and Diamond-per-ad.
+- A Diamond-grant failure (for example a player with no Diamond
+  inventory) throws → 500 → AdMob retries the callback; v1 has no
+  `VerifiedButGrantFailed` recovery state (the ledger is append-only).
+- Local dev: Google cannot reach `localhost`, so the SSV callback won't
+  fire automatically after watching — trigger
+  `GET /ads/rewarded/callback` manually to exercise the grant.
+
+Pre-production manual checks (operator/device-owned):
+
+- Interstitial shows at ~1/3 of game starts and ~1/2 of finishes; a
+  failed ad load never blocks navigation or the result sheet.
+- Rewarded watch with a real AdMob/SSV setup grants exactly
+  `Ads:RewardedDiamondAmount` once per verified `transaction_id`.
+- Daily cap blocks further grants for the day; the watch button disables.
+- UMP consent + iOS ATT prompts appear on startup before ad requests.
+- Real AdMob account/ad-unit ids and SSV signature credentials are
+  operator-owned (test ids ship in code/config).
+
 ## Background Processing Defaults
 
 Outbox and inbox processing is scheduled by Quartz from the API host.
@@ -196,8 +301,10 @@ Processor logs include structured fields for operational search:
 | `GET /admin/players/{playerId:guid}` | `AuthenticatedAdmin` | Returns `PlayerAdminDetailDto` (id, displayName, discriminator, handle, avatarUrl, locale, isGuest, isBanned, bannedReason, bannedAt, createdAt, authProvidersLinked). 404 when the player is unknown. |
 | `POST /admin/players/{playerId:guid}/ban` | `AuthenticatedAdmin` | Mark a player banned (`{ reason }`, NotEmpty, max 500). Idempotent: re-banning the same player is a no-op. Banned tokens are refused at the auth boundary with 401. |
 | `POST /admin/players/{playerId:guid}/unban` | `AuthenticatedAdmin` | Lift the ban. Idempotent. |
-| `POST /admin/content/categories` | `AuthenticatedAdmin` | Create a new category (`{ name, description }`). Returns 201 with new id. Audited under `Games.Category`. |
-| `PATCH /admin/content/categories/{id:guid}` | `AuthenticatedAdmin` | Edit category name/description. Audited. |
+| `GET /admin/content/categories?locale=xx-XX` | `AuthenticatedAdmin` | List Games content categories; optional locale filters by `Category.Language`. |
+| `GET /admin/content/categories/{id:guid}` | `AuthenticatedAdmin` | Read category details (name, description, language, linkCount). |
+| `POST /admin/content/categories` | `AuthenticatedAdmin` | Create a new category (`{ name, description, language }`; language defaults to `tr-TR` for old callers). Returns 201 with new id. Audited under `Games.Category`. |
+| `PATCH /admin/content/categories/{id:guid}` | `AuthenticatedAdmin` | Edit category name/description/language. Audited. |
 | `POST /admin/content/links` | `AuthenticatedAdmin` | Create a new link (`{ categoryId, value, description, isActive }`). Returns 201 with new id. Audited under `Games.Link`. |
 | `POST /admin/content/links/{linkId:guid}/outgoing/{outgoingLinkId:guid}` | `AuthenticatedAdmin` | Add an outgoing edge between two links. Audited. |
 | `DELETE /admin/content/links/{linkId:guid}/outgoing/{outgoingLinkId:guid}` | `AuthenticatedAdmin` | Remove an outgoing edge. Audited. |

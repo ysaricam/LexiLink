@@ -9,6 +9,7 @@ import 'package:lexilink_app/features/quests/data/quest_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -39,18 +40,18 @@ class _QuestsScreenState extends State<QuestsScreen> {
       future: _tokenStoreFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppScreen(
+          return AppScreen(
             child: AppErrorState(
-              title: 'Session storage failed',
-              message: 'Restart the app and try again.',
+              title: context.l10n.sessionStorageFailedTitle,
+              message: context.l10n.sessionStorageFailedMessage,
             ),
           );
         }
 
         final tokenStore = snapshot.data;
         if (tokenStore == null) {
-          return const AppScreen(
-            child: AppLoadingState(message: 'Preparing session...'),
+          return AppScreen(
+            child: AppLoadingState(message: context.l10n.preparingSession),
           );
         }
 
@@ -128,30 +129,29 @@ class _QuestsView extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const AppBackBar(title: 'Quests'),
+              AppBackBar(title: context.l10n.navQuests),
               const SizedBox(height: 8),
               Text(
-                'Quest tamamla, bonus enerji kazan.',
+                context.l10n.questsSubtitle,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
               const SizedBox(height: 20),
               if (state.isLoading && state.quests.isEmpty)
-                const AppLoadingState(message: "Quest'ler yükleniyor...")
+                AppLoadingState(message: context.l10n.questsLoading)
               else if (state.status == QuestsStatus.failure)
                 AppErrorState(
-                  title: "Quest'ler yüklenemedi",
-                  message: state.message ?? 'Tekrar dene.',
+                  title: context.l10n.questsLoadError,
+                  message: state.message ?? context.l10n.commonTryAgain,
                   onRetry: () => context.read<QuestsCubit>().loadQuests(),
                 )
               else if (state.status == QuestsStatus.success &&
                   state.quests.isEmpty)
                 AppEmptyState(
-                  title: 'Henüz quest yok',
-                  message:
-                      "Bir oyun tamamla, quest'ler burada görünmeye başlasın.",
-                  actionLabel: 'Yenile',
+                  title: context.l10n.noQuestsTitle,
+                  message: context.l10n.noQuestsMessage,
+                  actionLabel: context.l10n.commonRefresh,
                   onAction: () => context.read<QuestsCubit>().loadQuests(),
                 )
               else
@@ -328,7 +328,9 @@ class _QuestTile extends StatelessWidget {
             if (quest.isReadyToClaim) ...[
               const SizedBox(height: 12),
               AppPrimaryButton(
-                label: isClaiming ? 'Alınıyor...' : 'Ödülü al',
+                label: isClaiming
+                    ? context.l10n.questClaiming
+                    : context.l10n.questClaimReward,
                 onPressed: (isClaiming || claimDisabled)
                     ? null
                     : () async {
@@ -362,17 +364,17 @@ class _StateBadge extends StatelessWidget {
 
     final (label, foreground, background) = switch (state) {
       QuestState.readyToClaim => (
-        'Hazır',
+        context.l10n.questStateReady,
         colorScheme.onPrimary,
         colorScheme.primary,
       ),
       QuestState.active => (
-        'Aktif',
+        context.l10n.questStateActive,
         colorScheme.onSurface,
         colorScheme.surfaceContainerHighest,
       ),
       QuestState.claimed => (
-        'Alındı',
+        context.l10n.questStateClaimed,
         colorScheme.onSecondaryContainer,
         colorScheme.secondaryContainer,
       ),

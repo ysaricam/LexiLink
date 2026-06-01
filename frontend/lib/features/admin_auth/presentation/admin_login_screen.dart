@@ -8,6 +8,7 @@ import 'package:lexilink_app/features/admin_auth/data/admin_auth_repository.dart
 import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
 import 'package:lexilink_app/shared/widgets/app_screen.dart';
@@ -38,8 +39,9 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
   }
 
   Future<void> _initialize() async {
-    final tokenStore = await (widget.tokenStoreFactory?.call() ??
-        SharedPreferencesAdminTokenStore.create());
+    final tokenStore =
+        await (widget.tokenStoreFactory?.call() ??
+            SharedPreferencesAdminTokenStore.create());
 
     if (!mounted) return;
 
@@ -92,21 +94,20 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
               children: [
                 const SizedBox(height: 32),
                 Text(
-                  'Admin sign-in',
+                  context.l10n.adminSignInTitle,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Development verifier: enter your admin email and the literal '
-                  '"dev:admin:{email}" token. Production SSO arrives later.',
+                  context.l10n.adminSignInHelp,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 24),
                 TextField(
                   controller: _emailController,
-                  decoration: const InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminEmailLabel,
+                    border: const OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   autocorrect: false,
@@ -115,17 +116,17 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                 const SizedBox(height: 12),
                 TextField(
                   controller: _tokenController,
-                  decoration: const InputDecoration(
-                    labelText: 'External token',
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminExternalTokenLabel,
+                    border: const OutlineInputBorder(),
                   ),
                   obscureText: true,
                 ),
                 const SizedBox(height: 24),
                 AppPrimaryButton(
                   label: state.status == AdminSessionStatus.authenticating
-                      ? 'Signing in…'
-                      : 'Sign in',
+                      ? context.l10n.adminSigningIn
+                      : context.l10n.adminSignIn,
                   onPressed: state.status == AdminSessionStatus.authenticating
                       ? null
                       : () => _submit(context),
@@ -133,8 +134,10 @@ class _AdminLoginScreenState extends State<AdminLoginScreen> {
                 if (state.status == AdminSessionStatus.failure) ...[
                   const SizedBox(height: 16),
                   Text(
-                    state.errorMessage ?? 'Sign-in failed.',
-                    style: TextStyle(color: Theme.of(context).colorScheme.error),
+                    state.errorMessage ?? context.l10n.adminSignInFailed,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
                   ),
                 ],
               ],

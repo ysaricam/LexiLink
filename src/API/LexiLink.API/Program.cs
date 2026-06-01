@@ -12,6 +12,7 @@ using LexiLink.API.Configuration.Operations;
 using LexiLink.API.Configuration.Outbox;
 using LexiLink.API.CrossModule;
 using LexiLink.API.Modules.Admin;
+using LexiLink.API.Modules.Ads;
 using LexiLink.API.Modules.Auth;
 using LexiLink.API.Modules.Diamond;
 using LexiLink.API.Modules.Energy;
@@ -34,6 +35,9 @@ using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Modules.Payments.Application.Configuration.Verification;
 using LexiLink.Modules.Diamond.Application.Configuration.CrossModule;
 using LexiLink.Modules.Administration.Infrastructure.Configuration;
+using LexiLink.Modules.Ads.Application.Configuration.Verification;
+using LexiLink.Modules.Ads.Infrastructure.Configuration;
+using LexiLink.Modules.Ads.Infrastructure.Configuration.Verification;
 using LexiLink.Modules.Diamond.Infrastructure.Configuration;
 using LexiLink.Modules.Energy.Application.Configuration.CrossModule;
 using LexiLink.Modules.Energy.Infrastructure.Configuration;
@@ -104,6 +108,7 @@ EnergyStartup.Initialize(builder.Services, connectionString);
 QuestsStartup.Initialize(builder.Services, connectionString);
 AdministrationStartup.Initialize(builder.Services, connectionString);
 DiamondStartup.Initialize(builder.Services, connectionString);
+AdsStartup.Initialize(builder.Services, connectionString);
 HintStartup.Initialize(builder.Services, connectionString);
 UndoStartup.Initialize(builder.Services, connectionString);
 ResetStartup.Initialize(builder.Services, connectionString);
@@ -210,6 +215,12 @@ builder.Services.AddSingleton<IExternalAdminIdentityVerifier>(
     authOptions.AdminTokenExchange.Mode == ExternalIdentityValidationMode.DevelopmentExternalToken
         ? new DevelopmentExternalAdminIdentityVerifier()
         : new DisabledExternalAdminIdentityVerifier());
+var adsSsvOptions = builder.Configuration.GetSection(AdsSsvOptions.SectionName).Get<AdsSsvOptions>()
+    ?? new AdsSsvOptions();
+builder.Services.AddSingleton<IAdMobSsvVerifier>(
+    adsSsvOptions.Mode == AdsSsvVerificationMode.DevelopmentFailOpen
+        ? new DevelopmentAdMobSsvVerifier()
+        : new AdMobSsvVerifier(adsSsvOptions));
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy(AuthConstants.AuthenticatedPlayerPolicy, policy =>
     {
@@ -243,6 +254,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
     QuestsStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     AdministrationStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     DiamondStartup.InitializeCompositionRoot(containerBuilder, connectionString);
+    AdsStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     HintStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     UndoStartup.InitializeCompositionRoot(containerBuilder, connectionString);
     ResetStartup.InitializeCompositionRoot(containerBuilder, connectionString);
@@ -314,6 +326,7 @@ EnergyStartup.CheckMappings();
 QuestsStartup.CheckMappings();
 AdministrationStartup.CheckMappings();
 DiamondStartup.CheckMappings();
+AdsStartup.CheckMappings();
 HintStartup.CheckMappings();
 UndoStartup.CheckMappings();
 ResetStartup.CheckMappings();
@@ -370,6 +383,7 @@ app.MapResetEndpoints();
 app.MapDiamondEndpoints();
 app.MapMarketEndpoints();
 app.MapPaymentsEndpoints();
+app.MapAdsEndpoints();
 app.MapQuestEndpoints();
 app.MapOperationsEndpoints();
 

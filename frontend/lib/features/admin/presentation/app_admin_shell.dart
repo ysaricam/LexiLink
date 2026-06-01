@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lexilink_app/app/theme/app_layout.dart';
 import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 /// Admin console shell. NavigationRail on >= 600 viewports, modal
@@ -30,55 +31,61 @@ class _AppAdminShellState extends State<AppAdminShell> {
 
   static const _destinations = <_AdminDestination>[
     _AdminDestination(
-      label: 'Quests',
+      labelKey: _AdminLabelKey.quests,
       icon: Icons.assignment_outlined,
       selectedIcon: Icons.assignment,
       route: '/admin/quests',
     ),
     _AdminDestination(
-      label: 'Players',
+      labelKey: _AdminLabelKey.players,
       icon: Icons.person_outline,
       selectedIcon: Icons.person,
       route: '/admin/players',
     ),
     _AdminDestination(
-      label: 'Energy',
+      labelKey: _AdminLabelKey.energy,
       icon: Icons.bolt_outlined,
       selectedIcon: Icons.bolt,
       route: '/admin/energy',
     ),
     _AdminDestination(
-      label: 'Hint',
+      labelKey: _AdminLabelKey.hint,
       icon: Icons.lightbulb_outline,
       selectedIcon: Icons.lightbulb,
       route: '/admin/hint',
     ),
     _AdminDestination(
-      label: 'Undo',
+      labelKey: _AdminLabelKey.undo,
       icon: Icons.undo,
       selectedIcon: Icons.undo,
       route: '/admin/undo',
     ),
     _AdminDestination(
-      label: 'Reset',
+      labelKey: _AdminLabelKey.reset,
       icon: Icons.restart_alt,
       selectedIcon: Icons.restart_alt,
       route: '/admin/reset',
     ),
     _AdminDestination(
-      label: 'Diamond',
+      labelKey: _AdminLabelKey.diamond,
       icon: Icons.diamond_outlined,
       selectedIcon: Icons.diamond,
       route: '/admin/diamond',
     ),
     _AdminDestination(
-      label: 'Market',
+      labelKey: _AdminLabelKey.market,
       icon: Icons.storefront_outlined,
       selectedIcon: Icons.storefront,
       route: '/admin/market',
     ),
     _AdminDestination(
-      label: 'Audit',
+      labelKey: _AdminLabelKey.content,
+      icon: Icons.category_outlined,
+      selectedIcon: Icons.category,
+      route: '/admin/content',
+    ),
+    _AdminDestination(
+      labelKey: _AdminLabelKey.audit,
       icon: Icons.fact_check_outlined,
       selectedIcon: Icons.fact_check,
       route: '/admin/audit',
@@ -129,12 +136,12 @@ class _AppAdminShellState extends State<AppAdminShell> {
   }
 
   PreferredSizeWidget _buildMobileAppBar(BuildContext context) {
-    final title = _destinations[_selectedIndex].label;
+    final title = _destinations[_selectedIndex].label(context);
     return AppBar(
-      title: Text('Admin · $title'),
+      title: Text(context.l10n.adminMobileTitle(title)),
       actions: [
         IconButton(
-          tooltip: 'Sign out',
+          tooltip: context.l10n.adminSignOut,
           icon: const Icon(Icons.logout),
           onPressed: _signOut,
         ),
@@ -150,18 +157,18 @@ class _AppAdminShellState extends State<AppAdminShell> {
         _navigateTo(index);
       },
       children: [
-        const Padding(
-          padding: EdgeInsets.fromLTRB(28, 24, 16, 8),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(28, 24, 16, 8),
           child: Text(
-            'Admin console',
-            style: TextStyle(fontWeight: FontWeight.w600),
+            context.l10n.adminConsole,
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
         ),
         for (final d in _destinations)
           NavigationDrawerDestination(
             icon: Icon(d.icon),
             selectedIcon: Icon(d.selectedIcon),
-            label: Text(d.label),
+            label: Text(d.label(context)),
           ),
       ],
     );
@@ -184,7 +191,10 @@ class _AppAdminShellState extends State<AppAdminShell> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                   const SizedBox(height: 4),
-                  const Text('Admin', style: TextStyle(fontSize: 12)),
+                  Text(
+                    context.l10n.adminLabel,
+                    style: const TextStyle(fontSize: 12),
+                  ),
                 ],
               ),
             ),
@@ -194,7 +204,7 @@ class _AppAdminShellState extends State<AppAdminShell> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: IconButton(
-                    tooltip: 'Sign out',
+                    tooltip: context.l10n.adminSignOut,
                     icon: const Icon(Icons.logout),
                     onPressed: _signOut,
                   ),
@@ -206,7 +216,7 @@ class _AppAdminShellState extends State<AppAdminShell> {
                 NavigationRailDestination(
                   icon: Icon(d.icon),
                   selectedIcon: Icon(d.selectedIcon),
-                  label: Text(d.label),
+                  label: Text(d.label(context)),
                 ),
             ],
           ),
@@ -220,14 +230,40 @@ class _AppAdminShellState extends State<AppAdminShell> {
 
 class _AdminDestination {
   const _AdminDestination({
-    required this.label,
+    required this.labelKey,
     required this.icon,
     required this.selectedIcon,
     required this.route,
   });
 
-  final String label;
+  final _AdminLabelKey labelKey;
   final IconData icon;
   final IconData selectedIcon;
   final String route;
+
+  String label(BuildContext context) => switch (labelKey) {
+    _AdminLabelKey.quests => context.l10n.adminNavQuests,
+    _AdminLabelKey.players => context.l10n.adminNavPlayers,
+    _AdminLabelKey.energy => context.l10n.adminNavEnergy,
+    _AdminLabelKey.hint => context.l10n.adminNavHint,
+    _AdminLabelKey.undo => context.l10n.adminNavUndo,
+    _AdminLabelKey.reset => context.l10n.adminNavReset,
+    _AdminLabelKey.diamond => context.l10n.adminNavDiamond,
+    _AdminLabelKey.market => context.l10n.adminNavMarket,
+    _AdminLabelKey.content => context.l10n.adminNavContent,
+    _AdminLabelKey.audit => context.l10n.adminNavAudit,
+  };
+}
+
+enum _AdminLabelKey {
+  quests,
+  players,
+  energy,
+  hint,
+  undo,
+  reset,
+  diamond,
+  market,
+  content,
+  audit,
 }

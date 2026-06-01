@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lexilink_app/features/diamond/application/diamond_cubit.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 
 class DiamondBadge extends StatelessWidget {
   const DiamondBadge({super.key});
@@ -18,7 +19,7 @@ class DiamondBadge extends StatelessWidget {
         if (state.status == DiamondStatus.failure) {
           return _Pill(
             child: Text(
-              'Diamond unavailable',
+              context.l10n.diamondUnavailable,
               style: Theme.of(context).textTheme.bodySmall,
             ),
           );
@@ -34,7 +35,7 @@ class DiamondBadge extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                'Loading diamonds...',
+                context.l10n.loadingDiamonds,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ],

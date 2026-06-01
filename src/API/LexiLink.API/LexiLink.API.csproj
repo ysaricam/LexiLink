@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Infrastructure\LexiLink.Common.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Administration\Infrastructure\LexiLink.Modules.Administration.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Ads\Infrastructure\LexiLink.Modules.Ads.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Diamond\Infrastructure\LexiLink.Modules.Diamond.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Energy\Infrastructure\LexiLink.Modules.Energy.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Modules\Games\Infrastructure\LexiLink.Modules.Games.Infrastructure.csproj" />

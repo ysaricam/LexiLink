@@ -1,0 +1,122 @@
+{
+  "$schema": "lexilink/category/v1",
+  "category": {
+    "name": "Animals",
+    "description": "A compact English animal-themed word graph for launch validation.",
+    "language": "en-US"
+  },
+  "links": [
+    {
+      "value": "cat",
+      "description": "A small domesticated feline.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 0
+    },
+    {
+      "value": "bat",
+      "description": "A flying mammal.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 1
+    },
+    {
+      "value": "rat",
+      "description": "A small rodent.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 2
+    },
+    {
+      "value": "ram",
+      "description": "A male sheep.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 3
+    },
+    {
+      "value": "ewe",
+      "description": "A female sheep.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 4
+    },
+    {
+      "value": "elk",
+      "description": "A large deer.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 5
+    },
+    {
+      "value": "fox",
+      "description": "A small wild canid.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 6
+    },
+    {
+      "value": "dog",
+      "description": "A domesticated canid.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 7
+    },
+    {
+      "value": "hog",
+      "description": "A pig.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 8
+    },
+    {
+      "value": "hen",
+      "description": "A female chicken.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 9
+    },
+    {
+      "value": "owl",
+      "description": "A nocturnal bird of prey.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 10
+    },
+    {
+      "value": "cow",
+      "description": "A domesticated bovine.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": 11
+    }
+  ],
+  "edges": [
+    { "from": "cat", "to": "bat" },
+    { "from": "bat", "to": "cat" },
+    { "from": "bat", "to": "rat" },
+    { "from": "rat", "to": "bat" },
+    { "from": "rat", "to": "ram" },
+    { "from": "ram", "to": "rat" },
+    { "from": "ram", "to": "ewe" },
+    { "from": "ewe", "to": "ram" },
+    { "from": "ewe", "to": "elk" },
+    { "from": "elk", "to": "ewe" },
+    { "from": "elk", "to": "fox" },
+    { "from": "fox", "to": "elk" },
+    { "from": "fox", "to": "dog" },
+    { "from": "dog", "to": "fox" },
+    { "from": "dog", "to": "hog" },
+    { "from": "hog", "to": "dog" },
+    { "from": "hog", "to": "hen" },
+    { "from": "hen", "to": "hog" },
+    { "from": "hen", "to": "owl" },
+    { "from": "owl", "to": "hen" },
+    { "from": "owl", "to": "cow" },
+    { "from": "cow", "to": "owl" },
+    { "from": "cat", "to": "rat" },
+    { "from": "rat", "to": "cat" },
+    { "from": "bat", "to": "ram" },
+    { "from": "ram", "to": "bat" },
+    { "from": "ewe", "to": "fox" },
+    { "from": "fox", "to": "ewe" },
+    { "from": "dog", "to": "hen" },
+    { "from": "hen", "to": "dog" }
+  ],
+  "metadata": {
+    "source": "manual",
+    "symmetrized": true,
+    "nodeCount": 12,
+    "edgeCount": 30,
+    "generatedAt": "2026-06-01T00:00:00Z",
+    "generatorVersion": "manual-cl2-1.0.0"
+  }
+}

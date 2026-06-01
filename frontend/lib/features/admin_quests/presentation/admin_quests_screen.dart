@@ -5,9 +5,11 @@ import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
 import 'package:lexilink_app/features/admin_quests/application/admin_quests_cubit.dart';
 import 'package:lexilink_app/features/admin_quests/data/admin_quests_repository.dart';
 import 'package:lexilink_app/features/admin_quests/data/quest_definition.dart';
+import 'package:lexilink_app/features/admin_quests/data/quest_enums.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/quest_definition_form.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 /// Admin quest catalog. Tap a row to edit description / threshold /
@@ -114,7 +116,7 @@ class _AdminQuestsView extends StatelessWidget {
               child: FloatingActionButton.extended(
                 onPressed: () => _showCreateDialog(context),
                 icon: const Icon(Icons.add),
-                label: const Text('Yeni quest'),
+                label: Text(context.l10n.adminNewQuest),
               ),
             ),
           ],
@@ -134,16 +136,16 @@ class _AdminQuestsView extends StatelessWidget {
       return Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: Text(state.errorMessage ?? 'Quest tanımları yüklenemedi.'),
+          child: Text(state.errorMessage ?? context.l10n.adminQuestLoadError),
         ),
       );
     }
     if (state.definitions.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           child: Text(
-            'Henüz quest tanımı yok. "Yeni quest" ile başlat.',
+            context.l10n.adminNoQuestDefinitions,
           ),
         ),
       );
@@ -154,7 +156,7 @@ class _AdminQuestsView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Quest tanımları',
+            context.l10n.adminQuestsTitle,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
           const SizedBox(height: 12),
@@ -224,8 +226,8 @@ class _QuestRow extends StatelessWidget {
               .map((d) => d.name)
               .firstOrNull;
     final subtitleParts = <String>[
-      '${definition.trigger.displayLabel} · ${definition.threshold}',
-      if (prereqName != null) 'Ön koşul: $prereqName',
+      '${_triggerLabel(context, definition.trigger)} · ${definition.threshold}',
+      if (prereqName != null) context.l10n.adminQuestPrerequisite(prereqName),
       if (definition.description.isNotEmpty) definition.description,
     ];
     return ListTile(
@@ -277,19 +279,19 @@ class _QuestRow extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           IconButton(
-            tooltip: 'Düzenle',
+            tooltip: context.l10n.adminQuestEditTooltip,
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => _edit(context),
           ),
           if (definition.isActive)
             IconButton(
-              tooltip: 'Deaktive et',
+              tooltip: context.l10n.adminQuestDeactivateTooltip,
               icon: const Icon(Icons.block_flipped),
               onPressed: () => _deactivate(context),
             )
           else
             IconButton(
-              tooltip: 'Tekrar aktive et',
+              tooltip: context.l10n.adminQuestReactivateTooltip,
               icon: const Icon(Icons.power_settings_new),
               onPressed: () => _reactivate(context),
             ),
@@ -332,19 +334,18 @@ class _QuestRow extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
-        title: const Text('Quest tanımı deaktive edilsin mi?'),
+        title: Text(context.l10n.adminQuestDeactivateTitle),
         content: Text(
-          '"${definition.name}" artık player\'lara verilmeyecek. '
-          'Mevcut player ilerlemesi etkilenmez.',
+          context.l10n.adminQuestDeactivateMessage(definition.name),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('İptal'),
+            child: Text(context.l10n.commonCancel),
           ),
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Deaktive et'),
+            child: Text(context.l10n.adminQuestDeactivateTooltip),
           ),
         ],
       ),
@@ -357,6 +358,14 @@ class _QuestRow extends StatelessWidget {
     await context.read<AdminQuestsCubit>().reactivate(definition.id);
   }
 }
+
+String _triggerLabel(BuildContext context, QuestTrigger trigger) =>
+    switch (trigger) {
+      QuestTrigger.gameCompletedTotal => context.l10n.adminQuestTriggerTotal,
+      QuestTrigger.gameCompletedDaily => context.l10n.adminQuestTriggerDaily,
+      QuestTrigger.authProviderLinked =>
+        context.l10n.adminQuestTriggerAuthProvider,
+    };
 
 class _RewardBadge extends StatelessWidget {
   const _RewardBadge({required this.label, required this.color});
@@ -372,7 +381,10 @@ class _DeactivatedBadge extends StatelessWidget {
   const _DeactivatedBadge();
   @override
   Widget build(BuildContext context) {
-    return _Badge(label: 'Inactive', color: Colors.grey.shade600);
+    return _Badge(
+      label: context.l10n.adminInactive,
+      color: Colors.grey.shade600,
+    );
   }
 }
 

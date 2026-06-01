@@ -488,6 +488,84 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.API"
             });
 
+        // Ads.Domain — fully isolated; no other module's namespace allowed.
+        yield return new TestCaseData(
+            "Ads.Domain",
+            AdsDomainAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Ads.Application",
+                "LexiLink.Modules.Ads.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Diamond",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.Modules.Market",
+                "LexiLink.Modules.Payments",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Dapper",
+                "Npgsql"
+            });
+
+        // Ads.Application MAY reference Diamond.Application.Configuration.CrossModule
+        // (IDiamondGrant for the rewarded-ad reward, AD2). Every other Diamond
+        // namespace and all other module internals remain forbidden.
+        yield return new TestCaseData(
+            "Ads.Application",
+            AdsApplicationAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Ads.Infrastructure",
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Diamond.Domain",
+                "LexiLink.Modules.Diamond.Infrastructure",
+                "LexiLink.Modules.Diamond.Application.Admin",
+                "LexiLink.Modules.Diamond.Application.Contracts",
+                "LexiLink.Modules.Diamond.Application.PlayerDiamondInventories",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.Modules.Market",
+                "LexiLink.Modules.Payments",
+                "LexiLink.API",
+                "Microsoft.EntityFrameworkCore",
+                "Npgsql"
+            });
+
+        // Ads.Infrastructure — no cross-module dependency in v1 (no admin audit
+        // consumer). Other module internals are all forbidden.
+        yield return new TestCaseData(
+            "Ads.Infrastructure",
+            AdsInfrastructureAssembly,
+            new[]
+            {
+                "LexiLink.Modules.Games",
+                "LexiLink.Modules.Players",
+                "LexiLink.Modules.Stats",
+                "LexiLink.Modules.Energy",
+                "LexiLink.Modules.Quests",
+                "LexiLink.Modules.Administration",
+                "LexiLink.Modules.Diamond",
+                "LexiLink.Modules.Hint",
+                "LexiLink.Modules.Undo",
+                "LexiLink.Modules.Reset",
+                "LexiLink.Modules.Market",
+                "LexiLink.Modules.Payments",
+                "LexiLink.API"
+            });
+
         // Hint.Domain — fully isolated; no other module's namespace allowed.
         yield return new TestCaseData(
             "Hint.Domain",
@@ -863,7 +941,8 @@ public class LayerDependencyTests : ArchitectureTestBase
                 QuestsIntegrationEventsAssembly,
                 AdministrationIntegrationEventsAssembly,
                 MarketIntegrationEventsAssembly,
-                PaymentsIntegrationEventsAssembly
+                PaymentsIntegrationEventsAssembly,
+                AdsIntegrationEventsAssembly
             ])
             .Should()
             .NotHaveDependencyOnAny(
@@ -886,6 +965,9 @@ public class LayerDependencyTests : ArchitectureTestBase
                 "LexiLink.Modules.Payments.Domain",
                 "LexiLink.Modules.Payments.Application",
                 "LexiLink.Modules.Payments.Infrastructure",
+                "LexiLink.Modules.Ads.Domain",
+                "LexiLink.Modules.Ads.Application",
+                "LexiLink.Modules.Ads.Infrastructure",
                 "LexiLink.Modules.Administration.Domain",
                 "LexiLink.Modules.Administration.Application",
                 "LexiLink.Modules.Administration.Infrastructure",

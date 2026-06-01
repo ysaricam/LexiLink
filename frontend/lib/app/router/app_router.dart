@@ -6,6 +6,7 @@ import 'package:lexilink_app/features/admin/presentation/admin_placeholder_page.
 import 'package:lexilink_app/features/admin/presentation/app_admin_shell.dart';
 import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
 import 'package:lexilink_app/features/admin_auth/presentation/admin_login_screen.dart';
+import 'package:lexilink_app/features/admin_content/presentation/admin_content_screen.dart';
 import 'package:lexilink_app/features/admin_market/presentation/admin_market_screen.dart';
 import 'package:lexilink_app/features/categories/presentation/category_selection_screen.dart';
 import 'package:lexilink_app/features/game/presentation/game_screen.dart';
@@ -15,6 +16,7 @@ import 'package:lexilink_app/features/payments/presentation/payment_screen.dart'
 import 'package:lexilink_app/features/profile/presentation/leaderboard_screen.dart';
 import 'package:lexilink_app/features/profile/presentation/profile_summary_screen.dart';
 import 'package:lexilink_app/features/quests/presentation/quests_screen.dart';
+import 'package:lexilink_app/features/rewarded_ads/presentation/earn_diamonds_screen.dart';
 import 'package:lexilink_app/features/settings/presentation/settings_screen.dart';
 import 'package:lexilink_app/features/splash/presentation/splash_screen.dart';
 
@@ -57,6 +59,10 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/payments',
       builder: (context, state) => const PaymentScreen(),
+    ),
+    GoRoute(
+      path: '/earn-diamonds',
+      builder: (context, state) => const EarnDiamondsScreen(),
     ),
     GoRoute(
       path: '/settings',
@@ -131,6 +137,10 @@ final appRouter = GoRouter(
             initialTab: AdminMarketTab.orders,
             initialPlayerId: state.pathParameters['playerId'],
           ),
+        ),
+        GoRoute(
+          path: '/admin/content',
+          builder: (context, state) => const AdminContentScreen(),
         ),
         GoRoute(
           path: '/admin/audit',

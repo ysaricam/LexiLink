@@ -7,6 +7,7 @@ import 'package:lexilink_app/features/admin_energy/data/admin_energy_repository.
 import 'package:lexilink_app/features/admin_energy/data/player_energy_snapshot.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 class AdminEnergyScreen extends StatefulWidget {
@@ -115,13 +116,12 @@ class _AdminEnergyViewState extends State<_AdminEnergyView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Energy console',
+                  context.l10n.adminEnergyConsoleTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Lookup by player GUID, then snap / grant / reset. '
-                  'Grant intentionally allows over-max balance.',
+                  context.l10n.adminEnergyConsoleHelp,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
@@ -137,7 +137,8 @@ class _AdminEnergyViewState extends State<_AdminEnergyView> {
   }
 
   Widget _buildLookupRow(BuildContext context, AdminEnergyState state) {
-    final busy = state.status == AdminEnergyStatus.loading ||
+    final busy =
+        state.status == AdminEnergyStatus.loading ||
         state.status == AdminEnergyStatus.saving;
     return Row(
       children: [
@@ -145,9 +146,9 @@ class _AdminEnergyViewState extends State<_AdminEnergyView> {
           child: TextField(
             controller: _idController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Player GUID',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminPlayerGuid,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
             onSubmitted: busy ? null : (_) => _submit(context),
@@ -157,7 +158,7 @@ class _AdminEnergyViewState extends State<_AdminEnergyView> {
         FilledButton.icon(
           onPressed: busy ? null : () => _submit(context),
           icon: const Icon(Icons.search),
-          label: const Text('Look up'),
+          label: Text(context.l10n.adminLookUp),
         ),
       ],
     );
@@ -184,25 +185,25 @@ class _AdminEnergyViewState extends State<_AdminEnergyView> {
     return switch (state.status) {
       AdminEnergyStatus.initial => const SizedBox.shrink(),
       AdminEnergyStatus.loading => const Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: CircularProgressIndicator(),
-          ),
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: CircularProgressIndicator(),
         ),
+      ),
       AdminEnergyStatus.notFound => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'No energy aggregate.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminNoEnergyAggregate,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
+      ),
       _ => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'Lookup failed.',
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminLookupFailed,
+          style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
+      ),
     };
   }
 
@@ -242,38 +243,38 @@ class _EnergyCard extends StatelessWidget {
                 if (overMax) ...[
                   const SizedBox(width: 8),
                   _Badge(
-                    label: 'Over max',
+                    label: context.l10n.adminOverMax,
                     color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ],
                 if (snapshot.isFull && !overMax) ...[
                   const SizedBox(width: 8),
-                  const _Badge(label: 'Full', color: Colors.green),
+                  _Badge(label: context.l10n.adminFull, color: Colors.green),
                 ],
               ],
             ),
             const SizedBox(height: 12),
-            _kv(context, 'Player id', snapshot.playerId),
+            _kv(context, context.l10n.adminPlayerId, snapshot.playerId),
             _kv(
               context,
-              'Recharge interval',
+              context.l10n.adminRechargeInterval,
               '${snapshot.rechargeIntervalSeconds} s',
             ),
             _kv(
               context,
-              'Last refilled',
+              context.l10n.adminLastRefilled,
               snapshot.lastRefilledOn.toUtc().toIso8601String(),
             ),
             if (snapshot.secondsUntilNextRefill != null)
               _kv(
                 context,
-                'Next refill in',
+                context.l10n.adminNextRefillIn,
                 '${snapshot.secondsUntilNextRefill} s',
               ),
             if (snapshot.fullyRefilledAt != null)
               _kv(
                 context,
-                'Fully refilled at',
+                context.l10n.adminFullyRefilledAt,
                 snapshot.fullyRefilledAt!.toUtc().toIso8601String(),
               ),
             const SizedBox(height: 20),
@@ -284,17 +285,17 @@ class _EnergyCard extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: () => _promptSet(context),
                   icon: const Icon(Icons.edit),
-                  label: const Text('Set amount'),
+                  label: Text(context.l10n.adminSetAmount),
                 ),
                 FilledButton.tonalIcon(
                   onPressed: () => _promptGrant(context),
                   icon: const Icon(Icons.add),
-                  label: const Text('Grant bonus'),
+                  label: Text(context.l10n.adminGrantBonus),
                 ),
                 OutlinedButton.icon(
                   onPressed: () => _confirmReset(context),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Reset to full'),
+                  label: Text(context.l10n.adminResetToFull),
                 ),
               ],
             ),
@@ -324,10 +325,10 @@ class _EnergyCard extends StatelessWidget {
     final cubit = context.read<AdminEnergyCubit>();
     final value = await _intDialog(
       context,
-      title: 'Set energy amount',
-      label: 'New current amount',
-      helper: "Snaps the player's current energy to this value (>= 0).",
-      validate: (v) => v < 0 ? 'Must be >= 0' : null,
+      title: context.l10n.adminSetEnergyAmountTitle,
+      label: context.l10n.adminNewCurrentAmount,
+      helper: context.l10n.adminSetEnergyHelper,
+      validate: (v) => v < 0 ? context.l10n.commonNonNegative : null,
     );
     if (value == null) return;
     await cubit.setAmount(value);
@@ -337,10 +338,10 @@ class _EnergyCard extends StatelessWidget {
     final cubit = context.read<AdminEnergyCubit>();
     final value = await _intDialog(
       context,
-      title: 'Grant bonus energy',
-      label: 'Bonus amount',
-      helper: 'Added on top — may push current above maximum.',
-      validate: (v) => v <= 0 ? 'Must be greater than 0' : null,
+      title: context.l10n.adminGrantBonusEnergyTitle,
+      label: context.l10n.adminBonusAmount,
+      helper: context.l10n.adminGrantEnergyHelper,
+      validate: (v) => v <= 0 ? context.l10n.commonGreaterThanZero : null,
     );
     if (value == null) return;
     await cubit.grant(value);
@@ -352,16 +353,16 @@ class _EnergyCard extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
-        title: const Text('Reset energy?'),
-        content: const Text('Resets the player to maximum energy.'),
+        title: Text(context.l10n.adminResetEnergyTitle),
+        content: Text(context.l10n.adminResetEnergyMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Reset'),
+            child: Text(context.l10n.commonReset),
           ),
         ],
       ),
@@ -415,9 +416,9 @@ Future<int?> _intDialog(
           ),
           validator: (raw) {
             final trimmed = raw?.trim() ?? '';
-            if (trimmed.isEmpty) return 'Required';
+            if (trimmed.isEmpty) return context.l10n.commonRequired;
             final parsed = int.tryParse(trimmed);
-            if (parsed == null) return 'Must be a number';
+            if (parsed == null) return context.l10n.commonMustBeNumber;
             return validate(parsed);
           },
         ),
@@ -425,7 +426,7 @@ Future<int?> _intDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: () {
@@ -433,7 +434,7 @@ Future<int?> _intDialog(
               Navigator.of(context).pop(int.parse(controller.text.trim()));
             }
           },
-          child: const Text('Apply'),
+          child: Text(context.l10n.commonApply),
         ),
       ],
     ),

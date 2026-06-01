@@ -21,30 +21,38 @@ class AdminPlayersCubit extends Cubit<AdminPlayersState> {
   final AdminPlayersRepository _repository;
 
   Future<void> lookup(String playerId) async {
-    emit(state.copyWith(
-      status: AdminPlayersStatus.loading,
-      currentId: playerId,
-      clearDetail: true,
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        status: AdminPlayersStatus.loading,
+        currentId: playerId,
+        clearDetail: true,
+        clearError: true,
+      ),
+    );
     try {
       final detail = await _repository.fetchDetail(playerId);
-      emit(state.copyWith(
-        status: AdminPlayersStatus.loaded,
-        detail: detail,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminPlayersStatus.loaded,
+          detail: detail,
+        ),
+      );
     } on ApiException catch (e) {
       if (e.statusCode == 404) {
-        emit(state.copyWith(
-          status: AdminPlayersStatus.notFound,
-          errorMessage: 'No player with id $playerId.',
-        ));
+        emit(
+          state.copyWith(
+            status: AdminPlayersStatus.notFound,
+            errorMessage: 'No player with id $playerId.',
+          ),
+        );
         return;
       }
-      emit(state.copyWith(
-        status: AdminPlayersStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminPlayersStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 
@@ -56,11 +64,13 @@ class AdminPlayersCubit extends Cubit<AdminPlayersState> {
       await _repository.ban(playerId: detail.id, reason: reason);
       await _reload(detail.id);
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminPlayersStatus.failure,
-        errorMessage: e.message,
-        detail: detail,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminPlayersStatus.failure,
+          errorMessage: e.message,
+          detail: detail,
+        ),
+      );
     }
   }
 
@@ -72,20 +82,24 @@ class AdminPlayersCubit extends Cubit<AdminPlayersState> {
       await _repository.unban(detail.id);
       await _reload(detail.id);
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminPlayersStatus.failure,
-        errorMessage: e.message,
-        detail: detail,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminPlayersStatus.failure,
+          errorMessage: e.message,
+          detail: detail,
+        ),
+      );
     }
   }
 
   Future<void> _reload(String id) async {
     final detail = await _repository.fetchDetail(id);
-    emit(state.copyWith(
-      status: AdminPlayersStatus.loaded,
-      detail: detail,
-    ));
+    emit(
+      state.copyWith(
+        status: AdminPlayersStatus.loaded,
+        detail: detail,
+      ),
+    );
   }
 }
 

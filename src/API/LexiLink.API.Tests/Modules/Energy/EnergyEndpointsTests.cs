@@ -23,6 +23,7 @@ public sealed class EnergyEndpointsTests
             .WithWebHostBuilder(builder =>
             {
                 builder.UseSetting("ConnectionStrings:LexiLinkDb", ConnectionString);
+                builder.UseSetting("Authentication:Mode", "DevelopmentBearer");
                 builder.ConfigureServices(services =>
                 {
                     services.RemoveAll<IHostedService>();

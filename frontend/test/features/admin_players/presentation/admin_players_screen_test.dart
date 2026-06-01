@@ -5,6 +5,7 @@ import 'package:http/testing.dart';
 import 'package:lexilink_app/features/admin_players/application/admin_players_cubit.dart';
 import 'package:lexilink_app/features/admin_players/data/admin_players_repository.dart';
 import 'package:lexilink_app/features/admin_players/presentation/admin_players_screen.dart';
+import 'package:lexilink_app/l10n/app_localizations.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -29,7 +30,8 @@ AdminPlayersCubit _buildCubitWithScript(
   );
 }
 
-const _activePlayerJson = '{'
+const _activePlayerJson =
+    '{'
     '"id":"00000000-0000-0000-0000-000000000abc",'
     '"displayName":"Ada","discriminator":42,'
     '"handle":"ada","avatarUrl":null,'
@@ -41,8 +43,9 @@ const _activePlayerJson = '{'
     '}';
 
 void main() {
-  testWidgets('initial state shows the lookup hint, not a detail card',
-      (tester) async {
+  testWidgets('initial state shows the lookup hint, not a detail card', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(1200, 800);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -50,11 +53,15 @@ void main() {
 
     final cubit = _buildCubitWithScript([]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminPlayersScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: AdminPlayersScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('Player console'), findsOneWidget);
@@ -62,8 +69,9 @@ void main() {
     expect(find.byType(Card), findsNothing);
   });
 
-  testWidgets('lookup submits and renders the active player card',
-      (tester) async {
+  testWidgets('lookup submits and renders the active player card', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(1200, 800);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -73,11 +81,15 @@ void main() {
       (_) => http.Response(_activePlayerJson, 200),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminPlayersScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: AdminPlayersScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     await tester.enterText(
@@ -102,11 +114,15 @@ void main() {
       (_) => http.Response('{"detail":"nope"}', 404),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminPlayersScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: AdminPlayersScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     await tester.enterText(

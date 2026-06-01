@@ -19,6 +19,7 @@ All project docs live under `docs/`. Read the relevant one before non-trivial ch
 - **`docs/activeContext.md`** — What's happening *right now* + recent surprising design choices.
 - **`docs/progress.md`** — What's been delivered and when.
 - **`docs/OPERATIONS.md`** — Runtime config, required env vars, health checks, operational endpoints, and migration/run guidance.
+- **`docs/CONTENT_AUTHORING.md`** — Content-ops handoff for authoring/importing per-language Category+Link word graphs (JSON schema, importer usage, validation, verify checklist). Authoring is a content task, not code.
 
 ## Commands
 

@@ -9,6 +9,7 @@ import 'package:lexilink_app/features/admin_market/data/admin_market_repository.
 import 'package:lexilink_app/features/market/data/market_models.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 enum AdminMarketTab { categories, items, orders }
@@ -153,32 +154,31 @@ class _AdminMarketViewState extends State<_AdminMarketView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Market console',
+                  context.l10n.adminMarketConsoleTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Manage shop categories, diamond-priced items, and '
-                  'player purchase history.',
+                  context.l10n.adminMarketConsoleHelp,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
                 SegmentedButton<AdminMarketTab>(
-                  segments: const [
+                  segments: [
                     ButtonSegment(
                       value: AdminMarketTab.categories,
-                      label: Text('Categories'),
-                      icon: Icon(Icons.category_outlined),
+                      label: Text(context.l10n.adminMarketCategories),
+                      icon: const Icon(Icons.category_outlined),
                     ),
                     ButtonSegment(
                       value: AdminMarketTab.items,
-                      label: Text('Items'),
-                      icon: Icon(Icons.storefront_outlined),
+                      label: Text(context.l10n.adminMarketItems),
+                      icon: const Icon(Icons.storefront_outlined),
                     ),
                     ButtonSegment(
                       value: AdminMarketTab.orders,
-                      label: Text('Orders'),
-                      icon: Icon(Icons.receipt_long_outlined),
+                      label: Text(context.l10n.adminMarketOrders),
+                      icon: const Icon(Icons.receipt_long_outlined),
                     ),
                   ],
                   selected: {_tab},
@@ -219,7 +219,7 @@ class _CategoriesPanel extends StatelessWidget {
         FilledButton.icon(
           onPressed: () => _openCategoryDialog(context),
           icon: const Icon(Icons.add),
-          label: const Text('New category'),
+          label: Text(context.l10n.adminNewCategory),
         ),
         const SizedBox(height: 12),
         for (final category in state.categories)
@@ -231,8 +231,12 @@ class _CategoriesPanel extends StatelessWidget {
               ),
               title: Text(category.name),
               subtitle: Text(
-                'Sort ${category.sortOrder} - '
-                '${category.isActive ? 'Active' : 'Inactive'}',
+                context.l10n.adminSortStatus(
+                  category.sortOrder,
+                  category.isActive
+                      ? context.l10n.adminActive
+                      : context.l10n.adminInactive,
+                ),
               ),
               trailing: Wrap(
                 spacing: 8,
@@ -242,7 +246,7 @@ class _CategoriesPanel extends StatelessWidget {
                       context,
                       category: category,
                     ),
-                    child: const Text('Edit'),
+                    child: Text(context.l10n.commonEdit),
                   ),
                   TextButton(
                     onPressed: category.isActive
@@ -250,16 +254,16 @@ class _CategoriesPanel extends StatelessWidget {
                               .read<AdminMarketCubit>()
                               .deactivateCategory(category.id)
                         : null,
-                    child: const Text('Deactivate'),
+                    child: Text(context.l10n.commonDeactivate),
                   ),
                 ],
               ),
             ),
           ),
         if (state.categories.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text('No market categories yet.'),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(context.l10n.adminNoMarketCategories),
           ),
       ],
     );
@@ -298,7 +302,7 @@ class _ItemsPanel extends StatelessWidget {
               ? null
               : () => _openItemDialog(context),
           icon: const Icon(Icons.add),
-          label: const Text('New item'),
+          label: Text(context.l10n.adminNewItem),
         ),
         const SizedBox(height: 12),
         for (final item in state.items)
@@ -308,18 +312,23 @@ class _ItemsPanel extends StatelessWidget {
                 item.itemType.symbol,
                 style: const TextStyle(fontSize: 26),
               ),
-              title: Text('${item.quantity} ${item.itemType.wire}'),
+              title: Text(
+                '${item.quantity} ${_itemTypeLabel(context, item.itemType)}',
+              ),
               subtitle: Text(
-                '${categoryNames[item.categoryId] ?? item.categoryId} - '
-                '${item.effectivePrice} diamonds - '
-                'stock ${item.remainingStock?.toString() ?? 'unlimited'}',
+                context.l10n.adminMarketItemSubtitle(
+                  categoryNames[item.categoryId] ?? item.categoryId,
+                  item.effectivePrice,
+                  item.remainingStock?.toString() ??
+                      context.l10n.commonUnlimited,
+                ),
               ),
               trailing: Wrap(
                 spacing: 8,
                 children: [
                   TextButton(
                     onPressed: () => _openItemDialog(context, item: item),
-                    child: const Text('Edit'),
+                    child: Text(context.l10n.commonEdit),
                   ),
                   TextButton(
                     onPressed: item.isActive
@@ -327,16 +336,16 @@ class _ItemsPanel extends StatelessWidget {
                             item.id,
                           )
                         : null,
-                    child: const Text('Deactivate'),
+                    child: Text(context.l10n.commonDeactivate),
                   ),
                 ],
               ),
             ),
           ),
         if (state.items.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text('No market items yet.'),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(context.l10n.adminNoMarketItems),
           ),
       ],
     );
@@ -373,10 +382,10 @@ class _OrdersPanel extends StatelessWidget {
             Expanded(
               child: TextField(
                 controller: playerIdController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
                   isDense: true,
-                  labelText: 'Player GUID',
+                  labelText: context.l10n.adminPlayerGuid,
                 ),
                 onSubmitted: (_) => _load(context),
               ),
@@ -385,7 +394,7 @@ class _OrdersPanel extends StatelessWidget {
             FilledButton.icon(
               onPressed: () => _load(context),
               icon: const Icon(Icons.search),
-              label: const Text('Load'),
+              label: Text(context.l10n.commonLoad),
             ),
           ],
         ),
@@ -394,16 +403,21 @@ class _OrdersPanel extends StatelessWidget {
           Card(
             child: ListTile(
               leading: const Icon(Icons.receipt_long_outlined),
-              title: Text('${order.quantity} ${order.itemType.wire}'),
+              title: Text(
+                '${order.quantity} ${_itemTypeLabel(context, order.itemType)}',
+              ),
               subtitle: Text(
-                '${order.diamondsPaid} diamonds - ${order.purchasedAt}',
+                context.l10n.adminMarketOrderSubtitle(
+                  order.diamondsPaid,
+                  order.purchasedAt,
+                ),
               ),
             ),
           ),
         if (state.orderPlayerId != null && state.orders.isEmpty)
-          const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text('No market orders for this player.'),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(context.l10n.adminNoMarketOrders),
           ),
       ],
     );
@@ -462,7 +476,11 @@ class _CategoryDialogState extends State<_CategoryDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.category == null ? 'New category' : 'Edit category'),
+      title: Text(
+        widget.category == null
+            ? context.l10n.adminNewCategory
+            : context.l10n.adminEditCategory,
+      ),
       content: SizedBox(
         width: 420,
         child: Column(
@@ -470,27 +488,29 @@ class _CategoryDialogState extends State<_CategoryDialog> {
           children: [
             TextField(
               controller: _nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(labelText: context.l10n.adminName),
             ),
             TextField(
               controller: _sortController,
-              decoration: const InputDecoration(labelText: 'Sort order'),
+              decoration: InputDecoration(
+                labelText: context.l10n.adminSortOrder,
+              ),
               keyboardType: TextInputType.number,
             ),
             TextField(
               controller: _iconController,
-              decoration: const InputDecoration(labelText: 'Icon'),
+              decoration: InputDecoration(labelText: context.l10n.adminIcon),
             ),
             TextField(
               controller: _visibilityStartsController,
-              decoration: const InputDecoration(
-                labelText: 'Visibility starts at (ISO, optional)',
+              decoration: InputDecoration(
+                labelText: context.l10n.adminVisibilityStarts,
               ),
             ),
             TextField(
               controller: _visibilityEndsController,
-              decoration: const InputDecoration(
-                labelText: 'Visibility ends at (ISO, optional)',
+              decoration: InputDecoration(
+                labelText: context.l10n.adminVisibilityEnds,
               ),
             ),
           ],
@@ -499,11 +519,11 @@ class _CategoryDialogState extends State<_CategoryDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: _submit,
-          child: const Text('Save'),
+          child: Text(context.l10n.commonSave),
         ),
       ],
     );
@@ -612,7 +632,11 @@ class _ItemDialogState extends State<_ItemDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.item == null ? 'New item' : 'Edit item'),
+      title: Text(
+        widget.item == null
+            ? context.l10n.adminNewItem
+            : context.l10n.adminEditItem,
+      ),
       content: SizedBox(
         width: 480,
         child: SingleChildScrollView(
@@ -625,14 +649,14 @@ class _ItemDialogState extends State<_ItemDialog> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SegmentedButton<_ItemFormMode>(
-                      segments: const [
+                      segments: [
                         ButtonSegment(
                           value: _ItemFormMode.normal,
-                          label: Text('Normal'),
+                          label: Text(context.l10n.adminNormal),
                         ),
                         ButtonSegment(
                           value: _ItemFormMode.promotion,
-                          label: Text('Promotion'),
+                          label: Text(context.l10n.adminPromotion),
                         ),
                       ],
                       selected: {_mode},
@@ -643,7 +667,9 @@ class _ItemDialogState extends State<_ItemDialog> {
                     const SizedBox(height: 12),
                     DropdownButtonFormField<String>(
                       initialValue: _categoryId,
-                      decoration: const InputDecoration(labelText: 'Category'),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.adminCategory,
+                      ),
                       items: [
                         for (final category in widget.categories)
                           DropdownMenuItem(
@@ -651,67 +677,77 @@ class _ItemDialogState extends State<_ItemDialog> {
                             child: Text(category.name),
                           ),
                       ],
-                      validator: (value) =>
-                          value == null || value.isEmpty ? 'Required' : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? context.l10n.commonRequired
+                          : null,
                       onChanged: (value) {
                         if (value != null) setState(() => _categoryId = value);
                       },
                     ),
                     DropdownButtonFormField<MarketItemType>(
                       initialValue: _itemType,
-                      decoration: const InputDecoration(labelText: 'Item type'),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.adminItemType,
+                      ),
                       items: [
                         for (final type in MarketItemType.values)
                           DropdownMenuItem(
                             value: type,
-                            child: Text(type.wire),
+                            child: Text(_itemTypeLabel(context, type)),
                           ),
                       ],
-                      validator: (value) => value == null ? 'Required' : null,
+                      validator: (value) =>
+                          value == null ? context.l10n.commonRequired : null,
                       onChanged: (value) {
                         if (value != null) setState(() => _itemType = value);
                       },
                     ),
                     _numberField(
                       _quantityController,
-                      'Quantity',
+                      context.l10n.adminQuantity,
                       required: true,
                     ),
                     _numberField(
                       _priceController,
-                      'Price diamonds',
+                      context.l10n.adminPriceDiamonds,
                       required: true,
                     ),
                     if (_mode == _ItemFormMode.promotion) ...[
                       _numberField(
                         _promoController,
-                        'Promo price',
+                        context.l10n.adminPromoPrice,
                         required: true,
                         validator: _promoPriceValidator,
                       ),
                       _dateField(
                         context,
                         _promoStartsController,
-                        'Promotion starts',
+                        context.l10n.adminPromotionStarts,
                       ),
                       _dateField(
                         context,
                         _promoEndsController,
-                        'Promotion ends',
+                        context.l10n.adminPromotionEnds,
                         validator: _promoEndValidator,
                       ),
-                      _numberField(_stockController, 'Max stock'),
-                      _numberField(_limitController, 'Per-player limit'),
+                      _numberField(
+                        _stockController,
+                        context.l10n.adminMaxStock,
+                      ),
+                      _numberField(
+                        _limitController,
+                        context.l10n.adminPerPlayerLimit,
+                      ),
                       DropdownButtonFormField<PerPlayerLimitWindow>(
                         initialValue: _limitWindow,
-                        decoration: const InputDecoration(
-                          labelText: 'Limit window',
+                        decoration: InputDecoration(
+                          labelText: context.l10n.adminLimitWindow,
                         ),
                         items: [
                           for (final window in PerPlayerLimitWindow.values)
                             DropdownMenuItem(
                               value: window,
-                              child: Text(window.wire),
+                              child: Text(_limitWindowLabel(context, window)),
                             ),
                         ],
                         onChanged: (value) {
@@ -731,11 +767,11 @@ class _ItemDialogState extends State<_ItemDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: _canSubmit ? _submit : null,
-          child: const Text('Save'),
+          child: Text(context.l10n.commonSave),
         ),
       ],
     );
@@ -755,10 +791,12 @@ class _ItemDialogState extends State<_ItemDialog> {
           validator ??
           (value) {
             final trimmed = value?.trim() ?? '';
-            if (trimmed.isEmpty) return required ? 'Required' : null;
+            if (trimmed.isEmpty) {
+              return required ? context.l10n.commonRequired : null;
+            }
             final parsed = int.tryParse(trimmed);
-            if (parsed == null) return 'Enter a number';
-            if (parsed <= 0) return 'Must be greater than 0';
+            if (parsed == null) return context.l10n.commonEnterNumber;
+            if (parsed <= 0) return context.l10n.commonGreaterThanZero;
             return null;
           },
     );
@@ -820,19 +858,19 @@ class _ItemDialogState extends State<_ItemDialog> {
 
   String? _promoPriceValidator(String? value) {
     final trimmed = value?.trim() ?? '';
-    if (trimmed.isEmpty) return 'Required';
+    if (trimmed.isEmpty) return context.l10n.commonRequired;
     final promoPrice = int.tryParse(trimmed);
     final price = int.tryParse(_priceController.text.trim());
-    if (promoPrice == null) return 'Enter a number';
-    if (promoPrice <= 0) return 'Must be greater than 0';
+    if (promoPrice == null) return context.l10n.commonEnterNumber;
+    if (promoPrice <= 0) return context.l10n.commonGreaterThanZero;
     if (price != null && promoPrice >= price) {
-      return 'Must be lower than price';
+      return context.l10n.adminMustBeLowerThanPrice;
     }
     return null;
   }
 
   String? _requiredDateValidator(String? value) {
-    if (_optionalDate(value ?? '') == null) return 'Required';
+    if (_optionalDate(value ?? '') == null) return context.l10n.commonRequired;
     return null;
   }
 
@@ -842,7 +880,7 @@ class _ItemDialogState extends State<_ItemDialog> {
     final startsAt = _optionalDate(_promoStartsController.text);
     final endsAt = _optionalDate(value ?? '');
     if (startsAt != null && endsAt != null && !startsAt.isBefore(endsAt)) {
-      return 'Must be after start';
+      return context.l10n.adminMustBeAfterStart;
     }
     return null;
   }
@@ -880,6 +918,22 @@ class _ItemDialogState extends State<_ItemDialog> {
 }
 
 String _dateText(DateTime? value) => value?.toIso8601String() ?? '';
+
+String _itemTypeLabel(BuildContext context, MarketItemType type) =>
+    switch (type) {
+      MarketItemType.energy => context.l10n.adminMarketTypeEnergy,
+      MarketItemType.hint => context.l10n.adminMarketTypeHint,
+      MarketItemType.undo => context.l10n.adminMarketTypeUndo,
+      MarketItemType.reset => context.l10n.adminMarketTypeReset,
+      MarketItemType.diamond => context.l10n.adminMarketTypeDiamond,
+    };
+
+String _limitWindowLabel(BuildContext context, PerPlayerLimitWindow window) =>
+    switch (window) {
+      PerPlayerLimitWindow.lifetime => context.l10n.adminLimitLifetime,
+      PerPlayerLimitWindow.daily => context.l10n.adminLimitDaily,
+      PerPlayerLimitWindow.perPromo => context.l10n.adminLimitPerPromo,
+    };
 
 String _dateOnlyText(DateTime? value) {
   if (value == null) return '';

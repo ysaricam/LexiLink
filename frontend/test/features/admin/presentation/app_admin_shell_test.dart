@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lexilink_app/features/admin/presentation/app_admin_shell.dart';
+import 'package:lexilink_app/l10n/app_localizations.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 /// Stub destination pages keep the shell widget test focused on
@@ -57,6 +58,14 @@ GoRouter _buildRouter({
             builder: (_, _) => _stubPage('PAGE_DIAMOND'),
           ),
           GoRoute(
+            path: '/admin/market',
+            builder: (_, _) => _stubPage('PAGE_MARKET'),
+          ),
+          GoRoute(
+            path: '/admin/content',
+            builder: (_, _) => _stubPage('PAGE_CONTENT'),
+          ),
+          GoRoute(
             path: '/admin/audit',
             builder: (_, _) => _stubPage('PAGE_AUDIT'),
           ),
@@ -82,7 +91,13 @@ Future<void> _pumpShell(
     tokenStore: tokenStore,
   );
 
-  await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+  await tester.pumpWidget(
+    MaterialApp.router(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      routerConfig: router,
+    ),
+  );
   // Let the token-store factory resolve.
   await tester.pump();
 }
@@ -102,6 +117,7 @@ void main() {
       expect(find.text('Players'), findsWidgets);
       expect(find.text('Energy'), findsWidgets);
       expect(find.text('Diamond'), findsWidgets);
+      expect(find.text('Content'), findsWidgets);
       expect(find.text('Audit'), findsWidgets);
       expect(find.text('PAGE_QUESTS'), findsOneWidget);
     });

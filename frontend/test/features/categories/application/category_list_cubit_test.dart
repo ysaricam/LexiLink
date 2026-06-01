@@ -20,7 +20,7 @@ void main() {
             tokenStore: InMemoryTokenStore(),
             httpClient: MockClient(
               (_) async => http.Response(
-                '[{"id":"category-1","name":"Animals"}]',
+                '[{"id":"category-1","name":"Animals","language":"en-US"}]',
                 200,
               ),
             ),
@@ -29,11 +29,13 @@ void main() {
 
         return CategoryListCubit(categoryRepository: repository);
       },
-      act: (cubit) => cubit.loadCategories(),
+      act: (cubit) => cubit.loadCategories(locale: 'en-US'),
       expect: () => [
         const CategoryListState.loading(),
         const CategoryListState.success(
-          categories: [Category(id: 'category-1', name: 'Animals')],
+          categories: [
+            Category(id: 'category-1', name: 'Animals', language: 'en-US'),
+          ],
         ),
       ],
     );
@@ -51,7 +53,7 @@ void main() {
 
         return CategoryListCubit(categoryRepository: repository);
       },
-      act: (cubit) => cubit.loadCategories(),
+      act: (cubit) => cubit.loadCategories(locale: 'en-US'),
       expect: () => [
         const CategoryListState.loading(),
         const CategoryListState.failure(message: 'Authentication is required.'),
@@ -67,7 +69,7 @@ void main() {
             tokenStore: InMemoryTokenStore(),
             httpClient: MockClient(
               (_) async => http.Response(
-                '[{"id":"category-1","name":"Animals"}]',
+                '[{"id":"category-1","name":"Animals","language":"en-US"}]',
                 200,
               ),
             ),
@@ -77,17 +79,21 @@ void main() {
         return CategoryListCubit(categoryRepository: repository);
       },
       act: (cubit) async {
-        await cubit.loadCategories();
+        await cubit.loadCategories(locale: 'en-US');
         cubit.selectCategory('category-1');
       },
       expect: () => [
         const CategoryListState.loading(),
         const CategoryListState.success(
-          categories: [Category(id: 'category-1', name: 'Animals')],
+          categories: [
+            Category(id: 'category-1', name: 'Animals', language: 'en-US'),
+          ],
         ),
         const CategoryListState(
           status: CategoryListStatus.success,
-          categories: [Category(id: 'category-1', name: 'Animals')],
+          categories: [
+            Category(id: 'category-1', name: 'Animals', language: 'en-US'),
+          ],
           selectedCategoryId: 'category-1',
         ),
       ],

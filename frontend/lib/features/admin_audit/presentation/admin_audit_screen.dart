@@ -9,6 +9,7 @@ import 'package:lexilink_app/features/admin_audit/data/admin_audit_repository.da
 import 'package:lexilink_app/features/admin_auth/data/admin_token_store.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 class AdminAuditScreen extends StatefulWidget {
@@ -106,8 +107,7 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
   Widget build(BuildContext context) {
     return BlocConsumer<AdminAuditCubit, AdminAuditState>(
       listenWhen: (prev, curr) =>
-          prev.errorMessage != curr.errorMessage &&
-          curr.errorMessage != null,
+          prev.errorMessage != curr.errorMessage && curr.errorMessage != null,
       listener: (context, state) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(state.errorMessage!)),
@@ -120,12 +120,12 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Audit log',
+                context.l10n.adminAuditLogTitle,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 4),
               Text(
-                'Newest first. Filters are optional; page size 50.',
+                context.l10n.adminAuditHelp,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 16),
@@ -151,9 +151,9 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
           child: TextField(
             controller: _adminIdController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Admin user id (GUID)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminAdminUserId,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
           ),
@@ -163,9 +163,9 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
           child: TextField(
             controller: _targetTypeController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Target type (e.g. Games.Category)',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminTargetType,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
           ),
@@ -175,9 +175,9 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
           child: TextField(
             controller: _targetIdController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Target id',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminTargetId,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
           ),
@@ -185,12 +185,12 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
         FilledButton.icon(
           onPressed: busy ? null : () => _applyFilters(context),
           icon: const Icon(Icons.filter_alt),
-          label: const Text('Apply filters'),
+          label: Text(context.l10n.adminApplyFilters),
         ),
         TextButton.icon(
           onPressed: busy ? null : () => _clearFilters(context),
           icon: const Icon(Icons.clear),
-          label: const Text('Clear'),
+          label: Text(context.l10n.commonClear),
         ),
       ],
     );
@@ -209,15 +209,15 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
       return Padding(
         padding: const EdgeInsets.all(16),
         child: Text(
-          state.errorMessage ?? 'Failed to load audit log.',
+          state.errorMessage ?? context.l10n.adminFailedLoadAudit,
           style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
       );
     }
     if (state.actions.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(24),
-        child: Text('No audit entries match the current filters.'),
+      return Padding(
+        padding: const EdgeInsets.all(24),
+        child: Text(context.l10n.adminNoAuditEntries),
       );
     }
     return Column(
@@ -238,7 +238,7 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
         Row(
           children: [
             Text(
-              'Offset ${state.offset}',
+              context.l10n.adminOffset(state.offset),
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const Spacer(),
@@ -247,7 +247,7 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
                   ? null
                   : () => context.read<AdminAuditCubit>().prevPage(),
               icon: const Icon(Icons.chevron_left),
-              label: const Text('Prev'),
+              label: Text(context.l10n.adminPrev),
             ),
             const SizedBox(width: 8),
             OutlinedButton.icon(
@@ -255,7 +255,7 @@ class _AdminAuditViewState extends State<_AdminAuditView> {
                   ? () => context.read<AdminAuditCubit>().nextPage()
                   : null,
               icon: const Icon(Icons.chevron_right),
-              label: const Text('Next'),
+              label: Text(context.l10n.adminNext),
             ),
           ],
         ),
@@ -320,14 +320,14 @@ class _AuditRow extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             SelectableText(
-              'admin: ${action.adminUserId}',
+              context.l10n.adminAuditAdmin(action.adminUserId),
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ],
         ),
       ),
       trailing: IconButton(
-        tooltip: 'View payload',
+        tooltip: context.l10n.adminViewPayload,
         icon: const Icon(Icons.code),
         onPressed: () => _showPayload(context),
       ),
@@ -353,7 +353,7 @@ class _AuditRow extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close'),
+            child: Text(context.l10n.commonClose),
           ),
         ],
       ),

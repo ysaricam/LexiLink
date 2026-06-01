@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<!-- AdMob application id. Google's public TEST app id so ads work
+	     without a real AdMob account; the real id replaces this value
+	     (no code change) when credentials arrive. -->
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<!-- Shown in the iOS App Tracking Transparency prompt requested before
+	     ad requests. -->
+	<key>NSUserTrackingUsageDescription</key>
+	<string>Your data is used to show you more relevant ads.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

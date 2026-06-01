@@ -39,6 +39,11 @@ public abstract class ArchitectureTestBase
     protected static readonly Assembly AdministrationApplicationAssembly = typeof(Modules.Administration.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly AdministrationInfrastructureAssembly = typeof(Modules.Administration.Infrastructure.AdministrationContext).Assembly;
 
+    protected static readonly Assembly AdsDomainAssembly = typeof(Modules.Ads.Domain.RewardedAdGrants.RewardedAdGrant).Assembly;
+    protected static readonly Assembly AdsIntegrationEventsAssembly = typeof(Modules.Ads.IntegrationEvents.RewardedAdRewardedIntegrationEvent).Assembly;
+    protected static readonly Assembly AdsApplicationAssembly = typeof(Modules.Ads.Application.Contracts.ICommand).Assembly;
+    protected static readonly Assembly AdsInfrastructureAssembly = typeof(Modules.Ads.Infrastructure.AdsContext).Assembly;
+
     protected static readonly Assembly DiamondDomainAssembly = typeof(Modules.Diamond.Domain.PlayerDiamondInventories.PlayerDiamondInventory).Assembly;
     protected static readonly Assembly DiamondApplicationAssembly = typeof(Modules.Diamond.Application.Contracts.ICommand).Assembly;
     protected static readonly Assembly DiamondInfrastructureAssembly = typeof(Modules.Diamond.Infrastructure.DiamondContext).Assembly;
@@ -84,6 +89,9 @@ public abstract class ArchitectureTestBase
         AdministrationDomainAssembly,
         AdministrationApplicationAssembly,
         AdministrationInfrastructureAssembly,
+        AdsDomainAssembly,
+        AdsApplicationAssembly,
+        AdsInfrastructureAssembly,
         DiamondDomainAssembly,
         DiamondApplicationAssembly,
         DiamondInfrastructureAssembly,

@@ -1,0 +1,548 @@
+{
+  "@@locale": "en",
+  "appTitle": "LexiLink",
+  "@appTitle": {
+    "description": "The application name shown as the app title."
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Title of the settings screen."
+  },
+  "languageLabel": "Language",
+  "@languageLabel": {
+    "description": "Label for the language selector in settings."
+  },
+  "commonCancel": "Cancel",
+  "commonApply": "Apply",
+  "commonRetry": "Retry",
+  "commonTryAgain": "Try again.",
+  "commonStart": "Start",
+  "commonStarting": "Starting...",
+  "commonRefresh": "Refresh",
+  "sessionStorageFailedTitle": "Session storage failed",
+  "sessionStorageFailedMessage": "Restart the app and try again.",
+  "preparingSession": "Preparing session...",
+  "navProfile": "Profile",
+  "navQuests": "Quests",
+  "navMarket": "Market",
+  "navDiamonds": "Diamonds",
+  "navEarnDiamonds": "Earn Diamonds",
+  "navSettings": "Settings",
+  "loadingCategories": "Loading categories...",
+  "couldNotLoadCategories": "Could not load categories",
+  "preparingCategories": "Preparing categories...",
+  "couldNotStartGame": "Could not start game",
+  "chooseCategory": "Choose category",
+  "chooseCategorySubtitle": "Pick a word field for your next link path.",
+  "noCategoriesTitle": "No categories yet",
+  "noCategoriesMessage": "Add category content before starting a game.",
+  "startEasyGame": "Start easy game",
+  "preparingGame": "Preparing game...",
+  "loadingGame": "Loading game...",
+  "couldNotLoadGame": "Could not load game",
+  "gameTitle": "Game",
+  "pickNextWord": "Pick the next word",
+  "noMovesTitle": "No moves available",
+  "noMovesMessage": "This link has no outgoing choices.",
+  "actionFailed": "Action failed",
+  "backToHome": "Back to home",
+  "quitGameTitle": "Quit game?",
+  "quitGameMessage": "This will abandon your current game and you will not earn any score.",
+  "keepPlaying": "Keep playing",
+  "quit": "Quit",
+  "anchorTarget": "Target",
+  "currentLabel": "Current",
+  "moreActions": "More actions",
+  "resultScore": "Score",
+  "resultSteps": "Steps",
+  "resultHintsUsed": "Hints used",
+  "resultPath": "Path",
+  "hudSteps": "Steps {taken}/{max}",
+  "@hudSteps": {
+    "placeholders": {
+      "taken": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "hudHints": "Hints {count}",
+  "@hudHints": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "hudScore": "Score {score}",
+  "@hudScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "hintAction": "Hint ({balance})",
+  "@hintAction": {
+    "placeholders": {
+      "balance": {
+        "type": "int"
+      }
+    }
+  },
+  "undoAction": "Undo ({balance})",
+  "@undoAction": {
+    "placeholders": {
+      "balance": {
+        "type": "int"
+      }
+    }
+  },
+  "resetProgress": "Reset progress ({balance})",
+  "@resetProgress": {
+    "placeholders": {
+      "balance": {
+        "type": "int"
+      }
+    }
+  },
+  "actionMakingStep": "Making step...",
+  "actionFindingHint": "Finding hint...",
+  "actionUndoing": "Undoing...",
+  "actionResetting": "Resetting...",
+  "actionAbandoning": "Abandoning...",
+  "actionWorking": "Working...",
+  "outcomeCompletedTitle": "Completed",
+  "outcomeCompletedSubtitle": "You reached {target}.",
+  "@outcomeCompletedSubtitle": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "outcomeFailedTitle": "No steps left",
+  "outcomeFailedSubtitle": "You ran out of steps before reaching {target}.",
+  "@outcomeFailedSubtitle": {
+    "placeholders": {
+      "target": {
+        "type": "String"
+      }
+    }
+  },
+  "outcomeAbandonedTitle": "Abandoned",
+  "outcomeAbandonedSubtitle": "This game was abandoned.",
+  "outcomeEndedSubtitle": "Game ended.",
+  "commonBuy": "Buy",
+  "commonUnavailable": "Unavailable",
+  "commonProcessing": "Processing...",
+  "commonCheckBackLater": "Check back later.",
+  "commonUnlimited": "unlimited",
+  "marketTitle": "Market",
+  "openingMarket": "Opening market...",
+  "fetchingOffers": "Fetching offers...",
+  "marketUnavailable": "Market unavailable",
+  "noOffersTitle": "No offers yet",
+  "promoPrice": "Promo {price} ◆",
+  "@promoPrice": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "price": "{price} ◆",
+  "@price": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "stockLabel": "Stock: {stock}",
+  "@stockLabel": {
+    "placeholders": {
+      "stock": {}
+    }
+  },
+  "yourRemaining": "Your remaining: {remaining}",
+  "@yourRemaining": {
+    "placeholders": {
+      "remaining": {}
+    }
+  },
+  "buyConfirmTitle": "Buy {quantity} {type}?",
+  "@buyConfirmTitle": {
+    "placeholders": {
+      "quantity": {},
+      "type": {}
+    }
+  },
+  "buyConfirmMessage": "This will spend {price} diamonds.",
+  "@buyConfirmMessage": {
+    "placeholders": {
+      "price": {}
+    }
+  },
+  "diamondUnavailable": "Diamond unavailable",
+  "loadingDiamonds": "Loading diamonds...",
+  "openingDiamonds": "Opening diamonds...",
+  "diamondsTitle": "Diamonds",
+  "fetchingBundles": "Fetching diamond bundles...",
+  "purchasesUnavailable": "Purchases unavailable",
+  "purchasesUnavailableMessage": "Diamonds purchase is not available here.",
+  "couldNotLoadDiamonds": "Could not load diamonds",
+  "noBundlesTitle": "No bundles yet",
+  "openingRewards": "Opening rewards...",
+  "rewardWatchedSnack": "Thanks for watching! Diamonds arrive once verified.",
+  "loadingRewards": "Loading rewards...",
+  "rewardedUnavailableTitle": "Rewarded ads unavailable",
+  "rewardedUnavailableMessage": "Open the mobile app to watch and earn.",
+  "couldNotLoadRewards": "Could not load rewards",
+  "rewardLoadingAd": "Loading ad...",
+  "rewardDailyLimitReached": "Daily limit reached",
+  "rewardWatchEarn": "Watch & earn {amount} 💎",
+  "@rewardWatchEarn": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "rewardCardTitle": "Watch a short ad, earn {amount} diamonds",
+  "@rewardCardTitle": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "rewardToday": "Today: {grants} / {limit} watched • {remaining} left",
+  "@rewardToday": {
+    "placeholders": {
+      "grants": {},
+      "limit": {},
+      "remaining": {}
+    }
+  },
+  "rewardFooter": "Diamonds are credited after the reward is verified by the ad network, so they may take a moment to appear.",
+  "commonUnknown": "unknown",
+  "questsSubtitle": "Complete quests, earn bonus energy.",
+  "questsLoading": "Loading quests...",
+  "questsLoadError": "Could not load quests",
+  "noQuestsTitle": "No quests yet",
+  "noQuestsMessage": "Complete a game and quests will start appearing here.",
+  "questClaiming": "Claiming...",
+  "questClaimReward": "Claim reward",
+  "questStateReady": "Ready",
+  "questStateActive": "Active",
+  "questStateClaimed": "Claimed",
+  "loadingProfile": "Loading profile...",
+  "couldNotLoadProfile": "Could not load profile",
+  "noProfileTitle": "No profile yet",
+  "noProfileMessage": "Start a guest session to see your profile.",
+  "viewLeaderboard": "View leaderboard",
+  "guestPlayer": "Guest player",
+  "guestSession": "Guest session",
+  "providersLinked": "{count, plural, =1{1 provider linked} other{{count} providers linked}}",
+  "@providersLinked": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "statGamesCompleted": "Games completed",
+  "statBestScore": "Best score",
+  "statTotalScore": "Total score",
+  "statLastCompleted": "Last completed",
+  "leaderboardTitle": "Leaderboard",
+  "loadingLeaderboard": "Loading leaderboard...",
+  "couldNotLoadLeaderboard": "Could not load leaderboard",
+  "noScoresTitle": "No scores yet",
+  "leaderboardAllTime": "All-time",
+  "leaderboardDaily": "Daily",
+  "leaderboardWeekly": "Weekly",
+  "leaderboardAllTimeDesc": "All-time best score across players.",
+  "leaderboardDailyDesc": "Best score today (UTC).",
+  "leaderboardWeeklyDesc": "Best score this week (UTC, Monday start).",
+  "leaderboardAllTimeEmpty": "Complete a game to appear on the leaderboard.",
+  "leaderboardDailyEmpty": "No scores recorded today yet.",
+  "leaderboardWeeklyEmpty": "No scores recorded this week yet.",
+  "settingsSoundSection": "Sound",
+  "settingsMusic": "Music",
+  "settingsMusicSubtitle": "Background music while you play",
+  "settingsMusicVolume": "Music volume",
+  "settingsSfx": "Sound effects",
+  "settingsSfxSubtitle": "Taps, moves, wins and rewards",
+  "settingsSfxVolume": "Sound effects volume",
+  "commonSave": "Save",
+  "commonCreate": "Create",
+  "commonClose": "Close",
+  "commonClear": "Clear",
+  "commonEdit": "Edit",
+  "commonDeactivate": "Deactivate",
+  "commonReset": "Reset",
+  "commonLoad": "Load",
+  "commonRequired": "Required",
+  "commonMustBeNumber": "Must be a number",
+  "commonEnterNumber": "Enter a number",
+  "commonGreaterThanZero": "Must be greater than 0",
+  "commonNonNegative": "Must be >= 0",
+  "commonNoDash": "—",
+  "adminLabel": "Admin",
+  "adminConsole": "Admin console",
+  "adminMobileTitle": "Admin · {title}",
+  "@adminMobileTitle": {
+    "placeholders": {
+      "title": {}
+    }
+  },
+  "adminSignOut": "Sign out",
+  "adminNavQuests": "Quests",
+  "adminNavPlayers": "Players",
+  "adminNavEnergy": "Energy",
+  "adminNavHint": "Hint",
+  "adminNavUndo": "Undo",
+  "adminNavReset": "Reset",
+  "adminNavDiamond": "Diamond",
+  "adminNavMarket": "Market",
+  "adminNavContent": "Content",
+  "adminNavAudit": "Audit",
+  "adminSignInTitle": "Admin sign-in",
+  "adminSignInHelp": "Development verifier: enter your admin email and the literal \"dev:admin:<email>\" token. Production SSO arrives later.",
+  "adminEmailLabel": "Email",
+  "adminExternalTokenLabel": "External token",
+  "adminSigningIn": "Signing in...",
+  "adminSignIn": "Sign in",
+  "adminSignInFailed": "Sign-in failed.",
+  "adminLookUp": "Look up",
+  "adminPlayerGuid": "Player GUID",
+  "adminPlayerId": "Player id",
+  "adminLookupFailed": "Lookup failed.",
+  "adminNoPlayerFound": "No player found.",
+  "adminPlayerConsoleTitle": "Player console",
+  "adminPlayerConsoleHelp": "Lookup is by player GUID. Search-by-handle is a backend follow-up - the Players module currently exposes only GET /admin/players/:id.",
+  "adminId": "Id",
+  "adminLocale": "Locale",
+  "adminAuthProvidersLinked": "Auth providers linked",
+  "adminCreated": "Created",
+  "adminBannedAt": "Banned at",
+  "adminReason": "Reason",
+  "adminBan": "Ban",
+  "adminUnban": "Unban",
+  "adminBanned": "Banned",
+  "adminGuest": "Guest",
+  "adminBanPlayerTitle": "Ban player",
+  "adminUnbanPlayerTitle": "Unban player?",
+  "adminUnbanPlayerMessage": "{handle} will be able to sign in again. The ban reason history is preserved on the audit log.",
+  "@adminUnbanPlayerMessage": {
+    "placeholders": {
+      "handle": {}
+    }
+  },
+  "adminQuestsTitle": "Quest definitions",
+  "adminNewQuest": "New quest",
+  "adminQuestLoadError": "Quest definitions could not be loaded.",
+  "adminNoQuestDefinitions": "No quest definitions yet. Start with \"New quest\".",
+  "adminQuestPrerequisite": "Prerequisite: {name}",
+  "@adminQuestPrerequisite": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "adminQuestEditTooltip": "Edit",
+  "adminQuestDeactivateTooltip": "Deactivate",
+  "adminQuestReactivateTooltip": "Reactivate",
+  "adminInactive": "Inactive",
+  "adminQuestDeactivateTitle": "Deactivate quest definition?",
+  "adminQuestDeactivateMessage": "\"{name}\" will no longer be issued to players. Existing player progress is not affected.",
+  "@adminQuestDeactivateMessage": {
+    "placeholders": {
+      "name": {}
+    }
+  },
+  "adminQuestFormEditTitle": "Edit quest definition",
+  "adminQuestFormCreateTitle": "New quest definition",
+  "adminName": "Name",
+  "adminImmutableAfterCreate": "Cannot be changed after creation.",
+  "adminNameRequired": "Name is required",
+  "adminMax64": "Maximum 64 characters",
+  "adminDescription": "Description",
+  "adminMax256": "Maximum 256 characters",
+  "adminTrigger": "Trigger",
+  "adminTriggerRequired": "Trigger is required",
+  "adminThreshold": "Threshold",
+  "adminEnergyReward": "Energy reward",
+  "adminHintReward": "Hint reward",
+  "adminUndoReward": "Undo reward",
+  "adminResetReward": "Reset reward",
+  "adminDiamondReward": "Diamond reward",
+  "adminProgressBaseline": "Progress baseline",
+  "adminProgressBaselineHelp": "Only meaningful for \"Total games\".",
+  "adminPrerequisiteOptional": "Prerequisite (optional)",
+  "adminNoPrerequisite": "— none —",
+  "adminRewardPositiveRequired": "At least one reward (energy, hint, undo, reset, diamond) must be greater than 0.",
+  "adminPositiveRequired": "Must be greater than 0",
+  "adminNotNegative": "Cannot be less than 0",
+  "adminEnergyConsoleTitle": "Energy console",
+  "adminEnergyConsoleHelp": "Lookup by player GUID, then snap / grant / reset. Grant intentionally allows over-max balance.",
+  "adminNoEnergyAggregate": "No energy aggregate.",
+  "adminOverMax": "Over max",
+  "adminFull": "Full",
+  "adminRechargeInterval": "Recharge interval",
+  "adminLastRefilled": "Last refilled",
+  "adminNextRefillIn": "Next refill in",
+  "adminFullyRefilledAt": "Fully refilled at",
+  "adminSetAmount": "Set amount",
+  "adminGrantBonus": "Grant bonus",
+  "adminResetToFull": "Reset to full",
+  "adminSetEnergyAmountTitle": "Set energy amount",
+  "adminNewCurrentAmount": "New current amount",
+  "adminSetEnergyHelper": "Snaps the player's current energy to this value (>= 0).",
+  "adminGrantBonusEnergyTitle": "Grant bonus energy",
+  "adminBonusAmount": "Bonus amount",
+  "adminGrantEnergyHelper": "Added on top - may push current above maximum.",
+  "adminResetEnergyTitle": "Reset energy?",
+  "adminResetEnergyMessage": "Resets the player to maximum energy.",
+  "adminHintConsoleTitle": "Hint console",
+  "adminHintConsoleHelp": "Lookup by player GUID, then snap / grant / reset. Hint inventory has no max cap.",
+  "adminNoHintInventory": "No hint inventory.",
+  "adminSetBalance": "Set balance",
+  "adminGrantHints": "Grant hints",
+  "adminResetToZero": "Reset to zero",
+  "adminSetHintBalanceTitle": "Set hint balance",
+  "adminNewBalance": "New balance",
+  "adminSetHintHelper": "Snaps the player's hint balance to this value (>= 0).",
+  "adminHintAmount": "Hint amount",
+  "adminGrantHintHelper": "Adds to the existing balance - no max cap.",
+  "adminResetHintTitle": "Reset hint balance?",
+  "adminResetHintMessage": "Sets the player's hint balance to zero.",
+  "adminUndoConsoleTitle": "Undo console",
+  "adminUndoConsoleHelp": "Lookup by player GUID, then snap / grant / reset. Undo inventory has no max cap.",
+  "adminNoUndoInventory": "No undo inventory.",
+  "adminGrantUndos": "Grant undos",
+  "adminSetUndoBalanceTitle": "Set undo balance",
+  "adminSetUndoHelper": "Snaps the player's undo balance to this value (>= 0).",
+  "adminUndoAmount": "Undo amount",
+  "adminGrantUndoHelper": "Adds to the existing balance - no max cap.",
+  "adminResetUndoTitle": "Reset undo balance?",
+  "adminResetUndoMessage": "Sets the player's undo balance to zero.",
+  "adminResetConsoleTitle": "Reset console",
+  "adminResetConsoleHelp": "Lookup by player GUID, then snap / grant / reset. Reset inventory has no max cap.",
+  "adminNoResetInventory": "No reset inventory.",
+  "adminGrantResets": "Grant resets",
+  "adminSetResetBalanceTitle": "Set reset balance",
+  "adminSetResetHelper": "Snaps the player's reset balance to this value (>= 0).",
+  "adminResetAmount": "Reset amount",
+  "adminGrantResetHelper": "Adds to the existing balance - no max cap.",
+  "adminResetResetTitle": "Reset reset balance?",
+  "adminResetResetMessage": "Sets the player's reset balance to zero.",
+  "adminDiamondConsoleTitle": "Diamond console",
+  "adminDiamondConsoleHelp": "Lookup by player GUID, then set / grant / reset. Diamond is uncapped currency.",
+  "adminNoDiamondInventory": "No diamond inventory.",
+  "adminGrantDiamonds": "Grant diamonds",
+  "adminSetDiamondBalanceTitle": "Set diamond balance",
+  "adminBalance": "Balance",
+  "adminAmount": "Amount",
+  "adminResetDiamondTitle": "Reset diamond balance?",
+  "adminResetDiamondMessage": "This sets the Diamond balance to zero.",
+  "adminMarketConsoleTitle": "Market console",
+  "adminMarketConsoleHelp": "Manage shop categories, diamond-priced items, and player purchase history.",
+  "adminMarketCategories": "Categories",
+  "adminMarketItems": "Items",
+  "adminMarketOrders": "Orders",
+  "adminNewCategory": "New category",
+  "adminEditCategory": "Edit category",
+  "adminSortStatus": "Sort {sortOrder} - {status}",
+  "@adminSortStatus": {
+    "placeholders": {
+      "sortOrder": {},
+      "status": {}
+    }
+  },
+  "adminActive": "Active",
+  "adminNoMarketCategories": "No market categories yet.",
+  "adminNewItem": "New item",
+  "adminEditItem": "Edit item",
+  "adminMarketItemSubtitle": "{category} - {price} diamonds - stock {stock}",
+  "@adminMarketItemSubtitle": {
+    "placeholders": {
+      "category": {},
+      "price": {},
+      "stock": {}
+    }
+  },
+  "adminStock": "stock",
+  "adminNoMarketItems": "No market items yet.",
+  "adminNoMarketOrders": "No market orders for this player.",
+  "adminSortOrder": "Sort order",
+  "adminIcon": "Icon",
+  "adminVisibilityStarts": "Visibility starts at (ISO, optional)",
+  "adminVisibilityEnds": "Visibility ends at (ISO, optional)",
+  "adminNormal": "Normal",
+  "adminPromotion": "Promotion",
+  "adminCategory": "Category",
+  "adminItemType": "Item type",
+  "adminQuantity": "Quantity",
+  "adminPriceDiamonds": "Price diamonds",
+  "adminPromoPrice": "Promo price",
+  "adminPromotionStarts": "Promotion starts",
+  "adminPromotionEnds": "Promotion ends",
+  "adminMaxStock": "Max stock",
+  "adminPerPlayerLimit": "Per-player limit",
+  "adminLimitWindow": "Limit window",
+  "adminMustBeLowerThanPrice": "Must be lower than price",
+  "adminMustBeAfterStart": "Must be after start",
+  "adminContentConsoleTitle": "Content console",
+  "adminContentLanguageFilter": "Language filter",
+  "adminContentAllLanguages": "All languages",
+  "adminContentNewCategory": "New content category",
+  "adminContentEditCategory": "Edit content category",
+  "adminContentLanguage": "Content language",
+  "adminContentNoCategories": "No content categories yet.",
+  "adminContentLinkCount": "{count} links",
+  "@adminContentLinkCount": {
+    "placeholders": {
+      "count": {}
+    }
+  },
+  "adminAuditLogTitle": "Audit log",
+  "adminAuditHelp": "Newest first. Filters are optional; page size 50.",
+  "adminAdminUserId": "Admin user id (GUID)",
+  "adminTargetType": "Target type (e.g. Games.Category)",
+  "adminTargetId": "Target id",
+  "adminApplyFilters": "Apply filters",
+  "adminFailedLoadAudit": "Failed to load audit log.",
+  "adminNoAuditEntries": "No audit entries match the current filters.",
+  "adminOffset": "Offset {offset}",
+  "@adminOffset": {
+    "placeholders": {
+      "offset": {}
+    }
+  },
+  "adminPrev": "Prev",
+  "adminNext": "Next",
+  "adminAuditAdmin": "admin: {id}",
+  "@adminAuditAdmin": {
+    "placeholders": {
+      "id": {}
+    }
+  },
+  "adminViewPayload": "View payload",
+  "commonLoading": "Loading...",
+  "adminQuestTriggerTotal": "Total games",
+  "adminQuestTriggerDaily": "Daily games",
+  "adminQuestTriggerAuthProvider": "Account linked",
+  "adminProgressFromSnapshot": "From this point",
+  "adminProgressFromExistingTotal": "All time",
+  "adminMarketTypeEnergy": "Energy",
+  "adminMarketTypeHint": "Hint",
+  "adminMarketTypeUndo": "Undo",
+  "adminMarketTypeReset": "Reset",
+  "adminMarketTypeDiamond": "Diamond",
+  "adminLimitLifetime": "Lifetime",
+  "adminLimitDaily": "Daily",
+  "adminLimitPerPromo": "Per promotion",
+  "adminMarketOrderSubtitle": "{price} diamonds - {purchasedAt}",
+  "@adminMarketOrderSubtitle": {
+    "placeholders": {
+      "price": {},
+      "purchasedAt": {}
+    }
+  }
+}

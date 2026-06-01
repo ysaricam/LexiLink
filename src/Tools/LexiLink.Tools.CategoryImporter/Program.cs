@@ -2,12 +2,16 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Npgsql;
 
 namespace LexiLink.Tools.CategoryImporter;
 
 internal static class Program
 {
+    private const string DefaultLanguage = "tr-TR";
+    private static readonly Regex LanguagePattern = new("^[a-z]{2}-[A-Z]{2}$", RegexOptions.Compiled);
+
     private static async Task<int> Main(string[] args)
     {
         if (args.Length < 2)
@@ -33,17 +37,18 @@ internal static class Program
             return 1;
         }
 
-        var categoryId = StableGuid($"category:{document.Category.Name}");
+        var language = NormalizeLanguage(document.Category.Language);
+        var categoryId = StableGuid($"category:{language}:{document.Category.Name}");
         var linkIdsByValue = document.Links.ToDictionary(
             link => link.Value,
-            link => StableGuid($"category:{document.Category.Name}:link:{link.Value}"),
+            link => StableGuid($"category:{language}:{document.Category.Name}:link:{link.Value}"),
             StringComparer.Ordinal);
 
         await using var connection = new NpgsqlConnection(connectionString);
         await connection.OpenAsync();
         await using var transaction = await connection.BeginTransactionAsync();
 
-        await UpsertCategoryAsync(connection, transaction, categoryId, document.Category);
+        await UpsertCategoryAsync(connection, transaction, categoryId, document.Category, language);
 
         foreach (var link in document.Links)
         {
@@ -69,7 +74,7 @@ internal static class Program
         await transaction.CommitAsync();
 
         Console.WriteLine(
-            $"Imported category '{document.Category.Name}' ({document.Links.Count} links, {document.Edges.Count} edges).");
+            $"Imported category '{document.Category.Name}' [{language}] ({document.Links.Count} links, {document.Edges.Count} edges).");
         Console.WriteLine($"CategoryId: {categoryId}");
         return 0;
     }
@@ -91,6 +96,10 @@ internal static class Program
     {
         if (document.Category.Name.Length == 0)
             return "Category name must not be empty.";
+
+        var language = NormalizeLanguage(document.Category.Language);
+        if (!LanguagePattern.IsMatch(language))
+            return "Category language must be in BCP 47 short form (e.g. 'tr-TR', 'en-US').";
 
         var duplicateLink = document.Links
             .GroupBy(link => link.Value, StringComparer.Ordinal)
@@ -124,20 +133,23 @@ internal static class Program
         NpgsqlConnection connection,
         NpgsqlTransaction transaction,
         Guid categoryId,
-        CategoryInfo category)
+        CategoryInfo category,
+        string language)
     {
         const string sql = """
-            INSERT INTO "games"."Categories" ("Id", "Name", "Description")
-            VALUES (@Id, @Name, @Description)
+            INSERT INTO "games"."Categories" ("Id", "Name", "Description", "Language")
+            VALUES (@Id, @Name, @Description, @Language)
             ON CONFLICT ("Id") DO UPDATE
             SET "Name" = EXCLUDED."Name",
-                "Description" = EXCLUDED."Description";
+                "Description" = EXCLUDED."Description",
+                "Language" = EXCLUDED."Language";
             """;
 
         await using var command = new NpgsqlCommand(sql, connection, transaction);
         command.Parameters.AddWithValue("Id", categoryId);
         command.Parameters.AddWithValue("Name", category.Name);
         command.Parameters.AddWithValue("Description", category.Description);
+        command.Parameters.AddWithValue("Language", language);
         await command.ExecuteNonQueryAsync();
     }
 
@@ -206,6 +218,9 @@ internal static class Program
         bytes[8] = (byte)((bytes[8] & 0x3F) | 0x80);
         return new Guid(bytes);
     }
+
+    private static string NormalizeLanguage(string? language) =>
+        string.IsNullOrWhiteSpace(language) ? DefaultLanguage : language;
 }
 
 internal sealed record CategoryDocument(
@@ -215,7 +230,7 @@ internal sealed record CategoryDocument(
     IReadOnlyList<EdgeInfo> Edges,
     MetadataInfo? Metadata);
 
-internal sealed record CategoryInfo(string Name, string Description);
+internal sealed record CategoryInfo(string Name, string Description, string? Language);
 
 internal sealed record LinkInfo(
     string Value,

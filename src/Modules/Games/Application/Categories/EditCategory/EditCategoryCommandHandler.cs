@@ -18,6 +18,6 @@ internal class EditCategoryCommandHandler : ICommandHandler<EditCategoryCommand>
         var category = await _categoryRepository.GetByIdAsync(new CategoryId(request.CategoryId), cancellationToken)
             ?? throw new NotFoundException(nameof(Category), request.CategoryId);
 
-        category.EditGeneralInfo(request.Name, request.Description);
+        category.EditGeneralInfo(request.Name, request.Description, request.Language);
     }
 }

@@ -25,8 +25,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    _totalDuration =
-        _letterStagger * (_logoText.length - 1) + _letterDuration;
+    _totalDuration = _letterStagger * (_logoText.length - 1) + _letterDuration;
     _controller = AnimationController(vsync: this, duration: _totalDuration)
       ..addStatusListener(_onStatus)
       ..forward();
@@ -149,7 +148,7 @@ class _SandLetter extends StatelessWidget {
   Widget build(BuildContext context) {
     final eased = Curves.easeOutCubic.transform(progress);
     final dy = (1 - eased) * -_fallDistance;
-    final opacity = math.min(progress * 3, 1.0).clamp(0.0, 1.0);
+    final opacity = math.min(progress * 3, 1).clamp(0, 1).toDouble();
     final hasStarted = progress > 0 && progress < 1;
 
     return SizedBox(

@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lexilink_app/features/settings/application/audio_settings_cubit.dart';
+import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/features/settings/data/audio_preferences_repository.dart';
+import 'package:lexilink_app/features/settings/data/locale_preferences_repository.dart';
+import 'package:lexilink_app/features/settings/data/player_locale_writer.dart';
 import 'package:lexilink_app/features/settings/presentation/settings_screen.dart';
+import 'package:lexilink_app/l10n/app_localizations.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
 
 /// No-op service so the widget test never touches a real player.
@@ -24,10 +28,20 @@ void main() {
   Future<void> pumpScreen(WidgetTester tester, AudioSettingsCubit cubit) {
     return tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: RepositoryProvider<AudioService>.value(
           value: _SilentAudioService(),
-          child: BlocProvider<AudioSettingsCubit>.value(
-            value: cubit,
+          child: MultiBlocProvider(
+            providers: [
+              BlocProvider<AudioSettingsCubit>.value(value: cubit),
+              BlocProvider<LocaleCubit>(
+                create: (_) => LocaleCubit(
+                  repository: InMemoryLocalePreferencesRepository(),
+                  localeWriter: const NoopPlayerLocaleWriter(),
+                ),
+              ),
+            ],
             child: const SettingsScreen(),
           ),
         ),

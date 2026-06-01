@@ -15,6 +15,7 @@ import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -76,8 +77,10 @@ class _MarketScreenState extends State<MarketScreen> {
   Widget build(BuildContext context) {
     final cubit = _cubit;
     if (cubit == null) {
-      return const Scaffold(
-        body: Center(child: AppLoadingState(message: 'Opening market...')),
+      return Scaffold(
+        body: Center(
+          child: AppLoadingState(message: context.l10n.openingMarket),
+        ),
       );
     }
     return BlocProvider.value(value: cubit, child: const _MarketView());
@@ -117,7 +120,7 @@ class _MarketViewState extends State<_MarketView> {
           body: SafeArea(
             child: Column(
               children: [
-                const AppBackBar(title: 'Mağaza'),
+                AppBackBar(title: context.l10n.marketTitle),
                 Expanded(child: _body(context, state)),
               ],
             ),
@@ -130,24 +133,24 @@ class _MarketViewState extends State<_MarketView> {
   Widget _body(BuildContext context, MarketState state) {
     if (state.status == MarketStatus.loading ||
         state.status == MarketStatus.initial) {
-      return const Center(
-        child: AppLoadingState(message: 'Fetching offers...'),
+      return Center(
+        child: AppLoadingState(message: context.l10n.fetchingOffers),
       );
     }
     if (state.status == MarketStatus.failure && state.categories.isEmpty) {
       return Center(
         child: AppErrorState(
-          title: 'Market unavailable',
-          message: state.message ?? 'Try again.',
+          title: context.l10n.marketUnavailable,
+          message: state.message ?? context.l10n.commonTryAgain,
           onRetry: () => context.read<MarketCubit>().load(),
         ),
       );
     }
     if (state.categories.isEmpty) {
-      return const Center(
+      return Center(
         child: AppEmptyState(
-          title: 'No offers yet',
-          message: 'Check back later.',
+          title: context.l10n.noOffersTitle,
+          message: context.l10n.commonCheckBackLater,
         ),
       );
     }
@@ -243,23 +246,32 @@ class _MarketItemCard extends StatelessWidget {
               const SizedBox(height: 10),
               if (item.hasPromotion)
                 _Pill(
-                  text: 'Promo ${item.effectivePrice} ◆',
+                  text: context.l10n.promoPrice(item.effectivePrice),
                   color: AppPalette.focus,
                 )
               else
                 _Pill(
-                  text: '${item.effectivePrice} ◆',
+                  text: context.l10n.price(item.effectivePrice),
                   color: AppPalette.primary,
                 ),
               const SizedBox(height: 10),
-              Text('Stock: ${item.remainingStock?.toString() ?? 'unlimited'}'),
               Text(
-                'Your remaining: '
-                '${item.perPlayerRemaining?.toString() ?? 'unlimited'}',
+                context.l10n.stockLabel(
+                  item.remainingStock?.toString() ??
+                      context.l10n.commonUnlimited,
+                ),
+              ),
+              Text(
+                context.l10n.yourRemaining(
+                  item.perPlayerRemaining?.toString() ??
+                      context.l10n.commonUnlimited,
+                ),
               ),
               const Spacer(),
               AppPrimaryButton(
-                label: disabled ? 'Unavailable' : 'Buy',
+                label: disabled
+                    ? context.l10n.commonUnavailable
+                    : context.l10n.commonBuy,
                 onPressed: disabled ? null : () => _confirm(context),
               ),
             ],
@@ -274,16 +286,18 @@ class _MarketItemCard extends StatelessWidget {
     final ok = await showDialog<bool>(
       context: context,
       builder: (_) => AlertDialog(
-        title: Text('Buy ${item.quantity} ${item.itemType.wire}?'),
-        content: Text('This will spend ${item.effectivePrice} diamonds.'),
+        title: Text(
+          context.l10n.buyConfirmTitle(item.quantity, item.itemType.wire),
+        ),
+        content: Text(context.l10n.buyConfirmMessage(item.effectivePrice)),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Buy'),
+            child: Text(context.l10n.commonBuy),
           ),
         ],
       ),

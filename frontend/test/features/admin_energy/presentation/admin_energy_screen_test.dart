@@ -5,6 +5,7 @@ import 'package:http/testing.dart';
 import 'package:lexilink_app/features/admin_energy/application/admin_energy_cubit.dart';
 import 'package:lexilink_app/features/admin_energy/data/admin_energy_repository.dart';
 import 'package:lexilink_app/features/admin_energy/presentation/admin_energy_screen.dart';
+import 'package:lexilink_app/l10n/app_localizations.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -29,7 +30,8 @@ AdminEnergyCubit _buildCubitWithScript(
   );
 }
 
-const _snapshotJson = '{'
+const _snapshotJson =
+    '{'
     '"playerId":"00000000-0000-0000-0000-000000000abc",'
     '"currentAmount":3,"maximumAmount":5,"isFull":false,'
     '"rechargeIntervalSeconds":600,'
@@ -49,11 +51,15 @@ void main() {
       (_) => http.Response(_snapshotJson, 200),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminEnergyScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: AdminEnergyScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     await tester.enterText(
@@ -79,11 +85,15 @@ void main() {
       (_) => http.Response('{"detail":"nope"}', 404),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminEnergyScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: AdminEnergyScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField), 'ghost');

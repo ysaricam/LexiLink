@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:lexilink_app/features/admin_quests/application/admin_quests_cubit.dart';
 import 'package:lexilink_app/features/admin_quests/data/admin_quests_repository.dart';
 import 'package:lexilink_app/features/admin_quests/presentation/admin_quests_screen.dart';
+import 'package:lexilink_app/l10n/app_localizations.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -49,6 +50,8 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: AdminQuestsScreen(cubitFactory: () => cubit),
         ),
@@ -57,17 +60,17 @@ void main() {
     // Async init + load completes.
     await tester.pumpAndSettle();
 
-    expect(find.text('Quest tanımları'), findsOneWidget);
+    expect(find.text('Quest definitions'), findsOneWidget);
     expect(find.text('Daily Three'), findsOneWidget);
-    // Row subtitle includes "Günlük oyun · 3" from QuestTrigger label.
-    expect(find.textContaining('Günlük oyun'), findsOneWidget);
+    // Row subtitle includes "Daily games · 3" from QuestTrigger label.
+    expect(find.textContaining('Daily games'), findsOneWidget);
 
-    await tester.tap(find.text('Yeni quest'));
+    await tester.tap(find.text('New quest'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Yeni quest tanımı'), findsOneWidget);
-    expect(find.text('İptal'), findsOneWidget);
-    expect(find.text('Oluştur'), findsOneWidget);
+    expect(find.text('New quest definition'), findsOneWidget);
+    expect(find.text('Cancel'), findsOneWidget);
+    expect(find.text('Create'), findsOneWidget);
   });
 
   testWidgets('empty state shows hint message', (tester) async {
@@ -82,6 +85,8 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: AdminQuestsScreen(cubitFactory: () => cubit),
         ),
@@ -90,7 +95,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(
-      find.textContaining('Henüz quest tanımı yok'),
+      find.textContaining('No quest definitions yet'),
       findsOneWidget,
     );
   });

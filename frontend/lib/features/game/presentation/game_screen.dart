@@ -17,9 +17,12 @@ import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
 import 'package:lexilink_app/features/reset/data/reset_repository.dart';
 import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
 import 'package:lexilink_app/features/undo/data/undo_repository.dart';
+import 'package:lexilink_app/shared/ads/ad_config.dart';
+import 'package:lexilink_app/shared/ads/ads_service.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -54,18 +57,18 @@ class _GameScreenState extends State<GameScreen> {
       future: _tokenStoreFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppScreen(
+          return AppScreen(
             child: AppErrorState(
-              title: 'Session storage failed',
-              message: 'Restart the app and try again.',
+              title: context.l10n.sessionStorageFailedTitle,
+              message: context.l10n.sessionStorageFailedMessage,
             ),
           );
         }
 
         final tokenStore = snapshot.data;
         if (tokenStore == null) {
-          return const AppScreen(
-            child: AppLoadingState(message: 'Preparing game...'),
+          return AppScreen(
+            child: AppLoadingState(message: context.l10n.preparingGame),
           );
         }
 
@@ -107,9 +110,15 @@ class _GameProvidersState extends State<_GameProviders> {
     _gameDetailsCubit = GameDetailsCubit(
       gameRepository: GameRepository(apiClient: apiClient),
     );
-    _hintCubit = HintCubit(hintRepository: HintRepository(apiClient: apiClient));
-    _undoCubit = UndoCubit(undoRepository: UndoRepository(apiClient: apiClient));
-    _resetCubit = ResetCubit(resetRepository: ResetRepository(apiClient: apiClient));
+    _hintCubit = HintCubit(
+      hintRepository: HintRepository(apiClient: apiClient),
+    );
+    _undoCubit = UndoCubit(
+      undoRepository: UndoRepository(apiClient: apiClient),
+    );
+    _resetCubit = ResetCubit(
+      resetRepository: ResetRepository(apiClient: apiClient),
+    );
     unawaited(_gameDetailsCubit.loadGame(widget.gameId));
     unawaited(_hintCubit.loadHint());
     unawaited(_undoCubit.loadUndo());
@@ -173,6 +182,11 @@ class _GameViewState extends State<_GameView> {
             final game = state.game;
             if (game == null || _resultShown) return;
             _resultShown = true;
+            // Interstitial @ game end (~1/2). Fire-and-forget and web-safe;
+            // never blocks the result sheet.
+            context.read<AdsService>().maybeShowInterstitial(
+              InterstitialChance.gameEnd,
+            );
             _showResultSheet(context, game);
           },
         ),
@@ -182,13 +196,13 @@ class _GameViewState extends State<_GameView> {
         child: BlocBuilder<GameDetailsCubit, GameDetailsState>(
           builder: (context, state) {
             if (state.status == GameDetailsStatus.loading) {
-              return const AppLoadingState(message: 'Loading game...');
+              return AppLoadingState(message: context.l10n.loadingGame);
             }
 
             if (state.status == GameDetailsStatus.failure) {
               return AppErrorState(
-                title: 'Could not load game',
-                message: state.message ?? 'Try again.',
+                title: context.l10n.couldNotLoadGame,
+                message: state.message ?? context.l10n.commonTryAgain,
                 onRetry: () =>
                     context.read<GameDetailsCubit>().loadGame(widget.gameId),
               );
@@ -252,7 +266,7 @@ class _GameContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppBackBar(
-          title: 'Game',
+          title: context.l10n.gameTitle,
           onBack: () => _onBackPressed(context, game, isBusy),
           trailing: _OverflowMenu(game: game, isBusy: isBusy),
         ),
@@ -267,15 +281,15 @@ class _GameContent extends StatelessWidget {
         const SizedBox(height: 20),
         if (!isFinished) ...[
           Text(
-            'Pick the next word',
+            context.l10n.pickNextWord,
             style: Theme.of(context).textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
           if (outgoingLinks.isEmpty)
-            const AppErrorState(
-              title: 'No moves available',
-              message: 'This link has no outgoing choices.',
+            AppErrorState(
+              title: context.l10n.noMovesTitle,
+              message: context.l10n.noMovesMessage,
             )
           else
             _OptionsGrid(
@@ -290,18 +304,21 @@ class _GameContent extends StatelessWidget {
         if (message != null) ...[
           const SizedBox(height: 16),
           AppErrorState(
-            title: 'Action failed',
+            title: context.l10n.actionFailed,
             message: message!,
           ),
         ],
         if (isBusy) ...[
           const SizedBox(height: 16),
-          AppLoadingState(message: _actionMessage(activeAction), compact: true),
+          AppLoadingState(
+            message: _actionMessage(context, activeAction),
+            compact: true,
+          ),
         ],
         if (isFinished) ...[
           const SizedBox(height: 24),
           AppPrimaryButton(
-            label: 'Back to home',
+            label: context.l10n.backToHome,
             onPressed: () => context.go('/home'),
           ),
         ],
@@ -316,14 +333,15 @@ class _GameContent extends StatelessWidget {
     return game.history[game.stepsTaken - 2].linkId;
   }
 
-  String _actionMessage(GameAction action) {
+  String _actionMessage(BuildContext context, GameAction action) {
+    final l10n = context.l10n;
     return switch (action) {
-      GameAction.step => 'Making step...',
-      GameAction.hint => 'Finding hint...',
-      GameAction.undo => 'Undoing...',
-      GameAction.reset => 'Resetting...',
-      GameAction.abandon => 'Abandoning...',
-      GameAction.none => 'Working...',
+      GameAction.step => l10n.actionMakingStep,
+      GameAction.hint => l10n.actionFindingHint,
+      GameAction.undo => l10n.actionUndoing,
+      GameAction.reset => l10n.actionResetting,
+      GameAction.abandon => l10n.actionAbandoning,
+      GameAction.none => l10n.actionWorking,
     };
   }
 
@@ -341,19 +359,16 @@ class _GameContent extends StatelessWidget {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Quit game?'),
-        content: const Text(
-          'This will abandon your current game and '
-          'you will not earn any score.',
-        ),
+        title: Text(context.l10n.quitGameTitle),
+        content: Text(context.l10n.quitGameMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(false),
-            child: const Text('Keep playing'),
+            child: Text(context.l10n.keepPlaying),
           ),
           TextButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
-            child: const Text('Quit'),
+            child: Text(context.l10n.quit),
           ),
         ],
       ),
@@ -406,7 +421,9 @@ class _AnchorChip extends StatelessWidget {
     final foreground = kind == _AnchorKind.start
         ? AppPalette.primary
         : AppPalette.focus;
-    final caption = kind == _AnchorKind.start ? 'Start' : 'Target';
+    final caption = kind == _AnchorKind.start
+        ? context.l10n.commonStart
+        : context.l10n.anchorTarget;
 
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 120),
@@ -518,7 +535,7 @@ class _CurrentHero extends StatelessWidget {
           child: Column(
             children: [
               Text(
-                'Current',
+                context.l10n.currentLabel,
                 style: theme.textTheme.labelMedium?.copyWith(
                   color: Colors.white70,
                   letterSpacing: 1.2,
@@ -582,18 +599,18 @@ class _StatusRow extends StatelessWidget {
       children: [
         _StatusChip(
           icon: Icons.timer_outlined,
-          label: 'Steps ${game.stepsTaken}/${game.maxSteps}',
+          label: context.l10n.hudSteps(game.stepsTaken, game.maxSteps),
         ),
         const SizedBox(width: 10),
         _StatusChip(
           icon: Icons.lightbulb_outline,
-          label: 'Hints ${game.hintsLeft}',
+          label: context.l10n.hudHints(game.hintsLeft),
         ),
         if (game.score != null) ...[
           const SizedBox(width: 10),
           _StatusChip(
             icon: Icons.star_outline,
-            label: 'Score ${game.score}',
+            label: context.l10n.hudScore(game.score!),
             tone: _StatusChipTone.accent,
           ),
         ],
@@ -790,15 +807,13 @@ class _SecondaryActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hintBalance =
-        context.watch<HintCubit>().state.hint?.balance ?? 0;
-    final undoBalance =
-        context.watch<UndoCubit>().state.undo?.balance ?? 0;
+    final hintBalance = context.watch<HintCubit>().state.hint?.balance ?? 0;
+    final undoBalance = context.watch<UndoCubit>().state.undo?.balance ?? 0;
     return Row(
       children: [
         Expanded(
           child: AppSecondaryButton(
-            label: 'Hint ($hintBalance)',
+            label: context.l10n.hintAction(hintBalance),
             onPressed: isBusy || game.isFinished || hintBalance <= 0
                 ? null
                 : () async {
@@ -812,7 +827,7 @@ class _SecondaryActions extends StatelessWidget {
         const SizedBox(width: 10),
         Expanded(
           child: AppSecondaryButton(
-            label: 'Undo ($undoBalance)',
+            label: context.l10n.undoAction(undoBalance),
             onPressed: isBusy || game.isFinished || undoBalance <= 0
                 ? null
                 : () async {
@@ -836,14 +851,12 @@ class _OverflowMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resetBalance =
-        context.watch<ResetCubit>().state.reset?.balance ?? 0;
-    final resetEnabled =
-        !game.isFinished && !isBusy && resetBalance > 0;
+    final resetBalance = context.watch<ResetCubit>().state.reset?.balance ?? 0;
+    final resetEnabled = !game.isFinished && !isBusy && resetBalance > 0;
 
     return PopupMenuButton<String>(
       icon: const Icon(Icons.more_vert),
-      tooltip: 'More actions',
+      tooltip: context.l10n.moreActions,
       onSelected: (value) async {
         if (value == 'reset') {
           await context.read<GameDetailsCubit>().reset();
@@ -856,7 +869,7 @@ class _OverflowMenu extends StatelessWidget {
         PopupMenuItem<String>(
           value: 'reset',
           enabled: resetEnabled,
-          child: Text('Reset progress ($resetBalance)'),
+          child: Text(context.l10n.resetProgress(resetBalance)),
         ),
       ],
     );
@@ -871,7 +884,7 @@ class _ResultSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final outcome = _outcomeFor(game.state);
+    final outcome = _outcomeFor(context, game.state);
 
     return SafeArea(
       child: Container(
@@ -927,19 +940,19 @@ class _ResultSheet extends StatelessWidget {
               children: [
                 Expanded(
                   child: _SummaryStat(
-                    label: 'Score',
+                    label: context.l10n.resultScore,
                     value: game.score?.toString() ?? '—',
                   ),
                 ),
                 Expanded(
                   child: _SummaryStat(
-                    label: 'Steps',
+                    label: context.l10n.resultSteps,
                     value: '${game.stepsTaken}/${game.maxSteps}',
                   ),
                 ),
                 Expanded(
                   child: _SummaryStat(
-                    label: 'Hints used',
+                    label: context.l10n.resultHintsUsed,
                     value: '${game.hintsUsed}',
                   ),
                 ),
@@ -947,7 +960,7 @@ class _ResultSheet extends StatelessWidget {
             ),
             const SizedBox(height: 18),
             Text(
-              'Path',
+              context.l10n.resultPath,
               style: theme.textTheme.titleSmall,
             ),
             const SizedBox(height: 6),
@@ -957,7 +970,7 @@ class _ResultSheet extends StatelessWidget {
             ),
             const SizedBox(height: 22),
             AppPrimaryButton(
-              label: 'Back to home',
+              label: context.l10n.backToHome,
               onPressed: () {
                 Navigator.of(context).pop();
                 context.go('/home');
@@ -977,33 +990,33 @@ class _ResultSheet extends StatelessWidget {
     return words.join(' › ');
   }
 
-  _Outcome _outcomeFor(String state) {
+  _Outcome _outcomeFor(BuildContext context, String state) {
+    final l10n = context.l10n;
     return switch (state) {
       'Completed' => _Outcome(
-          icon: Icons.emoji_events_outlined,
-          color: AppPalette.success,
-          title: 'Completed',
-          subtitle: (g) => 'You reached ${g.targetWord}.',
-        ),
+        icon: Icons.emoji_events_outlined,
+        color: AppPalette.success,
+        title: l10n.outcomeCompletedTitle,
+        subtitle: (g) => l10n.outcomeCompletedSubtitle(g.targetWord),
+      ),
       'Failed' => _Outcome(
-          icon: Icons.do_not_disturb_alt_outlined,
-          color: AppPalette.danger,
-          title: 'No steps left',
-          subtitle: (g) =>
-              'You ran out of steps before reaching ${g.targetWord}.',
-        ),
+        icon: Icons.do_not_disturb_alt_outlined,
+        color: AppPalette.danger,
+        title: l10n.outcomeFailedTitle,
+        subtitle: (g) => l10n.outcomeFailedSubtitle(g.targetWord),
+      ),
       'Abandoned' => _Outcome(
-          icon: Icons.flag_outlined,
-          color: AppPalette.lightTextMuted,
-          title: 'Abandoned',
-          subtitle: (_) => 'This game was abandoned.',
-        ),
+        icon: Icons.flag_outlined,
+        color: AppPalette.lightTextMuted,
+        title: l10n.outcomeAbandonedTitle,
+        subtitle: (_) => l10n.outcomeAbandonedSubtitle,
+      ),
       _ => _Outcome(
-          icon: Icons.help_outline,
-          color: AppPalette.lightTextMuted,
-          title: state,
-          subtitle: (_) => 'Game ended.',
-        ),
+        icon: Icons.help_outline,
+        color: AppPalette.lightTextMuted,
+        title: state,
+        subtitle: (_) => l10n.outcomeEndedSubtitle,
+      ),
     };
   }
 }

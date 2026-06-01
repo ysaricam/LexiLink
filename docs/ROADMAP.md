@@ -4,6 +4,247 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Sprint CL ✅ closed (2026-06-01) — Content Localization (Phase 2)
+
+Goal: localize game content by moving Categories/Links toward
+language-specific word graphs. Phase 1 UI i18n is closed; this sprint owns
+content filtering and authoring. Backend rule/API message localization is
+still Phase 3.
+
+### Slice plan
+
+| Slice | Status | Content |
+| --- | --- | --- |
+| **CL1** | ✅ Done | Content language foundation. Add `Category.Language`, migrate existing content to `tr-TR`, expose/filter `/categories?locale=xx-XX`, and thread `LocaleCubit` locale from frontend category loading. |
+| **CL2** | ✅ Done | Seed/author first playable `en-US` graph (`docs/category-animals-en.json`), make `CategoryImporter` language-aware, import Animals locally, and verify English content can create/start a game. |
+| **CL3** | ✅ Done | Admin content UI language controls: admin category read endpoints, `/admin/content` screen, locale filter, and create/edit language selector. |
+| **CL4** | ✅ Done | Content-ops handoff documented. Authoring DE/FR/ES graphs is a content (not code) task and the code path is complete, so CL4 ships `docs/CONTENT_AUTHORING.md` — the repeatable JSON-schema + importer + validation + per-language stable-id + verify/checklist guide — instead of authoring more graphs in-repo. Actual DE/FR/ES authoring is operator/content-ops owned. |
+
+### Closure note
+
+CL1–CL3 delivered the content-language code path (model + migration +
+filtering + importer + admin UI). CL4 closed the sprint by documenting the
+repeatable authoring handoff (`docs/CONTENT_AUTHORING.md`) rather than
+authoring additional language graphs in the repo — per-language word graphs
+are a content-ops effort and don't need code work. The `en-US` Animals graph
+(CL2) plus the original `tr-TR` content remain the shipped playable set;
+DE/FR/ES graphs drop in via the documented importer flow with no code change.
+Phase 3 (backend rule/error-message localization) remains deferred.
+
+### Boundaries
+
+- Links inherit language from their Category in this slice; no separate
+  `Link.Language` yet.
+- Existing Turkish content is treated as `tr-TR`.
+- Phase 3 error-code/backend-message localization remains deferred.
+
+---
+
+## Sprint L10N ✅ closed (2026-06-01) — Localization (App UI i18n)
+
+Goal: take the first step toward a real-world launch by localizing the
+**app UI** into five languages — **Turkish, English, German, French,
+Spanish**. This is **Phase 1 (UI strings only)**. The word-graph game
+content stays Turkish for now (Phase 2), and backend rule/validation
+messages stay English for now (Phase 3). At sprint start, the frontend UI
+was hardcoded **English** (~105+ `Text` literals plus labels/snackbars/
+dialogs across ~29 features) with no `flutter_localizations`/`intl` setup.
+Current repo state: L1–L8 are delivered in the working tree; Phase 1 UI
+i18n is closed. Follow-up content localization belongs to Phase 2, not
+this sprint.
+
+### Phased shape
+
+| Phase | Scope | Status |
+| --- | --- | --- |
+| **Phase 1 — UI i18n** | All app UI strings in 5 languages | **Closed in Sprint L10N** |
+| **Phase 2 — Content model** | `language` on Category, filter content by player locale, author TR+EN (then DE/FR/ES) word graphs | Next (model + authoring later) |
+| **Phase 3 — Backend messages** | Rule/validation → stable error codes + client translation; admin-authored content multilingual | Deferred |
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Languages / locale codes | `tr-TR`, `en-US`, `de-DE`, `fr-FR`, `es-ES`. Backend `Player.Locale` regex (`^[a-z]{2}-[A-Z]{2}$`) requires the region-qualified form; Flutter ARB resolution uses the language code (`tr`/`en`/`de`/`fr`/`es`) and maps to the `xx-XX` form for the backend. |
+| Tech | `flutter_localizations` + `intl` + ARB files + `flutter gen-l10n` → `AppLocalizations`, accessed via a `context.l10n` extension. |
+| Fallback locale | **English (`en-US`)** when the device locale isn't one of the five. |
+| Preference source | Device locale on first launch (if supported), else fallback. Settings language picker. Persisted **device-local** (SharedPreferences) **and** to `Player.Locale` via the existing `UpdateProfile` endpoint. |
+| Global wiring | `LocaleCubit` provided above the router (genuinely-global, like `AudioService`/`AdsService`). |
+| Test strategy | `en` ARB values are kept **identical** to the current hardcoded copy and tests run in the `en` locale, so existing `find.text('...')` assertions stay green and churn is minimal. |
+| Content `language` column | **Phase 2** — Phase 1 stays pure frontend (no schema change). |
+
+### Architecture notes
+
+- **Two localization layers, kept separate.** App UI (this sprint) vs
+  game content (Phase 2). The word graph is language-specific — a Turkish
+  puzzle can't be machine-translated into a valid German one — so content
+  multilingual means per-language authored Category/Link graphs, a content
+  effort, not a code task.
+- **`Player.Locale` already exists** (format-validated, persisted,
+  broadcast in `PlayerRegisteredDomainEvent`/`PlayerProfileUpdatedDomainEvent`)
+  but drives nothing yet. The language picker will write to it; nothing
+  consumes it server-side until Phase 2 content filtering.
+- **Mirror the audio/ads global-service pattern.** `LocaleCubit` +
+  `LocalePreferencesRepository` (SharedPreferences) provided above
+  `MaterialApp.router`, exactly like `AudioSettingsCubit`/`AudioService`.
+- **Phase 3 readiness.** Q1 signalled eventual backend-message
+  localization; the client l10n layer is built so error **codes** can be
+  mapped to localized strings later without re-plumbing.
+
+### Slice plan (8 slices)
+
+| Slice | Status | Content |
+| --- | --- | --- |
+| **L1** | ✅ Done | i18n infrastructure. `flutter_localizations` + `intl` deps, `generate: true`, `l10n.yaml`, `lib/l10n/app_en.arb` (template) + `app_{tr,de,fr,es}.arb` skeletons, `flutter gen-l10n`, `MaterialApp.router` `localizationsDelegates`/`supportedLocales` (en first → en fallback) + locale, `context.l10n` extension. Seed a few keys; smoke test resolves `AppLocalizations` for all 5 locales. |
+| **L2** | ✅ Done | Locale preference + picker. `LocaleSettings` model, `LocalePreferencesRepository` (SharedPreferences + InMemory), `LocaleCubit` provided above the router; device-locale first-launch resolution with `en-US` fallback. `SettingsScreen` language dropdown → live apply + persist device-local + PATCH `Player.Locale` (`xx-XX`). Verify the locale string matches `LocaleMustBeValidFormatRule`. |
+| **L3** | ✅ Done | Extraction — gameplay surface (game, home, categories). |
+| **L4** | ✅ Done | Extraction — economy (market, diamond, payments, ads/earn-diamonds). |
+| **L5** | ✅ Done | Extraction — quests, profile, leaderboard, settings, auth/splash. |
+| **L6** | ✅ Done | Extraction — admin features + shared widgets/dialogs (cancel/apply/retry etc.). |
+| **L7** | ✅ Done | Translations. Fill `tr`/`de`/`fr`/`es` ARBs (TR authored; DE/FR/ES start as drafts, swapped later like the audio placeholders). |
+| **L8** | ✅ Done | Tests + analyze + docs close-out. Final Flutter suite **166/166**; `flutter analyze` is clean (**No issues found**); locale behavior + Phase 1 boundaries documented in GLOSSARY/OPERATIONS/frontend/global docs. |
+
+### Acceptance criteria
+
+- App UI renders in TR/EN/DE/FR/ES; switching the language in Settings
+  applies live and survives restart (device-local) and is written to
+  `Player.Locale`.
+- Unsupported device locale falls back to English.
+- No user-visible hardcoded UI string remains after L3–L6 (game content
+  excluded — that's Phase 2).
+- Existing widget tests stay green (en values mirror current copy).
+
+### Deliberate non-actions (Phase 1)
+
+- **No game-content translation.** Category/Link word graphs stay Turkish;
+  per-language content is Phase 2 (model + authoring).
+- **No backend message localization.** Rule/validation messages and
+  admin-authored content stay English (Phase 3).
+- **No `language` column on Category** in Phase 1.
+- **No RTL/new-script languages** beyond the five Latin/Turkish-Latin set.
+
+### Slice ordering rationale
+
+Infrastructure (L1) and the preference/picker (L2) come first so every
+later extraction has a working `context.l10n` and a way to switch
+languages. Extraction (L3–L6) is mechanical but the bulk of the work, so
+it's split by feature area to stay reviewable. Translations (L7) land
+once the key set is stable. L8 closes the gate and docs.
+
+---
+
+## Sprint AD ✅ closed (2026-05-31) — Advertising (AdMob)
+
+> AD1–AD7 delivered. Backend SSV verify+grant (Ads bounded context),
+> frontend ads infra, interstitial placements, rewarded→Diamond UI, and
+> UMP consent + iOS ATT all shipped. Gates: .NET unit/integration green
+> (Ads 8/8 unit, 1/1 integration, ArchTests 67/67), Flutter 156/156,
+> DbUp 0 pending. Operator-owned manual device verification with AdMob
+> test ads + real SSV/AdMob credentials remain (see `progress.md > AD7`).
+> Delivery detail in `progress.md` / `frontendProgress.md`.
+
+Goal: add an ad system with three placements: an **interstitial at game
+start** (shown ~1/3 of the time, by chance), an **interstitial at game
+end** (shown ~1/2 of the time, by chance), and a **rewarded ad** the
+player watches to earn Diamond. Interstitials are pure frontend. The
+rewarded → Diamond reward is **backend-verified** through AdMob
+Server-Side Verification (SSV): the client never grants Diamond; AdMob's
+signed server callback is verified by the backend, which then grants
+Diamond exactly once through `IDiamondGrant`. This mirrors the Payments
+sprint's "backend is the grant authority" discipline.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Ad SDK | **`google_mobile_ads` (AdMob).** Mobile-only (iOS/Android). Web shows a safe unavailable state / no-op, mirroring Payments. |
+| New module | **Ads** — separate bounded context, schema `ads`, microservice-extraction candidate. Owns the rewarded-ad grant ledger, SSV verification, idempotency, and daily-cap rule. |
+| Placements | Interstitial @ game start (**1/3** random), interstitial @ game end (**1/2** random), rewarded ad (watch → Diamond). |
+| Rewarded grant authority | **Backend via AdMob SSV.** Client "earned reward" is never trusted. AdMob's signed callback is verified server-side (signature over Google's public keys), idempotent on `transaction_id`, then `IDiamondGrant.GrantAsync`. Real signature verification stays behind a **fail-closed shell** until credentials are configured; a dev verifier path enables local testing (Payments pattern). |
+| Reward economics | **5 Diamond per rewarded ad, daily cap 10 per player** (50 Diamond/day). Backend owns the amount — the ad-network/client reward value is ignored. Daily cap is a domain rule counting grants in the UTC day. |
+| Consent / ATT | **In scope (v1).** AdMob UMP consent flow + iOS App Tracking Transparency prompt on startup. Mobile-only; web no-op. |
+| Ad unit ids | **AdMob test ad unit ids in dev** (always fill, no real account needed), real ids via config — same "placeholder now, real later" shape as the audio assets. |
+| Interstitial probabilities | Frontend constants (`1/3`, `1/2`), easily tunable. Not admin-configurable in v1. |
+
+### Architecture notes
+
+- **Ads mirrors Payments.** Backend is the grant authority; the client
+  only requests/shows the ad and passes the player id as the SSV
+  `user_id`. The local `onUserEarnedReward` callback does **not** grant —
+  the verified SSV callback does. The client refreshes the Diamond badge
+  after the grant lands.
+- **Reuse `IDiamondGrant`.** `Ads.Application` consumes
+  `Diamond.Application/Configuration/CrossModule/IDiamondGrant` (granular
+  ArchTest allow, like Payments). Ads emits
+  `RewardedAdRewardedIntegrationEvent` for BI/audit. No new Diamond
+  contract is needed.
+- **Interstitials are pure frontend.** No backend, no reward, no ledger —
+  just a probability gate (`Random`) before `AdsService.showInterstitial`.
+- **SSV endpoint is anonymous but signature-verified.** Google calls
+  `GET /ads/rewarded/callback?...&signature=...&key_id=...`; the handler
+  verifies the signature against Google's rotating public keys, resolves
+  the player from `user_id`, enforces idempotency on `transaction_id`,
+  applies the daily cap, then grants. Local dev uses a fail-open dev
+  verifier because Google cannot reach `localhost`.
+- **Daily cap + idempotency are domain invariants.** Unique index on
+  `transaction_id` prevents double grant; `RewardedAdDailyLimitRule`
+  blocks grants once the player has hit the day's cap. Hitting the cap is
+  a benign "no reward" outcome, not an error.
+- **AdMob test ad units enable local testing.** Like the audio
+  placeholders, the app ships with Google's test ad unit ids so ads can
+  be exercised without a real AdMob account; real ids drop in via config.
+- **Web-safe.** No AdMob on web: `AdsService` no-ops and the rewarded UI
+  shows an unavailable state. Mirrors the Payments web handling.
+
+### Slice plan (7 slices)
+
+| Slice | Content |
+| --- | --- |
+| **AD1** | Ads module foundation (backend). Projects Domain/Application/Infrastructure/IntegrationEvents/Tests/IntegrationTests. `RewardedAdGrant` aggregate (id, playerId, diamondAmount, transactionId, grantedAt) + status; idempotency on `transactionId`; `RewardedAdDailyLimitRule`. DbUp `ads` schema + table (unique index on `transactionId`) + outbox. Autofac module + Startup + UoW + decorator chain + outbox. sln/test.sh/ArchTests registration. |
+| **AD2** | SSV verify + grant (backend). `IAdMobSsvVerifier` contract + fail-closed infra shell + dev verifier; `GrantRewardedAdRewardCommand` + handler (verify signature → idempotency → daily cap → `IDiamondGrant` → ledger → `RewardedAdRewardedIntegrationEvent`). `GET /ads/rewarded/callback` (SSV ingress, anonymous, signature-verified) + `GET /ads/rewarded/status` (player's remaining grants today). Config `Ads:RewardedDiamondAmount` (5), `Ads:RewardedDailyLimit` (10), AdMob keys. Tests: verify+grant, replay idempotent, daily-cap exceeded, bad signature rejected. |
+| **AD3** | Frontend ads infra. `google_mobile_ads` dep, AdMob **test** app ids in Android `AndroidManifest.xml` + iOS `Info.plist`, test ad unit ids via config. `AdsService` (global, init `MobileAds`, mobile-only, web-safe no-op), `main.dart` init + provider above the router. Smoke test via injectable seam. |
+| **AD4** | Interstitial placements. Probability gate (`1/3` at game start, `1/2` at game end) → `AdsService.showInterstitial`. Hook into GameStart success (home) and game finish (game screen). Web no-op; failures never block navigation/flow. |
+| **AD5** | Rewarded ad → Diamond. `AdsService.showRewarded` with player id as SSV `user_id`. Player-facing "Earn Diamonds" entry + watch button + daily-remaining display (from `GET /ads/rewarded/status`) + disabled-when-capped state; Diamond badge refresh after grant lands. Web shows unavailable. |
+| **AD6** | Consent + ATT. AdMob UMP consent flow + iOS App Tracking Transparency prompt on startup, before ad requests. Mobile-only; web no-op. |
+| **AD7** | Tests + manual verification + docs. Full Flutter + .NET gate, DbUp re-run, manual verification with AdMob test ads (interstitial probabilities, rewarded grant via dev SSV path, daily cap, Diamond badge refresh), docs close-out. |
+
+### Acceptance criteria
+
+- A rewarded ad grants exactly the backend-configured Diamond once per
+  verified SSV `transaction_id`; replays never double-grant.
+- Client-reported reward completion alone never grants Diamond.
+- The daily cap blocks further rewarded grants for the player that day.
+- Game-start interstitial shows ~1/3 of starts; game-end ~1/2 of
+  finishes; neither blocks gameplay if the ad fails to load.
+- Web shows safe unavailable/no-op states; nothing crashes when muted.
+- AdMob test ad units work locally without a real AdMob account; real
+  ids drop in via config with no code change.
+
+### Deliberate non-actions
+
+- **No "remove ads" purchase** in v1 (Payments has no such product yet).
+- **No banner ads / native ads / app-open ads** — only the three named
+  placements.
+- **No ad mediation** (AdMob mediation/other networks) in v1.
+- **No web ads.** Mobile-only.
+- **No admin-configurable probabilities or reward amount UI** — config
+  + constants only.
+- **No real AdMob account/credentials in repo.** Real app/ad-unit ids
+  and SSV verification creds are operator-owned, like Payments store
+  credentials.
+
+### Slice ordering rationale
+
+Backend foundation (AD1) and the SSV verify+grant money path (AD2) come
+first so the reward is server-authoritative before any client code.
+Frontend ads infra (AD3) precedes the placements (AD4) and rewarded UI
+(AD5). Consent/ATT (AD6) wraps ad requests once placements exist. AD7
+closes with test-ad manual verification and docs. The rewarded path
+deliberately mirrors Payments so the "never trust the client for value"
+discipline is reused, not reinvented.
+
+---
+
 ## Sprint A ✅ closed — Audio (Sound & Music)
 
 Goal: add sound effects (SFX) and background music to the game, with

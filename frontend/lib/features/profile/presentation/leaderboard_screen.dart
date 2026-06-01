@@ -9,6 +9,7 @@ import 'package:lexilink_app/features/profile/data/leaderboard_query.dart';
 import 'package:lexilink_app/features/profile/data/player_stats_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_empty_state.dart';
@@ -38,18 +39,18 @@ class _LeaderboardScreenState extends State<LeaderboardScreen> {
       future: _tokenStoreFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppScreen(
+          return AppScreen(
             child: AppErrorState(
-              title: 'Session storage failed',
-              message: 'Restart the app and try again.',
+              title: context.l10n.sessionStorageFailedTitle,
+              message: context.l10n.sessionStorageFailedMessage,
             ),
           );
         }
 
         final tokenStore = snapshot.data;
         if (tokenStore == null) {
-          return const AppScreen(
-            child: AppLoadingState(message: 'Preparing session...'),
+          return AppScreen(
+            child: AppLoadingState(message: context.l10n.preparingSession),
           );
         }
 
@@ -114,10 +115,10 @@ class _LeaderboardView extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const AppBackBar(title: 'Leaderboard'),
+              AppBackBar(title: context.l10n.leaderboardTitle),
               const SizedBox(height: 8),
               Text(
-                _periodSubtitle(state.query.period),
+                _periodSubtitle(context, state.query.period),
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -131,11 +132,11 @@ class _LeaderboardView extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               if (state.isLoading)
-                const AppLoadingState(message: 'Loading leaderboard...')
+                AppLoadingState(message: context.l10n.loadingLeaderboard)
               else if (state.status == LeaderboardStatus.failure)
                 AppErrorState(
-                  title: 'Could not load leaderboard',
-                  message: state.message ?? 'Try again.',
+                  title: context.l10n.couldNotLoadLeaderboard,
+                  message: state.message ?? context.l10n.commonTryAgain,
                   onRetry: () => context
                       .read<LeaderboardCubit>()
                       .loadLeaderboard(query: state.query),
@@ -143,9 +144,9 @@ class _LeaderboardView extends StatelessWidget {
               else if (state.status == LeaderboardStatus.success &&
                   state.entries.isEmpty)
                 AppEmptyState(
-                  title: 'No scores yet',
-                  message: _emptyMessage(state.query.period),
-                  actionLabel: 'Refresh',
+                  title: context.l10n.noScoresTitle,
+                  message: _emptyMessage(context, state.query.period),
+                  actionLabel: context.l10n.commonRefresh,
                   onAction: () => context
                       .read<LeaderboardCubit>()
                       .loadLeaderboard(query: state.query),
@@ -160,25 +161,25 @@ class _LeaderboardView extends StatelessWidget {
   }
 }
 
-String _periodSubtitle(LeaderboardPeriod period) {
+String _periodSubtitle(BuildContext context, LeaderboardPeriod period) {
   switch (period) {
     case LeaderboardPeriod.allTime:
-      return 'All-time best score across players.';
+      return context.l10n.leaderboardAllTimeDesc;
     case LeaderboardPeriod.daily:
-      return 'Best score today (UTC).';
+      return context.l10n.leaderboardDailyDesc;
     case LeaderboardPeriod.weekly:
-      return 'Best score this week (UTC, Monday start).';
+      return context.l10n.leaderboardWeeklyDesc;
   }
 }
 
-String _emptyMessage(LeaderboardPeriod period) {
+String _emptyMessage(BuildContext context, LeaderboardPeriod period) {
   switch (period) {
     case LeaderboardPeriod.allTime:
-      return 'Complete a game to appear on the leaderboard.';
+      return context.l10n.leaderboardAllTimeEmpty;
     case LeaderboardPeriod.daily:
-      return 'No scores recorded today yet.';
+      return context.l10n.leaderboardDailyEmpty;
     case LeaderboardPeriod.weekly:
-      return 'No scores recorded this week yet.';
+      return context.l10n.leaderboardWeeklyEmpty;
   }
 }
 
@@ -197,18 +198,18 @@ class _PeriodSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: SegmentedButton<LeaderboardPeriod>(
-        segments: const [
+        segments: [
           ButtonSegment(
             value: LeaderboardPeriod.allTime,
-            label: Text('All-time'),
+            label: Text(context.l10n.leaderboardAllTime),
           ),
           ButtonSegment(
             value: LeaderboardPeriod.daily,
-            label: Text('Daily'),
+            label: Text(context.l10n.leaderboardDaily),
           ),
           ButtonSegment(
             value: LeaderboardPeriod.weekly,
-            label: Text('Weekly'),
+            label: Text(context.l10n.leaderboardWeekly),
           ),
         ],
         selected: {selected},
@@ -248,7 +249,7 @@ class _LeaderboardRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
-    final handle = entry.handle ?? 'Guest player';
+    final handle = entry.handle ?? context.l10n.guestPlayer;
 
     return DecoratedBox(
       decoration: BoxDecoration(

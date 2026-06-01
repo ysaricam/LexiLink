@@ -14,7 +14,7 @@ internal class CreateCategoryCommandHandler : ICommandHandler<CreateCategoryComm
 
     public async Task<Guid> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = Category.Create(request.Name, request.Description);
+        var category = Category.Create(request.Name, request.Description, request.Language);
 
         await _categoryRepository.AddAsync(category, cancellationToken);
 

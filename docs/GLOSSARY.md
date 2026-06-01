@@ -1,7 +1,7 @@
 # GLOSSARY.md
 
 Ubiquitous language for the LexiLink Games, Players, Energy, Quests,
-Hint, Undo, Reset, Diamond, Market, and Payments modules. Every term below appears in code as a
+Hint, Undo, Reset, Diamond, Market, Payments, and Ads modules. Every term below appears in code as a
 class, interface, enum, or namespace; this file gives it a
 one-paragraph definition so a new contributor can read the code
 without spelunking.
@@ -11,7 +11,15 @@ without spelunking.
 ## Aggregates
 
 ### Category — `Modules/Games/Domain/Categories/Category.cs`
-A named set of words from which a game can be seeded (e.g., *animals*, *colors*). Aggregate root. Holds `_name` (≤ 100 chars, non-empty) and an optional `_description` (≤ 500 chars). Lifecycle: created via `Category.Create(name, description)`; renamed via `EditGeneralInfo(...)`. Emits `CategoryCreatedDomainEvent` and `CategoryEditedDomainEvent`.
+A named, language-specific set of words from which a game can be seeded
+(e.g., *animals*, *colors*). Aggregate root. Holds `_name` (≤ 100 chars,
+non-empty), optional `_description` (≤ 500 chars), and `_language`
+(`xx-XX`, e.g. `tr-TR`/`en-US`). Existing Turkish content defaults to
+`tr-TR`; player-facing category reads can filter by locale via
+`GET /categories?locale=xx-XX`. Links inherit language from their owning
+Category. Lifecycle: created via `Category.Create(name, description,
+language)`; renamed/retagged via `EditGeneralInfo(...)`. Emits
+`CategoryCreatedDomainEvent` and `CategoryEditedDomainEvent`.
 
 ### Link — `Modules/Games/Domain/Links/Link.cs`
 A word node in the directed word-graph. Aggregate root. Holds `_categoryId` (the Category the word belongs to), `_value` (the word itself), `_description`, `_isActive`, and `_outgoingLinks` (a list of `LinkId`s pointing to neighbor words). Content (`_value`, `_description`) is **immutable** — to change a word's text, deactivate the old Link and create a new one. Outgoing topology *is* mutable through `AddOutgoingLink` / `RemoveOutgoingLink` (graph-relationship management). Activation flips through `Activate()` / `Deactivate()`.
@@ -26,6 +34,16 @@ Reset now goes through `IUndoGuard` / `IResetGuard` before Game mutates.
 Sprint D aligned Hint with that model: `ResolveHints()` now returns 0,
 so every in-game hint goes through `IHintGuard` before Game mutates.
 Drives an explicit state machine — see *Game States* below.
+
+### Player Locale — `Modules/Players/Domain/Players/Player.cs`
+The player's region-qualified locale preference, persisted on the Players
+aggregate as `Locale` and validated by `LocaleMustBeValidFormatRule`
+(`^[a-z]{2}-[A-Z]{2}$`, e.g. `tr-TR`, `en-US`, `de-DE`, `fr-FR`,
+`es-ES`). Sprint L10N Phase 1 uses it as a preference sink: the frontend
+Settings language picker stores the chosen language locally and best-effort
+PATCHes `Player.Locale`. Server-side content filtering does not consume it
+yet; that belongs to Phase 2 localized content/modeling. Flutter ARB lookup
+uses language codes (`tr`/`en`/`de`/`fr`/`es`) and falls back to English.
 
 ### PlayerEnergy — `Modules/Energy/Domain/PlayerEnergies/PlayerEnergy.cs`
 A player's energy account in the Energy module. Aggregate root, identified by `PlayerEnergyId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Holds `_currentAmount`, `_maximumAmount`, `_rechargeIntervalSeconds`, and `_lastRefilledOn`. Lifecycle: `InitializeFor(playerId, max, intervalSeconds, initializedAt)` (called by `EnsurePlayerEnergyExistsCommand` after a `PlayerRegisteredIntegrationEvent`). Behavior: `Consume(amount, now)` recharges first via `RechargeBasedOnElapsedTime(now)`, then checks `EnergyMustBeSufficientToConsumeRule`, then debits; the refill timer is armed **only when consume crosses the bucket from at/above max to below max** (so 10/5 → 9/5 and 6/5 → 5/5 leave the timer idle, while 5/5 → 4/5 sets it). `GrantBonus(amount, now)` adds `amount` without checking max — it is the reward path invoked by `QuestClaimedIntegrationEvent`; over-max balance is preserved and the timer stays idle until the bucket drains back below max. Emits `PlayerEnergyConsumedDomainEvent` and `PlayerEnergyRefilledDomainEvent`.
@@ -101,6 +119,20 @@ inspect what arrived and duplicate notification ids can be replayed
 idempotently. Notification handling reconciles out-of-band store
 changes such as refund, revocation, or failure; it is not the normal
 first-grant path.
+
+### RewardedAdGrant — `Modules/Ads/Domain/RewardedAdGrants/RewardedAdGrant.cs`
+Append-only ledger row recording that a player was granted Diamond for
+watching a rewarded ad, verified through AdMob Server-Side Verification
+(SSV). The SSV `transaction_id` is the idempotency key (unique index),
+so the same verified ad grants Diamond at most once. There is no mutable
+state — corrections are new rows, never edits. The Diamond amount is the
+backend-owned value (`Ads:RewardedDiamondAmount`), never the
+ad-network/client reward value. A per-player daily cap
+(`Ads:RewardedDailyLimit`, enforced by `RewardedAdDailyLimitRule`) bounds
+how many grants a player earns per UTC day; hitting it is a benign "no
+reward", not an error. The grant is delivered synchronously through
+`IDiamondGrant`; `RewardedAdRewardedIntegrationEvent` is emitted for
+BI/audit.
 
 ### PlayerUndoInventory — `Modules/Undo/Domain/PlayerUndoInventories/PlayerUndoInventory.cs`
 A player's persistent undo account in the Undo module. Aggregate root,
@@ -375,6 +407,11 @@ All events derive from `DomainEvent` (`Common/Domain/DomainEvent.cs`) which exte
 
 All are `IBusinessRule` and dispatch through `CheckRule(...)`, throwing `BusinessRuleValidationException` on failure.
 
+### RewardedAdGrant (3) — `Ads/Domain/RewardedAdGrants/Rules/`
+- `RewardedAdAmountMustBePositiveRule` — `Create(...)` requires `diamondAmount > 0`.
+- `TransactionIdMustNotBeEmptyRule` — `Create(...)` requires a non-empty SSV `transactionId` (the idempotency key).
+- `RewardedAdDailyLimitRule` — checked by the grant handler against the player's count of grants in the current UTC day; broken at/above `Ads:RewardedDailyLimit`. The handler evaluates `IsBroken()` and returns a "daily limit reached" outcome **without throwing** (benign no-reward).
+
 ---
 
 ## Domain Services
@@ -471,6 +508,22 @@ Public contract emitted by Market's outbox after
 `PurchasedAt`, and `IdempotencyKey`. It is the raw downstream stream
 for future BI/notifications; admin audit is intentionally separate and
 only tracks admin CRUD, not player purchases.
+
+### IAdMobSsvVerifier — `Modules/Ads/Application/Configuration/Verification/IAdMobSsvVerifier.cs`
+Verifies an AdMob SSV rewarded-ad callback signature. Two infrastructure
+implementations selected by `Ads:Ssv:Mode`: the fail-closed
+`AdMobSsvVerifier` shell (rejects everything until real Google-public-key
+verification is wired) and the fail-open `DevelopmentAdMobSsvVerifier`
+(dev-only — Google's SSV servers cannot reach `localhost`). The host
+registers the chosen verifier as a singleton, mirroring the auth
+external-identity verifier seam.
+
+### RewardedAdRewardedIntegrationEvent — `Modules/Ads/IntegrationEvents/RewardedAdRewardedIntegrationEvent.cs`
+Public contract emitted by Ads' outbox after a verified rewarded-ad
+Diamond grant is recorded (`RewardedAdGrantedDomainEvent`). Carries
+`RewardedAdGrantId`, `PlayerId`, `DiamondAmount`, `TransactionId`, and
+`GrantedOn`. A BI/audit signal only — Diamond is granted synchronously
+via `IDiamondGrant`, not through this event.
 
 ---
 

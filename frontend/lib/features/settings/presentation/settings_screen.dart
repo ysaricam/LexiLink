@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lexilink_app/app/theme/app_layout.dart';
 import 'package:lexilink_app/features/settings/application/audio_settings_cubit.dart';
+import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
+import 'package:lexilink_app/features/settings/data/app_language.dart';
 import 'package:lexilink_app/features/settings/data/audio_settings.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_screen.dart';
 
@@ -23,26 +26,31 @@ class SettingsScreen extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const AppBackBar(title: 'Settings'),
+              AppBackBar(title: context.l10n.settingsTitle),
               const SizedBox(height: 24),
-              Text('Sound', style: Theme.of(context).textTheme.titleMedium),
+              const _LanguageSection(),
+              const Divider(height: 32),
+              Text(
+                context.l10n.settingsSoundSection,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               const SizedBox(height: 8),
               SwitchListTile(
-                title: const Text('Music'),
-                subtitle: const Text('Background music while you play'),
+                title: Text(context.l10n.settingsMusic),
+                subtitle: Text(context.l10n.settingsMusicSubtitle),
                 value: settings.musicEnabled,
                 onChanged: (value) => cubit.setMusicEnabled(enabled: value),
               ),
               _VolumeSlider(
-                label: 'Music volume',
+                label: context.l10n.settingsMusicVolume,
                 value: settings.musicVolume,
                 enabled: settings.musicEnabled,
                 onChanged: cubit.setMusicVolume,
               ),
               const Divider(height: 32),
               SwitchListTile(
-                title: const Text('Sound effects'),
-                subtitle: const Text('Taps, moves, wins and rewards'),
+                title: Text(context.l10n.settingsSfx),
+                subtitle: Text(context.l10n.settingsSfxSubtitle),
                 value: settings.sfxEnabled,
                 onChanged: (value) {
                   cubit.setSfxEnabled(enabled: value);
@@ -55,7 +63,7 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
               _VolumeSlider(
-                label: 'Sound effects volume',
+                label: context.l10n.settingsSfxVolume,
                 value: settings.sfxVolume,
                 enabled: settings.sfxEnabled,
                 onChanged: cubit.setSfxVolume,
@@ -66,6 +74,43 @@ class SettingsScreen extends StatelessWidget {
             ],
           );
         },
+      ),
+    );
+  }
+}
+
+class _LanguageSection extends StatelessWidget {
+  const _LanguageSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final language = context.watch<LocaleCubit>().state;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              context.l10n.languageLabel,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+          DropdownButton<AppLanguage>(
+            value: language,
+            onChanged: (selected) {
+              if (selected != null) {
+                context.read<LocaleCubit>().setLanguage(selected);
+              }
+            },
+            items: [
+              for (final option in AppLanguage.values)
+                DropdownMenuItem<AppLanguage>(
+                  value: option,
+                  child: Text(option.nativeName),
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }

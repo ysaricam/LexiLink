@@ -5,6 +5,7 @@ import 'package:http/testing.dart';
 import 'package:lexilink_app/features/admin_audit/application/admin_audit_cubit.dart';
 import 'package:lexilink_app/features/admin_audit/data/admin_audit_repository.dart';
 import 'package:lexilink_app/features/admin_audit/presentation/admin_audit_screen.dart';
+import 'package:lexilink_app/l10n/app_localizations.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -29,7 +30,8 @@ AdminAuditCubit _buildCubitWithScript(
   );
 }
 
-const _oneActionJson = '['
+const _oneActionJson =
+    '['
     '{"id":"00000000-0000-0000-0000-000000000001",'
     '"occurredOn":"2026-05-22T10:00:00Z",'
     '"adminUserId":"00000000-0000-0000-0000-aaaaaaaaaaaa",'
@@ -40,8 +42,7 @@ const _oneActionJson = '['
     ']';
 
 void main() {
-  testWidgets('renders the audit row and opens payload dialog',
-      (tester) async {
+  testWidgets('renders the audit row and opens payload dialog', (tester) async {
     tester.view.physicalSize = const Size(1200, 800);
     tester.view.devicePixelRatio = 1.0;
     addTearDown(tester.view.resetPhysicalSize);
@@ -51,11 +52,15 @@ void main() {
       (_) => http.Response(_oneActionJson, 200),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminAuditScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: AdminAuditScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(find.text('Audit log'), findsOneWidget);
@@ -79,11 +84,15 @@ void main() {
       (_) => http.Response('[]', 200),
     ]);
 
-    await tester.pumpWidget(MaterialApp(
-      home: Scaffold(
-        body: AdminAuditScreen(cubitFactory: () => cubit),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: Scaffold(
+          body: AdminAuditScreen(cubitFactory: () => cubit),
+        ),
       ),
-    ));
+    );
     await tester.pumpAndSettle();
 
     expect(

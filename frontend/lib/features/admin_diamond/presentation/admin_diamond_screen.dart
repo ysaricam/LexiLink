@@ -7,6 +7,7 @@ import 'package:lexilink_app/features/admin_diamond/data/admin_diamond_repositor
 import 'package:lexilink_app/features/admin_diamond/data/player_diamond_snapshot.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 class AdminDiamondScreen extends StatefulWidget {
@@ -118,13 +119,12 @@ class _AdminDiamondViewState extends State<_AdminDiamondView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Diamond console',
+                  context.l10n.adminDiamondConsoleTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Lookup by player GUID, then set / grant / reset. '
-                  'Diamond is uncapped currency.',
+                  context.l10n.adminDiamondConsoleHelp,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
@@ -149,9 +149,9 @@ class _AdminDiamondViewState extends State<_AdminDiamondView> {
           child: TextField(
             controller: _idController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Player GUID',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminPlayerGuid,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
             onSubmitted: busy ? null : (_) => _submit(context),
@@ -161,7 +161,7 @@ class _AdminDiamondViewState extends State<_AdminDiamondView> {
         FilledButton.icon(
           onPressed: busy ? null : () => _submit(context),
           icon: const Icon(Icons.search),
-          label: const Text('Look up'),
+          label: Text(context.l10n.adminLookUp),
         ),
       ],
     );
@@ -194,14 +194,14 @@ class _AdminDiamondViewState extends State<_AdminDiamondView> {
       AdminDiamondStatus.notFound => Padding(
         padding: const EdgeInsets.all(16),
         child: Text(
-          state.errorMessage ?? 'No diamond inventory.',
+          state.errorMessage ?? context.l10n.adminNoDiamondInventory,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ),
       _ => Padding(
         padding: const EdgeInsets.all(16),
         child: Text(
-          state.errorMessage ?? 'Lookup failed.',
+          state.errorMessage ?? context.l10n.adminLookupFailed,
           style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
       ),
@@ -243,7 +243,7 @@ class _DiamondCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _kv(context, 'Player id', snapshot.playerId),
+            _kv(context, context.l10n.adminPlayerId, snapshot.playerId),
             const SizedBox(height: 20),
             Wrap(
               spacing: 12,
@@ -252,17 +252,17 @@ class _DiamondCard extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: () => _promptSet(context),
                   icon: const Icon(Icons.edit),
-                  label: const Text('Set balance'),
+                  label: Text(context.l10n.adminSetBalance),
                 ),
                 FilledButton.tonalIcon(
                   onPressed: () => _promptGrant(context),
                   icon: const Icon(Icons.add),
-                  label: const Text('Grant diamonds'),
+                  label: Text(context.l10n.adminGrantDiamonds),
                 ),
                 OutlinedButton.icon(
                   onPressed: () => _confirmReset(context),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Reset to zero'),
+                  label: Text(context.l10n.adminResetToZero),
                 ),
               ],
             ),
@@ -288,8 +288,8 @@ class _DiamondCard extends StatelessWidget {
   Future<void> _promptSet(BuildContext context) async {
     final value = await _numberDialog(
       context,
-      title: 'Set diamond balance',
-      label: 'Balance',
+      title: context.l10n.adminSetDiamondBalanceTitle,
+      label: context.l10n.adminBalance,
       initial: snapshot.balance,
     );
     if (value == null || !context.mounted) return;
@@ -299,8 +299,8 @@ class _DiamondCard extends StatelessWidget {
   Future<void> _promptGrant(BuildContext context) async {
     final value = await _numberDialog(
       context,
-      title: 'Grant diamonds',
-      label: 'Amount',
+      title: context.l10n.adminGrantDiamonds,
+      label: context.l10n.adminAmount,
       min: 1,
     );
     if (value == null || !context.mounted) return;
@@ -312,16 +312,16 @@ class _DiamondCard extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
-        title: const Text('Reset diamond balance?'),
-        content: const Text('This sets the Diamond balance to zero.'),
+        title: Text(context.l10n.adminResetDiamondTitle),
+        content: Text(context.l10n.adminResetDiamondMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           FilledButton(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Reset'),
+            child: Text(context.l10n.commonReset),
           ),
         ],
       ),
@@ -397,7 +397,7 @@ class _DiamondNumberDialogState extends State<_DiamondNumberDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: () {
@@ -405,7 +405,7 @@ class _DiamondNumberDialogState extends State<_DiamondNumberDialog> {
             if (parsed == null || parsed < widget.min) return;
             Navigator.of(context).pop(parsed);
           },
-          child: const Text('Apply'),
+          child: Text(context.l10n.commonApply),
         ),
       ],
     );

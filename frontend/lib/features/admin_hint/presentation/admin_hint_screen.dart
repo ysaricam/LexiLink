@@ -7,6 +7,7 @@ import 'package:lexilink_app/features/admin_hint/data/admin_hint_repository.dart
 import 'package:lexilink_app/features/admin_hint/data/player_hint_snapshot.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 class AdminHintScreen extends StatefulWidget {
@@ -115,13 +116,12 @@ class _AdminHintViewState extends State<_AdminHintView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hint console',
+                  context.l10n.adminHintConsoleTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Lookup by player GUID, then snap / grant / reset. '
-                  'Hint inventory has no max cap.',
+                  context.l10n.adminHintConsoleHelp,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
@@ -137,7 +137,8 @@ class _AdminHintViewState extends State<_AdminHintView> {
   }
 
   Widget _buildLookupRow(BuildContext context, AdminHintState state) {
-    final busy = state.status == AdminHintStatus.loading ||
+    final busy =
+        state.status == AdminHintStatus.loading ||
         state.status == AdminHintStatus.saving;
     return Row(
       children: [
@@ -145,9 +146,9 @@ class _AdminHintViewState extends State<_AdminHintView> {
           child: TextField(
             controller: _idController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Player GUID',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminPlayerGuid,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
             onSubmitted: busy ? null : (_) => _submit(context),
@@ -157,7 +158,7 @@ class _AdminHintViewState extends State<_AdminHintView> {
         FilledButton.icon(
           onPressed: busy ? null : () => _submit(context),
           icon: const Icon(Icons.search),
-          label: const Text('Look up'),
+          label: Text(context.l10n.adminLookUp),
         ),
       ],
     );
@@ -181,25 +182,25 @@ class _AdminHintViewState extends State<_AdminHintView> {
     return switch (state.status) {
       AdminHintStatus.initial => const SizedBox.shrink(),
       AdminHintStatus.loading => const Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: CircularProgressIndicator(),
-          ),
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: CircularProgressIndicator(),
         ),
+      ),
       AdminHintStatus.notFound => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'No hint inventory.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminNoHintInventory,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
+      ),
       _ => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'Lookup failed.',
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminLookupFailed,
+          style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
+      ),
     };
   }
 
@@ -238,7 +239,7 @@ class _HintCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _kv(context, 'Player id', snapshot.playerId),
+            _kv(context, context.l10n.adminPlayerId, snapshot.playerId),
             const SizedBox(height: 20),
             Wrap(
               spacing: 12,
@@ -247,17 +248,17 @@ class _HintCard extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: () => _promptSet(context),
                   icon: const Icon(Icons.edit),
-                  label: const Text('Set balance'),
+                  label: Text(context.l10n.adminSetBalance),
                 ),
                 FilledButton.tonalIcon(
                   onPressed: () => _promptGrant(context),
                   icon: const Icon(Icons.add),
-                  label: const Text('Grant hints'),
+                  label: Text(context.l10n.adminGrantHints),
                 ),
                 OutlinedButton.icon(
                   onPressed: () => _confirmReset(context),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Reset to zero'),
+                  label: Text(context.l10n.adminResetToZero),
                 ),
               ],
             ),
@@ -287,10 +288,10 @@ class _HintCard extends StatelessWidget {
     final cubit = context.read<AdminHintCubit>();
     final value = await _intDialog(
       context,
-      title: 'Set hint balance',
-      label: 'New balance',
-      helper: "Snaps the player's hint balance to this value (>= 0).",
-      validate: (v) => v < 0 ? 'Must be >= 0' : null,
+      title: context.l10n.adminSetHintBalanceTitle,
+      label: context.l10n.adminNewBalance,
+      helper: context.l10n.adminSetHintHelper,
+      validate: (v) => v < 0 ? context.l10n.commonNonNegative : null,
     );
     if (value == null) return;
     await cubit.setBalance(value);
@@ -300,10 +301,10 @@ class _HintCard extends StatelessWidget {
     final cubit = context.read<AdminHintCubit>();
     final value = await _intDialog(
       context,
-      title: 'Grant hints',
-      label: 'Hint amount',
-      helper: 'Adds to the existing balance — no max cap.',
-      validate: (v) => v <= 0 ? 'Must be greater than 0' : null,
+      title: context.l10n.adminGrantHints,
+      label: context.l10n.adminHintAmount,
+      helper: context.l10n.adminGrantHintHelper,
+      validate: (v) => v <= 0 ? context.l10n.commonGreaterThanZero : null,
     );
     if (value == null) return;
     await cubit.grant(value);
@@ -315,16 +316,16 @@ class _HintCard extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
-        title: const Text('Reset hint balance?'),
-        content: const Text('Sets the player\'s hint balance to zero.'),
+        title: Text(context.l10n.adminResetHintTitle),
+        content: Text(context.l10n.adminResetHintMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Reset'),
+            child: Text(context.l10n.commonReset),
           ),
         ],
       ),
@@ -361,9 +362,9 @@ Future<int?> _intDialog(
           ),
           validator: (raw) {
             final trimmed = raw?.trim() ?? '';
-            if (trimmed.isEmpty) return 'Required';
+            if (trimmed.isEmpty) return context.l10n.commonRequired;
             final parsed = int.tryParse(trimmed);
-            if (parsed == null) return 'Must be a number';
+            if (parsed == null) return context.l10n.commonMustBeNumber;
             return validate(parsed);
           },
         ),
@@ -371,7 +372,7 @@ Future<int?> _intDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: () {
@@ -379,7 +380,7 @@ Future<int?> _intDialog(
               Navigator.of(context).pop(int.parse(controller.text.trim()));
             }
           },
-          child: const Text('Apply'),
+          child: Text(context.l10n.commonApply),
         ),
       ],
     ),

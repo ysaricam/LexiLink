@@ -19,11 +19,13 @@ class CategoryListCubit extends Cubit<CategoryListState> {
 
   final CategoryRepository _categoryRepository;
 
-  Future<void> loadCategories() async {
+  Future<void> loadCategories({required String locale}) async {
     emit(const CategoryListState.loading());
 
     try {
-      final categories = await _categoryRepository.getCategories();
+      final categories = await _categoryRepository.getCategories(
+        locale: locale,
+      );
       emit(CategoryListState.success(categories: categories));
     } on ApiException catch (error) {
       emit(CategoryListState.failure(message: error.message));

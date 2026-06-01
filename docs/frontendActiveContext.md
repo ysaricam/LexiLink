@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-05-28 (Sprint P frontend closed locally; store verification operator-owned)
+> Last updated: 2026-06-01 (Sprint CL — CL3 admin content language controls delivered. Sprint L10N closed/previous.)
 
 ---
 
@@ -112,6 +112,33 @@ ayrimidir.
 ---
 
 ## Next Action
+
+**Sprint CL — Content Localization (Phase 2) — active.** CL1 frontend
+leg delivered: category loading now passes `LocaleCubit.state.backendLocale`
+to `/categories?locale=xx-XX`, parses category `language`, and guest
+registration uses the selected locale. This connects the Phase 1 language
+picker to Phase 2 content selection without changing game rules yet.
+
+**CL2 backend/content leg delivered.** `docs/category-animals-en.json` now
+provides the first playable `en-US` graph and the importer is
+language-aware. No frontend code change was needed in CL2 because CL1 already
+threads the selected locale into category loading.
+
+**CL3 frontend delivered.** Added `features/admin_content` with repository,
+cubit, and `/admin/content` screen. Admins can filter Games content
+categories by locale and create/edit categories with an explicit `Language`
+selection. The screen is wired into `AppAdminShell`, route config, and
+localized admin strings across all five ARB locales.
+
+**Next action: CL4.** Decide whether the next frontend step is only content
+ops documentation or a small authoring-support polish pass while DE/FR/ES
+graphs are prepared.
+
+### Önceki sprint (frontend)
+
+**Sprint L10N — Localization (App UI i18n) — closed 2026-06-01.** L1–L8
+tamamlandı. Final gate: Flutter **166/166**, `flutter analyze`: **No
+issues found**. Cubit/API error mesajları Phase 3 sınırı olarak duruyor.
 
 **Sprint A — Audio (Sound & Music) — kapandı 2026-05-30 (frontend-only).**
 A1–A7 teslim edildi. SFX + arka plan müziği `audioplayers` ile; müzik/SFX

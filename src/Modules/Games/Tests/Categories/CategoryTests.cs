@@ -10,14 +10,16 @@ public class CategoryTests : TestBase
 {
     private const string ValidName = "Animals";
     private const string ValidDescription = "Animal-themed words";
+    private const string ValidLanguage = "en-US";
 
     [Test]
     public void Create_WithValidValues_IsSuccessful()
     {
-        var category = Category.Create(ValidName, ValidDescription);
+        var category = Category.Create(ValidName, ValidDescription, ValidLanguage);
 
         category.Should().NotBeNull();
         category.Id.Should().NotBeNull();
+        category.Language.Should().Be(ValidLanguage);
         AssertPublishedDomainEvent<CategoryCreatedDomainEvent>(category)
             .CategoryId.Should().Be(category.Id);
     }
@@ -57,12 +59,20 @@ public class CategoryTests : TestBase
     }
 
     [Test]
+    public void Create_WhenLanguageFormatIsInvalid_BreaksCategoryLanguageMustBeValidFormatRule()
+    {
+        AssertBrokenRule<CategoryLanguageMustBeValidFormatRule>(() =>
+            Category.Create(ValidName, ValidDescription, "english"));
+    }
+
+    [Test]
     public void EditGeneralInfo_WithValidValues_RaisesEditedEvent()
     {
-        var category = Category.Create(ValidName, ValidDescription);
+        var category = Category.Create(ValidName, ValidDescription, ValidLanguage);
 
-        category.EditGeneralInfo("Plants", "Plant-themed words");
+        category.EditGeneralInfo("Plants", "Plant-themed words", "tr-TR");
 
+        category.Language.Should().Be("tr-TR");
         AssertPublishedDomainEvent<CategoryEditedDomainEvent>(category)
             .CategoryId.Should().Be(category.Id);
     }
@@ -71,7 +81,8 @@ public class CategoryTests : TestBase
     public void EditGeneralInfo_WhenNameIsEmpty_BreaksCategoryNameMustNotBeEmptyRule()
     {
         var category = Category.Create(ValidName, ValidDescription);
-        AssertBrokenRule<CategoryNameMustNotBeEmptyRule>(() => category.EditGeneralInfo("", ValidDescription));
+        AssertBrokenRule<CategoryNameMustNotBeEmptyRule>(() =>
+            category.EditGeneralInfo("", ValidDescription, ValidLanguage));
     }
 
     [Test]
@@ -79,7 +90,8 @@ public class CategoryTests : TestBase
     {
         var category = Category.Create(ValidName, ValidDescription);
         var tooLong = new string('a', CategoryNameMustNotExceedMaxLengthRule.MaxLength + 1);
-        AssertBrokenRule<CategoryNameMustNotExceedMaxLengthRule>(() => category.EditGeneralInfo(tooLong, ValidDescription));
+        AssertBrokenRule<CategoryNameMustNotExceedMaxLengthRule>(() =>
+            category.EditGeneralInfo(tooLong, ValidDescription, ValidLanguage));
     }
 
     [Test]
@@ -87,6 +99,16 @@ public class CategoryTests : TestBase
     {
         var category = Category.Create(ValidName, ValidDescription);
         var tooLong = new string('a', CategoryDescriptionMustNotExceedMaxLengthRule.MaxLength + 1);
-        AssertBrokenRule<CategoryDescriptionMustNotExceedMaxLengthRule>(() => category.EditGeneralInfo(ValidName, tooLong));
+        AssertBrokenRule<CategoryDescriptionMustNotExceedMaxLengthRule>(() =>
+            category.EditGeneralInfo(ValidName, tooLong, ValidLanguage));
+    }
+
+    [Test]
+    public void EditGeneralInfo_WhenLanguageFormatIsInvalid_BreaksCategoryLanguageMustBeValidFormatRule()
+    {
+        var category = Category.Create(ValidName, ValidDescription, ValidLanguage);
+
+        AssertBrokenRule<CategoryLanguageMustBeValidFormatRule>(() =>
+            category.EditGeneralInfo(ValidName, ValidDescription, "en"));
     }
 }

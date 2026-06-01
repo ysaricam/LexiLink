@@ -112,6 +112,7 @@ public sealed class AdminAuditEndpointTests
             .WithWebHostBuilder(builder =>
             {
                 builder.UseSetting("ConnectionStrings:LexiLinkDb", ConnectionString);
+                builder.UseSetting("Authentication:Mode", "DevelopmentBearer");
                 builder.ConfigureServices(services =>
                 {
                     services.RemoveAll<IHostedService>();

@@ -2,6 +2,7 @@ using LexiLink.API.Configuration.Authentication;
 using LexiLink.Modules.Games.Application.Categories.GetCategories;
 using LexiLink.Modules.Games.Application.Categories.GetCategoryDetails;
 using LexiLink.Modules.Games.Application.Contracts;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LexiLink.API.Modules.Games;
 
@@ -21,8 +22,11 @@ public static class CategoryEndpoints
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status404NotFound);
 
-        group.MapGet("/", async (IGamesModule gamesModule, CancellationToken ct) =>
-            Results.Ok(await gamesModule.ExecuteQueryAsync(new GetCategoriesQuery(), ct)));
+        group.MapGet("/", async (
+            [FromQuery] string? locale,
+            IGamesModule gamesModule,
+            CancellationToken ct) =>
+            Results.Ok(await gamesModule.ExecuteQueryAsync(new GetCategoriesQuery(locale), ct)));
 
         group.MapGet("/{id:guid}", async (Guid id, IGamesModule gamesModule, CancellationToken ct) =>
             Results.Ok(await gamesModule.ExecuteQueryAsync(new GetCategoryDetailsQuery(id), ct)));

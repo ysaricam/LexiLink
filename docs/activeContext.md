@@ -4,11 +4,359 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-05-30 (Sprint A — Audio closed; real sound assets pending as a content drop-in).
+> Last updated: 2026-06-01 (Sprint CL — closed; CL4 content-ops handoff documented. Sprint L10N closed/previous.)
 
 ---
 
 ## Active Sprint
+
+**Sprint CL — Content Localization (Phase 2) — closed 2026-06-01.** Goal: move from
+localized app chrome to localized **game content**. Unlike UI strings,
+word-graph content is authored per language; a Turkish graph cannot be
+machine-translated into a valid English/German graph. Locale codes remain
+region-qualified (`tr-TR`/`en-US`/`de-DE`/`fr-FR`/`es-ES`) to align with
+`Player.Locale`.
+
+**CL1 ✅ done (uncommitted on `main`, 2026-06-01):** content language
+foundation. Added `Category.Language` to the Games domain + EF mapping +
+DbUp migration (`games.Categories.Language`, default `tr-TR`, indexed by
+language/name) and projected it through `v_Categories`,
+`CategoryListItemDto`, and `CategoryDetailsDto`. Admin category create/edit
+commands and `/admin/content/categories` accept `Language` while preserving
+`tr-TR` as the backward-compatible default. Player-facing
+`GET /categories?locale=xx-XX` filters by content language. Frontend
+category loading now sends the active `LocaleCubit` backend locale; guest
+registration uses the selected locale instead of hardcoded `en-US`. Gate:
+DbUp applied **2 pending scripts**; solution build **0 warnings / 0
+errors**; Games unit **94/94**; Games integration **35/35**; ArchTests
+**67/67**; `flutter analyze` clean; Flutter **166/166**.
+
+**CL2 ✅ done (uncommitted on `main`, 2026-06-01):** first playable
+`en-US` content graph. Added `docs/category-animals-en.json` (Animals,
+`en-US`, 12 links / 30 directed edges) and made `CategoryImporter`
+language-aware. The importer now reads optional `category.language`, defaults
+older JSON to `tr-TR`, uses language in stable IDs so same-name categories
+can exist per locale, and writes `games.Categories.Language`. Imported
+Animals `[en-US]` locally and re-imported Spor `[tr-TR]` to verify backward
+compatibility. Added Games integration coverage for creating and starting a
+game with English content. Gate: solution build **0 warnings / 0 errors**;
+importer build **0 warnings / 0 errors**; Games unit **94/94**; Games
+integration **36/36**; ArchTests **67/67**; `flutter analyze` clean.
+
+**CL3 ✅ done (uncommitted on `main`, 2026-06-01):** admin content
+language controls. Added admin read endpoints for Games content categories:
+`GET /admin/content/categories?locale=xx-XX` and
+`GET /admin/content/categories/{id}`. Added Flutter `admin_content` feature
+(repository/cubit/screen) under `/admin/content`, wired it into
+`AppAdminShell`, and exposed a language filter plus create/edit category
+dialog with `Language` selection. Added localized admin content strings
+across `en/tr/de/fr/es` and regenerated `AppLocalizations`. Gate: solution
+build **0 warnings / 0 errors**; API tests **50/50**; ArchTests **67/67**;
+Flutter **173/173**; `flutter analyze` clean. While running API tests, fixed
+the test factories that expected DevelopmentBearer GUIDs to explicitly
+override `Authentication:Mode`, because `appsettings.Development` now
+defaults local dev to ProductionJwt.
+
+**CL4 ✅ done (uncommitted on `main`, 2026-06-01):** content-ops handoff.
+Decided to document the repeatable authoring handoff rather than author
+DE/FR/ES graphs in-repo — the content-language code path (CL1–CL3) is
+complete and per-language word graphs are a content-ops effort, not a code
+task. Added `docs/CONTENT_AUTHORING.md`: the `lexilink/category/v1` JSON
+schema field-by-field (incl. which fields are imported vs advisory —
+`wikipediaUrl`/`depthFromAnchor`/`metadata` are parsed but **not** written by
+the importer), graph design rules (directed edges, author both directions for
+two-way movement, keep connected), the importer's six validation rules,
+language-aware stable-id behavior (same category name coexists per locale;
+re-import idempotent; edges rebuilt each run), a step-by-step new-language
+authoring walkthrough, the importer command, a verify section
+(`GET /categories?locale=xx-XX` + `/admin/content`), admin-UI-vs-JSON editing
+boundary, a content-ops checklist, and out-of-scope notes. No code change.
+Sprint CL closed. Gate: docs-only slice; no code/test churn (existing CL3
+gate — solution build 0/0, ArchTests 67/67, Flutter 173/173 — stands).
+
+**Next action:** Phase 3 (backend rule/validation/error-message localization
+via stable error codes + client translation) when prioritized, or a new
+sprint. DE/FR/ES content authoring is operator/content-ops owned and follows
+`docs/CONTENT_AUTHORING.md` — no repo slice queued.
+
+### Previous Sprint Context
+
+**Sprint L10N — Localization (App UI i18n) — closed 2026-06-01 for
+Phase 1 UI i18n.** L1–L8 delivered the app UI localization layer for
+Turkish, English, German, French, Spanish. `flutter analyze` is clean and
+Flutter tests are **166/166**. Game content moved to this Sprint CL; backend
+rule/validation message localization remains Phase 3.
+
+**L1 ✅ done (uncommitted on `main`, 2026-05-31):** i18n infrastructure.
+Added `flutter_localizations` + `intl` + `generate: true`, `l10n.yaml`
+(output to `lib/l10n`, non-synthetic, non-nullable getter), `app_en.arb`
+template + `tr/de/fr/es` ARBs (seed keys: `appTitle`, `settingsTitle`,
+`languageLabel`, `commonCancel/Apply/Retry`), `flutter gen-l10n` →
+`AppLocalizations`, and a `context.l10n` extension
+(`lib/shared/l10n/`). `MaterialApp.router` wired with
+`localizationsDelegates` + `supportedLocales` + `onGenerateTitle` +
+`localeListResolutionCallback` (device language match → else English).
+Locale is device-driven in L1; **L2** adds the explicit `LocaleCubit`
+override. Gate: `flutter analyze` clean (12 pre-existing info warnings
+unchanged), Flutter **158/158** (+2 — supported-locales set + per-locale
+string resolution). String extraction (L3–L6) deliberately not started;
+L1 is infra only.
+
+**L2 ✅ done (uncommitted on `main`, 2026-05-31):** locale preference +
+picker. `AppLanguage` enum (5 languages, each carrying ARB `code`,
+`backendLocale` `xx-XX`, and `nativeName` endonym) +
+`LocalePreferencesRepository` (SharedPreferences + InMemory) +
+`PlayerLocaleWriter` (`ApiPlayerLocaleWriter` GETs the player to preserve
+the avatar, then `PATCH /players/{id}/profile`; `Noop` for tests) +
+`LocaleCubit` (load = stored else device language else English; `setLanguage`
+= emit + persist device-local + best-effort `Player.Locale` write). Added
+`ApiClient.patchJson`. `LocaleCubit` provided above the router via
+`MultiBlocProvider`; `MaterialApp.router` `locale` now driven by a
+`BlocBuilder<LocaleCubit, AppLanguage>`. `SettingsScreen` gains a language
+dropdown (endonyms) and uses the **first real l10n keys**
+(`settingsTitle`, `languageLabel`). The `xx-XX` codes satisfy
+`LocaleMustBeValidFormatRule`. Gate: `flutter analyze` clean (12
+pre-existing), Flutter **166/166** (+8; existing `settings_screen_test`
+updated for the new l10n delegates + `LocaleCubit` provider).
+
+**L3 ✅ done (uncommitted on `main`, 2026-05-31):** string extraction —
+gameplay surface (game/home/categories). ~55 ARB keys added across all 5
+languages (en/tr/de/fr/es), including ICU placeholders
+(`hudSteps(taken,max)`, `hintAction(balance)`,
+`outcomeCompletedSubtitle(target)`, etc.). All static UI strings in
+`game_screen`, `home_screen`, `category_selection_screen` now go through
+`context.l10n.*` (titles, labels, tooltips, buttons, dialogs, HUD chips,
+result sheet, outcome titles/subtitles, action loading messages). Threaded
+`context` into `_actionMessage` and `_outcomeFor`. Brand wordmark
+`'LexiLink'` left literal (deliberate non-translation). Gate:
+`flutter analyze` clean (12 pre-existing), Flutter **166/166** (no test
+churn — `en` ARB values mirror the prior copy).
+
+**Decision (scope boundary):** L3–L6 localize **presentation-layer**
+strings only. **Cubit-emitted `message` strings stay English** (e.g.
+"We could not load the game. Try again.", "Guest session is missing.")
+because they intermix with `ApiException` server messages and a
+`game_start_cubit` test asserts the exact text — uniform message
+localization is **Phase 3** (error-code approach). Widget-side literal
+fallbacks (`?? 'Try again.'`) were localized to `context.l10n.commonTryAgain`.
+
+**L4 ✅ done (uncommitted on `main`, 2026-06-01):** string extraction —
+economy surface. ~40 more ARB keys × 5 languages (incl. ICU
+placeholders `promoPrice/price/stockLabel/yourRemaining/buyConfirmTitle/
+buyConfirmMessage/rewardWatchEarn/rewardCardTitle/rewardToday`). Localized
+`market_screen` (incl. the stray Turkish `'Mağaza'` → `marketTitle`),
+`payment_screen`, `diamond_badge`, and `earn_diamonds_screen`: titles,
+loading/empty/error states, price pills, stock/remaining, buy confirm
+dialog, bundle action labels, rewarded watch button/card/footer + snackbar.
+New common keys (`commonBuy/Unavailable/Processing/CheckBackLater/Unlimited`).
+Gate: `flutter analyze` clean (12 pre-existing), Flutter **166/166** (no
+test churn). Same scope boundary as L3 (cubit messages stay English →
+Phase 3).
+
+**L5 ✅ done (uncommitted on `main`, 2026-06-01):** string extraction —
+quests/profile/leaderboard/settings. ~38 more ARB keys × 5 languages,
+including the ICU **plural** `providersLinked`. Localized `quests_screen`
+(fixed several more stray Turkish literals → proper keys incl. quest state
+badges), `profile_summary_screen` (stat labels, guest/provider labels),
+`leaderboard_screen` (period subtitles/empty messages/tabs — threaded
+`context` into `_periodSubtitle`/`_emptyMessage`), and the
+`settings_screen` audio section. `splash` only has the `'LexiLink'`
+wordmark (left literal); auth has no presentation screen. Gate:
+`flutter analyze` clean (12 pre-existing), Flutter **166/166**.
+
+**L6 ✅ done (uncommitted on `main`, 2026-06-01):** string extraction —
+admin features + shared widgets/dialogs. Added the admin/shared ARB key set
+across all 5 locales and regenerated `AppLocalizations`. Localized
+`app_admin_shell`, `admin_login_screen`, admin quest catalog/form,
+players, energy/hint/undo/reset/diamond consoles, market admin, audit log,
+and shared `AppErrorState`/`AppLoadingState` defaults. Quest enum labels
+and market enum/limit labels now resolve through l10n at presentation time.
+Cubit/API error messages remain English per the Phase 3 boundary. Admin
+widget tests now include l10n delegates and English expectations were
+updated. Gate: `flutter analyze` has only the 6 pre-existing info warnings;
+Flutter **166/166**.
+
+**L7 ✅ done (uncommitted on `main`, 2026-06-01):** translation polish.
+Updated the newly stabilized L6 admin/shared key set in `tr`/`de`/`fr`/`es`
+instead of leaving English copies. TR is authored/polished; DE/FR/ES are
+usable draft translations for admin/common controls, dialogs, enum labels,
+inventory consoles, market admin, and audit. Only natural same-as-English
+values remain (brand, symbols/format strings, or shared technical terms
+like `Admin`, `Audit`, `Offset`, `Normal`). Regenerated
+`AppLocalizations`. Gate: `flutter analyze` has only the 6 pre-existing
+info warnings; Flutter **166/166**.
+
+**L8 ✅ done (uncommitted on `main`, 2026-06-01):** tests + analyze + docs
+close-out. Re-ran the final Flutter gate after L1–L7: Flutter **166/166**
+passed and `flutter analyze` is now **clean (No issues found)** after the
+post-closeout analyzer-info cleanup. Closed the sprint docs and recorded
+the Phase 1 boundaries: game content remains Phase 2; backend/cubit/API
+message localization remains Phase 3. Updated global/frontend progress,
+roadmap, glossary, and operations notes for locale behavior.
+
+**Sprint AD — Advertising (AdMob) — closed 2026-05-31 for
+repo-deliverable work (AD1–AD7).** Full-stack sprint: three
+ad placements — interstitial @ game start (**1/3** random), interstitial
+@ game end (**1/2** random), and a **rewarded ad → Diamond**. SDK:
+`google_mobile_ads` (AdMob), mobile-only, web-safe. The rewarded reward
+is **backend-verified** via AdMob Server-Side Verification (SSV): a new
+**Ads** bounded context (schema `ads`) verifies AdMob's signed callback,
+enforces idempotency on `transaction_id` + a daily-cap rule, then grants
+through `IDiamondGrant` — mirroring the Payments "backend is the grant
+authority" discipline; real signature verification stays behind a
+fail-closed shell with a dev verifier for local testing. Locked: **5
+Diamond/ad, daily cap 10/player**; **UMP consent + iOS ATT in v1**;
+AdMob **test** ad-unit ids in dev (real ids via config, no code change).
+Interstitials are pure frontend. 7 slices (AD1 → AD7) locked in
+`ROADMAP.md > Sprint AD`.
+
+**AD1 ✅ done (uncommitted on `main`, 2026-05-30):** Ads bounded context
+scaffolded (Domain/Application/Infrastructure/IntegrationEvents/Tests/
+IntegrationTests). `RewardedAdGrant` append-only ledger aggregate
+(idempotency key = AdMob SSV `TransactionId`, unique index), rules
+(amount positive, transactionId non-empty, `RewardedAdDailyLimitRule`),
+domain event, repository (`GetByTransactionIdAsync`,
+`CountForPlayerSinceAsync`, `AddAsync`), EF mapping, `AdsContext`. DbUp
+`ads` schema + `RewardedAdGrants` + outbox applied locally (journal 82).
+`RewardedAdRewardedIntegrationEvent` project created (published in AD2).
+API host boots `AdsStartup`; sln/test.sh/ArchTests registered. Gate:
+full build 0 errors, Ads unit 4/4, Ads integration smoke 1/1, ArchTests
+64/64. Admin-audit/cross-module/consumer plumbing deliberately stripped
+(Ads has none in v1).
+
+**AD2 ✅ done (uncommitted on `main`, 2026-05-31):** SSV verify + grant
+backend. `IAdMobSsvVerifier` contract + request/result models
+(`Ads.Application/Configuration/Verification`); fail-closed
+`AdMobSsvVerifier` shell (rejects until real key verification is wired)
+and fail-open `DevelopmentAdMobSsvVerifier` (dev only — Google can't
+reach localhost). Host selects the verifier from `Ads:Ssv:Mode`
+(`Production` default → fail-closed; `DevelopmentFailOpen` set in
+`appsettings.Development.json`), registered as a singleton in `Program.cs`
+mirroring the auth external-verifier seam. `GrantRewardedAdRewardCommand`
++ handler: **idempotency (txid) → verify signature → parse `user_id` →
+daily cap → `IDiamondGrant.GrantAsync` → `RewardedAdGrant.Create` ledger
+row**; outcome DTO (`Granted`/`AlreadyGranted`/`DailyLimitReached`/
+`VerificationFailed`) — cap and verification-fail return gracefully (no
+throw), so the SSV endpoint always answers 200. `RewardedAdGrantedDomainEvent`
+→ outbox notification + publisher → `RewardedAdRewardedIntegrationEvent`
+(BI/audit). `GetRewardedAdStatusQuery` (Dapper count of today's grants).
+`GET /ads/rewarded/callback` (anonymous, signature-verified inside) +
+`GET /ads/rewarded/status` (player). `IAdsConfigurationService`
+(`Ads:RewardedDiamondAmount` 5 / `Ads:RewardedDailyLimit` 10).
+`Ads.Application → Diamond.Application` project ref added (only
+`Configuration.CrossModule.IDiamondGrant` used); `Ads.Infrastructure →
+Ads.IntegrationEvents`. Granular ArchTest allow added (3 Ads ModuleLayer
+cases). Gate: full build 0 errors, Ads unit **8/8**, ArchTests **67/67**,
+API health host-boot **2/2**.
+
+**Design notes (AD2):** (1) Idempotency is checked *before* signature
+verification — a replayed callback for an already-granted txid
+short-circuits to `AlreadyGranted` without re-verifying or re-granting.
+(2) Diamond-grant failure (e.g. player has no Diamond inventory) is left
+to **throw** → 500 → AdMob retries the callback; v1 has no
+`VerifiedButGrantFailed` recovery state (AD1 stripped recovery plumbing),
+and the txid idempotency + AdMob's ~day-long retry window cover it. (3)
+Daily cap reuses `RewardedAdDailyLimitRule` but the handler evaluates
+`IsBroken()` and returns gracefully rather than throwing — hitting the
+cap is a benign "no reward", not an error.
+
+**AD3 ✅ done (uncommitted on `main`, 2026-05-31):** frontend ads infra.
+`google_mobile_ads ^5.1.0` dep (resolved 5.3.1). Global `AdsService`
+(`lib/shared/ads/`) over an `AdsPlatform` seam — `MobileAdsPlatform` is
+the only file importing the SDK; `AdsService` itself is SDK-free and
+unit-testable. Mobile-only/web-safe: `isSupported` false on web/desktop,
+`initialize()` a no-op there and best-effort (swallows failures) so app
+start never depends on the ad network. `AdConfig` holds Google **test**
+ad-unit ids, overridable via `--dart-define` (real ids, no code change).
+AdMob **test** app ids in `AndroidManifest.xml`
+(`com.google.android.gms.ads.APPLICATION_ID`) + iOS `Info.plist`
+(`GADApplicationIdentifier`). Wired in `main.dart` (`unawaited`
+fire-and-forget init) + provided above the router in `app.dart`
+(`RepositoryProvider<AdsService>`), mirroring `AudioService`. Gate:
+`flutter analyze` clean on ads files (12 pre-existing info warnings
+unchanged), Flutter **142/142** (+5 ads/config smoke via the injectable
+platform seam). Interstitial/rewarded **show** logic deliberately
+deferred to AD4/AD5 — AD3 is infra only (no speculative show API).
+
+**AD4 ✅ done (uncommitted on `main`, 2026-05-31):** interstitial
+placements. Added `AdsPlatform.showInterstitial(adUnitId)` (load+show,
+fire-and-forget, self-disposing via `FullScreenContentCallback`) +
+`AdsService.maybeShowInterstitial(probability)` — a probability gate over
+an injectable `Random` that no-ops when unsupported, not initialized, or
+the roll misses. `InterstitialChance` constants (`gameStart` 1/3,
+`gameEnd` 1/2) in `ad_config.dart`. Hooked at **GameStart success** (home
+`BlocListener`, before `context.go('/games/...')`) and **game finish**
+(game-screen finish `BlocListener`, alongside the result sheet). Both
+calls are best-effort/web-safe and never block navigation or the result
+sheet. Gate: `flutter analyze` clean on touched files (12 pre-existing
+info warnings unchanged), Flutter **147/147** (+5 — probability gate
+hit/miss, not-initialized/unsupported no-op, `InterstitialChance`
+sanity). No home/game widget tests exercise the new provider read, so no
+test-provider plumbing was needed.
+
+**AD5 ✅ done (uncommitted on `main`, 2026-05-31):** rewarded ad →
+Diamond. `AdsPlatform.showRewarded({adUnitId, userId, onClosed})` +
+`AdsService.showRewarded({userId, onClosed})` — loads/shows a `RewardedAd`,
+tags the request with the player id as the SSV `user_id`
+(`ServerSideVerificationOptions(userId: ...)`), and the local
+`onUserEarnedReward` is intentionally a **no-op** (grant is backend-owned
+via the verified SSV callback). `onClosed` is guaranteed exactly once
+(dismiss / fail-to-show / fail-to-load / unsupported / not-initialized)
+so the UI never hangs. New `features/rewarded_ads/`:
+`RewardedAdStatus` model + `RewardedAdRepository` (`GET /ads/rewarded/status`)
++ `RewardedAdCubit` (load → ready/unavailable/failure; `watch()` guards on
+cap, shows the ad, then re-fetches status and flags `rewardJustWatched`)
++ `EarnDiamondsScreen` (watch button, `today X/limit • N left` display,
+disabled-when-capped, web/desktop unavailable state). Player id read from
+`TokenStore.readPlayerId()`. On `rewardJustWatched` the screen refreshes
+`DiamondCubit` + plays the purchase SFX + shows a "diamonds arrive once
+verified" snackbar. Route `/earn-diamonds` + HomeScreen side-icon entry
+(`ondemand_video_outlined`, "Earn Diamonds"). Gate: `flutter analyze`
+clean on ads/feature files (12 pre-existing info warnings unchanged),
+Flutter **154/154** (+7 — showRewarded forward/recover/no-op, cubit
+load/watch/cap). **Note:** in local dev Google's SSV servers can't reach
+localhost, so the grant won't auto-land after watching — the operator
+hits the callback manually (AD7); the UI refresh path is wired and tested.
+
+**AD6 ✅ done (uncommitted on `main`, 2026-05-31):** consent + ATT. Added
+`app_tracking_transparency ^2.0.6` (resolved 2.0.7). New
+`AdsPlatform.gatherConsent()` seam method; `MobileAdsPlatform` runs the
+**iOS ATT** prompt (only when `TrackingStatus.notDetermined`) then the
+**AdMob UMP** consent flow (`ConsentInformation.requestConsentInfoUpdate`
+→ `ConsentForm.loadAndShowConsentFormIfRequired`, wrapped in a `Completer`),
+both best-effort. `AdsService.initialize()` now calls `gatherConsent()`
+**before** `_platform.initialize()`, so consent precedes any ad request.
+iOS `Info.plist` gains `NSUserTrackingUsageDescription` (required or ATT
+crashes). UMP ships in `google_mobile_ads` (already a dep); no UMP code
+in `AdsService` itself (stays SDK-free behind the seam). Gate:
+`flutter analyze` clean on ads files (12 pre-existing info warnings
+unchanged), Flutter **156/156** (+2 — consent-before-init ordering,
+no-consent-when-unsupported). Mobile-only; web/desktop skip consent
+(unsupported → no-op).
+
+**AD7 ✅ done (uncommitted on `main`, 2026-05-31):** sprint close-out.
+Gates re-run: DbUp **0 pending**; all module unit suites + **ArchTests
+67/67** green (incl. **Ads unit 8/8**); all integration suites green
+(incl. **Ads integration 1/1**); Flutter **156/156**, `flutter analyze`
+clean on ads files (12 pre-existing info warnings). Docs closed out:
+`ROADMAP.md` Sprint AD marked ✅, `GLOSSARY.md` Ads ubiquitous language
+(`RewardedAdGrant`, rules, `IAdMobSsvVerifier`,
+`RewardedAdRewardedIntegrationEvent`), `OPERATIONS.md` Ads settings +
+SSV/endpoint notes, `progress.md`/frontend docs.
+
+**Known pre-existing gate condition (not AD):** `LexiLink.API.Tests` has
+15 failures under the local `Authentication:Mode=ProductionJwt` dev
+config — those tests send a raw-GUID bearer that only `DevelopmentBearer`
+accepts (verified: they pass with `Authentication__Mode=DevelopmentBearer`).
+The dev mode was switched to ProductionJwt during the Administration
+sprint; no AD code touches auth. **Operator-owned remaining:** manual
+device verification with AdMob test ads + real AdMob/SSV credentials
+(see `progress.md > AD7`).
+
+No further AD repo slice is queued; Sprint AD is closed. Current active
+direction is Sprint L10N above.
+
+### Previous Sprint Context
 
 **Sprint A — Audio (Sound & Music) — closed 2026-05-30.** A1–A7
 delivered. Frontend-only: SFX + background music via `audioplayers`,
@@ -710,11 +1058,12 @@ içindedir. Önemli mimari değişiklikler:
 
 ---
 
-## Next Action
+## Archived Payments Next Action
 
-**Sprint P next implementation action: P7 — frontend purchase UI.**
-Backend semantics now cover catalog, verify+grant, delivery retry,
-post-processing, and notification reconciliation shells.
+Historical note from Sprint P: the next implementation action at that time
+was P7 — frontend purchase UI. Backend semantics covered catalog,
+verify+grant, delivery retry, post-processing, and notification
+reconciliation shells.
 
 P7 guardrails:
 

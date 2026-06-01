@@ -14,19 +14,21 @@ void main() {
         tokenStore: InMemoryTokenStore(),
         httpClient: MockClient((request) async {
           expect(request.url.path, '/categories');
+          expect(request.url.queryParameters['locale'], 'en-US');
 
           return http.Response(
-            '[{"id":"category-1","name":"Animals"}]',
+            '[{"id":"category-1","name":"Animals","language":"en-US"}]',
             200,
           );
         }),
       ),
     );
 
-    final categories = await repository.getCategories();
+    final categories = await repository.getCategories(locale: 'en-US');
 
     expect(categories, hasLength(1));
     expect(categories.single.id, 'category-1');
     expect(categories.single.name, 'Animals');
+    expect(categories.single.language, 'en-US');
   });
 }

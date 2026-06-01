@@ -67,11 +67,13 @@ class AdminAuditCubit extends Cubit<AdminAuditState> {
     required int offset,
     required AdminAuditFilter filter,
   }) async {
-    emit(state.copyWith(
-      status: AdminAuditStatus.loading,
-      filter: filter,
-      clearError: true,
-    ));
+    emit(
+      state.copyWith(
+        status: AdminAuditStatus.loading,
+        filter: filter,
+        clearError: true,
+      ),
+    );
     try {
       final actions = await _repository.fetch(
         adminUserId: filter.adminUserId,
@@ -80,18 +82,22 @@ class AdminAuditCubit extends Cubit<AdminAuditState> {
         offset: offset,
         limit: _pageSize,
       );
-      emit(state.copyWith(
-        status: AdminAuditStatus.loaded,
-        actions: actions,
-        offset: offset,
-        hasMore: actions.length == _pageSize,
-        filter: filter,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminAuditStatus.loaded,
+          actions: actions,
+          offset: offset,
+          hasMore: actions.length == _pageSize,
+          filter: filter,
+        ),
+      );
     } on ApiException catch (e) {
-      emit(state.copyWith(
-        status: AdminAuditStatus.failure,
-        errorMessage: e.message,
-      ));
+      emit(
+        state.copyWith(
+          status: AdminAuditStatus.failure,
+          errorMessage: e.message,
+        ),
+      );
     }
   }
 }
@@ -142,6 +148,12 @@ class AdminAuditState extends Equatable {
   final String? errorMessage;
 
   @override
-  List<Object?> get props =>
-      [status, actions, filter, offset, hasMore, errorMessage];
+  List<Object?> get props => [
+    status,
+    actions,
+    filter,
+    offset,
+    hasMore,
+    errorMessage,
+  ];
 }

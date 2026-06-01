@@ -13,6 +13,7 @@ import 'package:lexilink_app/features/payments/data/payment_store_service.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -78,8 +79,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     final cubit = _cubit;
     if (cubit == null) {
-      return const Scaffold(
-        body: Center(child: AppLoadingState(message: 'Opening diamonds...')),
+      return Scaffold(
+        body: Center(
+          child: AppLoadingState(message: context.l10n.openingDiamonds),
+        ),
       );
     }
     return BlocProvider.value(value: cubit, child: const _PaymentView());
@@ -112,7 +115,7 @@ class _PaymentView extends StatelessWidget {
           body: SafeArea(
             child: Column(
               children: [
-                const AppBackBar(title: 'Diamonds'),
+                AppBackBar(title: context.l10n.diamondsTitle),
                 Expanded(child: _body(context, state)),
               ],
             ),
@@ -125,8 +128,8 @@ class _PaymentView extends StatelessWidget {
   Widget _body(BuildContext context, PaymentState state) {
     if (state.status == PaymentStatus.initial ||
         state.status == PaymentStatus.loading) {
-      return const Center(
-        child: AppLoadingState(message: 'Fetching diamond bundles...'),
+      return Center(
+        child: AppLoadingState(message: context.l10n.fetchingBundles),
       );
     }
 
@@ -135,10 +138,10 @@ class _PaymentView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: AppEmptyState(
-            title: 'Purchases unavailable',
+            title: context.l10n.purchasesUnavailable,
             message:
-                state.message ?? 'Diamonds purchase is not available here.',
-            actionLabel: 'Retry',
+                state.message ?? context.l10n.purchasesUnavailableMessage,
+            actionLabel: context.l10n.commonRetry,
             onAction: () => context.read<PaymentCubit>().load(),
           ),
         ),
@@ -148,18 +151,18 @@ class _PaymentView extends StatelessWidget {
     if (state.status == PaymentStatus.failure && state.bundles.isEmpty) {
       return Center(
         child: AppErrorState(
-          title: 'Could not load diamonds',
-          message: state.message ?? 'Try again.',
+          title: context.l10n.couldNotLoadDiamonds,
+          message: state.message ?? context.l10n.commonTryAgain,
           onRetry: () => context.read<PaymentCubit>().load(),
         ),
       );
     }
 
     if (state.bundles.isEmpty) {
-      return const Center(
+      return Center(
         child: AppEmptyState(
-          title: 'No bundles yet',
-          message: 'Check back later.',
+          title: context.l10n.noBundlesTitle,
+          message: context.l10n.commonCheckBackLater,
         ),
       );
     }
@@ -202,10 +205,10 @@ class _DiamondBundleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final disabled = busy || !bundle.isAvailable;
     final actionLabel = selected && busy
-        ? 'Processing...'
+        ? context.l10n.commonProcessing
         : bundle.isAvailable
-        ? 'Buy'
-        : 'Unavailable';
+        ? context.l10n.commonBuy
+        : context.l10n.commonUnavailable;
 
     return Card(
       clipBehavior: Clip.antiAlias,

@@ -8,8 +8,11 @@ class CategoryRepository {
 
   final ApiClient _apiClient;
 
-  Future<List<Category>> getCategories() async {
-    final response = await _apiClient.getJsonList('/categories');
+  Future<List<Category>> getCategories({required String locale}) async {
+    final response = await _apiClient.getJsonList(
+      '/categories',
+      queryParameters: {'locale': locale},
+    );
 
     return response
         .map((item) {

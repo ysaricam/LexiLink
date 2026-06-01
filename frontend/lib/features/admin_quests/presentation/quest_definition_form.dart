@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lexilink_app/features/admin_quests/data/quest_definition.dart';
 import 'package:lexilink_app/features/admin_quests/data/quest_enums.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 
 /// Result of [QuestDefinitionFormDialog]. For Create the dialog
 /// supplies name + trigger; for Edit those fields are read-only
@@ -130,7 +131,11 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     final showProgressBaseline = _trigger == QuestTrigger.gameCompletedTotal;
 
     return AlertDialog(
-      title: Text(_isEdit ? 'Quest tanımını düzenle' : 'Yeni quest tanımı'),
+      title: Text(
+        _isEdit
+            ? context.l10n.adminQuestFormEditTitle
+            : context.l10n.adminQuestFormCreateTitle,
+      ),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -143,18 +148,18 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                 readOnly: _isEdit,
                 maxLength: 64,
                 decoration: InputDecoration(
-                  labelText: 'İsim',
+                  labelText: context.l10n.adminName,
                   border: const OutlineInputBorder(),
                   helperText: _isEdit
-                      ? 'Oluşturulduktan sonra değiştirilemez.'
+                      ? context.l10n.adminImmutableAfterCreate
                       : null,
                 ),
                 validator: (v) {
                   if (v == null || v.trim().isEmpty) {
-                    return 'İsim zorunlu';
+                    return context.l10n.adminNameRequired;
                   }
                   if (v.length > 64) {
-                    return 'En fazla 64 karakter';
+                    return context.l10n.adminMax64;
                   }
                   return null;
                 },
@@ -165,13 +170,13 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                 maxLength: 256,
                 minLines: 2,
                 maxLines: 4,
-                decoration: const InputDecoration(
-                  labelText: 'Açıklama',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminDescription,
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) {
                   if (v != null && v.length > 256) {
-                    return 'En fazla 256 karakter';
+                    return context.l10n.adminMax256;
                   }
                   return null;
                 },
@@ -180,25 +185,29 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
               DropdownButtonFormField<QuestTrigger>(
                 initialValue: _trigger,
                 decoration: InputDecoration(
-                  labelText: 'Tetikleyici',
+                  labelText: context.l10n.adminTrigger,
                   border: const OutlineInputBorder(),
                   helperText: _isEdit
-                      ? 'Oluşturulduktan sonra değiştirilemez.'
+                      ? context.l10n.adminImmutableAfterCreate
                       : null,
                 ),
                 items: [
                   for (final t in QuestTrigger.values)
-                    DropdownMenuItem(value: t, child: Text(t.displayLabel)),
+                    DropdownMenuItem(
+                      value: t,
+                      child: Text(_triggerLabel(context, t)),
+                    ),
                 ],
                 onChanged: _isEdit ? null : (v) => setState(() => _trigger = v),
-                validator: (v) => v == null ? 'Tetikleyici zorunlu' : null,
+                validator: (v) =>
+                    v == null ? context.l10n.adminTriggerRequired : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
                 controller: _thresholdController,
-                decoration: const InputDecoration(
-                  labelText: 'Eşik (threshold)',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminThreshold,
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
                 validator: _validatePositive,
@@ -209,9 +218,9 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   Expanded(
                     child: TextFormField(
                       controller: _energyRewardController,
-                      decoration: const InputDecoration(
-                        labelText: 'Enerji ödülü ⚡',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.adminEnergyReward,
+                        border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
                       validator: _validateNonNegative,
@@ -221,9 +230,9 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   Expanded(
                     child: TextFormField(
                       controller: _hintRewardController,
-                      decoration: const InputDecoration(
-                        labelText: 'İpucu ödülü 💡',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.adminHintReward,
+                        border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
                       validator: _validateNonNegative,
@@ -237,9 +246,9 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   Expanded(
                     child: TextFormField(
                       controller: _undoRewardController,
-                      decoration: const InputDecoration(
-                        labelText: 'Geri al ödülü ↶',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.adminUndoReward,
+                        border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
                       validator: _validateNonNegative,
@@ -249,9 +258,9 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                   Expanded(
                     child: TextFormField(
                       controller: _resetRewardController,
-                      decoration: const InputDecoration(
-                        labelText: 'Sıfırla ödülü ↻',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: context.l10n.adminResetReward,
+                        border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
                       validator: _validateNonNegative,
@@ -262,9 +271,9 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
               const SizedBox(height: 12),
               TextFormField(
                 controller: _diamondRewardController,
-                decoration: const InputDecoration(
-                  labelText: 'Elmas ödülü 💎',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminDiamondReward,
+                  border: const OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
                 validator: _validateNonNegative,
@@ -283,14 +292,17 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
                 const SizedBox(height: 12),
                 DropdownButtonFormField<ProgressBaseline>(
                   initialValue: _progressBaseline,
-                  decoration: const InputDecoration(
-                    labelText: 'İlerleme başlangıcı',
-                    border: OutlineInputBorder(),
-                    helperText: 'Yalnız "Toplam oyun" için anlamlıdır.',
+                  decoration: InputDecoration(
+                    labelText: context.l10n.adminProgressBaseline,
+                    border: const OutlineInputBorder(),
+                    helperText: context.l10n.adminProgressBaselineHelp,
                   ),
                   items: [
                     for (final b in ProgressBaseline.values)
-                      DropdownMenuItem(value: b, child: Text(b.displayLabel)),
+                      DropdownMenuItem(
+                        value: b,
+                        child: Text(_progressBaselineLabel(context, b)),
+                      ),
                   ],
                   onChanged: (v) => setState(() {
                     if (v != null) _progressBaseline = v;
@@ -300,13 +312,13 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
               const SizedBox(height: 12),
               DropdownButtonFormField<String?>(
                 initialValue: _prerequisiteId,
-                decoration: const InputDecoration(
-                  labelText: 'Ön koşul (opsiyonel)',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminPrerequisiteOptional,
+                  border: const OutlineInputBorder(),
                 ),
                 items: [
-                  const DropdownMenuItem<String?>(
-                    child: Text('— yok —'),
+                  DropdownMenuItem<String?>(
+                    child: Text(context.l10n.adminNoPrerequisite),
                   ),
                   for (final p in prereqs)
                     DropdownMenuItem<String?>(
@@ -323,29 +335,31 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('İptal'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: _submit,
-          child: Text(_isEdit ? 'Kaydet' : 'Oluştur'),
+          child: Text(
+            _isEdit ? context.l10n.commonSave : context.l10n.commonCreate,
+          ),
         ),
       ],
     );
   }
 
   String? _validatePositive(String? v) {
-    if (v == null || v.trim().isEmpty) return 'Zorunlu';
+    if (v == null || v.trim().isEmpty) return context.l10n.commonRequired;
     final parsed = int.tryParse(v.trim());
-    if (parsed == null) return 'Sayı olmalı';
-    if (parsed <= 0) return "0'dan büyük olmalı";
+    if (parsed == null) return context.l10n.commonMustBeNumber;
+    if (parsed <= 0) return context.l10n.adminPositiveRequired;
     return null;
   }
 
   String? _validateNonNegative(String? v) {
-    if (v == null || v.trim().isEmpty) return 'Zorunlu';
+    if (v == null || v.trim().isEmpty) return context.l10n.commonRequired;
     final parsed = int.tryParse(v.trim());
-    if (parsed == null) return 'Sayı olmalı';
-    if (parsed < 0) return "0'dan küçük olamaz";
+    if (parsed == null) return context.l10n.commonMustBeNumber;
+    if (parsed < 0) return context.l10n.adminNotNegative;
     return null;
   }
 
@@ -361,8 +375,7 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     setState(() {
       _rewardSumError = atLeastOnePositive
           ? null
-          : 'En az bir ödül '
-                '(enerji, ipucu, geri al, sıfırla, elmas) > 0 olmalı.';
+          : context.l10n.adminRewardPositiveRequired;
     });
     if (!formValid || !atLeastOnePositive) return;
     Navigator.of(context).pop(
@@ -382,3 +395,20 @@ class _QuestDefinitionFormDialogState extends State<QuestDefinitionFormDialog> {
     );
   }
 }
+
+String _triggerLabel(BuildContext context, QuestTrigger trigger) =>
+    switch (trigger) {
+      QuestTrigger.gameCompletedTotal => context.l10n.adminQuestTriggerTotal,
+      QuestTrigger.gameCompletedDaily => context.l10n.adminQuestTriggerDaily,
+      QuestTrigger.authProviderLinked =>
+        context.l10n.adminQuestTriggerAuthProvider,
+    };
+
+String _progressBaselineLabel(
+  BuildContext context,
+  ProgressBaseline baseline,
+) => switch (baseline) {
+  ProgressBaseline.fromSnapshot => context.l10n.adminProgressFromSnapshot,
+  ProgressBaseline.fromExistingTotal =>
+    context.l10n.adminProgressFromExistingTotal,
+};

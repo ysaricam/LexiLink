@@ -5,6 +5,7 @@ import 'package:http/testing.dart';
 import 'package:lexilink_app/features/admin_diamond/application/admin_diamond_cubit.dart';
 import 'package:lexilink_app/features/admin_diamond/data/admin_diamond_repository.dart';
 import 'package:lexilink_app/features/admin_diamond/presentation/admin_diamond_screen.dart';
+import 'package:lexilink_app/l10n/app_localizations.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -62,6 +63,8 @@ void main() {
 
     await tester.pumpWidget(
       MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: AdminDiamondScreen(cubitFactory: () => cubit),
         ),

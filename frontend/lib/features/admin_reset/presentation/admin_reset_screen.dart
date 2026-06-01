@@ -7,6 +7,7 @@ import 'package:lexilink_app/features/admin_reset/data/admin_reset_repository.da
 import 'package:lexilink_app/features/admin_reset/data/player_reset_snapshot.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 class AdminResetScreen extends StatefulWidget {
@@ -115,13 +116,12 @@ class _AdminResetViewState extends State<_AdminResetView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Reset console',
+                  context.l10n.adminResetConsoleTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Lookup by player GUID, then snap / grant / reset. '
-                  'Reset inventory has no max cap.',
+                  context.l10n.adminResetConsoleHelp,
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
@@ -137,7 +137,8 @@ class _AdminResetViewState extends State<_AdminResetView> {
   }
 
   Widget _buildLookupRow(BuildContext context, AdminResetState state) {
-    final busy = state.status == AdminResetStatus.loading ||
+    final busy =
+        state.status == AdminResetStatus.loading ||
         state.status == AdminResetStatus.saving;
     return Row(
       children: [
@@ -145,9 +146,9 @@ class _AdminResetViewState extends State<_AdminResetView> {
           child: TextField(
             controller: _idController,
             enabled: !busy,
-            decoration: const InputDecoration(
-              labelText: 'Player GUID',
-              border: OutlineInputBorder(),
+            decoration: InputDecoration(
+              labelText: context.l10n.adminPlayerGuid,
+              border: const OutlineInputBorder(),
               isDense: true,
             ),
             onSubmitted: busy ? null : (_) => _submit(context),
@@ -157,7 +158,7 @@ class _AdminResetViewState extends State<_AdminResetView> {
         FilledButton.icon(
           onPressed: busy ? null : () => _submit(context),
           icon: const Icon(Icons.search),
-          label: const Text('Look up'),
+          label: Text(context.l10n.adminLookUp),
         ),
       ],
     );
@@ -181,25 +182,25 @@ class _AdminResetViewState extends State<_AdminResetView> {
     return switch (state.status) {
       AdminResetStatus.initial => const SizedBox.shrink(),
       AdminResetStatus.loading => const Center(
-          child: Padding(
-            padding: EdgeInsets.all(24),
-            child: CircularProgressIndicator(),
-          ),
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: CircularProgressIndicator(),
         ),
+      ),
       AdminResetStatus.notFound => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'No reset inventory.',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminNoResetInventory,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
+      ),
       _ => Padding(
-          padding: const EdgeInsets.all(16),
-          child: Text(
-            state.errorMessage ?? 'Lookup failed.',
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-          ),
+        padding: const EdgeInsets.all(16),
+        child: Text(
+          state.errorMessage ?? context.l10n.adminLookupFailed,
+          style: TextStyle(color: Theme.of(context).colorScheme.error),
         ),
+      ),
     };
   }
 
@@ -238,7 +239,7 @@ class _ResetCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _kv(context, 'Player id', snapshot.playerId),
+            _kv(context, context.l10n.adminPlayerId, snapshot.playerId),
             const SizedBox(height: 20),
             Wrap(
               spacing: 12,
@@ -247,17 +248,17 @@ class _ResetCard extends StatelessWidget {
                 FilledButton.icon(
                   onPressed: () => _promptSet(context),
                   icon: const Icon(Icons.edit),
-                  label: const Text('Set balance'),
+                  label: Text(context.l10n.adminSetBalance),
                 ),
                 FilledButton.tonalIcon(
                   onPressed: () => _promptGrant(context),
                   icon: const Icon(Icons.add),
-                  label: const Text('Grant resets'),
+                  label: Text(context.l10n.adminGrantResets),
                 ),
                 OutlinedButton.icon(
                   onPressed: () => _confirmReset(context),
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Reset to zero'),
+                  label: Text(context.l10n.adminResetToZero),
                 ),
               ],
             ),
@@ -287,10 +288,10 @@ class _ResetCard extends StatelessWidget {
     final cubit = context.read<AdminResetCubit>();
     final value = await _intDialog(
       context,
-      title: 'Set reset balance',
-      label: 'New balance',
-      helper: "Snaps the player's reset balance to this value (>= 0).",
-      validate: (v) => v < 0 ? 'Must be >= 0' : null,
+      title: context.l10n.adminSetResetBalanceTitle,
+      label: context.l10n.adminNewBalance,
+      helper: context.l10n.adminSetResetHelper,
+      validate: (v) => v < 0 ? context.l10n.commonNonNegative : null,
     );
     if (value == null) return;
     await cubit.setBalance(value);
@@ -300,10 +301,10 @@ class _ResetCard extends StatelessWidget {
     final cubit = context.read<AdminResetCubit>();
     final value = await _intDialog(
       context,
-      title: 'Grant resets',
-      label: 'Reset amount',
-      helper: 'Adds to the existing balance — no max cap.',
-      validate: (v) => v <= 0 ? 'Must be greater than 0' : null,
+      title: context.l10n.adminGrantResets,
+      label: context.l10n.adminResetAmount,
+      helper: context.l10n.adminGrantResetHelper,
+      validate: (v) => v <= 0 ? context.l10n.commonGreaterThanZero : null,
     );
     if (value == null) return;
     await cubit.grant(value);
@@ -315,18 +316,16 @@ class _ResetCard extends StatelessWidget {
       context: context,
       useRootNavigator: false,
       builder: (_) => AlertDialog(
-        title: const Text('Reset reset balance?'),
-        content: const Text(
-          'Sets the player\'s reset balance to zero.',
-        ),
+        title: Text(context.l10n.adminResetResetTitle),
+        content: Text(context.l10n.adminResetResetMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
+            child: Text(context.l10n.commonCancel),
           ),
           FilledButton.tonal(
             onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Reset'),
+            child: Text(context.l10n.commonReset),
           ),
         ],
       ),
@@ -363,9 +362,9 @@ Future<int?> _intDialog(
           ),
           validator: (raw) {
             final trimmed = raw?.trim() ?? '';
-            if (trimmed.isEmpty) return 'Required';
+            if (trimmed.isEmpty) return context.l10n.commonRequired;
             final parsed = int.tryParse(trimmed);
-            if (parsed == null) return 'Must be a number';
+            if (parsed == null) return context.l10n.commonMustBeNumber;
             return validate(parsed);
           },
         ),
@@ -373,7 +372,7 @@ Future<int?> _intDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(context.l10n.commonCancel),
         ),
         FilledButton(
           onPressed: () {
@@ -381,7 +380,7 @@ Future<int?> _intDialog(
               Navigator.of(context).pop(int.parse(controller.text.trim()));
             }
           },
-          child: const Text('Apply'),
+          child: Text(context.l10n.commonApply),
         ),
       ],
     ),

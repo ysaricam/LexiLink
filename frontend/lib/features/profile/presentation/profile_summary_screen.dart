@@ -9,6 +9,7 @@ import 'package:lexilink_app/features/profile/data/player_stats.dart';
 import 'package:lexilink_app/features/profile/data/player_stats_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -39,18 +40,18 @@ class _ProfileSummaryScreenState extends State<ProfileSummaryScreen> {
       future: _tokenStoreFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const AppScreen(
+          return AppScreen(
             child: AppErrorState(
-              title: 'Session storage failed',
-              message: 'Restart the app and try again.',
+              title: context.l10n.sessionStorageFailedTitle,
+              message: context.l10n.sessionStorageFailedMessage,
             ),
           );
         }
 
         final tokenStore = snapshot.data;
         if (tokenStore == null) {
-          return const AppScreen(
-            child: AppLoadingState(message: 'Preparing session...'),
+          return AppScreen(
+            child: AppLoadingState(message: context.l10n.preparingSession),
           );
         }
 
@@ -117,14 +118,14 @@ class _ProfileSummaryView extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const AppBackBar(title: 'Profile'),
+              AppBackBar(title: context.l10n.navProfile),
               const SizedBox(height: 20),
               if (state.isLoading)
-                const AppLoadingState(message: 'Loading profile...')
+                AppLoadingState(message: context.l10n.loadingProfile)
               else if (state.status == ProfileSummaryStatus.failure)
                 AppErrorState(
-                  title: 'Could not load profile',
-                  message: state.message ?? 'Try again.',
+                  title: context.l10n.couldNotLoadProfile,
+                  message: state.message ?? context.l10n.commonTryAgain,
                   onRetry: () =>
                       context.read<ProfileSummaryCubit>().loadSummary(),
                 )
@@ -132,13 +133,13 @@ class _ProfileSummaryView extends StatelessWidget {
                   state.stats != null)
                 _ProfileSummaryCard(stats: state.stats!)
               else
-                const AppEmptyState(
-                  title: 'No profile yet',
-                  message: 'Start a guest session to see your profile.',
+                AppEmptyState(
+                  title: context.l10n.noProfileTitle,
+                  message: context.l10n.noProfileMessage,
                 ),
               const SizedBox(height: 20),
               AppPrimaryButton(
-                label: 'View leaderboard',
+                label: context.l10n.viewLeaderboard,
                 onPressed: () => context.go('/leaderboard'),
               ),
             ],
@@ -159,13 +160,11 @@ class _ProfileSummaryCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    final handle = stats.handle ?? 'Guest player';
-    final localeLabel = stats.locale ?? 'unknown';
+    final handle = stats.handle ?? context.l10n.guestPlayer;
+    final localeLabel = stats.locale ?? context.l10n.commonUnknown;
     final providerLabel = stats.isGuest
-        ? 'Guest session'
-        : stats.authProvidersLinked == 1
-        ? '1 provider linked'
-        : '${stats.authProvidersLinked} providers linked';
+        ? context.l10n.guestSession
+        : context.l10n.providersLinked(stats.authProvidersLinked);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -201,22 +200,22 @@ class _ProfileSummaryCard extends StatelessWidget {
             child: Column(
               children: [
                 _ProfileStatRow(
-                  label: 'Games completed',
+                  label: context.l10n.statGamesCompleted,
                   value: stats.gamesCompleted.toString(),
                 ),
                 const _RowDivider(),
                 _ProfileStatRow(
-                  label: 'Best score',
+                  label: context.l10n.statBestScore,
                   value: stats.bestScore?.toString() ?? '—',
                 ),
                 const _RowDivider(),
                 _ProfileStatRow(
-                  label: 'Total score',
+                  label: context.l10n.statTotalScore,
                   value: stats.totalScore.toString(),
                 ),
                 const _RowDivider(),
                 _ProfileStatRow(
-                  label: 'Last completed',
+                  label: context.l10n.statLastCompleted,
                   value: _formatDate(stats.lastGameCompletedOn),
                 ),
               ],

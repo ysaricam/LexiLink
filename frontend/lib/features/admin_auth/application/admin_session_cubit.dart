@@ -78,7 +78,8 @@ class AdminSessionState extends Equatable {
     this.errorMessage,
   });
 
-  const AdminSessionState.checking() : this(status: AdminSessionStatus.checking);
+  const AdminSessionState.checking()
+    : this(status: AdminSessionStatus.checking);
 
   const AdminSessionState.unauthenticated()
     : this(status: AdminSessionStatus.unauthenticated);

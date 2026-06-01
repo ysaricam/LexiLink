@@ -4,4 +4,5 @@ public record CategoryDetailsDto(
     Guid Id,
     string Name,
     string Description,
+    string Language,
     int LinkCount);

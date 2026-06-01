@@ -34,7 +34,8 @@ AdminPlayersRepository _repoFromScript(_Script script) {
   );
 }
 
-const _activePlayerJson = '{'
+const _activePlayerJson =
+    '{'
     '"id":"00000000-0000-0000-0000-000000000abc",'
     '"displayName":"Ada","discriminator":42,'
     '"handle":"ada","avatarUrl":null,'
@@ -44,7 +45,8 @@ const _activePlayerJson = '{'
     '"createdAt":"2026-01-01T00:00:00Z",'
     '"authProvidersLinked":1'
     '}';
-const _bannedPlayerJson = '{'
+const _bannedPlayerJson =
+    '{'
     '"id":"00000000-0000-0000-0000-000000000abc",'
     '"displayName":"Ada","discriminator":42,'
     '"handle":"ada","avatarUrl":null,'
