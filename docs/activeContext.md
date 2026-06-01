@@ -10,6 +10,99 @@ uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 
 ## Active Sprint
 
+**Sprint GO — Production Launch (Hetzner) — active 2026-06-01.** Goal: take
+LexiLink live on a single Hetzner Ubuntu VPS. **API only — no web frontend;**
+the game ships to the iOS/Android stores. Backend = Docker Compose: Caddy
+(auto-HTTPS) → .NET 10 API; PostgreSQL 17 in a container; DbUp migrator as a
+one-shot before the API. Locked decisions + 6-slice plan (GO1–GO6) in
+`ROADMAP.md > Sprint GO`. **No domain acquired yet** — required for Let's
+Encrypt TLS, blocks GO4 only.
+
+**GO1 ✅ done (uncommitted on `main`, 2026-06-01):** containerization. Added
+root `Dockerfile` (multi-stage: `dotnet/sdk:10.0` build → `aspnet:10.0`
+runtime) publishing the API to `/app` and the DbUp migrator to `/app/migrator`
+in one image; `ASPNETCORE_URLS=http://+:8080`, `ASPNETCORE_ENVIRONMENT=Production`,
+`EXPOSE 8080`, default `ENTRYPOINT` runs the API (compose's `migrate` one-shot
+overrides it). Added `.dockerignore` (excludes `bin/`/`obj/`, `frontend/`,
+docs/git/CI/scripts, secrets, and iCloud `* 2.*` duplicates). **Key wiring:**
+the API csproj already copies `Database/Structure/**/*.sql` into its publish
+output, so both the migrator one-shot and the API `/health/ready` journal
+check read SQL from `/app/Database/Structure` — no separate copy needed.
+**Validation (local Docker unavailable on the dev Mac):** Release `dotnet
+publish` verified for both projects — API output has `LexiLink.API.dll` + **84**
+SQL scripts under `Database/Structure` (matches source), migrator output has
+`LexiLink.DatabaseMigrator.dll`; both exit 0 (only pre-existing nullable
+warnings). Full image build (base-image pull + runtime) validates on the
+server at GO4.
+
+**GO-A ✅ done (uncommitted on `main`, 2026-06-01):** production auth —
+**launch blocker fixed.** Discovered while planning GO2's `.env.example`:
+Production had no usable `IExternalIdentityVerifier`. `Authentication:Mode`
+must be `ProductionJwt` (DevelopmentBearer blocked) and `TokenExchange:Mode`
+must be non-dev (DevelopmentExternalToken blocked) → only `Disabled` was
+selectable → `DisabledExternalIdentityVerifier` makes `POST /auth/token`
+return 401 for everything → **no player, not even a guest, could authenticate;
+the deployed game would be unplayable.** Fix (user chose the minimal
+guest-only path): added `ExternalIdentityValidationMode.GuestDevice` +
+`GuestExternalIdentityVerifier` (accepts only the `Guest` provider with the
+existing `dev:Guest:{deviceId}` client handshake — the deviceId is the actual
+bearer credential; Apple/Google return `false` until real social sign-in is
+wired), selected via a switch in `Program.cs`. `LexiLinkAuthOptionsValidator`
+already permits any non-`DevelopmentExternalToken` mode in Production, so
+`GuestDevice` is allowed with no validator change and no client change.
+Production sets `Authentication__TokenExchange__Mode=GuestDevice`. Gate: API
+build 0 errors (19 pre-existing warnings); 5/5 focused
+`GuestExternalIdentityVerifierTests` (Guest-accept, token-mismatch reject,
+empty-id reject, Apple/Google reject). **Follow-up (not GO):** real
+server-side Google/Apple ID-token verification — and **gate real-money IAP
+until it exists** (guest accounts are device-bound). See `ROADMAP.md > Sprint
+GO > Deliberate non-actions`.
+
+**GO2 ✅ done (uncommitted on `main`, 2026-06-01):** compose stack + Caddy +
+env template. Added `docker-compose.yml` (services: `postgres` 17 + named
+`pgdata` volume + `pg_isready` healthcheck; `migrate` one-shot that overrides
+the image entrypoint to run the DbUp migrator against `/app/Database/Structure`,
+gated on postgres-healthy, `restart: no`; `api` gated on
+migrate-completed-successfully + postgres-healthy, `curl /health/live`
+healthcheck, `expose 8080`; `caddy` 80/443 + `caddy_data`/`caddy_config`
+volumes). Shared image/build/env via a YAML `x-app` anchor; `${LEXILINK_IMAGE:-lexilink:local}`
+(GO6 swaps to the GHCR tag). Added `Caddyfile` (`api.{$LEXILINK_DOMAIN}`
+reverse-proxies `api:8080`, auto-TLS via `{$LEXILINK_ACME_EMAIL}`) and
+`.env.example` documenting every prod key (domain/ACME, Postgres creds +
+matching connection string with `Host=postgres`, ProductionJwt + 32+ char
+signing key, `TokenExchange__Mode=GuestDevice`, admin bootstrap emails, empty
+CORS). Added `curl` to the Dockerfile runtime stage for the api healthcheck.
+**Validation:** compose YAML + `<<: *app` anchor merge + `depends_on`
+conditions parse-validated; Docker is unavailable on the dev Mac so a full
+`docker compose up` validates on the server at GO4. **Secondary gap surfaced:**
+production **admin** login is also unimplemented (`AdminTokenExchange__Mode=Disabled`
+→ `/auth/admin/token` 401); not a launch blocker (content imports via the
+`CategoryImporter` CLI; the game needs no admin intervention) — production
+admin verifier is a follow-up. Recorded in `ROADMAP.md > Sprint GO`.
+
+**GO3 ✅ done (uncommitted on `main`, 2026-06-01):** store build readiness
+(no web). Added `docs/MOBILE_RELEASE.md` — prod API wiring
+(`--dart-define LEXILINK_API_BASE_URL=https://api.<domain>`; the default is
+`localhost`, so a release build *must* pass it), real-AdMob id wiring
+(`ADMOB_INTERSTITIAL/REWARDED_AD_UNIT_ID` defines + manifest/plist app ids) +
+the SSV callback URL (`https://api.<domain>/ads/rewarded/callback`), IAP
+product setup (gated until social sign-in), `flutter build appbundle`/`ipa`
+release commands, and a store-readiness checklist. **Blockers surfaced for the
+operator:** Android `applicationId` (`build.gradle.kts`) and iOS bundle id
+(`project.pbxproj`) are still the **`com.example.*` Flutter placeholders →
+cannot publish**; must become a real reverse-DNS id (e.g. `com.lexilink.app`).
+Version is `0.1.0+1` (bump to `1.0.0+1`); display name is `lexilink_app`
+(→ `LexiLink`). Signing material, store accounts, and real credentials are
+operator-owned. No code change this slice (docs only).
+
+**Next action: GO4** — server provisioning + first deploy: install Docker on
+the Ubuntu box, clone repo, create `/opt/lexilink/.env` (from `.env.example`),
+DNS A record for `api.<domain>`, `docker compose up -d --build`, Caddy obtains
+TLS, migrator applies scripts, verify `/health/ready` over HTTPS + guest→
+category smoke. **Needs the domain** (still not acquired).
+
+### Previous Sprint Context
+
 **Sprint CL — Content Localization (Phase 2) — closed 2026-06-01.** Goal: move from
 localized app chrome to localized **game content**. Unlike UI strings,
 word-graph content is authored per language; a Turkish graph cannot be
@@ -74,10 +167,22 @@ boundary, a content-ops checklist, and out-of-scope notes. No code change.
 Sprint CL closed. Gate: docs-only slice; no code/test churn (existing CL3
 gate — solution build 0/0, ArchTests 67/67, Flutter 173/173 — stands).
 
-**Next action:** Phase 3 (backend rule/validation/error-message localization
-via stable error codes + client translation) when prioritized, or a new
-sprint. DE/FR/ES content authoring is operator/content-ops owned and follows
-`docs/CONTENT_AUTHORING.md` — no repo slice queued.
+**Localization Phase 3 — deferred (decided 2026-06-01).** Backend
+rule/validation/error-message localization (stable error codes + client
+translation) is **parked in the backlog**, not cancelled. Rationale: this is
+a mobile game; ~95% of the 78 `IBusinessRule` messages are internal
+invariants a player never sees, and the handful a player actually hits
+(insufficient energy/diamond, daily cap, game-state) don't justify a full
+5-language sprint + cubit rewiring + test churn. If revisited, prefer a
+**mini-slice** localizing only the ~6 player-facing messages; full Phase 3
+only on a concrete external need. Seam already exists (middleware emits
+`extensions["rule"]`; frontend `ApiProblemDetails` reads extensions). Full
+rationale in `ROADMAP.md > Sprint L10N > Phase 3 — deferred`.
+
+**Next action:** open — no localization slice queued. DE/FR/ES content
+authoring is operator/content-ops owned and follows `docs/CONTENT_AUTHORING.md`.
+Both localization phases that needed code (Phase 1 UI, Phase 2 content model)
+are closed; next direction is a new product sprint to be chosen with the user.
 
 ### Previous Sprint Context
 

@@ -4,6 +4,100 @@ History log of delivered work. Newest at top. Append entries when significant wo
 
 ---
 
+## Sprint GO — Production Launch / Hetzner (in progress)
+
+Take LexiLink live on a single Hetzner Ubuntu VPS via Docker Compose
+(Caddy auto-HTTPS → .NET 10 API, PostgreSQL 17 container, DbUp migrator
+one-shot). API only — the game ships to the stores; no web frontend.
+Locked decisions + slice plan in `ROADMAP.md > Sprint GO`.
+
+### Slice GO3 — Store build readiness (2026-06-01, working tree)
+
+- Added `docs/MOBILE_RELEASE.md`: how to point a release build at the
+  production API (`--dart-define LEXILINK_API_BASE_URL=https://api.<domain>`;
+  default is localhost), real AdMob id wiring (ad-unit defines + manifest/plist
+  app ids) and the SSV callback URL, IAP product setup (gated until social
+  sign-in), `flutter build appbundle`/`ipa` release commands, and a full
+  store-readiness checklist.
+- Surfaced operator-owned blockers: Android `applicationId`
+  (`android/app/build.gradle.kts`) and iOS bundle id (`project.pbxproj`) are
+  the `com.example.*` Flutter placeholders and cannot be published — must
+  become a real reverse-DNS id. Version `0.1.0+1` should bump to `1.0.0+1`;
+  display name `lexilink_app` → `LexiLink`. Signing, store accounts, and real
+  AdMob/Apple/Google credentials are operator-owned.
+- Docs-only slice; no app code change.
+
+### Slice GO2 — Compose stack + Caddy + env template (2026-06-01, working tree)
+
+- Added `docker-compose.yml`: `postgres:17` (named `pgdata` volume,
+  `pg_isready` healthcheck), `migrate` one-shot (overrides entrypoint to run
+  the DbUp migrator against `/app/Database/Structure`, gated on
+  postgres-healthy, `restart: no`), `api` (gated on
+  migrate-completed-successfully + postgres-healthy, `curl /health/live`
+  healthcheck, `expose 8080`), and `caddy` (80/443, `caddy_data`/`caddy_config`
+  volumes). Shared image/build/env via an `x-app` YAML anchor;
+  `${LEXILINK_IMAGE:-lexilink:local}` (GO6 swaps to the GHCR tag).
+- Added `Caddyfile`: `api.{$LEXILINK_DOMAIN}` reverse-proxies `api:8080` with
+  automatic Let's Encrypt TLS (`{$LEXILINK_ACME_EMAIL}`). API only — no web.
+- Added `.env.example` documenting every production key: domain/ACME email,
+  Postgres credentials + a matching `Host=postgres` connection string,
+  ProductionJwt issuer/audience/32+ char signing key,
+  `TokenExchange__Mode=GuestDevice` (guest login), admin bootstrap emails,
+  and empty CORS (mobile-only).
+- Added `curl` to the Dockerfile runtime stage for the api healthcheck.
+- Validation: compose YAML, `<<: *app` anchor merge, and `depends_on`
+  conditions parse-validated. Docker is unavailable on the dev Mac, so a full
+  `docker compose up` is validated on the server at GO4.
+- Secondary gap surfaced: production **admin** login is also unimplemented
+  (`AdminTokenExchange__Mode=Disabled` → `/auth/admin/token` 401). Not a
+  launch blocker (content imports via the `CategoryImporter` CLI; the game
+  needs no admin intervention to run); a production admin verifier is a
+  follow-up.
+
+### Slice GO-A — Production auth (launch blocker) (2026-06-01, working tree)
+
+- Found while planning GO2: Production had no usable identity verifier.
+  `POST /auth/token` always calls `IExternalIdentityVerifier.VerifyAsync`,
+  and the only Production-selectable verifier was
+  `DisabledExternalIdentityVerifier` (returns `false`) → every token request
+  401'd → no player, not even a guest, could authenticate → the deployed
+  game would be unplayable.
+- Added `ExternalIdentityValidationMode.GuestDevice` and
+  `GuestExternalIdentityVerifier`: accepts only the `Guest` provider with the
+  existing `dev:Guest:{deviceId}` client handshake (the device id is the
+  actual bearer credential); Apple/Google return `false` until real social
+  sign-in is wired. Wired via a switch in `Program.cs`. No client change.
+- `LexiLinkAuthOptionsValidator` already allows any non-`DevelopmentExternalToken`
+  mode in Production, so `GuestDevice` is permitted with no validator change.
+  Production sets `Authentication__TokenExchange__Mode=GuestDevice`.
+- Gate: API build 0 errors (19 pre-existing warnings);
+  `GuestExternalIdentityVerifierTests` 5/5 (Guest accept, token mismatch
+  reject, empty external id reject, Apple/Google reject).
+- Follow-up (not part of Sprint GO): real server-side Google/Apple ID-token
+  verification; gate real-money IAP until it exists (guest accounts are
+  device-bound).
+
+### Slice GO1 — Containerization (2026-06-01, working tree)
+
+- Added root `Dockerfile`: multi-stage (`dotnet/sdk:10.0` build →
+  `aspnet:10.0` runtime), one image holding the API (`/app`) and the DbUp
+  migrator (`/app/migrator`). `ASPNETCORE_URLS=http://+:8080`,
+  `ASPNETCORE_ENVIRONMENT=Production`, `EXPOSE 8080`, default `ENTRYPOINT`
+  runs the API; the compose `migrate` one-shot overrides it.
+- The API csproj already copies `Database/Structure/**/*.sql` into the
+  publish output, so the migrator one-shot and the API `/health/ready`
+  journal check both read SQL from `/app/Database/Structure` (single source,
+  no extra copy).
+- Added `.dockerignore`: excludes `bin/`/`obj/`, `frontend/` (no web build),
+  docs/git/CI/scripts, local secrets (`.env*` except `.env.example`), and
+  iCloud `* 2.*` duplicates (which would break DbUp).
+- Local Docker is unavailable on the dev Mac, so the full image build is
+  validated on the server at GO4. Release `dotnet publish` was verified
+  locally for both projects: API output → `LexiLink.API.dll` + 84 SQL
+  scripts under `Database/Structure` (matches source); migrator output →
+  `LexiLink.DatabaseMigrator.dll`. Both exit 0 (only pre-existing nullable
+  warnings).
+
 ## Sprint CL — Content Localization / Phase 2 (closed 2026-06-01)
 
 Second localization sprint. Phase 1 localized app UI; Phase 2 localizes

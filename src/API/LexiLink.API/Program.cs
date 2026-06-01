@@ -208,9 +208,12 @@ builder.Services
         _ => { });
 builder.Services.AddSingleton<IJwtTokenIssuer, JwtTokenIssuer>();
 builder.Services.AddSingleton<IExternalIdentityVerifier>(
-    authOptions.TokenExchange.Mode == ExternalIdentityValidationMode.DevelopmentExternalToken
-        ? new DevelopmentExternalIdentityVerifier()
-        : new DisabledExternalIdentityVerifier());
+    authOptions.TokenExchange.Mode switch
+    {
+        ExternalIdentityValidationMode.DevelopmentExternalToken => new DevelopmentExternalIdentityVerifier(),
+        ExternalIdentityValidationMode.GuestDevice => new GuestExternalIdentityVerifier(),
+        _ => new DisabledExternalIdentityVerifier()
+    });
 builder.Services.AddSingleton<IExternalAdminIdentityVerifier>(
     authOptions.AdminTokenExchange.Mode == ExternalIdentityValidationMode.DevelopmentExternalToken
         ? new DevelopmentExternalAdminIdentityVerifier()

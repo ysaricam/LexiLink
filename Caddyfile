@@ -1,0 +1,13 @@
+# LexiLink reverse proxy — API only (mobile-only game; no web frontend served).
+# Domain + ACME email are injected from the environment by the caddy service
+# (see docker-compose.yml / .env). Caddy obtains and renews a Let's Encrypt
+# certificate automatically; a real, DNS-resolvable domain is required.
+
+{
+	email {$LEXILINK_ACME_EMAIL}
+}
+
+api.{$LEXILINK_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy api:8080
+}

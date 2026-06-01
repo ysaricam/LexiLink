@@ -20,6 +20,8 @@ All project docs live under `docs/`. Read the relevant one before non-trivial ch
 - **`docs/progress.md`** — What's been delivered and when.
 - **`docs/OPERATIONS.md`** — Runtime config, required env vars, health checks, operational endpoints, and migration/run guidance.
 - **`docs/CONTENT_AUTHORING.md`** — Content-ops handoff for authoring/importing per-language Category+Link word graphs (JSON schema, importer usage, validation, verify checklist). Authoring is a content task, not code.
+- **`docs/MOBILE_RELEASE.md`** — Store-build readiness for the Flutter app (prod API wiring, real AdMob/IAP ids, release build commands, store-readiness checklist). Mobile-only; signing/store/credentials are operator-owned.
+- **`docs/LAUNCH_CHECKLIST.md`** — Operator action items for go-live (domain/DNS, server first deploy, content seeding, store build, ads/IAP creds). The human/credential/server work that can't live in code.
 
 ## Commands
 

@@ -26,8 +26,15 @@ unsafe development mode is enabled.
 | `Authentication__Jwt__Audience` | Yes for `ProductionJwt` | empty | JWT audience expected by API token validation. |
 | `Authentication__Jwt__SigningKey` | Yes for `ProductionJwt` | empty | HMAC signing key. Must be at least 32 characters. Treat as a secret. |
 | `Authentication__Jwt__AccessTokenLifetimeMinutes` | No | `60` | First-party access token lifetime. |
-| `Authentication__TokenExchange__Mode` | No | `Disabled` | `DevelopmentExternalToken` is allowed only outside `Production`. |
+| `Authentication__TokenExchange__Mode` | Yes (for guest login) | `Disabled` | Controls `POST /auth/token`. `Disabled` rejects all token exchange → **no player can authenticate**. Use **`GuestDevice`** in Production to enable the guest-first flow (Guest provider only; Apple/Google rejected until real social sign-in is wired). `DevelopmentExternalToken` is allowed only outside `Production`. |
 | `Authentication__AdminTokenExchange__Mode` | No | `Disabled` | Controls `POST /auth/admin/token`. `DevelopmentExternalToken` is allowed only outside `Production`. |
+
+> **Guest auth note.** A guest's identity is its client-generated device id
+> (a high-entropy random value the device keeps), which is the actual bearer
+> credential. `GuestDevice` mode accepts the Guest provider with that handshake
+> and rejects Apple/Google. Real social sign-in (server-side Google/Apple
+> ID-token verification) is a planned follow-up; until then, leaving
+> `TokenExchange__Mode=Disabled` in Production means even guests get 401.
 
 Production baseline:
 
@@ -38,7 +45,7 @@ Authentication__Mode=ProductionJwt
 Authentication__Jwt__Issuer='LexiLink'
 Authentication__Jwt__Audience='LexiLink.Api'
 Authentication__Jwt__SigningKey='<at-least-32-character-secret>'
-Authentication__TokenExchange__Mode=Disabled
+Authentication__TokenExchange__Mode=GuestDevice
 ```
 
 ## Development Defaults
@@ -86,12 +93,14 @@ Operational notes:
   current avatar and calling `PATCH /players/{id}/profile`.
 - `Player.Locale` is validated as `^[a-z]{2}-[A-Z]{2}$`; use the
   region-qualified form when calling backend APIs.
-- Phase 1 localizes app UI strings only. Game content remains Turkish until
-  Phase 2 introduces per-language content/word graphs. Phase 2 has started:
-  `games.Categories.Language` stores the content locale, existing content
-  defaults to `tr-TR`, and `GET /categories?locale=xx-XX` filters player
-  category lists by language. Backend rule, validation, and mixed cubit/API
-  error messages remain English until Phase 3 error-code translation.
+- Phase 1 localizes app UI strings only. Phase 2 (Sprint CL) added the
+  per-language content model: `games.Categories.Language` stores the content
+  locale, existing content defaults to `tr-TR`, and
+  `GET /categories?locale=xx-XX` filters player category lists by language
+  (authoring handoff in `CONTENT_AUTHORING.md`). Backend rule, validation, and
+  mixed cubit/API error messages remain **English** — Phase 3 (error-code
+  translation) is **deferred** (low ROI for a mobile game; see
+  `ROADMAP.md > Sprint L10N > Phase 3 — deferred`).
 
 Content import:
 

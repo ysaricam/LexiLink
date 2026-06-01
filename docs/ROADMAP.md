@@ -4,6 +4,70 @@ The forward-looking sprint plan. *What's already shipped* lives in `progress.md`
 
 ---
 
+## Sprint GO 🔵 active — Production Launch (Hetzner)
+
+Goal: take LexiLink live on a single Hetzner Ubuntu VPS. The game ships to
+the **iOS/Android stores** — there is **no browser/web frontend**; the server
+hosts the **API only**. Backend runs as Docker Compose: Caddy (auto-HTTPS)
+reverse-proxies the .NET 10 API; PostgreSQL 17 runs in a container on the same
+box; the DbUp migrator runs as a one-shot before the API on every deploy.
+
+### Decisions (locked)
+
+| Decision | Choice |
+| --- | --- |
+| Orchestration | **Docker Compose** on one Ubuntu VPS (API + Postgres + Caddy + one-shot migrator). |
+| Database | **PostgreSQL 17 in a container** on the same box, named volume + nightly `pg_dump`. Managed DB deferred. |
+| Reverse proxy / TLS | **Caddy** — automatic Let's Encrypt TLS, minimal config. |
+| Frontend scope | **API only.** Game is mobile-only via the stores; **no Flutter web** is built or served. CORS stays empty/locked (native clients don't enforce CORS). |
+| Routing | `api.<domain>` → API container (port 8080). Apex left free for a future marketing site. |
+| Registry (GO6) | **GHCR** (GitHub Container Registry). |
+| Image shape | **Single image** holds both the API (`/app`) and the DbUp migrator (`/app/migrator`); the API csproj already copies `Database/Structure/**/*.sql` into the publish output, so both the migrator one-shot and the API `/health/ready` journal check read SQL from `/app/Database/Structure`. |
+| Secrets | Server-side `/opt/lexilink/.env` (root-only), never committed. `.env.example` documents the keys. |
+| Domain | **Not yet acquired.** Required for Let's Encrypt TLS (no cert for bare IP). Blocks **GO4 only**; GO1–GO3 proceed without it. Acquire a cheap domain before GO4 (interim `sslip.io`/DuckDNS works for HTTPS testing). |
+
+### Slice plan (6 slices)
+
+| Slice | Status | Content |
+| --- | --- | --- |
+| **GO1** | ✅ Done | Containerization. Multi-stage `Dockerfile` (.NET 10 SDK build → `aspnet:10.0` runtime), publishes API → `/app` and migrator → `/app/migrator`; `ASPNETCORE_URLS=http://+:8080`; `.dockerignore`. SQL scripts ship via the API publish output (`/app/Database/Structure`). Local Docker unavailable on the dev Mac → image build is validated on the server at GO4. |
+| **GO-A** | ✅ Done | **Production auth (launch blocker).** Production had no usable identity verifier → `POST /auth/token` 401'd every request (`DisabledExternalIdentityVerifier`), so no player — not even a guest — could log in. Added `ExternalIdentityValidationMode.GuestDevice` + `GuestExternalIdentityVerifier` (accepts the Guest provider with the existing client handshake, rejects Apple/Google) wired in `Program.cs`; allowed in Production. No client change. Set `Authentication__TokenExchange__Mode=GuestDevice` in Production. Gate: API build 0 errors, 5/5 focused verifier unit tests. Real Google/Apple sign-in is a follow-up (see non-actions). |
+| **GO2** | ✅ Done | `docker-compose.yml` (postgres + named volume + healthcheck; `migrate` one-shot `depends_on` postgres-healthy, runs `dotnet /app/migrator/...dll "$ConnectionStrings__LexiLinkDb" /app/Database/Structure`; `api` `depends_on` migrate-completed + postgres-healthy, curl `/health/live` healthcheck; `caddy` 80/443 + named volumes) + `Caddyfile` (`api.{$LEXILINK_DOMAIN}` reverse proxy `api:8080`, auto-TLS via `{$LEXILINK_ACME_EMAIL}`) + `.env.example` (all prod env). Shared image/build via a YAML anchor; `curl` added to the Dockerfile runtime for the healthcheck. YAML + anchor-merge validated (Docker unavailable on the dev Mac → full `compose up` validates at GO4). |
+| **GO3** | ✅ Done | Store build readiness (no web). Added `docs/MOBILE_RELEASE.md`: prod API wiring (`--dart-define LEXILINK_API_BASE_URL`), real-AdMob id wiring + SSV callback URL, IAP product setup (gated until social sign-in), `flutter build appbundle/ipa` release commands, and a store-readiness checklist. **Surfaced blockers:** Android `applicationId`/iOS bundle id are still the `com.example.*` Flutter placeholders (cannot publish — need a real reverse-DNS id), version is `0.1.0+1` (bump for release), display name is `lexilink_app`. Signing + store accounts + real creds are operator-owned. |
+| **GO4** | ⏭ Next | Server provisioning + first deploy. Install Docker on the Ubuntu box, clone repo, create `/opt/lexilink/.env`, DNS A record for `api.<domain>`, `docker compose up`, Caddy obtains TLS, migrator applies scripts, verify `/health/ready` over HTTPS + guest→category smoke. |
+| **GO5** | ⏭ | Backups + ops hardening. Nightly `pg_dump` + restore drill, `ufw` (22/80/443 only), SSH hardening, container restart policies + resource limits, log rotation. Write `docs/DEPLOYMENT.md` runbook (deploy / rollback / restore / rotate secrets). |
+| **GO6** | ⏭ *(optional, last)* | CI/CD. GitHub Actions on tag/release → build image → push to **GHCR** → SSH deploy (pull + migrate + up). Until then, manual deploy is documented. |
+
+### Deliberate non-actions (launch v1)
+
+- **No web frontend.** Mobile-only via stores; no Flutter web build/serve.
+- **No multi-server/HA, no Kubernetes, no managed DB, no CDN.** Single VPS.
+- **No store credentials in repo.** AdMob/Apple/Google ids + IAP/SSV creds
+  are operator-owned and gate real ads/IAP — independent of server go-live.
+  The game + Diamond economy work server-side without them.
+- **No real social sign-in at launch.** GO-A ships a guest-only production
+  verifier; server-side Google/Apple ID-token verification is a planned
+  fast-follow. Guest accounts are device-bound, so **real-money IAP should
+  not go live until social sign-in exists** (purchase loss on device change).
+  Apple also requires Sign in with Apple once Google sign-in is offered.
+- **No production admin-console login at launch.** Surfaced during GO2:
+  `POST /auth/admin/token` has no production verifier either
+  (`AdminTokenExchange__Mode=Disabled` → 401), so the admin console is not
+  usable in production yet. Not a launch blocker — content is imported via the
+  `CategoryImporter` CLI against the DB and the game needs no admin
+  intervention to run. A production admin verifier is a follow-up.
+- **Backend message localization stays deferred** (see Phase 3 above).
+
+### Slice ordering rationale
+
+Containerize first (GO1) so the runtime artifact is fixed before any host
+work. Compose + Caddy + secrets (GO2) assemble the stack locally-describable
+before touching the server. Store build config (GO3) is independent and can
+run in parallel. First deploy (GO4) needs the domain. Hardening + backups
+(GO5) before real traffic. CI/CD (GO6) automates the now-proven manual deploy.
+
+---
+
 ## Sprint CL ✅ closed (2026-06-01) — Content Localization (Phase 2)
 
 Goal: localize game content by moving Categories/Links toward
@@ -58,8 +122,26 @@ this sprint.
 | Phase | Scope | Status |
 | --- | --- | --- |
 | **Phase 1 — UI i18n** | All app UI strings in 5 languages | **Closed in Sprint L10N** |
-| **Phase 2 — Content model** | `language` on Category, filter content by player locale, author TR+EN (then DE/FR/ES) word graphs | Next (model + authoring later) |
-| **Phase 3 — Backend messages** | Rule/validation → stable error codes + client translation; admin-authored content multilingual | Deferred |
+| **Phase 2 — Content model** | `language` on Category, filter content by player locale, author TR+EN (then DE/FR/ES) word graphs | **Closed in Sprint CL** (code path; DE/FR/ES authoring is content-ops, see `CONTENT_AUTHORING.md`) |
+| **Phase 3 — Backend messages** | Rule/validation → stable error codes + client translation; admin-authored content multilingual | **Deferred (low ROI) — decided 2026-06-01** |
+
+#### Phase 3 — deferred (decided 2026-06-01)
+
+Not started; parked in the backlog. **Why:** LexiLink is a mobile game and of
+the ~78 `IBusinessRule` messages across 12 modules, the vast majority are
+internal invariants (content/admin/"impossible-from-UI" cases) a normal
+player never sees. The errors a player actually hits in normal play are a
+small handful (insufficient energy/diamond, daily cap reached, game-state).
+Localizing all 78 rules + generic API errors in 5 languages + rewiring cubits
++ test churn is a full sprint for value ~95% of users never see → poor ROI.
+
+**If it resurfaces:** prefer a **mini-slice** — error-code + l10n for only the
+~6 player-facing messages, leaving internal-invariant messages English. Full
+Phase 3 only on a concrete external need (store review, regulation, "all
+surfaces must be multilingual"). The seam already exists: the API
+`ExceptionHandlingMiddleware` emits `extensions["rule"]` (rule class name) and
+the frontend `ApiProblemDetails` (`api_error.dart`) reads ProblemDetails
+extensions.
 
 ### Decisions (locked)
 
