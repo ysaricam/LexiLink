@@ -1,109 +1,113 @@
-# LAUNCH_CHECKLIST.md — Operator action items for go-live
+# LAUNCH_CHECKLIST.md — Canlıya alma için operatör görevleri
 
-Everything **you** (the operator) need to do to take LexiLink live. The repo
-side (Docker image, compose stack, Caddy, prod guest auth) is done in
-Sprint GO; this list is the human/credential/server work that can't live in
-code. Work top to bottom — sections are ordered by dependency.
+LexiLink'i canlıya almak için **senin** (operatör) yapman gereken her şey.
+Repo tarafı (Docker imajı, compose stack, Caddy, prod guest auth) Sprint GO'da
+tamamlandı; bu liste koda giremeyecek olan insan/kimlik-bilgisi/sunucu işleri.
+Yukarıdan aşağı ilerle — bölümler bağımlılık sırasına göre dizildi.
 
-Deeper references: `OPERATIONS.md` (config/endpoints), `MOBILE_RELEASE.md`
-(store build), `ROADMAP.md > Sprint GO` (plan + decisions). Server hardening,
-backups, and a full deploy/rollback runbook arrive in **GO5**
-(`docs/DEPLOYMENT.md`); CI/CD via GHCR in **GO6**.
+Detay referanslar: `OPERATIONS.md` (config/endpoint'ler), `MOBILE_RELEASE.md`
+(store build), `ROADMAP.md > Sprint GO` (plan + kararlar). Sunucu sertleştirme,
+yedekleme ve tam deploy/rollback runbook'u **GO5**'te
+(`docs/DEPLOYMENT.md`); GHCR ile CI/CD **GO6**'da gelecek.
 
 ---
 
-## 0. Prerequisites (do first — they block everything else)
+## 0. Önkoşullar (önce bunlar — gerisini bloklar)
 
-- [ ] **Buy a domain.** Required for HTTPS — Let's Encrypt won't issue a
-      certificate for a bare IP. ~€10/yr (Cloudflare, Namecheap, etc.).
-- [ ] **DNS:** create an **A record** `api.<domain>` → your Hetzner server IP.
-      (The apex `<domain>` can stay free for a future site.)
-- [ ] **Pick a real app id** (reverse-DNS), e.g. `com.lexilink.app`. Used for
-      both stores and AdMob/IAP registration. Avoid `com.example.*`.
+- [ ] **Domain al.** HTTPS için şart — Let's Encrypt çıplak IP'ye sertifika
+      vermez. ~€10/yıl (Cloudflare, Namecheap vb.).
+- [ ] **DNS:** `api.<domain>` için bir **A kaydı** oluştur → Hetzner sunucu
+      IP'n. (Apex `<domain>` ileride bir site için boş kalabilir.)
+- [ ] **Gerçek bir app id seç** (reverse-DNS), ör. `com.lexilink.app`. Hem
+      store'lar hem AdMob/IAP kaydı için kullanılır. `com.example.*` olmaz.
 
-## 1. Server first deploy (GO4)
+## 1. Sunucuda ilk deploy (GO4)
 
-On the Ubuntu box (SSH in):
+Ubuntu kutusunda (SSH ile bağlan):
 
-- [ ] **Install Docker Engine + Compose plugin** (Docker's official apt repo).
-- [ ] **Get the code/image on the box** — clone the repo (builds locally) or,
-      after GO6, pull the GHCR image.
-- [ ] **Create the secrets file** `/opt/lexilink/.env` from `.env.example`,
-      then `chmod 600`. Fill in:
-  - [ ] `LEXILINK_DOMAIN` = your domain, `LEXILINK_ACME_EMAIL` = your email
-  - [ ] `POSTGRES_PASSWORD` = long random value
-  - [ ] `ConnectionStrings__LexiLinkDb` — same DB/user/password as the
-        `POSTGRES_*` values, `Host=postgres`
-  - [ ] `Authentication__Jwt__SigningKey` = 32+ char random secret
+- [ ] **Docker Engine + Compose plugin kur** (Docker'ın resmi apt deposu).
+- [ ] **Kodu/imajı kutuya getir** — repo'yu clone'la (yerinde build eder) ya
+      da GO6'dan sonra GHCR imajını çek.
+- [ ] **Secret dosyasını oluştur** `/opt/lexilink/.env` (`.env.example`'dan),
+      sonra `chmod 600`. Doldur:
+  - [ ] `LEXILINK_DOMAIN` = domain'in, `LEXILINK_ACME_EMAIL` = e-postan
+  - [ ] `POSTGRES_PASSWORD` = uzun rastgele bir değer
+  - [ ] `ConnectionStrings__LexiLinkDb` — `POSTGRES_*` değerleriyle aynı
+        DB/kullanıcı/şifre, `Host=postgres`
+  - [ ] `Authentication__Jwt__SigningKey` = 32+ karakter rastgele secret
         (`openssl rand -base64 48`)
-  - [ ] `Administration__Bootstrap__AdminEmails__0` = your admin email
-  - [ ] confirm `Authentication__TokenExchange__Mode=GuestDevice` (guest login)
-- [ ] **Bring it up:** `docker compose --env-file /opt/lexilink/.env up -d --build`
-      (migrator runs first, then the API; Caddy fetches TLS automatically).
-- [ ] **Verify:** `curl https://api.<domain>/health/ready` returns healthy;
-      then a guest→category smoke from a client/build.
+  - [ ] `Administration__Bootstrap__AdminEmails__0` = admin e-postan
+  - [ ] `Authentication__TokenExchange__Mode=GuestDevice` olduğunu doğrula
+        (guest login)
+- [ ] **Ayağa kaldır:** `docker compose --env-file /opt/lexilink/.env up -d --build`
+      (önce migrator çalışır, sonra API; Caddy TLS'i otomatik alır).
+- [ ] **Doğrula:** `curl https://api.<domain>/health/ready` healthy dönsün;
+      ardından bir client/build ile guest→category smoke.
 
-## 2. Seed game content (the prod DB starts empty!)
+## 2. Oyun içeriğini yükle (prod DB boş başlar!)
 
-The deploy creates the **schema** but **no Categories/Links** — players would
-see an empty game until you import content.
+Deploy yalnızca **şemayı** oluşturur, **hiç Category/Link yoktur** — sen
+içerik yüklemezsen oyuncu boş bir oyun görür.
 
-- [ ] Import at least one category with the `CategoryImporter` against the prod
-      DB (Postgres is not exposed publicly, so do this over an SSH tunnel to
-      the `postgres` container, or run the importer on the box). See
-      `CONTENT_AUTHORING.md` for the command and the JSON format. Starter
-      content already in the repo: `docs/category-spor.json` (tr-TR),
-      `docs/category-animals-en.json` (en-US).
+- [ ] En az bir kategoriyi `CategoryImporter` ile prod DB'ye import et
+      (Postgres dışarı açık değil; bunu `postgres` container'ına SSH tüneliyle
+      ya da kutuda importer çalıştırarak yap). Komut ve JSON formatı için
+      `CONTENT_AUTHORING.md`. Repo'da hazır başlangıç içeriği:
+      `docs/category-spor.json` (tr-TR), `docs/category-animals-en.json`
+      (en-US).
 
-## 3. Mobile app + store build (GO3 → stores)
+## 3. Mobil uygulama + store build (GO3 → store'lar)
 
-In `frontend/` (see `MOBILE_RELEASE.md` for exact commands):
+`frontend/` içinde (tam komutlar için `MOBILE_RELEASE.md`):
 
-- [ ] Change **Android `applicationId`** (`android/app/build.gradle.kts`
-      `namespace` + `applicationId`) and **iOS bundle id**
-      (`ios/Runner.xcodeproj/project.pbxproj` `PRODUCT_BUNDLE_IDENTIFIER`) from
-      `com.example.*` to your real id.
-- [ ] Set the **display name** to `LexiLink` (`android:label`,
+- [ ] **Android `applicationId`** (`android/app/build.gradle.kts`
+      `namespace` + `applicationId`) ve **iOS bundle id**
+      (`ios/Runner.xcodeproj/project.pbxproj` `PRODUCT_BUNDLE_IDENTIFIER`)
+      değerlerini `com.example.*`'dan gerçek id'ne değiştir.
+- [ ] **Görünen adı** `LexiLink` yap (`android:label`,
       `CFBundleDisplayName`/`CFBundleName`).
-- [ ] Bump **version** in `pubspec.yaml` (`0.1.0+1` → `1.0.0+1`).
-- [ ] Set up **signing**: Android upload keystore + `key.properties`; iOS
-      distribution certificate + provisioning profile.
-- [ ] **Build** pointing at production:
+- [ ] `pubspec.yaml` **sürümünü** yükselt (`0.1.0+1` → `1.0.0+1`).
+- [ ] **Signing** kur: Android upload keystore + `key.properties`; iOS
+      distribution sertifikası + provisioning profile.
+- [ ] Production'a bakacak şekilde **build al:**
       `flutter build appbundle --release --dart-define=LEXILINK_API_BASE_URL=https://api.<domain> ...`
-      (and `ipa` for iOS), with real AdMob ad-unit defines.
-- [ ] Create the apps in **App Store Connect** + **Google Play Console** under
-      the real bundle ids; fill privacy/data-safety, screenshots, descriptions,
-      ratings.
+      (iOS için `ipa`), gerçek AdMob ad-unit define'larıyla.
+- [ ] Uygulamaları gerçek bundle id'lerle **App Store Connect** + **Google
+      Play Console**'da oluştur; gizlilik/data-safety, ekran görüntüleri,
+      açıklamalar, yaş sınırını doldur.
 
-## 4. Ads & IAP credentials (operator-owned)
+## 4. Reklam & IAP kimlik bilgileri (operatör-sahipli)
 
-- [ ] **AdMob:** real account → set app ids in `AndroidManifest.xml`
-      (`APPLICATION_ID`) + `Info.plist` (`GADApplicationIdentifier`), pass real
-      ad-unit ids via `--dart-define`, set backend `Ads__Ssv__Mode=Production`
-      with real keys, and point the AdMob **SSV callback** at
-      `https://api.<domain>/ads/rewarded/callback`.
-- [ ] **IAP:** create consumable products (`diamond_100/550/1200/2500`) in both
-      stores; configure backend `Payments:Apple` / `Payments:Google` creds.
-- [ ] ⚠️ **Keep real-money IAP OFF until social sign-in exists** — guest
-      accounts are device-bound, so a purchase would be lost on device change.
+- [ ] **AdMob:** gerçek hesap → app id'leri `AndroidManifest.xml`
+      (`APPLICATION_ID`) + `Info.plist` (`GADApplicationIdentifier`) içine yaz,
+      gerçek ad-unit id'lerini `--dart-define` ile geç, backend
+      `Ads__Ssv__Mode=Production` + gerçek anahtarları ayarla ve AdMob **SSV
+      callback**'ini `https://api.<domain>/ads/rewarded/callback` yap.
+- [ ] **IAP:** consumable ürünleri (`diamond_100/550/1200/2500`) iki store'da
+      oluştur; backend `Payments:Apple` / `Payments:Google` creds'lerini
+      ayarla.
+- [ ] ⚠️ **Gerçek-para IAP'ı social sign-in gelene kadar KAPALI tut** — guest
+      hesaplar cihaza bağlı, cihaz değişince satın alım kaybolur.
 
-## 5. Verify before/at launch
+## 5. Launch öncesi/sırasında doğrulama
 
-- [ ] `https://api.<domain>/health/ready` healthy (DB + migrations).
-- [ ] A release build logs in as guest and loads categories from production.
-- [ ] AdMob test ads work in a test build; rewarded → Diamond lands via the
-      real SSV callback once real ids/keys are set.
-- [ ] iOS ATT + UMP consent prompts appear on a real device.
+- [ ] `https://api.<domain>/health/ready` healthy (DB + migration'lar).
+- [ ] Bir release build guest olarak giriş yapıp production'dan kategorileri
+      yüklesin.
+- [ ] Test build'de AdMob test reklamları çalışsın; gerçek id/anahtar
+      ayarlanınca rewarded → Diamond gerçek SSV callback'iyle düşsün.
+- [ ] Gerçek cihazda iOS ATT + UMP consent ekranları çıksın.
 
 ---
 
-## What's still on the engineering side (not you — we do these)
+## Mühendislik tarafında kalanlar (sen değil — biz yapacağız)
 
-- **GO5** — backups (`pg_dump` + restore drill), firewall/SSH hardening,
-  container limits, and `docs/DEPLOYMENT.md` deploy/rollback/restore runbook.
-- **GO6** — CI/CD: build → push to GHCR → SSH deploy.
-- **Follow-ups (post-launch):** real Google/Apple **social sign-in**
-  (server-side ID-token verification) — required before enabling real-money
-  IAP; and a **production admin verifier** so the admin console is usable in
-  production (today `AdminTokenExchange__Mode=Disabled` → admin login 401;
-  content is imported via the CLI in the meantime).
+- **GO5** — yedekleme (`pg_dump` + restore tatbikatı), firewall/SSH
+  sertleştirme, container limitleri ve `docs/DEPLOYMENT.md`
+  deploy/rollback/restore runbook'u.
+- **GO6** — CI/CD: build → GHCR'a push → SSH deploy.
+- **Takipler (launch sonrası):** gerçek Google/Apple **social sign-in**
+  (server-side ID-token doğrulama) — gerçek-para IAP'ı açmadan önce gerekli;
+  ve **production admin verifier** ki admin console production'da kullanılsın
+  (bugün `AdminTokenExchange__Mode=Disabled` → admin login 401; o zamana kadar
+  içerik CLI ile yükleniyor).
