@@ -7,8 +7,7 @@ Yukarıdan aşağı ilerle — bölümler bağımlılık sırasına göre dizild
 
 Detay referanslar: `OPERATIONS.md` (config/endpoint'ler), `MOBILE_RELEASE.md`
 (store build), `ROADMAP.md > Sprint GO` (plan + kararlar) ve
-`DEPLOYMENT.md` (deploy/rollback/backup/restore/hardening runbook'u). GHCR ile
-CI/CD **GO6**'da gelecek.
+`DEPLOYMENT.md` (deploy/rollback/backup/restore/hardening/CI-CD runbook'u).
 
 ---
 
@@ -105,19 +104,20 @@ içerik yüklemezsen oyuncu boş bir oyun görür.
 
 Tam komutlar için `DEPLOYMENT.md`.
 
-- [ ] `./scripts/backup-db.sh` ile manuel backup al.
-- [ ] Backup dosyasını sunucu dışına kopyala.
-- [ ] Nightly cron'u kur:
+- [x] `./scripts/backup-db.sh` ile manuel backup al.
+- [x] Backup dosyasını sunucu dışına kopyala.
+- [x] Nightly cron'u kur:
       `17 2 * * * cd /opt/lexilink/app && BACKUP_DIR=/opt/lexilink/backups/postgres RETENTION_DAYS=14 ./scripts/backup-db.sh >> /var/log/lexilink-backup.log 2>&1`
-- [ ] En az bir restore drill yap veya disposable host üzerinde doğrula.
-- [ ] `ufw` ile sadece SSH/HTTP/HTTPS açık kalacak şekilde firewall'u aç.
-- [ ] SSH key-only login doğrulandıktan sonra root/password login'i kapat.
-- [ ] `docker compose ps`, `docker stats --no-stream`,
+- [x] En az bir restore drill yap veya disposable host üzerinde doğrula.
+- [x] `ufw` ile sadece SSH/HTTP/HTTPS açık kalacak şekilde firewall'u aç.
+- [x] SSH key-only login doğrulandıktan sonra root/password login'i kapat.
+- [x] `docker compose ps`, `docker stats --no-stream`,
       `curl -fsS https://api.wordlope.com/health/ready` ile son kontrol yap.
 
 ## Mühendislik tarafında kalanlar (sen değil — biz yapacağız)
 
-- **GO6** — CI/CD: build → GHCR'a push → SSH deploy.
+- **GO6** — CI/CD repo tarafı hazırlandı; GitHub secrets ayarlanıp ilk
+  workflow deploy çalıştırılacak.
 - **Takipler (launch sonrası):** gerçek Google/Apple **social sign-in**
   (server-side ID-token doğrulama) — gerçek-para IAP'ı açmadan önce gerekli;
   ve **production admin verifier** ki admin console production'da kullanılsın

@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-06-01 (Sprint GO — GO5 repo-side backup/hardening runbook prepared.)
+> Last updated: 2026-06-01 (Sprint GO — GO5 closed; backup + server hardening complete.)
 
 ---
 
@@ -99,8 +99,8 @@ operator-owned. No code change this slice (docs only).
 deploy. The backend is installed on the server and `https://api.wordlope.com`
 is healthy. Domain acquisition/DNS/TLS are no longer launch blockers.
 
-**GO5 🔵 in progress (repo-side prepared, 2026-06-01):** backups + ops
-hardening. Added `scripts/backup-db.sh` for PostgreSQL custom-format dumps
+**GO5 ✅ done (operator + repo, 2026-06-01):** backups + ops hardening.
+Repo-side: added `scripts/backup-db.sh` for PostgreSQL custom-format dumps
 with checksum, format verification, local retention pruning, and server-safe
 defaults under `/opt/lexilink/backups/postgres`; added
 `scripts/restore-db.sh` for explicit-confirm restore drills; added
@@ -108,13 +108,25 @@ defaults under `/opt/lexilink/backups/postgres`; added
 offsite copy, restore, rollback, firewall, SSH hardening, resource/log checks,
 secret rotation, and incident commands. `docker-compose.yml` now has log
 rotation plus conservative CPU/memory/pids limits for postgres/api/caddy.
-Validation: script syntax passes locally; Docker/Compose validation must run
-on the server because Docker is unavailable on the dev Mac.
+Server-side: manual backup completed at
+`/opt/lexilink/backups/postgres/lexilink-20260601T171539Z.dump`, copied
+off-server to the operator's PC, restored successfully, nightly backup cron
+installed, `ufw` applied, SSH hardening applied, and
+`https://api.wordlope.com/health/ready` verified healthy afterward.
 
-**Next action: apply GO5 on the server** — run a manual backup, install the
-nightly cron, copy at least one backup off-server, perform/record a restore
-drill, apply `ufw` and SSH hardening, then verify
-`https://api.wordlope.com/health/ready`.
+**GO6 🔵 in progress (repo-side prepared, 2026-06-01):** CI/CD. Added
+`.github/workflows/deploy-production.yml`: manual dispatch or `v*` tag builds
+the Docker image, pushes `ghcr.io/ysaricam/lexilink:<git-sha>` plus `latest`,
+SSHes to the VPS, checks out the exact commit under `/opt/lexilink/app`, runs
+`LEXILINK_IMAGE=<sha-image> ./scripts/deploy.sh`, and verifies
+`https://api.wordlope.com/health/ready`. Updated `scripts/deploy.sh` so local
+manual deploy still builds, while GHCR deploy pulls a prebuilt image and starts
+Compose with `--no-build`. Updated `docs/DEPLOYMENT.md` with required GitHub
+secrets and server prerequisites.
+
+**Next action: configure GitHub secrets and run first workflow deploy** —
+`PROD_SSH_HOST`, `PROD_SSH_USER`, `PROD_SSH_KEY`, optional `PROD_SSH_PORT`, and
+`GHCR_TOKEN` if the package remains private.
 
 ### Previous Sprint Context
 
