@@ -6,9 +6,9 @@ tamamlandı; bu liste koda giremeyecek olan insan/kimlik-bilgisi/sunucu işleri.
 Yukarıdan aşağı ilerle — bölümler bağımlılık sırasına göre dizildi.
 
 Detay referanslar: `OPERATIONS.md` (config/endpoint'ler), `MOBILE_RELEASE.md`
-(store build), `ROADMAP.md > Sprint GO` (plan + kararlar). Sunucu sertleştirme,
-yedekleme ve tam deploy/rollback runbook'u **GO5**'te
-(`docs/DEPLOYMENT.md`); GHCR ile CI/CD **GO6**'da gelecek.
+(store build), `ROADMAP.md > Sprint GO` (plan + kararlar) ve
+`DEPLOYMENT.md` (deploy/rollback/backup/restore/hardening runbook'u). GHCR ile
+CI/CD **GO6**'da gelecek.
 
 ---
 
@@ -101,11 +101,22 @@ içerik yüklemezsen oyuncu boş bir oyun görür.
 
 ---
 
+## 6. Sunucu yedekleme + hardening (GO5)
+
+Tam komutlar için `DEPLOYMENT.md`.
+
+- [ ] `./scripts/backup-db.sh` ile manuel backup al.
+- [ ] Backup dosyasını sunucu dışına kopyala.
+- [ ] Nightly cron'u kur:
+      `17 2 * * * cd /opt/lexilink/app && BACKUP_DIR=/opt/lexilink/backups/postgres RETENTION_DAYS=14 ./scripts/backup-db.sh >> /var/log/lexilink-backup.log 2>&1`
+- [ ] En az bir restore drill yap veya disposable host üzerinde doğrula.
+- [ ] `ufw` ile sadece SSH/HTTP/HTTPS açık kalacak şekilde firewall'u aç.
+- [ ] SSH key-only login doğrulandıktan sonra root/password login'i kapat.
+- [ ] `docker compose ps`, `docker stats --no-stream`,
+      `curl -fsS https://api.wordlope.com/health/ready` ile son kontrol yap.
+
 ## Mühendislik tarafında kalanlar (sen değil — biz yapacağız)
 
-- **GO5** — yedekleme (`pg_dump` + restore tatbikatı), firewall/SSH
-  sertleştirme, container limitleri ve `docs/DEPLOYMENT.md`
-  deploy/rollback/restore runbook'u.
 - **GO6** — CI/CD: build → GHCR'a push → SSH deploy.
 - **Takipler (launch sonrası):** gerçek Google/Apple **social sign-in**
   (server-side ID-token doğrulama) — gerçek-para IAP'ı açmadan önce gerekli;

@@ -20,11 +20,11 @@ box; the DbUp migrator runs as a one-shot before the API on every deploy.
 | Database | **PostgreSQL 17 in a container** on the same box, named volume + nightly `pg_dump`. Managed DB deferred. |
 | Reverse proxy / TLS | **Caddy** — automatic Let's Encrypt TLS, minimal config. |
 | Frontend scope | **API only.** Game is mobile-only via the stores; **no Flutter web** is built or served. CORS stays empty/locked (native clients don't enforce CORS). |
-| Routing | `api.<domain>` → API container (port 8080). Apex left free for a future marketing site. |
+| Routing | `api.wordlope.com` → API container (port 8080). Apex left free for a future marketing site. |
 | Registry (GO6) | **GHCR** (GitHub Container Registry). |
 | Image shape | **Single image** holds both the API (`/app`) and the DbUp migrator (`/app/migrator`); the API csproj already copies `Database/Structure/**/*.sql` into the publish output, so both the migrator one-shot and the API `/health/ready` journal check read SQL from `/app/Database/Structure`. |
 | Secrets | Server-side `/opt/lexilink/.env` (root-only), never committed. `.env.example` documents the keys. |
-| Domain | **Not yet acquired.** Required for Let's Encrypt TLS (no cert for bare IP). Blocks **GO4 only**; GO1–GO3 proceed without it. Acquire a cheap domain before GO4 (interim `sslip.io`/DuckDNS works for HTTPS testing). |
+| Domain | **wordlope.com acquired/configured.** Production API is `https://api.wordlope.com`; GO4 domain/TLS blocker cleared. |
 
 ### Slice plan (6 slices)
 
@@ -34,8 +34,8 @@ box; the DbUp migrator runs as a one-shot before the API on every deploy.
 | **GO-A** | ✅ Done | **Production auth (launch blocker).** Production had no usable identity verifier → `POST /auth/token` 401'd every request (`DisabledExternalIdentityVerifier`), so no player — not even a guest — could log in. Added `ExternalIdentityValidationMode.GuestDevice` + `GuestExternalIdentityVerifier` (accepts the Guest provider with the existing client handshake, rejects Apple/Google) wired in `Program.cs`; allowed in Production. No client change. Set `Authentication__TokenExchange__Mode=GuestDevice` in Production. Gate: API build 0 errors, 5/5 focused verifier unit tests. Real Google/Apple sign-in is a follow-up (see non-actions). |
 | **GO2** | ✅ Done | `docker-compose.yml` (postgres + named volume + healthcheck; `migrate` one-shot `depends_on` postgres-healthy, runs `dotnet /app/migrator/...dll "$ConnectionStrings__LexiLinkDb" /app/Database/Structure`; `api` `depends_on` migrate-completed + postgres-healthy, curl `/health/live` healthcheck; `caddy` 80/443 + named volumes) + `Caddyfile` (`api.{$LEXILINK_DOMAIN}` reverse proxy `api:8080`, auto-TLS via `{$LEXILINK_ACME_EMAIL}`) + `.env.example` (all prod env). Shared image/build via a YAML anchor; `curl` added to the Dockerfile runtime for the healthcheck. YAML + anchor-merge validated (Docker unavailable on the dev Mac → full `compose up` validates at GO4). |
 | **GO3** | ✅ Done | Store build readiness (no web). Added `docs/MOBILE_RELEASE.md`: prod API wiring (`--dart-define LEXILINK_API_BASE_URL`), real-AdMob id wiring + SSV callback URL, IAP product setup (gated until social sign-in), `flutter build appbundle/ipa` release commands, and a store-readiness checklist. **Surfaced blockers:** Android `applicationId`/iOS bundle id are still the `com.example.*` Flutter placeholders (cannot publish — need a real reverse-DNS id), version is `0.1.0+1` (bump for release), display name is `lexilink_app`. Signing + store accounts + real creds are operator-owned. |
-| **GO4** | ⏭ Next | Server provisioning + first deploy. Install Docker on the Ubuntu box, clone repo, create `/opt/lexilink/.env`, DNS A record for `api.<domain>`, `docker compose up`, Caddy obtains TLS, migrator applies scripts, verify `/health/ready` over HTTPS + guest→category smoke. |
-| **GO5** | ⏭ | Backups + ops hardening. Nightly `pg_dump` + restore drill, `ufw` (22/80/443 only), SSH hardening, container restart policies + resource limits, log rotation. Write `docs/DEPLOYMENT.md` runbook (deploy / rollback / restore / rotate secrets). |
+| **GO4** | ✅ Done | Server provisioning + first backend deploy completed by operator. Backend is installed on the server and `https://api.wordlope.com` is healthy; DNS/TLS are working. |
+| **GO5** | 🔵 In progress | Backups + ops hardening. Repo-side artifacts prepared: `scripts/backup-db.sh`, `scripts/restore-db.sh`, `docs/DEPLOYMENT.md`, and compose resource/log limits. Server-side apply remains: manual backup, nightly cron, offsite copy, restore drill, `ufw`, SSH hardening, and final health check. |
 | **GO6** | ⏭ *(optional, last)* | CI/CD. GitHub Actions on tag/release → build image → push to **GHCR** → SSH deploy (pull + migrate + up). Until then, manual deploy is documented. |
 
 ### Deliberate non-actions (launch v1)
@@ -63,8 +63,9 @@ box; the DbUp migrator runs as a one-shot before the API on every deploy.
 Containerize first (GO1) so the runtime artifact is fixed before any host
 work. Compose + Caddy + secrets (GO2) assemble the stack locally-describable
 before touching the server. Store build config (GO3) is independent and can
-run in parallel. First deploy (GO4) needs the domain. Hardening + backups
-(GO5) before real traffic. CI/CD (GO6) automates the now-proven manual deploy.
+run in parallel. First deploy (GO4) proved the manual server path on
+`api.wordlope.com`. Hardening + backups (GO5) before real traffic. CI/CD
+(GO6) automates the now-proven manual deploy.
 
 ---
 

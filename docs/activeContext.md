@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-06-01 (Sprint CL — closed; CL4 content-ops handoff documented. Sprint L10N closed/previous.)
+> Last updated: 2026-06-01 (Sprint GO — GO5 repo-side backup/hardening runbook prepared.)
 
 ---
 
@@ -15,8 +15,8 @@ LexiLink live on a single Hetzner Ubuntu VPS. **API only — no web frontend;**
 the game ships to the iOS/Android stores. Backend = Docker Compose: Caddy
 (auto-HTTPS) → .NET 10 API; PostgreSQL 17 in a container; DbUp migrator as a
 one-shot before the API. Locked decisions + 6-slice plan (GO1–GO6) in
-`ROADMAP.md > Sprint GO`. **No domain acquired yet** — required for Let's
-Encrypt TLS, blocks GO4 only.
+`ROADMAP.md > Sprint GO`. Domain is **wordlope.com**; production API is
+`https://api.wordlope.com`.
 
 **GO1 ✅ done (uncommitted on `main`, 2026-06-01):** containerization. Added
 root `Dockerfile` (multi-stage: `dotnet/sdk:10.0` build → `aspnet:10.0`
@@ -95,11 +95,26 @@ Version is `0.1.0+1` (bump to `1.0.0+1`); display name is `lexilink_app`
 (→ `LexiLink`). Signing material, store accounts, and real credentials are
 operator-owned. No code change this slice (docs only).
 
-**Next action: GO4** — server provisioning + first deploy: install Docker on
-the Ubuntu box, clone repo, create `/opt/lexilink/.env` (from `.env.example`),
-DNS A record for `api.<domain>`, `docker compose up -d --build`, Caddy obtains
-TLS, migrator applies scripts, verify `/health/ready` over HTTPS + guest→
-category smoke. **Needs the domain** (still not acquired).
+**GO4 ✅ done (operator, 2026-06-01):** server provisioning + first backend
+deploy. The backend is installed on the server and `https://api.wordlope.com`
+is healthy. Domain acquisition/DNS/TLS are no longer launch blockers.
+
+**GO5 🔵 in progress (repo-side prepared, 2026-06-01):** backups + ops
+hardening. Added `scripts/backup-db.sh` for PostgreSQL custom-format dumps
+with checksum, format verification, local retention pruning, and server-safe
+defaults under `/opt/lexilink/backups/postgres`; added
+`scripts/restore-db.sh` for explicit-confirm restore drills; added
+`docs/DEPLOYMENT.md` runbook covering deploy, content import, backup cron,
+offsite copy, restore, rollback, firewall, SSH hardening, resource/log checks,
+secret rotation, and incident commands. `docker-compose.yml` now has log
+rotation plus conservative CPU/memory/pids limits for postgres/api/caddy.
+Validation: script syntax passes locally; Docker/Compose validation must run
+on the server because Docker is unavailable on the dev Mac.
+
+**Next action: apply GO5 on the server** — run a manual backup, install the
+nightly cron, copy at least one backup off-server, perform/record a restore
+drill, apply `ufw` and SSH hardening, then verify
+`https://api.wordlope.com/health/ready`.
 
 ### Previous Sprint Context
 

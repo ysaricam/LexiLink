@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-06-01 (Sprint CL — CL3 admin content language controls delivered. Sprint L10N closed/previous.)
+> Last updated: 2026-06-01 (Sprint GO — backend deploy healthy at api.wordlope.com; CL closed.)
 
 ---
 
@@ -113,26 +113,20 @@ ayrimidir.
 
 ## Next Action
 
-**Sprint CL — Content Localization (Phase 2) — active.** CL1 frontend
-leg delivered: category loading now passes `LocaleCubit.state.backendLocale`
-to `/categories?locale=xx-XX`, parses category `language`, and guest
-registration uses the selected locale. This connects the Phase 1 language
-picker to Phase 2 content selection without changing game rules yet.
+**Sprint GO — Production Launch — active.** Backend deploy is healthy at
+`https://api.wordlope.com`. The frontend launch-relevant next step is store
+build readiness: release builds must pass
+`--dart-define LEXILINK_API_BASE_URL=https://api.wordlope.com`, replace the
+Flutter placeholder Android/iOS bundle identifiers, bump the app version, and
+set the display name before store submission.
 
-**CL2 backend/content leg delivered.** `docs/category-animals-en.json` now
-provides the first playable `en-US` graph and the importer is
-language-aware. No frontend code change was needed in CL2 because CL1 already
-threads the selected locale into category loading.
-
-**CL3 frontend delivered.** Added `features/admin_content` with repository,
-cubit, and `/admin/content` screen. Admins can filter Games content
-categories by locale and create/edit categories with an explicit `Language`
-selection. The screen is wired into `AppAdminShell`, route config, and
-localized admin strings across all five ARB locales.
-
-**Next action: CL4.** Decide whether the next frontend step is only content
-ops documentation or a small authoring-support polish pass while DE/FR/ES
-graphs are prepared.
+**Sprint CL — Content Localization (Phase 2) — closed.** CL1–CL3 delivered the
+frontend/content-language code path: category loading sends
+`LocaleCubit.state.backendLocale` to `/categories?locale=xx-XX`, parses
+category `language`, guest registration uses the selected locale, and
+`features/admin_content` provides admin locale filtering plus category
+create/edit language selection. CL4 closed with `docs/CONTENT_AUTHORING.md`;
+DE/FR/ES graph authoring is content-ops owned.
 
 ### Önceki sprint (frontend)
 
