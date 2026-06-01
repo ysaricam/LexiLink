@@ -2,7 +2,8 @@
 
 Store-build readiness for the LexiLink Flutter app (GO3). The game ships to
 the **iOS App Store** and **Google Play** — there is no web build. The backend
-runs at `https://api.<domain>` (see `ROADMAP.md > Sprint GO`, `OPERATIONS.md`).
+runs at `https://api.wordlope.com` (see `ROADMAP.md > Sprint GO`,
+`OPERATIONS.md`).
 
 Most items here are **operator-owned** (store accounts, signing, real
 credentials) and cannot live in the repo. This is the checklist + the exact
@@ -16,7 +17,7 @@ The base URL is compile-time via `--dart-define`; the default is `localhost`,
 so a **release build must pass it** or the app talks to nothing:
 
 ```
-LEXILINK_API_BASE_URL   default http://127.0.0.1:5000   →  https://api.<domain>
+LEXILINK_API_BASE_URL   default http://127.0.0.1:5000   →  https://api.wordlope.com
 ```
 
 (`lib/shared/api/api_config.dart` reads `String.fromEnvironment('LEXILINK_API_BASE_URL')`.)
@@ -35,7 +36,7 @@ production, supply real ids:
 
 Backend SSV (rewarded → Diamond): set `Ads__Ssv__Mode=Production` with real
 AdMob keys, and in the AdMob console point the **server-side verification
-callback** at `https://api.<domain>/ads/rewarded/callback`.
+callback** at `https://api.wordlope.com/ads/rewarded/callback`.
 
 ## 3. In-app purchase (IAP) — gated for launch
 
@@ -50,15 +51,15 @@ callback** at `https://api.<domain>/ads/rewarded/callback`.
 
 ## 4. Release build commands
 
-Bump the version first in `pubspec.yaml` (currently `0.1.0+1`), e.g.
-`version: 1.0.0+1` (`+1` is the build number; increment every store upload).
+Version is set in `pubspec.yaml` as `1.0.0+1` (`+1` is the build number;
+increment every store upload).
 
 Android App Bundle (for Play):
 
 ```bash
 cd frontend
 flutter build appbundle --release \
-  --dart-define=LEXILINK_API_BASE_URL=https://api.<domain> \
+  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
   --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=<real> \
   --dart-define=ADMOB_REWARDED_AD_UNIT_ID=<real>
 ```
@@ -68,7 +69,7 @@ iOS (archive in Xcode or):
 ```bash
 cd frontend
 flutter build ipa --release \
-  --dart-define=LEXILINK_API_BASE_URL=https://api.<domain> \
+  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
   --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=<real> \
   --dart-define=ADMOB_REWARDED_AD_UNIT_ID=<real>
 ```
@@ -80,21 +81,18 @@ flutter build ipa --release \
 
 ## Store-readiness checklist
 
-**Identity / branding (blockers — current values are Flutter placeholders):**
+**Identity / branding:**
 
-- [ ] **Android application id** — `android/app/build.gradle.kts`
-      `namespace` + `applicationId` are `com.example.lexilink_app`.
-      `com.example.*` **cannot be published**. Change to a real reverse-DNS id
-      (e.g. `com.lexilink.app`) and move the Kotlin `MainActivity` package to
-      match if needed.
-- [ ] **iOS bundle identifier** — `ios/Runner.xcodeproj/project.pbxproj`
-      `PRODUCT_BUNDLE_IDENTIFIER` is `com.example.lexilinkApp`. Change to the
-      real id in Xcode (must match the App Store Connect app + provisioning).
-- [ ] **App display name** — `android:label` (`AndroidManifest.xml`) and
-      `CFBundleDisplayName`/`CFBundleName` (`Info.plist`) are `lexilink_app`;
-      set to `LexiLink`.
-- [ ] **Version** — bump `pubspec.yaml` `version:` from `0.1.0+1` to your
-      release (e.g. `1.0.0+1`); increment the build number per upload.
+- [x] **Android application id** — `android/app/build.gradle.kts`
+      `namespace` + `applicationId` are `com.wordlope.app`; Kotlin
+      `MainActivity` package moved to match.
+- [x] **iOS bundle identifier** — `ios/Runner.xcodeproj/project.pbxproj`
+      `PRODUCT_BUNDLE_IDENTIFIER` is `com.wordlope.app` (tests use
+      `com.wordlope.app.RunnerTests`).
+- [x] **App display name** — `android:label` (`AndroidManifest.xml`) and
+      `CFBundleDisplayName`/`CFBundleName` (`Info.plist`) are `LexiLink`.
+- [x] **Version** — `pubspec.yaml` `version:` is `1.0.0+1`; increment the
+      build number per upload.
 
 **Signing:**
 
@@ -109,7 +107,7 @@ flutter build ipa --release \
 - [ ] `INTERNET` permission present in the Android release manifest.
 - [ ] iOS **ATT** string (`NSUserTrackingUsageDescription`) present (it is) and
       the UMP consent flow verified on device (shipped in AD6).
-- [ ] App points at `https://api.<domain>` (section 1) — verify a release
+- [ ] App points at `https://api.wordlope.com` (section 1) — verify a release
       build logs in as guest and loads categories against production.
 
 **Store listings / compliance:**

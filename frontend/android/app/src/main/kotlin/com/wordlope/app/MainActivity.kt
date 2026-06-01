@@ -1,4 +1,4 @@
-package com.example.lexilink_app
+package com.wordlope.app
 
 import io.flutter.embedding.android.FlutterActivity
 

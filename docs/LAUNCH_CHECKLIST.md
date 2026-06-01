@@ -15,9 +15,9 @@ Detay referanslar: `OPERATIONS.md` (config/endpoint'ler), `MOBILE_RELEASE.md`
 
 - [ ] **Domain al.** HTTPS için şart — Let's Encrypt çıplak IP'ye sertifika
       vermez. ~€10/yıl (Cloudflare, Namecheap vb.).
-- [ ] **DNS:** `api.<domain>` için bir **A kaydı** oluştur → Hetzner sunucu
+- [x] **DNS:** `api.wordlope.com` için bir **A kaydı** oluştur → Hetzner sunucu
       IP'n. (Apex `<domain>` ileride bir site için boş kalabilir.)
-- [ ] **Gerçek bir app id seç** (reverse-DNS), ör. `com.lexilink.app`. Hem
+- [x] **Gerçek bir app id seç** (reverse-DNS): `com.wordlope.app`. Hem
       store'lar hem AdMob/IAP kaydı için kullanılır. `com.example.*` olmaz.
 
 ## 1. Sunucuda ilk deploy (GO4)
@@ -42,7 +42,7 @@ Ubuntu kutusunda (SSH ile bağlan):
 - [ ] **Ayağa kaldır:** repo klasöründe `./scripts/deploy.sh` (build → migrator
       → API → Caddy TLS; API sağlıklı olunca durur ve public health komutunu
       yazdırır). Manuel istersen: `docker compose up -d --build`.
-- [ ] **Doğrula:** `curl https://api.<domain>/health/ready` healthy dönsün;
+- [x] **Doğrula:** `curl https://api.wordlope.com/health/ready` healthy dönsün;
       ardından bir client/build ile guest→category smoke.
 
 ## 2. Oyun içeriğini yükle (prod DB boş başlar!)
@@ -60,21 +60,26 @@ içerik yüklemezsen oyuncu boş bir oyun görür.
 
 `frontend/` içinde (tam komutlar için `MOBILE_RELEASE.md`):
 
-- [ ] **Android `applicationId`** (`android/app/build.gradle.kts`
+- [x] **Android `applicationId`** (`android/app/build.gradle.kts`
       `namespace` + `applicationId`) ve **iOS bundle id**
       (`ios/Runner.xcodeproj/project.pbxproj` `PRODUCT_BUNDLE_IDENTIFIER`)
-      değerlerini `com.example.*`'dan gerçek id'ne değiştir.
-- [ ] **Görünen adı** `LexiLink` yap (`android:label`,
+      değerlerini `com.wordlope.app` yap.
+- [x] **Görünen adı** `LexiLink` yap (`android:label`,
       `CFBundleDisplayName`/`CFBundleName`).
-- [ ] `pubspec.yaml` **sürümünü** yükselt (`0.1.0+1` → `1.0.0+1`).
+- [x] `pubspec.yaml` **sürümünü** yükselt (`0.1.0+1` → `1.0.0+1`).
 - [ ] **Signing** kur: Android upload keystore + `key.properties`; iOS
       distribution sertifikası + provisioning profile.
-- [ ] Production'a bakacak şekilde **build al:**
-      `flutter build appbundle --release --dart-define=LEXILINK_API_BASE_URL=https://api.<domain> ...`
-      (iOS için `ipa`), gerçek AdMob ad-unit define'larıyla.
+- [x] Production'a bakacak şekilde **Android build al:**
+      `flutter build appbundle --release --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com ...`
+      (`build/app/outputs/bundle/release/app-release.aab`, 50.3MB). iOS için
+      `ipa` hâlâ Xcode/CocoaPods/signing sonrası alınacak.
 - [ ] Uygulamaları gerçek bundle id'lerle **App Store Connect** + **Google
       Play Console**'da oluştur; gizlilik/data-safety, ekran görüntüleri,
       açıklamalar, yaş sınırını doldur.
+
+Durum: Android appbundle build geçti. iOS toolchain temiz, ancak IPA build
+`com.wordlope.app` için Xcode Signing & Capabilities altında Team /
+certificate / provisioning eksik olduğu için bloklu.
 
 ## 4. Reklam & IAP kimlik bilgileri (operatör-sahipli)
 
@@ -82,7 +87,7 @@ içerik yüklemezsen oyuncu boş bir oyun görür.
       (`APPLICATION_ID`) + `Info.plist` (`GADApplicationIdentifier`) içine yaz,
       gerçek ad-unit id'lerini `--dart-define` ile geç, backend
       `Ads__Ssv__Mode=Production` + gerçek anahtarları ayarla ve AdMob **SSV
-      callback**'ini `https://api.<domain>/ads/rewarded/callback` yap.
+      callback**'ini `https://api.wordlope.com/ads/rewarded/callback` yap.
 - [ ] **IAP:** consumable ürünleri (`diamond_100/550/1200/2500`) iki store'da
       oluştur; backend `Payments:Apple` / `Payments:Google` creds'lerini
       ayarla.
@@ -91,7 +96,7 @@ içerik yüklemezsen oyuncu boş bir oyun görür.
 
 ## 5. Launch öncesi/sırasında doğrulama
 
-- [ ] `https://api.<domain>/health/ready` healthy (DB + migration'lar).
+- [ ] `https://api.wordlope.com/health/ready` healthy (DB + migration'lar).
 - [ ] Bir release build guest olarak giriş yapıp production'dan kategorileri
       yüklesin.
 - [ ] Test build'de AdMob test reklamları çalışsın; gerçek id/anahtar
@@ -116,8 +121,6 @@ Tam komutlar için `DEPLOYMENT.md`.
 
 ## Mühendislik tarafında kalanlar (sen değil — biz yapacağız)
 
-- **GO6** — CI/CD repo tarafı hazırlandı; GitHub secrets ayarlanıp ilk
-  workflow deploy çalıştırılacak.
 - **Takipler (launch sonrası):** gerçek Google/Apple **social sign-in**
   (server-side ID-token doğrulama) — gerçek-para IAP'ı açmadan önce gerekli;
   ve **production admin verifier** ki admin console production'da kullanılsın

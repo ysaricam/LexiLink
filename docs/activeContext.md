@@ -4,7 +4,7 @@ Project'in o anki yönü ve en yakın sıra. Geçmiş teslimatlar `progress.md`,
 uzun vadeli plan `ROADMAP.md`, mimari karşılaştırma notları
 `kamil-modular-monolith-comparison.md` içindedir.
 
-> Last updated: 2026-06-01 (Sprint GO — GO5 closed; backup + server hardening complete.)
+> Last updated: 2026-06-01 (Sprint GO — GO6 closed; CI/CD production deploy complete.)
 
 ---
 
@@ -82,18 +82,15 @@ admin verifier is a follow-up. Recorded in `ROADMAP.md > Sprint GO`.
 
 **GO3 ✅ done (uncommitted on `main`, 2026-06-01):** store build readiness
 (no web). Added `docs/MOBILE_RELEASE.md` — prod API wiring
-(`--dart-define LEXILINK_API_BASE_URL=https://api.<domain>`; the default is
-`localhost`, so a release build *must* pass it), real-AdMob id wiring
+(`--dart-define LEXILINK_API_BASE_URL=https://api.wordlope.com`; the default
+is `localhost`, so a release build *must* pass it), real-AdMob id wiring
 (`ADMOB_INTERSTITIAL/REWARDED_AD_UNIT_ID` defines + manifest/plist app ids) +
-the SSV callback URL (`https://api.<domain>/ads/rewarded/callback`), IAP
+the SSV callback URL (`https://api.wordlope.com/ads/rewarded/callback`), IAP
 product setup (gated until social sign-in), `flutter build appbundle`/`ipa`
-release commands, and a store-readiness checklist. **Blockers surfaced for the
-operator:** Android `applicationId` (`build.gradle.kts`) and iOS bundle id
-(`project.pbxproj`) are still the **`com.example.*` Flutter placeholders →
-cannot publish**; must become a real reverse-DNS id (e.g. `com.lexilink.app`).
-Version is `0.1.0+1` (bump to `1.0.0+1`); display name is `lexilink_app`
-(→ `LexiLink`). Signing material, store accounts, and real credentials are
-operator-owned. No code change this slice (docs only).
+release commands, and a store-readiness checklist. MR1 later resolved the
+repo-owned identity blockers: Android/iOS id `com.wordlope.app`, display name
+`LexiLink`, version `1.0.0+1`. Signing material, store accounts, and real
+credentials remain operator-owned.
 
 **GO4 ✅ done (operator, 2026-06-01):** server provisioning + first backend
 deploy. The backend is installed on the server and `https://api.wordlope.com`
@@ -114,7 +111,7 @@ off-server to the operator's PC, restored successfully, nightly backup cron
 installed, `ufw` applied, SSH hardening applied, and
 `https://api.wordlope.com/health/ready` verified healthy afterward.
 
-**GO6 🔵 in progress (repo-side prepared, 2026-06-01):** CI/CD. Added
+**GO6 ✅ done (operator + repo, 2026-06-01):** CI/CD. Added
 `.github/workflows/deploy-production.yml`: manual dispatch or `v*` tag builds
 the Docker image, pushes `ghcr.io/ysaricam/lexilink:<git-sha>` plus `latest`,
 SSHes to the VPS, checks out the exact commit under `/opt/lexilink/app`, runs
@@ -122,11 +119,38 @@ SSHes to the VPS, checks out the exact commit under `/opt/lexilink/app`, runs
 `https://api.wordlope.com/health/ready`. Updated `scripts/deploy.sh` so local
 manual deploy still builds, while GHCR deploy pulls a prebuilt image and starts
 Compose with `--no-build`. Updated `docs/DEPLOYMENT.md` with required GitHub
-secrets and server prerequisites.
+secrets and server prerequisites. GitHub secrets were configured and the first
+production workflow deploy completed successfully.
 
-**Next action: configure GitHub secrets and run first workflow deploy** —
-`PROD_SSH_HOST`, `PROD_SSH_USER`, `PROD_SSH_KEY`, optional `PROD_SSH_PORT`, and
-`GHCR_TOKEN` if the package remains private.
+**Sprint GO closed. Next action:** mobile store readiness/release execution:
+replace Android/iOS placeholder bundle identifiers, set display name/version,
+build release artifacts with
+`LEXILINK_API_BASE_URL=https://api.wordlope.com`, and complete store-owned
+signing, AdMob, IAP, and listing tasks.
+
+**MR1 ✅ done (repo, 2026-06-01):** mobile app identity baseline. Chosen
+bundle/application id: `com.wordlope.app`. Updated Android
+`namespace`/`applicationId`, moved `MainActivity` to `com.wordlope.app`,
+updated iOS `PRODUCT_BUNDLE_IDENTIFIER` to `com.wordlope.app`, set Android/iOS
+display name to `LexiLink`, and bumped Flutter version to `1.0.0+1`. Gate:
+`flutter analyze` clean; Android release appbundle build passed against
+production API define:
+`flutter build appbundle --release --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com`
+→ `frontend/build/app/outputs/bundle/release/app-release.aab` (50.3MB).
+
+**Next action: MR2** — signing + store-owned credentials: replace Android
+debug signing with upload/release keystore, finish iOS distribution signing,
+wire real AdMob app/ad-unit ids when ready, then create store records under
+`com.wordlope.app`.
+
+**MR2 🔵 in progress (2026-06-01):** release signing/build verification.
+Android SDK/toolchain is healthy and the production-API appbundle build passed
+(`app-release.aab`, 50.3MB). iOS toolchain is now healthy too (`flutter doctor`
+clean: Xcode 16.4 + CocoaPods 1.16.2), but `flutter build ipa --release
+--dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com` fails because no
+valid Apple code-signing certificate / selected Development Team / provisioning
+profile is available for `com.wordlope.app`. Unsigned iOS build reaches Xcode
+build but is still blocked by the missing Development Team selection.
 
 ### Previous Sprint Context
 
