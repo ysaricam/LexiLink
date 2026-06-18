@@ -62,6 +62,30 @@ void main() {
       },
     );
 
+    test('does not emit after close when load completes later', () async {
+      final availability = Completer<bool>();
+      var requestedProducts = false;
+      final cubit = _buildCubit(
+        storeService: _FakePaymentStoreService(
+          availability: availability.future,
+        ),
+        handler: (_) async {
+          requestedProducts = true;
+          return http.Response(_productsBody, 200);
+        },
+      );
+
+      final load = cubit.load();
+      await Future<void>.delayed(Duration.zero);
+      await cubit.close();
+
+      availability.complete(true);
+      await load;
+
+      expect(requestedProducts, isFalse);
+      expect(cubit.isClosed, isTrue);
+    });
+
     blocTest<PaymentCubit, PaymentState>(
       'verifies purchase proof and finishes when backend allows it',
       build: () {
@@ -151,9 +175,11 @@ extension on PaymentCubit {
 class _FakePaymentStoreService implements PaymentStoreService {
   _FakePaymentStoreService({
     this.products = const [],
-  });
+    Future<bool>? availability,
+  }) : _availability = availability;
 
   final List<StorePaymentProduct> products;
+  final Future<bool>? _availability;
   final List<StorePurchaseProof> finishedProofs = [];
   final _controller = StreamController<StorePurchaseProof>.broadcast();
 
@@ -161,7 +187,7 @@ class _FakePaymentStoreService implements PaymentStoreService {
   Stream<StorePurchaseProof> get purchases => _controller.stream;
 
   @override
-  Future<bool> isAvailable() async => true;
+  Future<bool> isAvailable() async => _availability ?? true;
 
   @override
   Future<List<StorePaymentProduct>> loadProducts(Set<String> productIds) async {

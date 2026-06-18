@@ -53,6 +53,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     emit(state.copyWith(status: PaymentStatus.loading, clearMessage: true));
     try {
       final storeAvailable = await _storeService.isAvailable();
+      if (isClosed) return;
       if (!storeAvailable) {
         emit(
           state.copyWith(
@@ -64,6 +65,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       }
 
       final products = await _repository.fetchProducts(platform);
+      if (isClosed) return;
       final activeProductIds = products
           .where((product) => product.isActive)
           .map((product) => product.storeProductId)
@@ -71,6 +73,7 @@ class PaymentCubit extends Cubit<PaymentState> {
       final storeProducts = activeProductIds.isEmpty
           ? const <StorePaymentProduct>[]
           : await _storeService.loadProducts(activeProductIds);
+      if (isClosed) return;
       final storeById = {
         for (final product in storeProducts) product.id: product,
       };
@@ -85,8 +88,10 @@ class PaymentCubit extends Cubit<PaymentState> {
 
       emit(state.copyWith(status: PaymentStatus.loaded, bundles: bundles));
     } on ApiException catch (e) {
+      if (isClosed) return;
       emit(state.copyWith(status: PaymentStatus.failure, message: e.message));
     } on Object catch (_) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: PaymentStatus.failure,
@@ -118,6 +123,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     try {
       await _storeService.buy(storeProduct);
     } on Object catch (_) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: PaymentStatus.failure,
@@ -146,8 +152,10 @@ class PaymentCubit extends Cubit<PaymentState> {
         proof: proof,
         clientRequestId: _clientRequestId(proof),
       );
+      if (isClosed) return;
       if (result.canFinishTransaction) {
         await _storeService.finish(proof);
+        if (isClosed) return;
       }
 
       if (!result.isGranted) {
@@ -171,6 +179,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         ),
       );
     } on ApiException catch (e) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: PaymentStatus.failure,
@@ -179,6 +188,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         ),
       );
     } on Object catch (_) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: PaymentStatus.failure,
