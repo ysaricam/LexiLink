@@ -28,6 +28,20 @@ fi
 image="${image:-lexilink:local}"
 export LEXILINK_IMAGE="$image"
 
+admin_web_root="$(grep -E '^ADMIN_WEB_ROOT=' .env | cut -d= -f2- | tr -d '\r' || true)"
+admin_web_root="${admin_web_root:-./frontend/build/web}"
+if [[ "$admin_web_root" != /* ]]; then
+  admin_web_root="$ROOT_DIR/${admin_web_root#./}"
+fi
+
+if [[ ! -f "$admin_web_root/index.html" ]]; then
+  echo "ERROR: admin web build not found at $admin_web_root/index.html" >&2
+  echo "  Build and copy the Flutter web admin output before deploy:" >&2
+  echo "    cd frontend && flutter build web --release --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com" >&2
+  echo "  Then set ADMIN_WEB_ROOT in .env to the directory that contains index.html." >&2
+  exit 1
+fi
+
 if [[ "$image" == "lexilink:local" ]]; then
   echo "==> Building local image and starting the stack (migrator runs first)..."
   docker compose up -d --build
@@ -53,6 +67,7 @@ if [[ -n "$ok" ]]; then
   domain="$(grep -E '^LEXILINK_DOMAIN=' .env | cut -d= -f2- | tr -d '\r')"
   echo "==> API is healthy."
   echo "    Public check: curl https://api.${domain}/health/ready"
+  echo "    Admin console: https://admin.${domain}/admin/login"
   echo "    Next: seed content -> scripts/seed-content.sh docs/category-spor.json"
 else
   echo "!! API did not become healthy in time. Recent logs:" >&2

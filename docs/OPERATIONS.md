@@ -142,15 +142,18 @@ flutter build web --release \
   --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com
 ```
 
-- Login path: `/admin/login`.
+- Caddy serves the files mounted from `ADMIN_WEB_ROOT` at
+  `https://admin.<LEXILINK_DOMAIN>`. The directory must contain
+  `index.html`; by default it is `./frontend/build/web`.
+- Login path: `https://admin.<LEXILINK_DOMAIN>/admin/login`.
 - Email must match an active admin bootstrapped via
   `Administration__Bootstrap__AdminEmails__0`.
 - External token is the server-side
   `Authentication__AdminTokenExchange__SharedSecret` when
   `Authentication__AdminTokenExchange__Mode=AdminSharedSecret`.
-- If the admin web build is served from a different origin than the API, add
-  that exact origin to `Cors__AllowedOrigins__0`, otherwise browser requests
-  to `https://api.wordlope.com` will be blocked by CORS.
+- Add the exact admin origin to `Cors__AllowedOrigins__0`, otherwise browser
+  requests to `https://api.wordlope.com` will be blocked by CORS. For
+  Wordlope production this is `https://admin.wordlope.com`.
 
 ## Administration Module Settings
 

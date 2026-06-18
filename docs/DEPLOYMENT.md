@@ -101,6 +101,46 @@ Production starts with schema only. Import at least one content graph:
 
 Re-imports are idempotent for the same category/language.
 
+## Browser Admin
+
+The player game remains mobile-only, but the Flutter web admin console is
+served by Caddy at `https://admin.<domain>`.
+
+Build the admin web bundle against the production API:
+
+```bash
+cd frontend
+flutter build web --release \
+  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com
+```
+
+On the server, `ADMIN_WEB_ROOT` in `.env` must point to the directory that
+contains `index.html`. If you build on the server from the repo root, the
+default works:
+
+```bash
+ADMIN_WEB_ROOT=./frontend/build/web
+```
+
+If you build locally and upload the output, copy `frontend/build/web/` to a
+server directory and set:
+
+```bash
+ADMIN_WEB_ROOT=/opt/lexilink/admin-web
+```
+
+Required auth/CORS settings:
+
+```bash
+Authentication__AdminTokenExchange__Mode=AdminSharedSecret
+Authentication__AdminTokenExchange__SharedSecret=<openssl rand -base64 48>
+Administration__Bootstrap__AdminEmails__0=<admin-email>
+Cors__AllowedOrigins__0=https://admin.wordlope.com
+```
+
+Login at `https://admin.wordlope.com/admin/login` with the bootstrapped admin
+email and the shared secret as the External token.
+
 ## Backups
 
 Create a manual backup:

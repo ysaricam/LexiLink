@@ -48,6 +48,9 @@ Ubuntu kutusunda (SSH ile bağlan):
         `Cors__AllowedOrigins__0` değerini o exact origin yap
         (örn. `https://admin.wordlope.com` veya lokal testte
         `http://localhost:8080`).
+  - [ ] `ADMIN_WEB_ROOT` admin web build çıktısındaki `index.html` dosyasını
+        içeren klasörü göstersin. Default: `./frontend/build/web`; lokalden
+        upload edersen örn. `/opt/lexilink/admin-web`.
 - [ ] **Ayağa kaldır:** repo klasöründe `./scripts/deploy.sh` (build → migrator
       → API → Caddy TLS; API sağlıklı olunca durur ve public health komutunu
       yazdırır). Manuel istersen: `docker compose up -d --build`.
