@@ -60,8 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<_HomeBootstrap> _createBootstrap() async {
     final tokenStore = await SharedPreferencesTokenStore.create();
-    final guestDeviceId = await SharedPreferencesGuestDeviceIdStore()
-        .readOrCreate();
+    final accessToken = await tokenStore.readAccessToken();
+    final playerId = await tokenStore.readPlayerId();
+    final hasExistingSession =
+        (accessToken != null && accessToken.isNotEmpty) ||
+        (playerId != null && playerId.isNotEmpty);
+    final guestDeviceId = await GuestDeviceIdStore().readOrCreate(
+      preferLegacyDeviceId: hasExistingSession,
+    );
 
     return _HomeBootstrap(
       tokenStore: tokenStore,
