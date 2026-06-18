@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
@@ -23,6 +25,12 @@ class SessionCubit extends Cubit<SessionState> {
       return;
     }
 
+    if (_isExpiredJwt(token)) {
+      await _tokenStore.clear();
+      emit(const SessionState.unauthenticated());
+      return;
+    }
+
     emit(SessionState.authenticated(accessToken: token));
   }
 
@@ -40,6 +48,36 @@ class SessionCubit extends Cubit<SessionState> {
   Future<void> signOut() async {
     await _tokenStore.clear();
     emit(const SessionState.unauthenticated());
+  }
+
+  bool _isExpiredJwt(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      return false;
+    }
+
+    try {
+      final payload = utf8.decode(
+        base64Url.decode(base64Url.normalize(parts[1])),
+      );
+      final json = jsonDecode(payload);
+      if (json is! Map<String, dynamic>) {
+        return false;
+      }
+
+      final exp = json['exp'];
+      if (exp is! int) {
+        return false;
+      }
+
+      final expiresAt = DateTime.fromMillisecondsSinceEpoch(
+        exp * 1000,
+        isUtc: true,
+      );
+      return !expiresAt.isAfter(DateTime.now().toUtc());
+    } on Object {
+      return false;
+    }
   }
 }
 

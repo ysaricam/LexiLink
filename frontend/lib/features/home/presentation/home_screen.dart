@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:lexilink_app/app/theme/app_palette.dart';
 import 'package:lexilink_app/features/auth/application/guest_entry_cubit.dart';
+import 'package:lexilink_app/features/auth/data/guest_device_id_store.dart';
 import 'package:lexilink_app/features/auth/data/guest_player_repository.dart';
 import 'package:lexilink_app/features/categories/application/category_list_cubit.dart';
 import 'package:lexilink_app/features/categories/data/category.dart';
@@ -49,18 +50,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final Future<SharedPreferencesTokenStore> _tokenStoreFuture;
+  late final Future<_HomeBootstrap> _bootstrapFuture;
 
   @override
   void initState() {
     super.initState();
-    _tokenStoreFuture = SharedPreferencesTokenStore.create();
+    _bootstrapFuture = _createBootstrap();
+  }
+
+  Future<_HomeBootstrap> _createBootstrap() async {
+    final tokenStore = await SharedPreferencesTokenStore.create();
+    final guestDeviceId = await SharedPreferencesGuestDeviceIdStore()
+        .readOrCreate();
+
+    return _HomeBootstrap(
+      tokenStore: tokenStore,
+      guestDeviceId: guestDeviceId,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<TokenStore>(
-      future: _tokenStoreFuture,
+    return FutureBuilder<_HomeBootstrap>(
+      future: _bootstrapFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Scaffold(
@@ -75,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
 
-        final tokenStore = snapshot.data;
-        if (tokenStore == null) {
+        final bootstrap = snapshot.data;
+        if (bootstrap == null) {
           return Scaffold(
             body: SafeArea(
               child: Center(
@@ -86,16 +98,26 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         }
 
-        return _HomeProviders(tokenStore: tokenStore);
+        return _HomeProviders(bootstrap: bootstrap);
       },
     );
   }
 }
 
-class _HomeProviders extends StatefulWidget {
-  const _HomeProviders({required this.tokenStore});
+class _HomeBootstrap {
+  const _HomeBootstrap({
+    required this.tokenStore,
+    required this.guestDeviceId,
+  });
 
   final TokenStore tokenStore;
+  final String guestDeviceId;
+}
+
+class _HomeProviders extends StatefulWidget {
+  const _HomeProviders({required this.bootstrap});
+
+  final _HomeBootstrap bootstrap;
 
   @override
   State<_HomeProviders> createState() => _HomeProvidersState();
@@ -120,10 +142,10 @@ class _HomeProvidersState extends State<_HomeProviders> {
     final apiClient = ApiClient(
       config: ApiConfig.local(),
       httpClient: _httpClient,
-      tokenStore: widget.tokenStore,
+      tokenStore: widget.bootstrap.tokenStore,
     );
 
-    _sessionCubit = SessionCubit(tokenStore: widget.tokenStore);
+    _sessionCubit = SessionCubit(tokenStore: widget.bootstrap.tokenStore);
     _guestEntryCubit = GuestEntryCubit(
       guestPlayerRepository: GuestPlayerRepository(apiClient: apiClient),
       sessionCubit: _sessionCubit,
@@ -148,7 +170,7 @@ class _HomeProvidersState extends State<_HomeProviders> {
     );
     _gameStartCubit = GameStartCubit(
       gameRepository: GameRepository(apiClient: apiClient),
-      tokenStore: widget.tokenStore,
+      tokenStore: widget.bootstrap.tokenStore,
     );
 
     unawaited(_sessionCubit.checkSession());
@@ -183,16 +205,17 @@ class _HomeProvidersState extends State<_HomeProviders> {
         BlocProvider.value(value: _resetCubit),
         BlocProvider.value(value: _gameStartCubit),
       ],
-      child: const _HomeView(),
+      child: _HomeView(guestDeviceId: widget.bootstrap.guestDeviceId),
     );
   }
 }
 
 class _HomeView extends StatelessWidget {
-  const _HomeView();
+  const _HomeView({required this.guestDeviceId});
 
-  static const _guestDeviceId = 'frontend-preview-device';
   static const _guestDisplayName = 'Guest Player';
+
+  final String guestDeviceId;
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +226,7 @@ class _HomeView extends StatelessWidget {
           listener: (context, state) {
             if (state.status == SessionStatus.unauthenticated) {
               context.read<GuestEntryCubit>().continueAsGuest(
-                deviceId: _guestDeviceId,
+                deviceId: guestDeviceId,
                 displayName: _guestDisplayName,
                 locale: context.read<LocaleCubit>().state.backendLocale,
               );
