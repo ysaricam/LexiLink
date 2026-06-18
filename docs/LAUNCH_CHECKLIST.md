@@ -39,6 +39,15 @@ Ubuntu kutusunda (SSH ile bağlan):
   - [ ] `Administration__Bootstrap__AdminEmails__0` = admin e-postan
   - [ ] `Authentication__TokenExchange__Mode=GuestDevice` olduğunu doğrula
         (guest login)
+  - [ ] Browser admin paneli için
+        `Authentication__AdminTokenExchange__Mode=AdminSharedSecret` ve
+        `Authentication__AdminTokenExchange__SharedSecret` = 32+ karakter
+        rastgele secret ayarla. Admin login'de bu değer "External token"
+        olarak girilir; email aktif bootstrapped admin olmalı.
+  - [ ] Admin web build ayrı bir origin'den servis edilecekse
+        `Cors__AllowedOrigins__0` değerini o exact origin yap
+        (örn. `https://admin.wordlope.com` veya lokal testte
+        `http://localhost:8080`).
 - [ ] **Ayağa kaldır:** repo klasöründe `./scripts/deploy.sh` (build → migrator
       → API → Caddy TLS; API sağlıklı olunca durur ve public health komutunu
       yazdırır). Manuel istersen: `docker compose up -d --build`.
@@ -97,6 +106,9 @@ certificate / provisioning eksik olduğu için bloklu.
 ## 5. Launch öncesi/sırasında doğrulama
 
 - [ ] `https://api.wordlope.com/health/ready` healthy (DB + migration'lar).
+- [ ] Browser admin smoke: `/admin/login` açılır, bootstrapped admin email +
+      shared external token ile giriş yapılır, `/admin/whoami` ve en az bir
+      admin ekranı (Content veya Players) 200 döner.
 - [ ] Bir release build guest olarak giriş yapıp production'dan kategorileri
       yüklesin.
 - [ ] Test build'de AdMob test reklamları çalışsın; gerçek id/anahtar
@@ -122,7 +134,6 @@ Tam komutlar için `DEPLOYMENT.md`.
 ## Mühendislik tarafında kalanlar (sen değil — biz yapacağız)
 
 - **Takipler (launch sonrası):** gerçek Google/Apple **social sign-in**
-  (server-side ID-token doğrulama) — gerçek-para IAP'ı açmadan önce gerekli;
-  ve **production admin verifier** ki admin console production'da kullanılsın
-  (bugün `AdminTokenExchange__Mode=Disabled` → admin login 401; o zamana kadar
-  içerik CLI ile yükleniyor).
+  (server-side ID-token doğrulama) — gerçek-para IAP'ı açmadan önce gerekli.
+  Browser admin panel için ilk production verifier
+  `AdminSharedSecret` olarak eklendi; ileride gerçek SSO ile değiştirilebilir.

@@ -142,6 +142,63 @@ public sealed class AuthenticationTests
     }
 
     [Test]
+    public void ProductionEnvironment_WithAdminSharedSecretModeAndMissingSecret_FailsStartup()
+    {
+        using var factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("Production");
+                builder.UseSetting(
+                    "ConnectionStrings:LexiLinkDb",
+                    "Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852");
+                builder.UseSetting("Authentication:Mode", "ProductionJwt");
+                builder.UseSetting("Authentication:Jwt:Issuer", JwtIssuer);
+                builder.UseSetting("Authentication:Jwt:Audience", JwtAudience);
+                builder.UseSetting("Authentication:Jwt:SigningKey", JwtSigningKey);
+                builder.UseSetting("Authentication:AdminTokenExchange:Mode", "AdminSharedSecret");
+
+                builder.ConfigureServices(services =>
+                {
+                    services.RemoveAll<IHostedService>();
+                });
+            });
+
+        var act = () => factory.CreateClient();
+
+        act.Should().Throw<InvalidOperationException>()
+            .WithMessage("*Authentication:AdminTokenExchange:SharedSecret is required for AdminSharedSecret mode*");
+    }
+
+    [Test]
+    public void ProductionEnvironment_WithAdminSharedSecretModeAndShortSecret_FailsStartup()
+    {
+        using var factory = new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("Production");
+                builder.UseSetting(
+                    "ConnectionStrings:LexiLinkDb",
+                    "Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852");
+                builder.UseSetting("Authentication:Mode", "ProductionJwt");
+                builder.UseSetting("Authentication:Jwt:Issuer", JwtIssuer);
+                builder.UseSetting("Authentication:Jwt:Audience", JwtAudience);
+                builder.UseSetting("Authentication:Jwt:SigningKey", JwtSigningKey);
+                builder.UseSetting("Authentication:AdminTokenExchange:Mode", "AdminSharedSecret");
+                builder.UseSetting("Authentication:AdminTokenExchange:SharedSecret", "too-short");
+
+                builder.ConfigureServices(services =>
+                {
+                    services.RemoveAll<IHostedService>();
+                });
+            });
+
+        var act = () => factory.CreateClient();
+
+        act.Should().Throw<InvalidOperationException>()
+            .WithMessage("*Authentication:AdminTokenExchange:SharedSecret must be at least 32 characters*");
+    }
+
+    [Test]
     public async Task ProductionEnvironment_WithValidJwt_ReturnsCurrentUser()
     {
         var playerId = Guid.NewGuid();

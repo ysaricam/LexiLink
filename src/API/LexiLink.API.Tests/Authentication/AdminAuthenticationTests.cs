@@ -25,6 +25,7 @@ public sealed class AdminAuthenticationTests
     private const string JwtIssuer = "LexiLink.Tests";
     private const string JwtAudience = "LexiLink.Api.Tests";
     private const string JwtSigningKey = "test-signing-key-with-at-least-32-chars";
+    private const string AdminSharedSecret = "admin-shared-secret-with-at-least-32-chars";
 
     [SetUp]
     public async Task SetUp()
@@ -132,6 +133,43 @@ public sealed class AdminAuthenticationTests
     }
 
     [Test]
+    public async Task AdminTokenExchange_WithSharedSecret_IssuesAdminJwt()
+    {
+        const string adminEmail = "shared-secret-admin@lexilink.test";
+        var adminId = await SeedAdminAsync(adminEmail);
+
+        using var factory = CreateProductionSharedSecretFactory();
+        using var client = factory.CreateClient();
+
+        var exchangeResponse = await client.PostAsJsonAsync("/auth/admin/token", new AdminTokenExchangeRequest(
+            Email: adminEmail,
+            ExternalToken: AdminSharedSecret));
+
+        exchangeResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        var token = await exchangeResponse.Content.ReadFromJsonAsync<AdminTokenExchangeResponse>();
+        token.Should().NotBeNull();
+        token!.AdminUserId.Should().Be(adminId);
+        token.Role.Should().Be("Admin");
+        token.AccessToken.Should().NotBeNullOrEmpty();
+    }
+
+    [Test]
+    public async Task AdminTokenExchange_WithWrongSharedSecret_Returns401()
+    {
+        const string adminEmail = "wrong-shared-secret-admin@lexilink.test";
+        await SeedAdminAsync(adminEmail);
+
+        using var factory = CreateProductionSharedSecretFactory();
+        using var client = factory.CreateClient();
+
+        var response = await client.PostAsJsonAsync("/auth/admin/token", new AdminTokenExchangeRequest(
+            Email: adminEmail,
+            ExternalToken: "wrong-admin-shared-secret-with-at-least-32-chars"));
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+    }
+
+    [Test]
     public async Task AdminJwt_WithRoleClaimButRevokedAdmin_Returns401()
     {
         const string adminEmail = "revoke-me@lexilink.test";
@@ -192,6 +230,24 @@ public sealed class AdminAuthenticationTests
                 builder.UseSetting("Authentication:Jwt:Audience", JwtAudience);
                 builder.UseSetting("Authentication:Jwt:SigningKey", JwtSigningKey);
                 builder.UseSetting("Authentication:AdminTokenExchange:Mode", "DevelopmentExternalToken");
+                builder.ConfigureServices(services =>
+                {
+                    services.RemoveAll<IHostedService>();
+                });
+            });
+
+    private static WebApplicationFactory<Program> CreateProductionSharedSecretFactory() =>
+        new WebApplicationFactory<Program>()
+            .WithWebHostBuilder(builder =>
+            {
+                builder.UseEnvironment("Production");
+                builder.UseSetting("ConnectionStrings:LexiLinkDb", ConnectionString);
+                builder.UseSetting("Authentication:Mode", "ProductionJwt");
+                builder.UseSetting("Authentication:Jwt:Issuer", JwtIssuer);
+                builder.UseSetting("Authentication:Jwt:Audience", JwtAudience);
+                builder.UseSetting("Authentication:Jwt:SigningKey", JwtSigningKey);
+                builder.UseSetting("Authentication:AdminTokenExchange:Mode", "AdminSharedSecret");
+                builder.UseSetting("Authentication:AdminTokenExchange:SharedSecret", AdminSharedSecret);
                 builder.ConfigureServices(services =>
                 {
                     services.RemoveAll<IHostedService>();

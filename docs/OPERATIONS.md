@@ -27,7 +27,8 @@ unsafe development mode is enabled.
 | `Authentication__Jwt__SigningKey` | Yes for `ProductionJwt` | empty | HMAC signing key. Must be at least 32 characters. Treat as a secret. |
 | `Authentication__Jwt__AccessTokenLifetimeMinutes` | No | `60` | First-party access token lifetime. |
 | `Authentication__TokenExchange__Mode` | Yes (for guest login) | `Disabled` | Controls `POST /auth/token`. `Disabled` rejects all token exchange → **no player can authenticate**. Use **`GuestDevice`** in Production to enable the guest-first flow (Guest provider only; Apple/Google rejected until real social sign-in is wired). `DevelopmentExternalToken` is allowed only outside `Production`. |
-| `Authentication__AdminTokenExchange__Mode` | No | `Disabled` | Controls `POST /auth/admin/token`. `DevelopmentExternalToken` is allowed only outside `Production`. |
+| `Authentication__AdminTokenExchange__Mode` | No | `Disabled` | Controls `POST /auth/admin/token`. Use `AdminSharedSecret` for the first production browser admin console. `DevelopmentExternalToken` is allowed only outside `Production`. |
+| `Authentication__AdminTokenExchange__SharedSecret` | Yes for `AdminSharedSecret` | empty | Strong operator-owned token entered as the admin login "External token". Must be at least 32 characters and kept out of git. |
 
 > **Guest auth note.** A guest's identity is its client-generated device id
 > (a high-entropy random value the device keeps), which is the actual bearer
@@ -46,6 +47,8 @@ Authentication__Jwt__Issuer='LexiLink'
 Authentication__Jwt__Audience='LexiLink.Api'
 Authentication__Jwt__SigningKey='<at-least-32-character-secret>'
 Authentication__TokenExchange__Mode=GuestDevice
+Authentication__AdminTokenExchange__Mode=AdminSharedSecret
+Authentication__AdminTokenExchange__SharedSecret='<at-least-32-character-admin-secret>'
 ```
 
 ## Development Defaults
@@ -127,6 +130,27 @@ Admin content UI:
 - The language filter calls `GET /admin/content/categories?locale=xx-XX`.
 - Create/edit category sends the explicit `language` field to
   `/admin/content/categories`.
+
+Browser admin console:
+
+- The Flutter web app already has admin routes under `/admin/*`.
+- Build it against production with:
+
+```bash
+cd frontend
+flutter build web --release \
+  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com
+```
+
+- Login path: `/admin/login`.
+- Email must match an active admin bootstrapped via
+  `Administration__Bootstrap__AdminEmails__0`.
+- External token is the server-side
+  `Authentication__AdminTokenExchange__SharedSecret` when
+  `Authentication__AdminTokenExchange__Mode=AdminSharedSecret`.
+- If the admin web build is served from a different origin than the API, add
+  that exact origin to `Cors__AllowedOrigins__0`, otherwise browser requests
+  to `https://api.wordlope.com` will be blocked by CORS.
 
 ## Administration Module Settings
 
@@ -295,7 +319,7 @@ Processor logs include structured fields for operational search:
 | `POST /payments/notifications/google` | anonymous | Google RTDN ingress. Persists raw notification before verifier/processor handling. Production requires Pub/Sub/Google verification credentials. |
 | `POST /admin/payments/purchases/{id:guid}/retry-delivery` | `AuthenticatedAdmin` | Retries recoverable paid-but-not-delivered purchases and failed Google post-processing. |
 | `POST /quests/{id:guid}/claim` | `AuthenticatedPlayer` | Marks a `ReadyToClaim` quest as `Claimed`. Returns 204 NoContent. Cross-player or missing ids return 404 ProblemDetails (no id-leakage). Triggers `QuestClaimedIntegrationEvent` via the Quests outbox, which Energy consumes to grant the reward via `PlayerEnergy.GrantBonus`. |
-| `POST /auth/admin/token` | anonymous | Exchanges an external admin identity (currently `dev:admin:{email}` development verifier) for a first-party admin JWT (subject = AdminUserId, claims `role=Admin` + `admin_id`). 400 on missing fields, 401 on bad external token, 404 when email is not a registered active admin. `Authentication:AdminTokenExchange:Mode` controls the verifier; `DevelopmentExternalToken` is rejected in Production. |
+| `POST /auth/admin/token` | anonymous | Exchanges an external admin identity for a first-party admin JWT (subject = AdminUserId, claims `role=Admin` + `admin_id`). Local development can use `dev:admin:{email}` with `DevelopmentExternalToken`; production can use `AdminSharedSecret` with `Authentication:AdminTokenExchange:SharedSecret`. 400 on missing fields, 401 on bad external token, 404 when email is not a registered active admin. `DevelopmentExternalToken` is rejected in Production. |
 | `GET /admin/whoami` | `AuthenticatedAdmin` | Returns `{ adminUserId, role }` for the current admin. 401 anonymous, 403 player-only token. In dev-bearer mode any GUID that matches an Active `administration.AdminUsers.Id` is recognized; in production-JWT mode the role and admin_id claims are required and the AdminUser is re-checked for Active status (revoked tokens fail with 401). |
 | `GET /admin/audit` | `AuthenticatedAdmin` | Paged list of admin actions from `administration.AdminActionAudit`, newest first. Optional filters: `adminUserId`, `targetType`, `targetId`. Pagination via `offset` / `limit` (default 50, max 200). Each row carries actor, action type, target type/id, opaque JSON payload, and OccurredOn. Populated by the per-module admin auditing decorator (first wired in B7 for Quests). |
 | `GET /admin/quests/definitions` | `AuthenticatedAdmin` | All quest definitions including deactivated. |

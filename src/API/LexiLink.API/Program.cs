@@ -215,9 +215,13 @@ builder.Services.AddSingleton<IExternalIdentityVerifier>(
         _ => new DisabledExternalIdentityVerifier()
     });
 builder.Services.AddSingleton<IExternalAdminIdentityVerifier>(
-    authOptions.AdminTokenExchange.Mode == ExternalIdentityValidationMode.DevelopmentExternalToken
-        ? new DevelopmentExternalAdminIdentityVerifier()
-        : new DisabledExternalAdminIdentityVerifier());
+    authOptions.AdminTokenExchange.Mode switch
+    {
+        ExternalIdentityValidationMode.DevelopmentExternalToken => new DevelopmentExternalAdminIdentityVerifier(),
+        ExternalIdentityValidationMode.AdminSharedSecret => new SharedSecretExternalAdminIdentityVerifier(
+            authOptions.AdminTokenExchange.SharedSecret!),
+        _ => new DisabledExternalAdminIdentityVerifier()
+    });
 var adsSsvOptions = builder.Configuration.GetSection(AdsSsvOptions.SectionName).Get<AdsSsvOptions>()
     ?? new AdsSsvOptions();
 builder.Services.AddSingleton<IAdMobSsvVerifier>(

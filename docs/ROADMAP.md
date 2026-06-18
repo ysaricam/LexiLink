@@ -19,7 +19,7 @@ box; the DbUp migrator runs as a one-shot before the API on every deploy.
 | Orchestration | **Docker Compose** on one Ubuntu VPS (API + Postgres + Caddy + one-shot migrator). |
 | Database | **PostgreSQL 17 in a container** on the same box, named volume + nightly `pg_dump`. Managed DB deferred. |
 | Reverse proxy / TLS | **Caddy** — automatic Let's Encrypt TLS, minimal config. |
-| Frontend scope | **API only.** Game is mobile-only via the stores; **no Flutter web** is built or served. CORS stays empty/locked (native clients don't enforce CORS). |
+| Frontend scope | Game is mobile-only via the stores. Browser **admin** can be built from the existing Flutter web app and served separately; production API must allow that admin origin via CORS. |
 | Routing | `api.wordlope.com` → API container (port 8080). Apex left free for a future marketing site. |
 | Registry (GO6) | **GHCR** (GitHub Container Registry). |
 | Image shape | **Single image** holds both the API (`/app`) and the DbUp migrator (`/app/migrator`); the API csproj already copies `Database/Structure/**/*.sql` into the publish output, so both the migrator one-shot and the API `/health/ready` journal check read SQL from `/app/Database/Structure`. |
@@ -40,7 +40,8 @@ box; the DbUp migrator runs as a one-shot before the API on every deploy.
 
 ### Deliberate non-actions (launch v1)
 
-- **No web frontend.** Mobile-only via stores; no Flutter web build/serve.
+- **No player web frontend.** Mobile game stays store-only. Browser admin is
+  allowed as an operator tool.
 - **No multi-server/HA, no Kubernetes, no managed DB, no CDN.** Single VPS.
 - **No store credentials in repo.** AdMob/Apple/Google ids + IAP/SSV creds
   are operator-owned and gate real ads/IAP — independent of server go-live.
@@ -50,12 +51,10 @@ box; the DbUp migrator runs as a one-shot before the API on every deploy.
   fast-follow. Guest accounts are device-bound, so **real-money IAP should
   not go live until social sign-in exists** (purchase loss on device change).
   Apple also requires Sign in with Apple once Google sign-in is offered.
-- **No production admin-console login at launch.** Surfaced during GO2:
-  `POST /auth/admin/token` has no production verifier either
-  (`AdminTokenExchange__Mode=Disabled` → 401), so the admin console is not
-  usable in production yet. Not a launch blocker — content is imported via the
-  `CategoryImporter` CLI against the DB and the game needs no admin
-  intervention to run. A production admin verifier is a follow-up.
+- **Admin console auth v1 is shared-secret based.** Browser admin uses the
+  existing `/admin/*` Flutter web routes and `POST /auth/admin/token` with
+  `AdminSharedSecret`; email must still be an active bootstrapped admin.
+  Longer-term SSO can replace this.
 - **Backend message localization stays deferred** (see Phase 3 above).
 
 ### Slice ordering rationale

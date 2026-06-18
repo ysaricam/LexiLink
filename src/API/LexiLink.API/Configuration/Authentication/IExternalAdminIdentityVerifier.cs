@@ -1,3 +1,6 @@
+using System.Security.Cryptography;
+using System.Text;
+
 namespace LexiLink.API.Configuration.Authentication;
 
 /// <summary>
@@ -30,4 +33,42 @@ public sealed class DisabledExternalAdminIdentityVerifier : IExternalAdminIdenti
 {
     public Task<bool> VerifyAsync(string email, string externalToken, CancellationToken cancellationToken = default)
         => Task.FromResult(false);
+}
+
+/// <summary>
+/// Production-capable verifier for the first browser admin panel: accepts a
+/// strong operator-owned shared token, then lets <c>/auth/admin/token</c>
+/// require that the supplied email belongs to an active AdminUser.
+/// </summary>
+public sealed class SharedSecretExternalAdminIdentityVerifier : IExternalAdminIdentityVerifier
+{
+    private readonly string _sharedSecret;
+
+    public SharedSecretExternalAdminIdentityVerifier(string sharedSecret)
+    {
+        if (string.IsNullOrWhiteSpace(sharedSecret))
+        {
+            throw new ArgumentException("Shared secret is required.", nameof(sharedSecret));
+        }
+
+        _sharedSecret = sharedSecret;
+    }
+
+    public Task<bool> VerifyAsync(string email, string externalToken, CancellationToken cancellationToken = default)
+    {
+        if (string.IsNullOrWhiteSpace(externalToken))
+        {
+            return Task.FromResult(false);
+        }
+
+        var expected = Encoding.UTF8.GetBytes(_sharedSecret);
+        var actual = Encoding.UTF8.GetBytes(externalToken);
+
+        if (expected.Length != actual.Length)
+        {
+            return Task.FromResult(false);
+        }
+
+        return Task.FromResult(CryptographicOperations.FixedTimeEquals(expected, actual));
+    }
 }

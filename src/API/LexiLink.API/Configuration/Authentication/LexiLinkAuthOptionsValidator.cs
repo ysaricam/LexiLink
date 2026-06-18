@@ -48,5 +48,20 @@ public static class LexiLinkAuthOptionsValidator
             throw new InvalidOperationException(
                 "Development external admin identity validation is not allowed in Production.");
         }
+
+        if (options.AdminTokenExchange.Mode == ExternalIdentityValidationMode.AdminSharedSecret)
+        {
+            if (string.IsNullOrWhiteSpace(options.AdminTokenExchange.SharedSecret))
+            {
+                throw new InvalidOperationException(
+                    "Authentication:AdminTokenExchange:SharedSecret is required for AdminSharedSecret mode.");
+            }
+
+            if (options.AdminTokenExchange.SharedSecret.Length < 32)
+            {
+                throw new InvalidOperationException(
+                    "Authentication:AdminTokenExchange:SharedSecret must be at least 32 characters.");
+            }
+        }
     }
 }

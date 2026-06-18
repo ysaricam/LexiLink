@@ -30,4 +30,6 @@ public sealed class TokenExchangeOptions
 public sealed class AdminTokenExchangeOptions
 {
     public ExternalIdentityValidationMode Mode { get; set; } = ExternalIdentityValidationMode.Disabled;
+
+    public string? SharedSecret { get; set; }
 }
