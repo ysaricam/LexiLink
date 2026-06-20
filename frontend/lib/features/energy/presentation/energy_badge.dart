@@ -4,14 +4,18 @@ import 'package:lexilink_app/features/energy/application/energy_cubit.dart';
 import 'package:lexilink_app/features/energy/data/player_energy.dart';
 
 class EnergyBadge extends StatelessWidget {
-  const EnergyBadge({super.key});
+  const EnergyBadge({super.key, this.compact = false});
+
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<EnergyCubit, EnergyState>(
       builder: (context, state) {
         if (state.status == EnergyStatus.success && state.energy != null) {
-          return _Pill(child: _EnergyContent(energy: state.energy!));
+          return _Pill(
+            child: _EnergyContent(energy: state.energy!, compact: compact),
+          );
         }
 
         if (state.status == EnergyStatus.failure) {
@@ -45,18 +49,22 @@ class EnergyBadge extends StatelessWidget {
 }
 
 class _EnergyContent extends StatelessWidget {
-  const _EnergyContent({required this.energy});
+  const _EnergyContent({required this.energy, required this.compact});
 
   final PlayerEnergy energy;
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
+    final refillTime = _formatSeconds(energy.secondsUntilNextRefill ?? 0);
     final countdown = energy.isFull
         ? 'Full'
-        : 'Next in ${_formatSeconds(energy.secondsUntilNextRefill ?? 0)}';
+        : compact
+        ? refillTime
+        : 'Next in $refillTime';
 
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -67,7 +75,7 @@ class _EnergyContent extends StatelessWidget {
           '${energy.currentAmount}/${energy.maximumAmount}',
           style: textTheme.titleSmall,
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: compact ? 8 : 10),
         Text(
           countdown,
           style: textTheme.bodySmall?.copyWith(

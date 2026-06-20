@@ -269,7 +269,6 @@ class _GameContent extends StatelessWidget {
         AppBackBar(
           title: context.l10n.gameTitle,
           onBack: () => _onBackPressed(context, game, isBusy),
-          trailing: _OverflowMenu(game: game, isBusy: isBusy),
         ),
         const SizedBox(height: 20),
         _StartRailTarget(game: game),
@@ -817,53 +816,32 @@ class _SecondaryActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hintBalance = context.watch<HintCubit>().state.hint?.balance ?? 0;
-    return Row(
-      children: [
-        Expanded(
-          child: AppSecondaryButton(
-            label: context.l10n.hintAction(hintBalance),
-            onPressed: isBusy || game.isFinished || hintBalance <= 0
-                ? null
-                : () async {
-                    await context.read<GameDetailsCubit>().useHint();
-                    if (context.mounted) {
-                      await context.read<HintCubit>().loadHint();
-                    }
-                  },
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _OverflowMenu extends StatelessWidget {
-  const _OverflowMenu({required this.game, required this.isBusy});
-
-  final GameDetails game;
-  final bool isBusy;
-
-  @override
-  Widget build(BuildContext context) {
     final resetBalance = context.watch<ResetCubit>().state.reset?.balance ?? 0;
-    final resetEnabled = !game.isFinished && !isBusy && resetBalance > 0;
-
-    return PopupMenuButton<String>(
-      icon: const Icon(Icons.more_vert),
-      tooltip: context.l10n.moreActions,
-      onSelected: (value) async {
-        if (value == 'reset') {
-          await context.read<GameDetailsCubit>().reset();
-          if (context.mounted) {
-            await context.read<ResetCubit>().loadReset();
-          }
-        }
-      },
-      itemBuilder: (popupContext) => [
-        PopupMenuItem<String>(
-          value: 'reset',
-          enabled: resetEnabled,
-          child: Text(context.l10n.resetProgress(resetBalance)),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        AppSecondaryButton(
+          label: context.l10n.hintAction(hintBalance),
+          onPressed: isBusy || game.isFinished || hintBalance <= 0
+              ? null
+              : () async {
+                  await context.read<GameDetailsCubit>().useHint();
+                  if (context.mounted) {
+                    await context.read<HintCubit>().loadHint();
+                  }
+                },
+        ),
+        const SizedBox(height: 10),
+        AppSecondaryButton(
+          label: context.l10n.commonReset,
+          onPressed: isBusy || game.isFinished || resetBalance <= 0
+              ? null
+              : () async {
+                  await context.read<GameDetailsCubit>().reset();
+                  if (context.mounted) {
+                    await context.read<ResetCubit>().loadReset();
+                  }
+                },
         ),
       ],
     );

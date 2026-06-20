@@ -20,17 +20,8 @@ import 'package:lexilink_app/features/energy/data/energy_repository.dart';
 import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
 import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
-import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
-import 'package:lexilink_app/features/hint/data/hint_repository.dart';
-import 'package:lexilink_app/features/hint/presentation/hint_badge.dart';
-import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
-import 'package:lexilink_app/features/reset/data/reset_repository.dart';
-import 'package:lexilink_app/features/reset/presentation/reset_badge.dart';
 import 'package:lexilink_app/features/session/application/session_cubit.dart';
 import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
-import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
-import 'package:lexilink_app/features/undo/data/undo_repository.dart';
-import 'package:lexilink_app/features/undo/presentation/undo_badge.dart';
 import 'package:lexilink_app/shared/ads/ad_config.dart';
 import 'package:lexilink_app/shared/ads/ads_service.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
@@ -136,9 +127,6 @@ class _HomeProvidersState extends State<_HomeProviders> {
   late final CategoryListCubit _categoryListCubit;
   late final EnergyCubit _energyCubit;
   late final DiamondCubit _diamondCubit;
-  late final HintCubit _hintCubit;
-  late final UndoCubit _undoCubit;
-  late final ResetCubit _resetCubit;
   late final GameStartCubit _gameStartCubit;
 
   @override
@@ -165,15 +153,6 @@ class _HomeProvidersState extends State<_HomeProviders> {
     _diamondCubit = DiamondCubit(
       diamondRepository: DiamondRepository(apiClient: apiClient),
     );
-    _hintCubit = HintCubit(
-      hintRepository: HintRepository(apiClient: apiClient),
-    );
-    _undoCubit = UndoCubit(
-      undoRepository: UndoRepository(apiClient: apiClient),
-    );
-    _resetCubit = ResetCubit(
-      resetRepository: ResetRepository(apiClient: apiClient),
-    );
     _gameStartCubit = GameStartCubit(
       gameRepository: GameRepository(apiClient: apiClient),
       tokenStore: widget.bootstrap.tokenStore,
@@ -185,9 +164,6 @@ class _HomeProvidersState extends State<_HomeProviders> {
   @override
   void dispose() {
     _gameStartCubit.close();
-    _resetCubit.close();
-    _undoCubit.close();
-    _hintCubit.close();
     _diamondCubit.close();
     _energyCubit.close();
     _categoryListCubit.close();
@@ -206,9 +182,6 @@ class _HomeProvidersState extends State<_HomeProviders> {
         BlocProvider.value(value: _categoryListCubit),
         BlocProvider.value(value: _energyCubit),
         BlocProvider.value(value: _diamondCubit),
-        BlocProvider.value(value: _hintCubit),
-        BlocProvider.value(value: _undoCubit),
-        BlocProvider.value(value: _resetCubit),
         BlocProvider.value(value: _gameStartCubit),
       ],
       child: _HomeView(guestDeviceId: widget.bootstrap.guestDeviceId),
@@ -242,9 +215,6 @@ class _HomeView extends StatelessWidget {
               );
               context.read<EnergyCubit>().loadEnergy();
               context.read<DiamondCubit>().loadDiamond();
-              context.read<HintCubit>().loadHint();
-              context.read<UndoCubit>().loadUndo();
-              context.read<ResetCubit>().loadReset();
             }
           },
         ),
@@ -280,80 +250,60 @@ class _HomeScaffold extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            const Positioned.fill(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(76, 64, 16, 24),
-                child: _HomeContent(),
-              ),
-            ),
-            const Positioned(
-              top: 12,
-              right: 12,
+      body: const SafeArea(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(16, 12, 16, 18),
+          child: Column(
+            children: [
+              _HomeTopBar(),
+              Expanded(child: _HomeContent()),
+              SizedBox(height: 14),
+              _HomeActionDock(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _HomeTopBar extends StatelessWidget {
+  const _HomeTopBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        _TopIconButton(
+          icon: Icons.person_outline,
+          tooltip: context.l10n.navProfile,
+          onPressed: () => context.go('/profile'),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              reverse: true,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  DiamondBadge(),
-                  SizedBox(width: 8),
-                  ResetBadge(),
-                  SizedBox(width: 8),
-                  UndoBadge(),
-                  SizedBox(width: 8),
-                  HintBadge(),
-                  SizedBox(width: 8),
-                  EnergyBadge(),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 12,
-              left: 12,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _SideIconButton(
-                    icon: Icons.person_outline,
-                    tooltip: context.l10n.navProfile,
-                    onPressed: () => context.go('/profile'),
-                  ),
-                  const SizedBox(height: 10),
-                  _SideIconButton(
-                    icon: Icons.flag_outlined,
-                    tooltip: context.l10n.navQuests,
-                    onPressed: () => context.go('/quests'),
-                  ),
-                  const SizedBox(height: 10),
-                  _SideIconButton(
-                    icon: Icons.storefront_outlined,
-                    tooltip: context.l10n.navMarket,
-                    onPressed: () => context.go('/market'),
-                  ),
-                  const SizedBox(height: 10),
-                  _SideIconButton(
-                    icon: Icons.diamond_outlined,
-                    tooltip: context.l10n.navDiamonds,
-                    onPressed: () => context.go('/payments'),
-                  ),
-                  const SizedBox(height: 10),
-                  _SideIconButton(
+                  _TopIconButton(
                     icon: Icons.ondemand_video_outlined,
                     tooltip: context.l10n.navEarnDiamonds,
                     onPressed: () => context.go('/earn-diamonds'),
                   ),
-                  const SizedBox(height: 10),
-                  _SideIconButton(
-                    icon: Icons.settings_outlined,
-                    tooltip: context.l10n.navSettings,
-                    onPressed: () => context.go('/settings'),
-                  ),
+                  const SizedBox(width: 8),
+                  const DiamondBadge(),
+                  const SizedBox(width: 8),
+                  const EnergyBadge(compact: true),
                 ],
               ),
             ),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -651,8 +601,119 @@ class _PageDots extends StatelessWidget {
   }
 }
 
-class _SideIconButton extends StatelessWidget {
-  const _SideIconButton({
+class _HomeActionDock extends StatelessWidget {
+  const _HomeActionDock();
+
+  @override
+  Widget build(BuildContext context) {
+    final actions = [
+      _HomeAction(
+        icon: Icons.flag_outlined,
+        label: context.l10n.navQuests,
+        route: '/quests',
+      ),
+      _HomeAction(
+        icon: Icons.storefront_outlined,
+        label: context.l10n.navMarket,
+        route: '/market',
+      ),
+      _HomeAction(
+        icon: Icons.diamond_outlined,
+        label: context.l10n.navDiamonds,
+        route: '/payments',
+      ),
+      _HomeAction(
+        icon: Icons.settings_outlined,
+        label: context.l10n.navSettings,
+        route: '/settings',
+      ),
+    ];
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.22),
+        ),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        child: Row(
+          children: [
+            for (final action in actions)
+              Expanded(child: _HomeDockButton(action: action)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _HomeAction {
+  const _HomeAction({
+    required this.icon,
+    required this.label,
+    required this.route,
+  });
+
+  final IconData icon;
+  final String label;
+  final String route;
+}
+
+class _HomeDockButton extends StatelessWidget {
+  const _HomeDockButton({required this.action});
+
+  final _HomeAction action;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return Tooltip(
+      message: action.label,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(14),
+        onTap: () {
+          context.read<AudioService>().playEffect(SoundEffect.buttonTap);
+          context.go(action.route);
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(action.icon, color: colorScheme.primary, size: 22),
+              const SizedBox(height: 5),
+              Text(
+                action.label,
+                style: textTheme.labelSmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w600,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TopIconButton extends StatelessWidget {
+  const _TopIconButton({
     required this.icon,
     required this.tooltip,
     required this.onPressed,
