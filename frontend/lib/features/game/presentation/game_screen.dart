@@ -261,6 +261,7 @@ class _GameContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final isBusy = activeAction != GameAction.none;
     final isFinished = game.isFinished;
+    final undoBalance = context.watch<UndoCubit>().state.undo?.balance ?? 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -296,6 +297,7 @@ class _GameContent extends StatelessWidget {
               options: outgoingLinks,
               recommendedLinkId: recommendedLinkId,
               previousLinkId: game.backtrackParentLinkId,
+              undoBalance: undoBalance,
               disabled: isBusy || isFinished,
             ),
           const SizedBox(height: 16),
@@ -661,12 +663,14 @@ class _OptionsGrid extends StatelessWidget {
     required this.options,
     required this.recommendedLinkId,
     required this.previousLinkId,
+    required this.undoBalance,
     required this.disabled,
   });
 
   final List<OutgoingLink> options;
   final String? recommendedLinkId;
   final String? previousLinkId;
+  final int undoBalance;
   final bool disabled;
 
   @override
@@ -686,7 +690,8 @@ class _OptionsGrid extends StatelessWidget {
         final isRecommended = option.id == recommendedLinkId;
         final isPrevious =
             previousLinkId != null && option.id == previousLinkId;
-        final tileDisabled = disabled || !option.isActive;
+        final tileDisabled =
+            disabled || !option.isActive || (isPrevious && undoBalance <= 0);
         return _OptionTile(
           option: option,
           highlighted: isRecommended,
@@ -730,10 +735,10 @@ class _OptionTile extends StatelessWidget {
       border = AppPalette.focus;
       borderWidth = 2;
     } else if (isPrevious) {
-      background = AppPalette.lightSurfaceMuted;
-      foreground = AppPalette.lightTextMuted;
-      border = AppPalette.primary.withValues(alpha: 0.24);
-      borderWidth = 1;
+      background = AppPalette.primarySoft;
+      foreground = AppPalette.primary;
+      border = AppPalette.primary.withValues(alpha: 0.44);
+      borderWidth = 2;
     } else {
       background = AppPalette.lightSurface;
       foreground = AppPalette.lightText;
@@ -748,7 +753,17 @@ class _OptionTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: disabled
             ? null
-            : () => context.read<GameDetailsCubit>().makeStep(option.id),
+            : () async {
+                if (isPrevious) {
+                  await context.read<GameDetailsCubit>().undo();
+                  if (context.mounted) {
+                    await context.read<UndoCubit>().loadUndo();
+                  }
+                  return;
+                }
+
+                await context.read<GameDetailsCubit>().makeStep(option.id);
+              },
         child: DecoratedBox(
           decoration: BoxDecoration(
             border: Border.all(color: border, width: borderWidth),
@@ -802,7 +817,6 @@ class _SecondaryActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hintBalance = context.watch<HintCubit>().state.hint?.balance ?? 0;
-    final undoBalance = context.watch<UndoCubit>().state.undo?.balance ?? 0;
     return Row(
       children: [
         Expanded(
@@ -814,20 +828,6 @@ class _SecondaryActions extends StatelessWidget {
                     await context.read<GameDetailsCubit>().useHint();
                     if (context.mounted) {
                       await context.read<HintCubit>().loadHint();
-                    }
-                  },
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: AppSecondaryButton(
-            label: context.l10n.undoAction(undoBalance),
-            onPressed: isBusy || game.isFinished || undoBalance <= 0
-                ? null
-                : () async {
-                    await context.read<GameDetailsCubit>().undo();
-                    if (context.mounted) {
-                      await context.read<UndoCubit>().loadUndo();
                     }
                   },
           ),
