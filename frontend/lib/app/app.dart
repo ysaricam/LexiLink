@@ -14,7 +14,7 @@ import 'package:lexilink_app/shared/audio/audio_music_orchestrator.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 
-class LexiLinkApp extends StatelessWidget {
+class LexiLinkApp extends StatefulWidget {
   const LexiLinkApp({
     required this.audioService,
     required this.adsService,
@@ -45,47 +45,56 @@ class LexiLinkApp extends StatelessWidget {
   final PlayerLocaleWriter? playerLocaleWriter;
 
   @override
+  State<LexiLinkApp> createState() => _LexiLinkAppState();
+}
+
+class _LexiLinkAppState extends State<LexiLinkApp> {
+  late final AudioPreferencesRepository _audioPreferencesRepository;
+  late final AudioSettingsCubit _audioSettingsCubit;
+  late final Future<void> _audioSettingsLoad;
+
+  @override
+  void initState() {
+    super.initState();
+    _audioPreferencesRepository =
+        widget.audioPreferencesRepository ??
+        SharedPreferencesAudioPreferencesRepository();
+    _audioSettingsCubit = AudioSettingsCubit(
+      audioService: widget.audioService,
+      repository: _audioPreferencesRepository,
+    );
+    _audioSettingsLoad = _audioSettingsCubit.load();
+  }
+
+  @override
+  void dispose() {
+    _audioSettingsCubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RepositoryProvider<AudioService>.value(
-      value: audioService,
+      value: widget.audioService,
       child: RepositoryProvider<AdsService>.value(
-        value: adsService,
+        value: widget.adsService,
         child: MultiBlocProvider(
           providers: [
-            BlocProvider<AudioSettingsCubit>(
-              create: (_) => AudioSettingsCubit(
-                audioService: audioService,
-                repository: audioPreferencesRepository ??
-                    SharedPreferencesAudioPreferencesRepository(),
-              )..load(),
-            ),
+            BlocProvider<AudioSettingsCubit>.value(value: _audioSettingsCubit),
             BlocProvider<LocaleCubit>(
               create: (_) => LocaleCubit(
-                repository: localePreferencesRepository ??
+                repository:
+                    widget.localePreferencesRepository ??
                     SharedPreferencesLocalePreferencesRepository(),
-                localeWriter: playerLocaleWriter ?? ApiPlayerLocaleWriter(),
+                localeWriter:
+                    widget.playerLocaleWriter ?? ApiPlayerLocaleWriter(),
               )..load(),
             ),
           ],
-          child: AudioMusicOrchestrator(
-            audioService: audioService,
-            router: appRouter,
-            child: BlocBuilder<LocaleCubit, AppLanguage>(
-              builder: (context, language) => MaterialApp.router(
-                onGenerateTitle: (context) => context.l10n.appTitle,
-                localizationsDelegates:
-                    AppLocalizations.localizationsDelegates,
-                supportedLocales: AppLocalizations.supportedLocales,
-                // LocaleCubit drives the active locale. The resolution
-                // callback is a defensive fallback to English for any
-                // unexpected unsupported value.
-                locale: language.locale,
-                localeListResolutionCallback: _resolveLocale,
-                theme: AppTheme.light,
-                darkTheme: AppTheme.dark,
-                routerConfig: appRouter,
-              ),
-            ),
+          child: _AudioReadyGate(
+            loadFuture: _audioSettingsLoad,
+            audioService: widget.audioService,
+            child: const _LocalizedRouterApp(),
           ),
         ),
       ),
@@ -108,5 +117,57 @@ class LexiLinkApp extends StatelessWidget {
       }
     }
     return const Locale('en');
+  }
+}
+
+class _AudioReadyGate extends StatelessWidget {
+  const _AudioReadyGate({
+    required this.loadFuture,
+    required this.audioService,
+    required this.child,
+  });
+
+  final Future<void> loadFuture;
+  final AudioService audioService;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: loadFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return child;
+        }
+
+        return AudioMusicOrchestrator(
+          audioService: audioService,
+          router: appRouter,
+          child: child,
+        );
+      },
+    );
+  }
+}
+
+class _LocalizedRouterApp extends StatelessWidget {
+  const _LocalizedRouterApp();
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LocaleCubit, AppLanguage>(
+      builder: (context, language) => MaterialApp.router(
+        onGenerateTitle: (context) => context.l10n.appTitle,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        // LocaleCubit drives the active locale. The resolution callback is a
+        // defensive fallback to English for any unexpected unsupported value.
+        locale: language.locale,
+        localeListResolutionCallback: _LexiLinkAppState._resolveLocale,
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        routerConfig: appRouter,
+      ),
+    );
   }
 }
