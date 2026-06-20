@@ -59,6 +59,53 @@ public class GetGameOptionsIntegrationTests : TestBase
     }
 
     [Test]
+    public async Task GetGameOptions_AfterBacktracking_UsesSimplifiedPathParent()
+    {
+        var categoryId = await CategoryHelper.CreateCategoryAsync(Sender);
+        var sportId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "Spor");
+        var athleticsId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "Atletizm");
+        var jumpId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "Atlama");
+        var targetId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "Hedef");
+
+        await LinkHelper.LinkBidirectionallyAsync(Sender, sportId, athleticsId);
+        await LinkHelper.LinkBidirectionallyAsync(Sender, athleticsId, jumpId);
+        await LinkHelper.LinkBidirectionallyAsync(Sender, jumpId, targetId);
+
+        var playerId = Guid.NewGuid();
+        var gameId = Guid.NewGuid();
+        await DbContext.Database.ExecuteSqlRawAsync(
+            """
+            INSERT INTO "games"."Games" (
+                "Id", "PlayerId", "CurrentLinkId", "State", "CategoryId",
+                "Difficulty", "StartLinkId", "TargetLinkId",
+                "Score", "MaxSteps", "StepsTaken",
+                "HintsRemaining", "HintsUsed",
+                "UndosUsed",
+                "ResetsUsed"
+            ) VALUES (
+                {0}, {1}, {2}, 'InProgress', {3},
+                'Easy', {4}, {5},
+                NULL, 20, 0,
+                3, 0,
+                0,
+                0
+            );
+            """,
+            gameId, playerId, sportId, categoryId, sportId, targetId);
+
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, athleticsId));
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, jumpId));
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, athleticsId));
+
+        var options = await ExecuteQueryAsync(new GetGameOptionsQuery(gameId));
+
+        options[0].Id.Should().Be(sportId,
+            "backtracking should pop the path so the next back option is the parent of Atletizm");
+        options.Select(o => o.Id).Should().Contain(jumpId,
+            "the forward branch should remain available as a normal option");
+    }
+
+    [Test]
     public async Task GetGameOptions_IsDeterministic_AcrossRepeatedCalls()
     {
         var (gameId, _, _) = await SetupStarGraphGameAsync();

@@ -21,31 +21,13 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();
 
-        // History only records steps the player has taken; the start link is
-        // implicit via Game.StartLinkId. So "previous" resolves as:
-        //   history count 0          -> no previous (player is at start)
-        //   history count 1          -> StartLinkId (the player came from start)
-        //   history count >= 2       -> the second-to-last history entry
         const string gameSql = """
             SELECT
                 "Game"."CurrentLinkId" AS "CurrentLinkId",
                 "Game"."StartLinkId"   AS "StartLinkId",
                 "Game"."TargetLinkId"  AS "TargetLinkId",
-                "Game"."CategoryId"    AS "CategoryId",
-                "Counts"."HistoryCount" AS "HistoryCount",
-                (
-                    SELECT "LinkId"
-                    FROM "games"."v_GameHistory"
-                    WHERE "GameId" = @GameId
-                    ORDER BY "StepNumber" DESC
-                    OFFSET 1 LIMIT 1
-                ) AS "HistoryPrev"
+                "Game"."CategoryId"    AS "CategoryId"
             FROM "games"."v_Games" AS "Game"
-            CROSS JOIN LATERAL (
-                SELECT COUNT(*)::int AS "HistoryCount"
-                FROM "games"."v_GameHistory"
-                WHERE "GameId" = @GameId
-            ) AS "Counts"
             WHERE "Game"."Id" = @GameId;
         """;
 
@@ -62,12 +44,20 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
             throw new NotFoundException("Game", query.GameId);
         }
 
-        var previousLinkId = gameRow.HistoryCount switch
-        {
-            0 => (Guid?)null,
-            1 => gameRow.StartLinkId,
-            _ => gameRow.HistoryPrev,
-        };
+        var history = (await connection.QueryAsync<Guid>(
+            new CommandDefinition(
+                """
+                SELECT "LinkId"
+                FROM "games"."v_GameHistory"
+                WHERE "GameId" = @GameId
+                ORDER BY "StepNumber";
+                """,
+                new { query.GameId },
+                cancellationToken: cancellationToken
+            )
+        )).ToList();
+
+        var previousLinkId = ResolveBacktrackParent(gameRow.StartLinkId, gameRow.CurrentLinkId, history);
 
         const string candidatesSql = """
             SELECT
@@ -265,6 +255,32 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
         return null;
     }
 
+    private static Guid? ResolveBacktrackParent(
+        Guid startLinkId,
+        Guid currentLinkId,
+        IReadOnlyList<Guid> history)
+    {
+        var path = new List<Guid> { startLinkId };
+        foreach (var linkId in history)
+        {
+            var existingIndex = path.IndexOf(linkId);
+            if (existingIndex >= 0)
+            {
+                path.RemoveRange(existingIndex + 1, path.Count - existingIndex - 1);
+                continue;
+            }
+
+            path.Add(linkId);
+        }
+
+        if (path.Count == 0 || path[^1] != currentLinkId)
+        {
+            return null;
+        }
+
+        return path.Count >= 2 ? path[^2] : null;
+    }
+
     private static List<Guid> Order(List<Guid> ids, Guid? previousLinkId, Guid? pathToTargetLinkId)
     {
         var sorted = ids.OrderBy(id => id).ToList();
@@ -290,9 +306,7 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
         Guid CurrentLinkId,
         Guid StartLinkId,
         Guid TargetLinkId,
-        Guid CategoryId,
-        int HistoryCount,
-        Guid? HistoryPrev);
+        Guid CategoryId);
 
     private sealed record AdjacencyRow(Guid LinkId, Guid OutgoingLinkId);
 
