@@ -17,19 +17,17 @@ AdminPlayersRepository _repo(MockClient client) => AdminPlayersRepository(
 
 void main() {
   group('AdminPlayersRepository', () {
-    test('fetchDetail decodes payload', () async {
+    test('fetchDetailByHandle decodes payload', () async {
       final repo = _repo(
         MockClient((req) async {
           expect(req.method, 'GET');
-          expect(
-            req.url.path,
-            '/admin/players/00000000-0000-0000-0000-000000000abc',
-          );
+          expect(req.url.path, '/admin/players/by-handle');
+          expect(req.url.queryParameters['handle'], 'Ada#0042');
           return http.Response(
             '{'
             '"id":"00000000-0000-0000-0000-000000000abc",'
             '"displayName":"Ada","discriminator":42,'
-            '"handle":"ada-42","avatarUrl":null,'
+            '"handle":"Ada#0042","avatarUrl":null,'
             '"locale":"tr-TR","isGuest":false,'
             '"isBanned":true,'
             '"bannedReason":"spam",'
@@ -42,12 +40,10 @@ void main() {
         }),
       );
 
-      final detail = await repo.fetchDetail(
-        '00000000-0000-0000-0000-000000000abc',
-      );
+      final detail = await repo.fetchDetailByHandle('Ada#0042');
 
       expect(detail.displayName, 'Ada');
-      expect(detail.handle, 'ada-42');
+      expect(detail.handle, 'Ada#0042');
       expect(detail.isBanned, isTrue);
       expect(detail.bannedReason, 'spam');
       expect(
@@ -57,15 +53,46 @@ void main() {
       expect(detail.authProvidersLinked, 2);
     });
 
-    test('fetchDetail propagates 404 as ApiException', () async {
+    test('fetchDetailByHandle propagates 404 as ApiException', () async {
       final repo = _repo(
         MockClient((_) async => http.Response('{"detail":"nope"}', 404)),
       );
 
       expect(
-        () => repo.fetchDetail('00000000-0000-0000-0000-000000000abc'),
+        () => repo.fetchDetailByHandle('Missing#0001'),
         throwsA(isA<ApiException>()),
       );
+    });
+
+    test('fetchDetailById keeps id reload support', () async {
+      final repo = _repo(
+        MockClient((req) async {
+          expect(req.method, 'GET');
+          expect(
+            req.url.path,
+            '/admin/players/00000000-0000-0000-0000-000000000abc',
+          );
+          return http.Response(
+            '{'
+            '"id":"00000000-0000-0000-0000-000000000abc",'
+            '"displayName":"Ada","discriminator":42,'
+            '"handle":"Ada#0042","avatarUrl":null,'
+            '"locale":"tr-TR","isGuest":false,'
+            '"isBanned":false,'
+            '"bannedReason":null,"bannedAt":null,'
+            '"createdAt":"2026-01-01T00:00:00Z",'
+            '"authProvidersLinked":2'
+            '}',
+            200,
+          );
+        }),
+      );
+
+      final detail = await repo.fetchDetailById(
+        '00000000-0000-0000-0000-000000000abc',
+      );
+
+      expect(detail.handle, 'Ada#0042');
     });
 
     test('ban posts to /ban with reason body', () async {

@@ -1208,6 +1208,12 @@ abstract class AppLocalizations {
   /// **'Player GUID'**
   String get adminPlayerGuid;
 
+  /// No description provided for @adminPlayerHandle.
+  ///
+  /// In en, this message translates to:
+  /// **'Player handle'**
+  String get adminPlayerHandle;
+
   /// No description provided for @adminPlayerId.
   ///
   /// In en, this message translates to:
@@ -1235,7 +1241,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminPlayerConsoleHelp.
   ///
   /// In en, this message translates to:
-  /// **'Lookup is by player GUID. Search-by-handle is a backend follow-up - the Players module currently exposes only GET /admin/players/:id.'**
+  /// **'Look up players by handle in DisplayName#1234 format.'**
   String get adminPlayerConsoleHelp;
 
   /// No description provided for @adminId.

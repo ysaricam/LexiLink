@@ -34,7 +34,7 @@ const _activePlayerJson =
     '{'
     '"id":"00000000-0000-0000-0000-000000000abc",'
     '"displayName":"Ada","discriminator":42,'
-    '"handle":"ada","avatarUrl":null,'
+    '"handle":"Ada#0042","avatarUrl":null,'
     '"locale":"tr-TR","isGuest":false,'
     '"isBanned":false,'
     '"bannedReason":null,"bannedAt":null,'
@@ -94,13 +94,18 @@ void main() {
 
     await tester.enterText(
       find.byType(TextField),
-      '00000000-0000-0000-0000-000000000abc',
+      'Ada#0042',
     );
     await tester.tap(find.text('Look up'));
     await tester.pumpAndSettle();
 
     expect(find.text('Ada'), findsOneWidget);
-    expect(find.text('ada#42'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (widget) => widget is SelectableText && widget.data == 'Ada#0042',
+      ),
+      findsOneWidget,
+    );
     expect(find.widgetWithText(FilledButton, 'Ban'), findsOneWidget);
   });
 
@@ -127,11 +132,11 @@ void main() {
 
     await tester.enterText(
       find.byType(TextField),
-      '00000000-0000-0000-0000-000000000ghost',
+      'Ghost#0001',
     );
     await tester.tap(find.text('Look up'));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('No player with id'), findsOneWidget);
+    expect(find.textContaining('No player with handle'), findsOneWidget);
   });
 }

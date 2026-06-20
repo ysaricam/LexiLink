@@ -20,17 +20,17 @@ class AdminPlayersCubit extends Cubit<AdminPlayersState> {
 
   final AdminPlayersRepository _repository;
 
-  Future<void> lookup(String playerId) async {
+  Future<void> lookup(String handle) async {
     emit(
       state.copyWith(
         status: AdminPlayersStatus.loading,
-        currentId: playerId,
+        currentHandle: handle,
         clearDetail: true,
         clearError: true,
       ),
     );
     try {
-      final detail = await _repository.fetchDetail(playerId);
+      final detail = await _repository.fetchDetailByHandle(handle);
       emit(
         state.copyWith(
           status: AdminPlayersStatus.loaded,
@@ -42,7 +42,7 @@ class AdminPlayersCubit extends Cubit<AdminPlayersState> {
         emit(
           state.copyWith(
             status: AdminPlayersStatus.notFound,
-            errorMessage: 'No player with id $playerId.',
+            errorMessage: 'No player with handle $handle.',
           ),
         );
         return;
@@ -93,7 +93,7 @@ class AdminPlayersCubit extends Cubit<AdminPlayersState> {
   }
 
   Future<void> _reload(String id) async {
-    final detail = await _repository.fetchDetail(id);
+    final detail = await _repository.fetchDetailById(id);
     emit(
       state.copyWith(
         status: AdminPlayersStatus.loaded,
@@ -107,7 +107,7 @@ class AdminPlayersState extends Equatable {
   const AdminPlayersState({
     required this.status,
     this.detail,
-    this.currentId,
+    this.currentHandle,
     this.errorMessage,
   });
 
@@ -116,7 +116,7 @@ class AdminPlayersState extends Equatable {
   AdminPlayersState copyWith({
     AdminPlayersStatus? status,
     PlayerAdminDetail? detail,
-    String? currentId,
+    String? currentHandle,
     String? errorMessage,
     bool clearDetail = false,
     bool clearError = false,
@@ -124,16 +124,16 @@ class AdminPlayersState extends Equatable {
     return AdminPlayersState(
       status: status ?? this.status,
       detail: clearDetail ? null : (detail ?? this.detail),
-      currentId: currentId ?? this.currentId,
+      currentHandle: currentHandle ?? this.currentHandle,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );
   }
 
   final AdminPlayersStatus status;
   final PlayerAdminDetail? detail;
-  final String? currentId;
+  final String? currentHandle;
   final String? errorMessage;
 
   @override
-  List<Object?> get props => [status, detail, currentId, errorMessage];
+  List<Object?> get props => [status, detail, currentHandle, errorMessage];
 }

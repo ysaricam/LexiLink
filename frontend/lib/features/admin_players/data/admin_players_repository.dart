@@ -7,9 +7,17 @@ class AdminPlayersRepository {
 
   final ApiClient _apiClient;
 
-  /// Looks up a player by id. The caller is expected to handle the
+  /// Looks up a player by handle. The caller is expected to handle the
   /// 404 surface (the server returns ProblemDetails).
-  Future<PlayerAdminDetail> fetchDetail(String playerId) async {
+  Future<PlayerAdminDetail> fetchDetailByHandle(String handle) async {
+    final raw = await _apiClient.getJson(
+      '/admin/players/by-handle',
+      queryParameters: {'handle': handle},
+    );
+    return PlayerAdminDetail.fromJson(raw);
+  }
+
+  Future<PlayerAdminDetail> fetchDetailById(String playerId) async {
     final raw = await _apiClient.getJson('/admin/players/$playerId');
     return PlayerAdminDetail.fromJson(raw);
   }

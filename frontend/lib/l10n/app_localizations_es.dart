@@ -623,6 +623,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get adminPlayerGuid => 'GUID del jugador';
 
   @override
+  String get adminPlayerHandle => 'Handle del jugador';
+
+  @override
   String get adminPlayerId => 'ID de jugador';
 
   @override
@@ -636,7 +639,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get adminPlayerConsoleHelp =>
-      'La búsqueda usa el GUID del jugador. Buscar por handle queda para backend; el módulo Players actualmente expone solo GET /admin/players/:id.';
+      'Busca jugadores por handle con el formato DisplayName#1234.';
 
   @override
   String get adminId => 'ID';

@@ -38,7 +38,7 @@ const _activePlayerJson =
     '{'
     '"id":"00000000-0000-0000-0000-000000000abc",'
     '"displayName":"Ada","discriminator":42,'
-    '"handle":"ada","avatarUrl":null,'
+    '"handle":"Ada#0042","avatarUrl":null,'
     '"locale":"tr-TR","isGuest":false,'
     '"isBanned":false,'
     '"bannedReason":null,"bannedAt":null,'
@@ -49,7 +49,7 @@ const _bannedPlayerJson =
     '{'
     '"id":"00000000-0000-0000-0000-000000000abc",'
     '"displayName":"Ada","discriminator":42,'
-    '"handle":"ada","avatarUrl":null,'
+    '"handle":"Ada#0042","avatarUrl":null,'
     '"locale":"tr-TR","isGuest":false,'
     '"isBanned":true,'
     '"bannedReason":"noisy",'
@@ -67,10 +67,10 @@ void main() {
           ..enqueue((_) => http.Response(_activePlayerJson, 200));
         return AdminPlayersCubit(repository: _repoFromScript(script));
       },
-      act: (cubit) => cubit.lookup('00000000-0000-0000-0000-000000000abc'),
+      act: (cubit) => cubit.lookup('Ada#0042'),
       verify: (cubit) {
         expect(cubit.state.status, AdminPlayersStatus.loaded);
-        expect(cubit.state.detail?.handle, 'ada');
+        expect(cubit.state.detail?.handle, 'Ada#0042');
         expect(cubit.state.detail?.isBanned, isFalse);
       },
     );
@@ -82,7 +82,7 @@ void main() {
           ..enqueue((_) => http.Response('{"detail":"nope"}', 404));
         return AdminPlayersCubit(repository: _repoFromScript(script));
       },
-      act: (cubit) => cubit.lookup('00000000-0000-0000-0000-000000000abc'),
+      act: (cubit) => cubit.lookup('Missing#0001'),
       verify: (cubit) {
         expect(cubit.state.status, AdminPlayersStatus.notFound);
         expect(cubit.state.detail, isNull);
@@ -99,7 +99,7 @@ void main() {
         return AdminPlayersCubit(repository: _repoFromScript(script));
       },
       act: (cubit) async {
-        await cubit.lookup('00000000-0000-0000-0000-000000000abc');
+        await cubit.lookup('Ada#0042');
         await cubit.ban(reason: 'noisy');
       },
       verify: (cubit) {
@@ -119,7 +119,7 @@ void main() {
         return AdminPlayersCubit(repository: _repoFromScript(script));
       },
       act: (cubit) async {
-        await cubit.lookup('00000000-0000-0000-0000-000000000abc');
+        await cubit.lookup('Ada#0042');
         await cubit.unban();
       },
       verify: (cubit) {

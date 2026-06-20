@@ -119,6 +119,33 @@ public sealed class PlayerAdminCommandTests : TestBase
     }
 
     [Test]
+    public async Task GetPlayerAdminDetailByHandle_ReturnsRichPayload_WhenPlayerExists()
+    {
+        AdminContext.LoginAs(AdminId);
+        var playerId = await Sender.Send(new RegisterGuestPlayerCommand("dev-detail-handle-1", "Handle", "en-US"));
+        var byId = await Sender.Send(new GetPlayerAdminDetailQuery(playerId));
+
+        var byHandle = await Sender.Send(new GetPlayerAdminDetailByHandleQuery(
+            byId!.DisplayName,
+            byId.Discriminator));
+
+        byHandle.Should().NotBeNull();
+        byHandle!.Id.Should().Be(playerId);
+        byHandle.Handle.Should().Be(byId.Handle);
+        byHandle.DisplayName.Should().Be("Handle");
+    }
+
+    [Test]
+    public async Task GetPlayerAdminDetailByHandle_ReturnsNull_WhenPlayerMissing()
+    {
+        AdminContext.LoginAs(AdminId);
+
+        var detail = await Sender.Send(new GetPlayerAdminDetailByHandleQuery("Missing", 9999));
+
+        detail.Should().BeNull();
+    }
+
+    [Test]
     public async Task GetPlayerBanStatus_ReturnsFalse_ForUnknownPlayer()
     {
         AdminContext.Logout();

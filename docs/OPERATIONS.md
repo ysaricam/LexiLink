@@ -334,6 +334,7 @@ Processor logs include structured fields for operational search:
 | `POST /admin/players/{playerId:guid}/energy/set` | `AuthenticatedAdmin` | Snap a player's energy to a specific amount (`{ amount }`, 0 ≤ amount ≤ max). 404 when the player has no energy aggregate yet. |
 | `POST /admin/players/{playerId:guid}/energy/grant` | `AuthenticatedAdmin` | Grant bonus energy (`{ amount }`, > 0). Wraps the internal `GrantEnergyCommand` — intentionally permits over-max balance. |
 | `POST /admin/players/{playerId:guid}/energy/reset` | `AuthenticatedAdmin` | Restore current to maximum and rearm the recharge timestamp. |
+| `GET /admin/players/by-handle?handle=DisplayName%231234` | `AuthenticatedAdmin` | Returns `PlayerAdminDetailDto` by public player handle (`DisplayName#1234`). The `#` must be URL-encoded as `%23` by callers. 400 when the handle shape is invalid; 404 when no player matches. |
 | `GET /admin/players/{playerId:guid}` | `AuthenticatedAdmin` | Returns `PlayerAdminDetailDto` (id, displayName, discriminator, handle, avatarUrl, locale, isGuest, isBanned, bannedReason, bannedAt, createdAt, authProvidersLinked). 404 when the player is unknown. |
 | `POST /admin/players/{playerId:guid}/ban` | `AuthenticatedAdmin` | Mark a player banned (`{ reason }`, NotEmpty, max 500). Idempotent: re-banning the same player is a no-op. Banned tokens are refused at the auth boundary with 401. |
 | `POST /admin/players/{playerId:guid}/unban` | `AuthenticatedAdmin` | Lift the ban. Idempotent. |

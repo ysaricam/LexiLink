@@ -20,15 +20,40 @@ internal sealed class GetPlayerAdminDetailQueryHandler : IQueryHandler<GetPlayer
             new PlayerId(request.PlayerId),
             cancellationToken);
 
-        if (player is null)
-        {
-            return null;
-        }
+        return player is null ? null : PlayerAdminDetailMapper.Map(player);
+    }
+}
 
+internal sealed class GetPlayerAdminDetailByHandleQueryHandler
+    : IQueryHandler<GetPlayerAdminDetailByHandleQuery, PlayerAdminDetailDto?>
+{
+    private readonly IPlayerRepository _repository;
+
+    internal GetPlayerAdminDetailByHandleQueryHandler(IPlayerRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task<PlayerAdminDetailDto?> Handle(
+        GetPlayerAdminDetailByHandleQuery request,
+        CancellationToken cancellationToken)
+    {
+        var player = await _repository.GetByHandleAsync(
+            request.DisplayName,
+            request.Discriminator,
+            cancellationToken);
+
+        return player is null ? null : PlayerAdminDetailMapper.Map(player);
+    }
+}
+
+internal static class PlayerAdminDetailMapper
+{
+    internal static PlayerAdminDetailDto Map(Player player)
+    {
         // Social providers only — Guest auth is not a "linked" external
         // provider in the product sense.
-        var socialProviders = player.AuthIdentities
-            .Count(a => a.Provider != AuthProvider.Guest);
+        var socialProviders = player.AuthIdentities.Count(a => a.Provider != AuthProvider.Guest);
 
         return new PlayerAdminDetailDto(
             Id: player.Id.Value,

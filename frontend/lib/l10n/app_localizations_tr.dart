@@ -620,6 +620,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get adminPlayerGuid => 'Oyuncu GUID';
 
   @override
+  String get adminPlayerHandle => 'Oyuncu kullanıcı adı';
+
+  @override
   String get adminPlayerId => 'Oyuncu id';
 
   @override
@@ -633,7 +636,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get adminPlayerConsoleHelp =>
-      'Arama oyuncu GUID’i ile yapılır. Handle ile arama backend takip işidir; Players modülü şu anda yalnızca GET /admin/players/:id sunar.';
+      'Oyuncuları DisplayName#1234 formatındaki kullanıcı adıyla ara.';
 
   @override
   String get adminId => 'Id';

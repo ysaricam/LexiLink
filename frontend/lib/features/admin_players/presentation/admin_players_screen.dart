@@ -10,10 +10,9 @@ import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
-/// Admin player console. Search-by-handle requires a backend query
-/// that does not exist yet (the Players module exposes only
-/// GET /admin/players/{id}), so for now this screen is a
-/// lookup-by-GUID + ban/unban surface.
+/// Admin player console. Lookup is by the public player handle
+/// (`DisplayName#1234`); mutations still use the stable player id returned
+/// by the detail endpoint.
 class AdminPlayersScreen extends StatefulWidget {
   const AdminPlayersScreen({super.key, this.cubitFactory});
 
@@ -87,17 +86,17 @@ class _AdminPlayersView extends StatefulWidget {
 }
 
 class _AdminPlayersViewState extends State<_AdminPlayersView> {
-  late final TextEditingController _idController;
+  late final TextEditingController _handleController;
 
   @override
   void initState() {
     super.initState();
-    _idController = TextEditingController();
+    _handleController = TextEditingController();
   }
 
   @override
   void dispose() {
-    _idController.dispose();
+    _handleController.dispose();
     super.dispose();
   }
 
@@ -155,27 +154,38 @@ class _AdminPlayersViewState extends State<_AdminPlayersView> {
     final busy =
         state.status == AdminPlayersStatus.loading ||
         state.status == AdminPlayersStatus.saving;
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: _idController,
-            enabled: !busy,
-            decoration: InputDecoration(
-              labelText: context.l10n.adminPlayerGuid,
-              border: const OutlineInputBorder(),
-              isDense: true,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final fieldWidth = constraints.maxWidth < 520
+            ? constraints.maxWidth
+            : 420.0;
+        return Wrap(
+          spacing: 12,
+          runSpacing: 12,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            SizedBox(
+              width: fieldWidth,
+              child: TextField(
+                controller: _handleController,
+                enabled: !busy,
+                decoration: InputDecoration(
+                  labelText: context.l10n.adminPlayerHandle,
+                  hintText: 'Yasin#0042',
+                  border: const OutlineInputBorder(),
+                  isDense: true,
+                ),
+                onSubmitted: busy ? null : (_) => _submit(context),
+              ),
             ),
-            onSubmitted: busy ? null : (_) => _submit(context),
-          ),
-        ),
-        const SizedBox(width: 12),
-        FilledButton.icon(
-          onPressed: busy ? null : () => _submit(context),
-          icon: const Icon(Icons.search),
-          label: Text(context.l10n.adminLookUp),
-        ),
-      ],
+            FilledButton.icon(
+              onPressed: busy ? null : () => _submit(context),
+              icon: const Icon(Icons.search),
+              label: Text(context.l10n.adminLookUp),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -208,9 +218,9 @@ class _AdminPlayersViewState extends State<_AdminPlayersView> {
   }
 
   void _submit(BuildContext context) {
-    final id = _idController.text.trim();
-    if (id.isEmpty) return;
-    context.read<AdminPlayersCubit>().lookup(id);
+    final handle = _handleController.text.trim();
+    if (handle.isEmpty) return;
+    context.read<AdminPlayersCubit>().lookup(handle);
   }
 }
 
@@ -258,7 +268,7 @@ class _PlayerDetailCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       SelectableText(
-                        '${detail.handle}#${detail.discriminator}',
+                        detail.handle,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                     ],
@@ -355,9 +365,7 @@ class _PlayerDetailCard extends StatelessWidget {
       builder: (_) => AlertDialog(
         title: Text(context.l10n.adminUnbanPlayerTitle),
         content: Text(
-          context.l10n.adminUnbanPlayerMessage(
-            '${detail.handle}#${detail.discriminator}',
-          ),
+          context.l10n.adminUnbanPlayerMessage(detail.handle),
         ),
         actions: [
           TextButton(

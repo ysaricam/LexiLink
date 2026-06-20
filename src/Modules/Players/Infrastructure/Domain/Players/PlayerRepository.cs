@@ -21,6 +21,32 @@ internal class PlayerRepository : IPlayerRepository
         return await _playersContext.Players.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
     }
 
+    public async Task<Player?> GetByHandleAsync(
+        string displayName,
+        int discriminator,
+        CancellationToken cancellationToken = default)
+    {
+        var connection = _sqlConnectionFactory.GetOpenConnection();
+
+        const string sql = """
+            SELECT "Id"
+            FROM "players"."Players"
+            WHERE "DisplayName" = @DisplayName
+              AND "DiscriminatorValue" = @Discriminator
+        """;
+
+        var playerIdValue = await connection.QuerySingleOrDefaultAsync<Guid?>(
+            new CommandDefinition(
+                sql,
+                new { DisplayName = displayName, Discriminator = discriminator },
+                cancellationToken: cancellationToken));
+
+        if (playerIdValue is null)
+            return null;
+
+        return await GetByIdAsync(new PlayerId(playerIdValue.Value), cancellationToken);
+    }
+
     public async Task<Player?> GetByAuthProviderAsync(AuthProvider provider, string externalId, CancellationToken cancellationToken = default)
     {
         var connection = _sqlConnectionFactory.GetOpenConnection();

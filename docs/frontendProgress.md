@@ -689,16 +689,17 @@ pre-existing info, flutter build web ok.
 
 - `features/admin_players/`:
   - `data/player_admin_detail.dart` — DTO mirror.
-  - `data/admin_players_repository.dart` — fetchDetail / ban / unban.
+  - `data/admin_players_repository.dart` — fetchDetailByHandle /
+    fetchDetailById / ban / unban.
   - `application/admin_players_cubit.dart` — lookup → detail; 404 ayrı
     `notFound` status; mutation sonrası reload.
-  - `presentation/admin_players_screen.dart` — GUID input + Look-up
-    button; detail card (avatar, handle#discriminator selectable,
+  - `presentation/admin_players_screen.dart` — handle (`DisplayName#1234`)
+    input + Look-up button; detail card (avatar, handle selectable,
     banned/guest badges); contextual primary action (Ban / Unban) +
     confirmation dialogs.
-- Kapsam notu: search-by-handle yok — Players modülünde
-  `GET /admin/players/{id}` dışında query yok. Backend slice (B-X)
-  olarak ayrı tutuldu, frontend-only filtreyle örtülmedi.
+- Follow-up update: search-by-handle is now backend-backed through
+  `GET /admin/players/by-handle?handle=DisplayName%231234`; ban/unban still
+  use the returned stable player id.
 - Tests: repository (4 path), cubit (5 senaryo), screen smoke (initial
   / lookup / notFound). 80/80.
 
