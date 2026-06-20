@@ -1,5 +1,8 @@
 using Dapper;
+using LexiLink.Common.Infrastructure.Outbox;
 using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
+using LexiLink.Modules.Stats.Application.Configuration.InternalCommands;
+using LexiLink.Modules.Stats.Application.PlayerStats.ProcessIntegrationEvents;
 using Npgsql;
 
 namespace LexiLink.API.CrossModule;
@@ -16,10 +19,20 @@ namespace LexiLink.API.CrossModule;
 internal class QuestCounterReader : IQuestCounterReader
 {
     private readonly string _connectionString;
+    private readonly IReadOnlyCollection<IOutboxProcessor> _outboxProcessors;
+    private readonly IStatsInternalCommandScheduler _statsInternalCommandScheduler;
+    private readonly IStatsInternalCommandProcessor _statsInternalCommandProcessor;
 
-    public QuestCounterReader(string connectionString)
+    public QuestCounterReader(
+        string connectionString,
+        IEnumerable<IOutboxProcessor> outboxProcessors,
+        IStatsInternalCommandScheduler statsInternalCommandScheduler,
+        IStatsInternalCommandProcessor statsInternalCommandProcessor)
     {
         _connectionString = connectionString;
+        _outboxProcessors = outboxProcessors.ToArray();
+        _statsInternalCommandScheduler = statsInternalCommandScheduler;
+        _statsInternalCommandProcessor = statsInternalCommandProcessor;
     }
 
     public async Task<QuestCounters> ReadAsync(
@@ -27,6 +40,8 @@ internal class QuestCounterReader : IQuestCounterReader
         DateTime nowUtc,
         CancellationToken cancellationToken = default)
     {
+        await DrainReadyProjectionWorkAsync(cancellationToken);
+
         await using var connection = new NpgsqlConnection(_connectionString);
         await connection.OpenAsync(cancellationToken);
 
@@ -65,5 +80,19 @@ internal class QuestCounterReader : IQuestCounterReader
             GamesCompletedTotal: total ?? 0,
             GamesCompletedToday: daily ?? 0,
             AuthProviderLinked: authLinked);
+    }
+
+    private async Task DrainReadyProjectionWorkAsync(CancellationToken cancellationToken)
+    {
+        foreach (var processor in _outboxProcessors.OfType<OutboxProcessor>()
+                     .Where(processor => processor.SchemaName == "games"))
+        {
+            await processor.ProcessAsync(cancellationToken);
+        }
+
+        await _statsInternalCommandScheduler.ScheduleAsync(
+            new ProcessStatsInboxCommand(),
+            cancellationToken: cancellationToken);
+        await _statsInternalCommandProcessor.ProcessAsync(cancellationToken);
     }
 }

@@ -71,12 +71,9 @@ internal class IssueQuestCommandHandler : ICommandHandler<IssueQuestCommand>
     private static int ComputeBaseline(QuestDefinition definition, QuestCounters counters) =>
         definition.Trigger switch
         {
-            // Daily counter rolls over at UTC midnight, so the "snapshot"
-            // is effectively today's count at issue time. For freshly
-            // issued daily quests this is usually 0, but if the player
-            // completed games earlier today before the daily quest was
-            // (re-)issued, we still measure progress from now forward.
-            QuestTrigger.GameCompletedDaily => counters.GamesCompletedToday,
+            // Daily counter rolls over at UTC midnight, so progress is
+            // measured against the start of the current UTC day.
+            QuestTrigger.GameCompletedDaily => 0,
 
             // Auth-linked is binary; no baseline math needed. Store 0.
             QuestTrigger.AuthProviderLinked => 0,

@@ -249,7 +249,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         QuestCounters counters) =>
         trigger switch
         {
-            QuestTrigger.GameCompletedDaily   => counters.GamesCompletedToday,
+            QuestTrigger.GameCompletedDaily   => 0,
             QuestTrigger.AuthProviderLinked   => 0,
             QuestTrigger.GameCompletedTotal   =>
                 baseline == ProgressBaseline.FromExistingTotal ? 0 : counters.GamesCompletedTotal,

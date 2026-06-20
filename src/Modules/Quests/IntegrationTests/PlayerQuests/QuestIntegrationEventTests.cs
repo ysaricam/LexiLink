@@ -55,7 +55,7 @@ public class QuestIntegrationEventTests : TestBase
     }
 
     [Test]
-    public async Task GetActiveQuests_ProjectsReadyToClaim_WhenCounterMeetsThreshold()
+    public async Task GetActiveQuests_ProjectsReadyToClaim_WhenDailyCounterMeetsThresholdBeforeFirstSync()
     {
         var playerId = Guid.NewGuid();
         QuestCounterReader.GamesCompletedToday = 5; // above threshold (3)
@@ -63,12 +63,8 @@ public class QuestIntegrationEventTests : TestBase
         var quests = await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
 
         quests.Should().HaveCount(1);
-        // Baseline captured at issue time was 5 (the daily counter at
-        // sync). So progress = counter(5) - baseline(5) = 0; the quest
-        // is NOT ready immediately after first sync. The "FromExistingTotal"
-        // ProgressBaseline would be needed to reward existing progress.
-        quests[0].Progress.Should().Be(0);
-        quests[0].DisplayState.Should().Be(nameof(QuestState.Active));
+        quests[0].Progress.Should().Be(3);
+        quests[0].DisplayState.Should().Be("ReadyToClaim");
     }
 
     [Test]

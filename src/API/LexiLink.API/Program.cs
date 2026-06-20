@@ -52,6 +52,7 @@ using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 using LexiLink.Modules.Quests.Infrastructure.Configuration;
 using LexiLink.Modules.Reset.Application.Configuration.CrossModule;
 using LexiLink.Modules.Reset.Infrastructure.Configuration;
+using LexiLink.Modules.Stats.Application.Configuration.InternalCommands;
 using LexiLink.Modules.Stats.Infrastructure.Configuration;
 using LexiLink.Modules.Undo.Application.Configuration.CrossModule;
 using LexiLink.Modules.Undo.Infrastructure.Configuration;
@@ -316,7 +317,11 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         .As<IPlayerStatusLookup>()
         .InstancePerLifetimeScope();
 
-    containerBuilder.Register(_ => new QuestCounterReader(connectionString))
+    containerBuilder.Register(c => new QuestCounterReader(
+            connectionString,
+            c.Resolve<IEnumerable<IOutboxProcessor>>(),
+            c.Resolve<IStatsInternalCommandScheduler>(),
+            c.Resolve<IStatsInternalCommandProcessor>()))
         .As<IQuestCounterReader>()
         .InstancePerLifetimeScope();
 

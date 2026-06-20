@@ -97,6 +97,33 @@ public sealed class QuestEndpointsTests
     }
 
     [Test]
+    public async Task GetQuestsMe_WithDailyGamesBeforeFirstSync_ReturnsReadyToClaim()
+    {
+        var playerId = Guid.NewGuid();
+        await UpsertStatsAsync(playerId, gamesCompletedToday: 3);
+
+        try
+        {
+            using var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", playerId.ToString());
+
+            var response = await client.GetAsync("/quests/me");
+
+            response.StatusCode.Should().Be(HttpStatusCode.OK);
+            var body = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+            var quest = body.RootElement.EnumerateArray().Single(q =>
+                q.GetProperty("questDefinitionId").GetGuid() == SeedDailyQuestDefinitionId);
+            quest.GetProperty("progress").GetInt32().Should().Be(3);
+            quest.GetProperty("displayState").GetString().Should().Be("ReadyToClaim");
+        }
+        finally
+        {
+            await DeletePlayerQuestsAsync(playerId);
+            await DeleteStatsAsync(playerId);
+        }
+    }
+
+    [Test]
     public async Task PostClaim_OnAnotherPlayersQuest_ReturnsNotFound()
     {
         var ownerId = Guid.NewGuid();
@@ -149,6 +176,51 @@ public sealed class QuestEndpointsTests
         command.Parameters.AddWithValue("QuestDefinitionId", questDefinitionId);
         command.Parameters.AddWithValue("ProgressBaselineSnapshot", baselineSnapshot);
         command.Parameters.AddWithValue("IssuedAt", issuedAt);
+        await command.ExecuteNonQueryAsync();
+    }
+
+    private static async Task UpsertStatsAsync(Guid playerId, int gamesCompletedToday)
+    {
+        var now = DateTime.UtcNow;
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        await connection.OpenAsync();
+        await using var command = new NpgsqlCommand("""
+            INSERT INTO "stats"."PlayerStats"
+                ("PlayerId", "DisplayName", "Discriminator", "IsGuest", "AuthProvidersLinked",
+                 "GamesCompleted", "BestScore", "TotalScore", "LastGameCompletedOn", "CreatedAt", "UpdatedAt")
+            VALUES
+                (@PlayerId, NULL, NULL, TRUE, 0,
+                 @GamesCompletedToday, NULL, 0, @Now, @Now, @Now)
+            ON CONFLICT ("PlayerId") DO UPDATE SET
+                "GamesCompleted" = EXCLUDED."GamesCompleted",
+                "UpdatedAt" = EXCLUDED."UpdatedAt";
+
+            INSERT INTO "stats"."PlayerPeriodStats"
+                ("PeriodType", "PeriodStartDate", "PlayerId", "GamesCompleted", "BestScore",
+                 "TotalScore", "LastGameCompletedOn", "CreatedAt", "UpdatedAt")
+            VALUES
+                ('Daily', @PeriodStartDate, @PlayerId, @GamesCompletedToday, NULL,
+                 0, @Now, @Now, @Now)
+            ON CONFLICT ("PeriodType", "PeriodStartDate", "PlayerId") DO UPDATE SET
+                "GamesCompleted" = EXCLUDED."GamesCompleted",
+                "UpdatedAt" = EXCLUDED."UpdatedAt";
+        """, connection);
+        command.Parameters.AddWithValue("PlayerId", playerId);
+        command.Parameters.AddWithValue("GamesCompletedToday", gamesCompletedToday);
+        command.Parameters.AddWithValue("PeriodStartDate", now.Date);
+        command.Parameters.AddWithValue("Now", now);
+        await command.ExecuteNonQueryAsync();
+    }
+
+    private static async Task DeleteStatsAsync(Guid playerId)
+    {
+        await using var connection = new NpgsqlConnection(ConnectionString);
+        await connection.OpenAsync();
+        await using var command = new NpgsqlCommand("""
+            DELETE FROM "stats"."PlayerPeriodStats" WHERE "PlayerId" = @PlayerId;
+            DELETE FROM "stats"."PlayerStats" WHERE "PlayerId" = @PlayerId;
+        """, connection);
+        command.Parameters.AddWithValue("PlayerId", playerId);
         await command.ExecuteNonQueryAsync();
     }
 
