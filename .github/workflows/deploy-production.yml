@@ -147,14 +147,28 @@ jobs:
             admin_web_root="/opt/lexilink/app/${admin_web_root#./}"
           fi
 
+          admin_web_roots=("$admin_web_root")
+          caddy_container="$(docker compose ps -q caddy 2>/dev/null || true)"
+          if [[ -n "$caddy_container" ]]; then
+            mounted_admin_root="$(docker inspect "$caddy_container" \
+              --format '{{range .Mounts}}{{if eq .Destination "/srv/admin"}}{{.Source}}{{end}}{{end}}')"
+            if [[ -n "$mounted_admin_root" && "$mounted_admin_root" != "$admin_web_root" ]]; then
+              admin_web_roots+=("$mounted_admin_root")
+            fi
+          fi
+
           admin_web_archive="/tmp/lexilink-deploy/admin-web-${GIT_SHA}.tar.gz"
           test -f "$admin_web_archive"
-          mkdir -p "$admin_web_root"
-          find "$admin_web_root" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-          tar -xzf "$admin_web_archive" -C "$admin_web_root"
-          test -f "$admin_web_root/index.html"
+          for root in "${admin_web_roots[@]}"; do
+            echo "Deploying admin web to $root"
+            mkdir -p "$root"
+            find "$root" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+            tar -xzf "$admin_web_archive" -C "$root"
+            test -f "$root/index.html"
+          done
 
           LEXILINK_IMAGE="$IMAGE" ./scripts/deploy.sh
           curl -fsS https://api.wordlope.com/health/ready
           curl -fsS https://admin.wordlope.com/admin/login >/dev/null
+          curl -fsS https://admin.wordlope.com/main.dart.js | grep -q '/admin/players/by-handle'
           REMOTE
