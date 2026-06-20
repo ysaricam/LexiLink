@@ -295,7 +295,7 @@ class _GameContent extends StatelessWidget {
             _OptionsGrid(
               options: outgoingLinks,
               recommendedLinkId: recommendedLinkId,
-              previousLinkId: _previousLinkId(game),
+              previousLinkId: game.backtrackParentLinkId,
               disabled: isBusy || isFinished,
             ),
           const SizedBox(height: 16),
@@ -325,12 +325,6 @@ class _GameContent extends StatelessWidget {
         const SizedBox(height: 24),
       ],
     );
-  }
-
-  String? _previousLinkId(GameDetails game) {
-    if (game.stepsTaken == 0) return null;
-    if (game.stepsTaken == 1) return game.startLinkId;
-    return game.history[game.stepsTaken - 2].linkId;
   }
 
   String _actionMessage(BuildContext context, GameAction action) {

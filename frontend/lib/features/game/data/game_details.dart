@@ -131,6 +131,24 @@ class GameDetails extends Equatable {
   int get hintsLeft => hintsTotal - hintsUsed;
   int get undosLeft => undosTotal - undosUsed;
   int get resetsLeft => resetsTotal - resetsUsed;
+  String? get backtrackParentLinkId {
+    final path = <String>[startLinkId];
+    for (final step in history) {
+      final existingIndex = path.indexOf(step.linkId);
+      if (existingIndex >= 0) {
+        path.removeRange(existingIndex + 1, path.length);
+      } else {
+        path.add(step.linkId);
+      }
+    }
+
+    if (path.isEmpty || path.last != currentLinkId) {
+      return null;
+    }
+
+    return path.length >= 2 ? path[path.length - 2] : null;
+  }
+
   bool get isFinished =>
       state == 'Completed' || state == 'Failed' || state == 'Abandoned';
 
