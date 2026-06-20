@@ -53,10 +53,43 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+  build-admin-web:
+    name: Build admin web
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Build admin web bundle
+        working-directory: frontend
+        run: |
+          flutter pub get
+          flutter build web --release \
+            --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com
+
+      - name: Archive admin web bundle
+        run: tar -czf admin-web.tar.gz -C frontend/build/web .
+
+      - name: Upload admin web artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: admin-web
+          path: admin-web.tar.gz
+          if-no-files-found: error
+          retention-days: 7
+
   deploy:
     name: Deploy to VPS
     runs-on: ubuntu-latest
-    needs: build
+    needs:
+      - build
+      - build-admin-web
     environment: production
     steps:
       - name: Configure SSH
@@ -67,7 +100,25 @@ jobs:
           chmod 600 ~/.ssh/lexilink_prod
           ssh-keyscan -p "${{ secrets.PROD_SSH_PORT || '22' }}" "${{ secrets.PROD_SSH_HOST }}" >> ~/.ssh/known_hosts
 
-      - name: Deploy image
+      - name: Download admin web artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: admin-web
+          path: admin-web
+
+      - name: Upload admin web artifact
+        shell: bash
+        env:
+          PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
+          PROD_SSH_PORT: ${{ secrets.PROD_SSH_PORT || '22' }}
+          GIT_SHA: ${{ github.sha }}
+        run: |
+          ssh -i ~/.ssh/lexilink_prod -p "$PROD_SSH_PORT" "$PROD_SSH_USER@$PROD_SSH_HOST" \
+            "install -d -m 700 /tmp/lexilink-deploy && cat > /tmp/lexilink-deploy/admin-web-${GIT_SHA}.tar.gz" \
+            < admin-web/admin-web.tar.gz
+
+      - name: Deploy image and admin web
         shell: bash
         env:
           PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
@@ -90,6 +141,20 @@ jobs:
           git fetch --prune origin
           git checkout --force "$GIT_SHA"
 
+          admin_web_root="$(grep -E '^ADMIN_WEB_ROOT=' .env | cut -d= -f2- | tr -d '\r' || true)"
+          admin_web_root="${admin_web_root:-./frontend/build/web}"
+          if [[ "$admin_web_root" != /* ]]; then
+            admin_web_root="/opt/lexilink/app/${admin_web_root#./}"
+          fi
+
+          admin_web_archive="/tmp/lexilink-deploy/admin-web-${GIT_SHA}.tar.gz"
+          test -f "$admin_web_archive"
+          mkdir -p "$admin_web_root"
+          find "$admin_web_root" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          tar -xzf "$admin_web_archive" -C "$admin_web_root"
+          test -f "$admin_web_root/index.html"
+
           LEXILINK_IMAGE="$IMAGE" ./scripts/deploy.sh
           curl -fsS https://api.wordlope.com/health/ready
+          curl -fsS https://admin.wordlope.com/admin/login >/dev/null
           REMOTE

@@ -61,10 +61,13 @@ Pipeline:
 
 1. Build the Docker image from `Dockerfile`.
 2. Push `ghcr.io/ysaricam/lexilink:<git-sha>` and `latest`.
-3. SSH to the VPS.
-4. Check out the exact deployed git SHA in `/opt/lexilink/app`.
-5. Run `LEXILINK_IMAGE=<sha-image> ./scripts/deploy.sh`.
-6. Verify `https://api.wordlope.com/health/ready`.
+3. Build the Flutter web admin bundle with
+   `LEXILINK_API_BASE_URL=https://api.wordlope.com`.
+4. SSH to the VPS.
+5. Check out the exact deployed git SHA in `/opt/lexilink/app`.
+6. Copy the admin web bundle into `ADMIN_WEB_ROOT`.
+7. Run `LEXILINK_IMAGE=<sha-image> ./scripts/deploy.sh`.
+8. Verify `https://api.wordlope.com/health/ready` and the admin login page.
 
 Required GitHub repository secrets:
 
@@ -106,7 +109,9 @@ Re-imports are idempotent for the same category/language.
 The player game remains mobile-only, but the Flutter web admin console is
 served by Caddy at `https://admin.<domain>`.
 
-Build the admin web bundle against the production API:
+CI/CD builds and deploys the admin web bundle from the same commit as the API
+image. For a manual admin-only rebuild, build the bundle against the
+production API:
 
 ```bash
 cd frontend
