@@ -204,27 +204,44 @@ class _GameViewState extends State<_GameView> {
       ],
       child: AppScreen(
         size: AppScreenSize.game,
-        child: BlocBuilder<GameDetailsCubit, GameDetailsState>(
-          builder: (context, state) {
-            if (state.status == GameDetailsStatus.loading) {
-              return AppLoadingState(message: context.l10n.loadingGame);
-            }
+        scrollable: false,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: BlocBuilder<GameDetailsCubit, GameDetailsState>(
+                  builder: (context, state) {
+                    if (state.status == GameDetailsStatus.loading) {
+                      return Center(
+                        child: AppLoadingState(
+                          message: context.l10n.loadingGame,
+                        ),
+                      );
+                    }
 
-            if (state.status == GameDetailsStatus.failure) {
-              return AppErrorState(
-                title: context.l10n.couldNotLoadGame,
-                message: state.message ?? context.l10n.commonTryAgain,
-                onRetry: () =>
-                    context.read<GameDetailsCubit>().loadGame(widget.gameId),
-              );
-            }
+                    if (state.status == GameDetailsStatus.failure) {
+                      return Center(
+                        child: AppErrorState(
+                          title: context.l10n.couldNotLoadGame,
+                          message: state.message ?? context.l10n.commonTryAgain,
+                          onRetry: () => context
+                              .read<GameDetailsCubit>()
+                              .loadGame(widget.gameId),
+                        ),
+                      );
+                    }
 
-            return _GameContent(
-              game: state.game!,
-              outgoingLinks: state.outgoingLinks,
-              activeAction: state.activeAction,
-              recommendedLinkId: state.recommendedLinkId,
-              message: state.message,
+                    return _GameContent(
+                      game: state.game!,
+                      outgoingLinks: state.outgoingLinks,
+                      activeAction: state.activeAction,
+                      recommendedLinkId: state.recommendedLinkId,
+                      message: state.message,
+                    );
+                  },
+                ),
+              ),
             );
           },
         ),
@@ -275,25 +292,28 @@ class _GameContent extends StatelessWidget {
     final undoBalance = context.watch<UndoCubit>().state.undo?.balance ?? 0;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppBackBar(
           title: context.l10n.gameTitle,
           onBack: () => _onBackPressed(context, game, isBusy),
         ),
-        const SizedBox(height: 20),
-        _StartRailTarget(game: game),
-        const SizedBox(height: 24),
-        _CurrentHero(game: game),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
+        _GameObjectivePanel(game: game),
+        const SizedBox(height: 8),
         _Breadcrumb(game: game),
-        const SizedBox(height: 24),
-        _StatusRow(game: game),
-        const SizedBox(height: 20),
+        if (game.score != null) ...[
+          const SizedBox(height: 10),
+          _StatusRow(game: game),
+        ],
+        const SizedBox(height: 16),
         if (!isFinished) ...[
           Text(
             context.l10n.pickNextWord,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w800,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 12),
@@ -386,181 +406,153 @@ class _GameContent extends StatelessWidget {
   }
 }
 
-class _StartRailTarget extends StatelessWidget {
-  const _StartRailTarget({required this.game});
-
-  final GameDetails game;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        _AnchorChip(label: game.startWord, kind: _AnchorKind.start),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _StepDots(
-            stepsTaken: game.stepsTaken,
-            maxSteps: game.maxSteps,
-          ),
-        ),
-        const SizedBox(width: 10),
-        _AnchorChip(label: game.targetWord, kind: _AnchorKind.target),
-      ],
-    );
-  }
-}
-
-enum _AnchorKind { start, target }
-
-class _AnchorChip extends StatelessWidget {
-  const _AnchorChip({required this.label, required this.kind});
-
-  final String label;
-  final _AnchorKind kind;
-
-  @override
-  Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final background = kind == _AnchorKind.start
-        ? AppPalette.primarySoft
-        : AppPalette.focusSoft;
-    final foreground = kind == _AnchorKind.start
-        ? AppPalette.primary
-        : AppPalette.focus;
-    final caption = kind == _AnchorKind.start
-        ? context.l10n.commonStart
-        : context.l10n.anchorTarget;
-
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: 120),
-      child: Column(
-        children: [
-          Text(
-            caption,
-            style: textTheme.labelSmall?.copyWith(color: foreground),
-          ),
-          const SizedBox(height: 4),
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: background,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: foreground.withValues(alpha: 0.4)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 6,
-              ),
-              child: Text(
-                label,
-                style: textTheme.titleSmall?.copyWith(color: foreground),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _StepDots extends StatelessWidget {
-  const _StepDots({required this.stepsTaken, required this.maxSteps});
-
-  final int stepsTaken;
-  final int maxSteps;
-
-  @override
-  Widget build(BuildContext context) {
-    if (maxSteps <= 0) return const SizedBox.shrink();
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        const dotSize = 10.0;
-        final spacing = maxSteps > 1
-            ? (constraints.maxWidth - dotSize * maxSteps) / (maxSteps - 1)
-            : 0.0;
-        final safeSpacing = spacing.isFinite && spacing > 0 ? spacing : 4.0;
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: List<Widget>.generate(maxSteps, (index) {
-            final filled = index < stepsTaken;
-            return Padding(
-              padding: EdgeInsets.only(
-                right: index == maxSteps - 1 ? 0 : safeSpacing / 2,
-                left: index == 0 ? 0 : safeSpacing / 2,
-              ),
-              child: Container(
-                width: dotSize,
-                height: dotSize,
-                decoration: BoxDecoration(
-                  color: filled
-                      ? AppPalette.focus
-                      : AppPalette.primary.withValues(alpha: 0.18),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            );
-          }),
-        );
-      },
-    );
-  }
-}
-
-class _CurrentHero extends StatelessWidget {
-  const _CurrentHero({required this.game});
+class _GameObjectivePanel extends StatelessWidget {
+  const _GameObjectivePanel({required this.game});
 
   final GameDetails game;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 360),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 22),
-          decoration: BoxDecoration(
-            gradient: const LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [AppPalette.primary, AppPalette.primaryPressed],
-            ),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: AppPalette.primary.withValues(alpha: 0.22),
-                blurRadius: 14,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Text(
-                context.l10n.currentLabel,
-                style: theme.textTheme.labelMedium?.copyWith(
-                  color: Colors.white70,
-                  letterSpacing: 1.2,
-                ),
-              ),
-              const SizedBox(height: 6),
-              FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  game.currentWord,
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
+    final colorScheme = Theme.of(context).colorScheme;
+    final progress = game.maxSteps <= 0
+        ? 0.0
+        : (game.stepsTaken / game.maxSteps).clamp(0.0, 1.0);
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.18)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        context.l10n.currentLabel,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          game.currentWord,
+                          style: theme.textTheme.headlineSmall?.copyWith(
+                            color: colorScheme.onSurface,
+                            fontWeight: FontWeight.w900,
+                            height: 1,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-            ],
-          ),
+                const SizedBox(width: 12),
+                Icon(
+                  Icons.arrow_forward_rounded,
+                  color: colorScheme.onSurfaceVariant,
+                  size: 18,
+                ),
+                const SizedBox(width: 12),
+                _TargetPill(value: game.targetWord),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Text(
+                  context.l10n.hudSteps(game.stepsTaken, game.maxSteps),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(999),
+                    child: LinearProgressIndicator(
+                      value: progress,
+                      minHeight: 5,
+                      backgroundColor: AppPalette.primary.withValues(
+                        alpha: 0.1,
+                      ),
+                      color: AppPalette.focus,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class _TargetPill extends StatelessWidget {
+  const _TargetPill({required this.value});
+
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 132),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppPalette.focus.withValues(alpha: 0.1),
+        border: Border.all(color: AppPalette.focus.withValues(alpha: 0.22)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.flag_rounded, color: AppPalette.focus, size: 16),
+          const SizedBox(width: 6),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  context.l10n.anchorTarget,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.labelSmall?.copyWith(
+                    color: AppPalette.focus,
+                    fontWeight: FontWeight.w800,
+                    height: 1,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: textTheme.titleSmall?.copyWith(
+                    color: AppPalette.focus,
+                    fontWeight: FontWeight.w900,
+                    height: 1,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -603,17 +595,7 @@ class _StatusRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _StatusChip(
-          icon: Icons.timer_outlined,
-          label: context.l10n.hudSteps(game.stepsTaken, game.maxSteps),
-        ),
-        const SizedBox(width: 10),
-        _StatusChip(
-          icon: Icons.lightbulb_outline,
-          label: context.l10n.hudHints(game.hintsLeft),
-        ),
         if (game.score != null) ...[
-          const SizedBox(width: 10),
           _StatusChip(
             icon: Icons.star_outline,
             label: context.l10n.hudScore(game.score!),
@@ -834,43 +816,110 @@ class _SecondaryActions extends StatelessWidget {
   Widget build(BuildContext context) {
     final hintBalance = context.watch<HintCubit>().state.hint?.balance ?? 0;
     final resetBalance = context.watch<ResetCubit>().state.reset?.balance ?? 0;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    return Row(
       children: [
-        AppSecondaryButton(
-          label: context.l10n.hintAction(hintBalance),
-          onPressed: isBusy || game.isFinished
-              ? null
-              : () async {
-                  if (hintBalance <= 0) {
-                    await _openMarketFor(context, MarketItemType.hint);
-                    return;
-                  }
+        Expanded(
+          child: _PowerActionCard(
+            icon: Icons.lightbulb_rounded,
+            label: context.l10n.hintAction(hintBalance),
+            color: AppPalette.success,
+            disabled: isBusy || game.isFinished,
+            onPressed: () async {
+              if (hintBalance <= 0) {
+                await _openMarketFor(context, MarketItemType.hint);
+                return;
+              }
 
-                  await context.read<GameDetailsCubit>().useHint();
-                  if (context.mounted) {
-                    await context.read<HintCubit>().loadHint();
-                  }
-                },
+              await context.read<GameDetailsCubit>().useHint();
+              if (context.mounted) {
+                await context.read<HintCubit>().loadHint();
+              }
+            },
+          ),
         ),
-        const SizedBox(height: 10),
-        AppSecondaryButton(
-          label: context.l10n.commonReset,
-          onPressed: isBusy || game.isFinished
-              ? null
-              : () async {
-                  if (resetBalance <= 0) {
-                    await _openMarketFor(context, MarketItemType.reset);
-                    return;
-                  }
+        const SizedBox(width: 10),
+        Expanded(
+          child: _PowerActionCard(
+            icon: Icons.restart_alt_rounded,
+            label: context.l10n.commonReset,
+            color: AppPalette.danger,
+            disabled: isBusy || game.isFinished,
+            onPressed: () async {
+              if (resetBalance <= 0) {
+                await _openMarketFor(context, MarketItemType.reset);
+                return;
+              }
 
-                  await context.read<GameDetailsCubit>().reset();
-                  if (context.mounted) {
-                    await context.read<ResetCubit>().loadReset();
-                  }
-                },
+              await context.read<GameDetailsCubit>().reset();
+              if (context.mounted) {
+                await context.read<ResetCubit>().loadReset();
+              }
+            },
+          ),
         ),
       ],
+    );
+  }
+}
+
+class _PowerActionCard extends StatelessWidget {
+  const _PowerActionCard({
+    required this.icon,
+    required this.label,
+    required this.color,
+    required this.disabled,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final String label;
+  final Color color;
+  final bool disabled;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final foreground = disabled
+        ? Theme.of(context).colorScheme.onSurfaceVariant
+        : color;
+    final background = disabled
+        ? Theme.of(context).colorScheme.surfaceContainerHighest
+        : Theme.of(context).colorScheme.surface;
+
+    return Material(
+      color: background,
+      borderRadius: BorderRadius.circular(8),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: disabled ? null : onPressed,
+        child: Container(
+          constraints: const BoxConstraints(minHeight: 44),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          decoration: BoxDecoration(
+            border: Border.all(color: foreground.withValues(alpha: 0.18)),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, color: foreground, size: 18),
+              const SizedBox(width: 7),
+              Flexible(
+                child: Text(
+                  label,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                    color: foreground,
+                    fontWeight: FontWeight.w900,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
