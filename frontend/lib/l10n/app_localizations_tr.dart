@@ -293,6 +293,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get diamondUnavailable => 'Elmas kullanılamıyor';
 
   @override
+  String get energyTitle => 'Enerji';
+
+  @override
   String get loadingDiamonds => 'Elmaslar yükleniyor...';
 
   @override

@@ -7,11 +7,15 @@ import 'package:http/http.dart' as http;
 import 'package:lexilink_app/features/categories/application/category_list_cubit.dart';
 import 'package:lexilink_app/features/categories/data/category.dart';
 import 'package:lexilink_app/features/categories/data/category_repository.dart';
+import 'package:lexilink_app/features/diamond/application/diamond_cubit.dart';
+import 'package:lexilink_app/features/diamond/data/diamond_repository.dart';
 import 'package:lexilink_app/features/energy/application/energy_cubit.dart';
 import 'package:lexilink_app/features/energy/data/energy_repository.dart';
 import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
 import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
+import 'package:lexilink_app/features/market/data/market_models.dart';
+import 'package:lexilink_app/features/market/presentation/market_screen.dart';
 import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
@@ -83,6 +87,7 @@ class _CategorySelectionProvidersState
   late final CategoryListCubit _categoryListCubit;
   late final GameStartCubit _gameStartCubit;
   late final EnergyCubit _energyCubit;
+  late final DiamondCubit _diamondCubit;
 
   @override
   void initState() {
@@ -103,14 +108,19 @@ class _CategorySelectionProvidersState
     _energyCubit = EnergyCubit(
       energyRepository: EnergyRepository(apiClient: apiClient),
     );
+    _diamondCubit = DiamondCubit(
+      diamondRepository: DiamondRepository(apiClient: apiClient),
+    );
     final contentLocale = context.read<LocaleCubit>().state.backendLocale;
     unawaited(_categoryListCubit.loadCategories(locale: contentLocale));
     unawaited(_energyCubit.loadEnergy());
+    unawaited(_diamondCubit.loadDiamond());
   }
 
   @override
   void dispose() {
     _energyCubit.close();
+    _diamondCubit.close();
     _categoryListCubit.close();
     _gameStartCubit.close();
     _httpClient.close();
@@ -124,6 +134,7 @@ class _CategorySelectionProvidersState
         BlocProvider.value(value: _categoryListCubit),
         BlocProvider.value(value: _gameStartCubit),
         BlocProvider.value(value: _energyCubit),
+        BlocProvider.value(value: _diamondCubit),
       ],
       child: const _CategorySelectionView(),
     );
@@ -208,8 +219,9 @@ class _CategorySelectionView extends StatelessWidget {
                             : context.l10n.startEasyGame,
                         onPressed: gameStartState.isSubmitting
                             ? null
-                            : () => context.read<GameStartCubit>().startGame(
-                                categoryId: state.selectedCategoryId!,
+                            : () => _startGameOrOpenEnergyMarket(
+                                context,
+                                state.selectedCategoryId!,
                               ),
                       ),
                     ],
@@ -231,6 +243,24 @@ class _CategorySelectionView extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _startGameOrOpenEnergyMarket(
+  BuildContext context,
+  String categoryId,
+) async {
+  final energyCubit = context.read<EnergyCubit>();
+  final diamondCubit = context.read<DiamondCubit>();
+  final gameStartCubit = context.read<GameStartCubit>();
+  final energy = energyCubit.state.energy;
+  if (energy != null && energy.currentAmount <= 0) {
+    await showMarketSheet(context, initialItemType: MarketItemType.energy);
+    await energyCubit.loadEnergy();
+    await diamondCubit.loadDiamond();
+    return;
+  }
+
+  await gameStartCubit.startGame(categoryId: categoryId);
 }
 
 class _CategoryList extends StatelessWidget {

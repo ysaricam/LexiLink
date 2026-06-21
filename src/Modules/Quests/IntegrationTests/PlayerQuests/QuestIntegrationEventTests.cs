@@ -188,6 +188,49 @@ public class QuestIntegrationEventTests : TestBase
     }
 
     [Test]
+    public async Task GetActiveQuests_DeletesExpiredClaimedDailyRows_OnSync()
+    {
+        var playerId = Guid.NewGuid();
+
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        var expiredAt = DateTime.UtcNow.AddDays(-1);
+        await using (var connection = new Npgsql.NpgsqlConnection(ConnectionString))
+        {
+            await connection.OpenAsync();
+            await Dapper.SqlMapper.ExecuteAsync(connection, """
+                UPDATE "quests"."PlayerQuests"
+                SET
+                    "State" = 'Claimed',
+                    "ClaimedAt" = @ClaimedAt,
+                    "ExpiresAt" = @ExpiresAt
+                WHERE "PlayerId" = @PlayerId;
+            """, new { PlayerId = playerId, ClaimedAt = expiredAt.AddHours(-1), ExpiresAt = expiredAt });
+        }
+
+        var quests = await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+
+        quests.Should().ContainSingle(q => q.QuestDefinitionId == SeedDailyQuestDefinitionId);
+        var daily = quests.Single(q => q.QuestDefinitionId == SeedDailyQuestDefinitionId);
+        daily.DisplayState.Should().Be(nameof(QuestState.Active));
+        daily.Progress.Should().Be(0);
+        daily.ExpiresAt.Should().NotBeNull();
+        daily.ExpiresAt!.Value.Should().BeAfter(DateTime.UtcNow);
+
+        var rows = await QueryAsync<(string State, DateTime? ClaimedAt, DateTime? ExpiresAt)>("""
+            SELECT "State", "ClaimedAt", "ExpiresAt"
+            FROM "quests"."PlayerQuests"
+            WHERE "PlayerId" = @PlayerId
+              AND "QuestDefinitionId" = @QuestDefinitionId;
+        """, new { PlayerId = playerId, QuestDefinitionId = SeedDailyQuestDefinitionId });
+        rows.Should().ContainSingle();
+        rows[0].State.Should().Be(nameof(QuestState.Active));
+        rows[0].ClaimedAt.Should().BeNull();
+        rows[0].ExpiresAt.Should().NotBeNull();
+        rows[0].ExpiresAt!.Value.Should().BeAfter(DateTime.UtcNow);
+    }
+
+    [Test]
     public async Task ClaimQuest_AtThreshold_QueuesQuestClaimedOutboxNotification()
     {
         var playerId = Guid.NewGuid();

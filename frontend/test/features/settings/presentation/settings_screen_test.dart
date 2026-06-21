@@ -59,7 +59,7 @@ void main() {
 
     await pumpScreen(tester, cubit);
 
-    expect(find.byType(SwitchListTile), findsNWidgets(2));
+    expect(find.byType(Switch), findsNWidgets(2));
     expect(find.byType(Slider), findsNWidgets(2));
     expect(find.text('Music'), findsOneWidget);
     expect(find.text('Sound effects'), findsOneWidget);

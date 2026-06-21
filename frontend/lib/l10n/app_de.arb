@@ -84,6 +84,7 @@
   "buyConfirmTitle": "{quantity} {type} kaufen?",
   "buyConfirmMessage": "Dies kostet {price} Diamanten.",
   "diamondUnavailable": "Diamanten nicht verfügbar",
+  "energyTitle": "Energie",
   "loadingDiamonds": "Diamanten werden geladen...",
   "openingDiamonds": "Diamanten werden geöffnet...",
   "diamondsTitle": "Diamanten",

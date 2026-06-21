@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
+import 'package:lexilink_app/app/theme/app_layout.dart';
 import 'package:lexilink_app/features/profile/application/profile_summary_cubit.dart';
 import 'package:lexilink_app/features/profile/data/player_stats.dart';
 import 'package:lexilink_app/features/profile/data/player_stats_repository.dart';
@@ -12,7 +13,6 @@ import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
-import 'package:lexilink_app/shared/widgets/app_button.dart';
 import 'package:lexilink_app/shared/widgets/app_empty_state.dart';
 import 'package:lexilink_app/shared/widgets/app_error_state.dart';
 import 'package:lexilink_app/shared/widgets/app_loading_state.dart';
@@ -113,6 +113,7 @@ class _ProfileSummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppScreen(
+      size: AppScreenSize.wide,
       child: BlocBuilder<ProfileSummaryCubit, ProfileSummaryState>(
         builder: (context, state) {
           return Column(
@@ -138,8 +139,9 @@ class _ProfileSummaryView extends StatelessWidget {
                   message: context.l10n.noProfileMessage,
                 ),
               const SizedBox(height: 20),
-              AppPrimaryButton(
-                label: context.l10n.viewLeaderboard,
+              FilledButton.icon(
+                icon: const Icon(Icons.leaderboard_outlined),
+                label: Text(context.l10n.viewLeaderboard),
                 onPressed: () => context.go('/leaderboard'),
               ),
             ],
@@ -157,9 +159,6 @@ class _ProfileSummaryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final colorScheme = Theme.of(context).colorScheme;
-
     final handle = stats.handle ?? context.l10n.guestPlayer;
     final localeLabel = stats.locale ?? context.l10n.commonUnknown;
     final providerLabel = stats.isGuest
@@ -169,120 +168,250 @@ class _ProfileSummaryCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Center(
-          child: _ProfileAvatar(initial: handle.isEmpty ? '?' : handle[0]),
+        _ProfileHero(
+          stats: stats,
+          handle: handle,
+          providerLabel: providerLabel,
+          localeLabel: localeLabel,
         ),
-        const SizedBox(height: 12),
-        Text(
-          handle,
-          style: textTheme.titleLarge,
-          textAlign: TextAlign.center,
+        const SizedBox(height: 16),
+        _ProfileMetricGrid(stats: stats),
+        const SizedBox(height: 16),
+        _ProfileAccountPanel(
+          providerLabel: providerLabel,
+          localeLabel: localeLabel,
         ),
         const SizedBox(height: 4),
-        Text(
-          '$providerLabel · $localeLabel',
-          style: textTheme.bodySmall?.copyWith(
-            color: colorScheme.onSurfaceVariant,
-          ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 20),
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: colorScheme.surface,
-            border: Border.all(
-              color: colorScheme.outline.withValues(alpha: 0.32),
-            ),
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-            child: Column(
-              children: [
-                _ProfileStatRow(
-                  label: context.l10n.statGamesCompleted,
-                  value: stats.gamesCompleted.toString(),
-                ),
-                const _RowDivider(),
-                _ProfileStatRow(
-                  label: context.l10n.statBestScore,
-                  value: stats.bestScore?.toString() ?? '—',
-                ),
-                const _RowDivider(),
-                _ProfileStatRow(
-                  label: context.l10n.statTotalScore,
-                  value: stats.totalScore.toString(),
-                ),
-                const _RowDivider(),
-                _ProfileStatRow(
-                  label: context.l10n.statLastCompleted,
-                  value: _formatDate(stats.lastGameCompletedOn),
-                ),
-              ],
-            ),
-          ),
-        ),
       ],
     );
   }
+}
 
-  static String _formatDate(DateTime? value) {
-    if (value == null) {
-      return '—';
-    }
+class _ProfileHero extends StatelessWidget {
+  const _ProfileHero({
+    required this.stats,
+    required this.handle,
+    required this.providerLabel,
+    required this.localeLabel,
+  });
 
-    final local = value.toLocal();
-    final y = local.year.toString().padLeft(4, '0');
-    final m = local.month.toString().padLeft(2, '0');
-    final d = local.day.toString().padLeft(2, '0');
-    return '$y-$m-$d';
+  final PlayerStats stats;
+  final String handle;
+  final String providerLabel;
+  final String localeLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.primaryContainer,
+        border: Border.all(
+          color: colorScheme.primary.withValues(alpha: 0.18),
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(18),
+        child: Row(
+          children: [
+            _ProfileAvatar(
+              initial: handle.isEmpty ? '?' : handle[0],
+              avatarUrl: stats.avatarUrl,
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    handle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.titleLarge?.copyWith(
+                      color: colorScheme.onPrimaryContainer,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '$providerLabel · $localeLabel',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.bodyMedium?.copyWith(
+                      color: colorScheme.onPrimaryContainer.withValues(
+                        alpha: 0.74,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      _ProfileChip(
+                        icon: Icons.sports_esports_outlined,
+                        label:
+                            '${context.l10n.statGamesCompleted}: '
+                            '${stats.gamesCompleted}',
+                      ),
+                      _ProfileChip(
+                        icon: Icons.emoji_events_outlined,
+                        label:
+                            stats.bestScore?.toString() ??
+                            context.l10n.commonUnknown,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
 class _ProfileAvatar extends StatelessWidget {
-  const _ProfileAvatar({required this.initial});
+  const _ProfileAvatar({required this.initial, required this.avatarUrl});
 
   final String initial;
+  final String? avatarUrl;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final imageUrl = avatarUrl;
+
     return Container(
-      width: 84,
-      height: 84,
-      decoration: const BoxDecoration(
+      width: 76,
+      height: 76,
+      decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xffe39d4a), Color(0xffb04d2b)],
+        color: theme.colorScheme.secondary,
+        image: imageUrl == null || imageUrl.isEmpty
+            ? null
+            : DecorationImage(
+                image: NetworkImage(imageUrl),
+                fit: BoxFit.cover,
+                onError: (_, _) {},
+              ),
+        border: Border.all(
+          color: theme.colorScheme.surface.withValues(alpha: 0.9),
+          width: 3,
         ),
       ),
       alignment: Alignment.center,
-      child: Text(
-        initial.toUpperCase(),
-        style: theme.textTheme.displaySmall?.copyWith(color: Colors.white),
+      child: imageUrl == null || imageUrl.isEmpty
+          ? Text(
+              initial.toUpperCase(),
+              style: theme.textTheme.headlineMedium?.copyWith(
+                color: theme.colorScheme.onSecondary,
+              ),
+            )
+          : null,
+    );
+  }
+}
+
+class _ProfileChip extends StatelessWidget {
+  const _ProfileChip({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surface.withValues(alpha: 0.82),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: colorScheme.primary),
+            const SizedBox(width: 6),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: colorScheme.onSurface,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class _RowDivider extends StatelessWidget {
-  const _RowDivider();
+class _ProfileMetricGrid extends StatelessWidget {
+  const _ProfileMetricGrid({required this.stats});
+
+  final PlayerStats stats;
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
-      height: 18,
-      thickness: 1,
-      color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.18),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        const columns = 2;
+        const spacing = 10.0;
+        final itemWidth =
+            (constraints.maxWidth - (spacing * (columns - 1))) / columns;
+
+        return Wrap(
+          spacing: spacing,
+          runSpacing: spacing,
+          children: [
+            _ProfileMetricTile(
+              width: itemWidth,
+              icon: Icons.military_tech_outlined,
+              label: context.l10n.statBestScore,
+              value: stats.bestScore == null
+                  ? '-'
+                  : formatNumber(stats.bestScore!),
+            ),
+            _ProfileMetricTile(
+              width: itemWidth,
+              icon: Icons.auto_awesome_outlined,
+              label: context.l10n.statTotalScore,
+              value: formatNumber(stats.totalScore),
+            ),
+          ],
+        );
+      },
     );
+  }
+
+  static String formatNumber(int value) {
+    if (value >= 1000000) {
+      return '${(value / 1000000).toStringAsFixed(1)}M';
+    }
+
+    if (value >= 10000) {
+      return '${(value / 1000).toStringAsFixed(1)}K';
+    }
+
+    return value.toString();
   }
 }
 
-class _ProfileStatRow extends StatelessWidget {
-  const _ProfileStatRow({required this.label, required this.value});
+class _ProfileMetricTile extends StatelessWidget {
+  const _ProfileMetricTile({
+    required this.width,
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
+  final double width;
+  final IconData icon;
   final String label;
   final String value;
 
@@ -291,16 +420,111 @@ class _ProfileStatRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: textTheme.bodyMedium?.copyWith(
-            color: colorScheme.onSurfaceVariant,
+    return SizedBox(
+      width: width,
+      height: 118,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          border: Border.all(
+            color: colorScheme.outline.withValues(alpha: 0.24),
+          ),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(icon, size: 22, color: colorScheme.primary),
+              const Spacer(),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(value, style: textTheme.titleLarge),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                label,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.labelSmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
           ),
         ),
-        Text(value, style: textTheme.titleMedium),
+      ),
+    );
+  }
+}
+
+class _ProfileAccountPanel extends StatelessWidget {
+  const _ProfileAccountPanel({
+    required this.providerLabel,
+    required this.localeLabel,
+  });
+
+  final String providerLabel;
+  final String localeLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border.all(
+          color: colorScheme.outline.withValues(alpha: 0.24),
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        child: Column(
+          children: [
+            _ProfileInfoRow(
+              icon: Icons.verified_user_outlined,
+              label: providerLabel,
+            ),
+            const SizedBox(height: 12),
+            _ProfileInfoRow(
+              icon: Icons.language_outlined,
+              label: '${context.l10n.languageLabel}: $localeLabel',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProfileInfoRow extends StatelessWidget {
+  const _ProfileInfoRow({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      children: [
+        Icon(icon, size: 20, color: colorScheme.primary),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Text(
+            label,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ),
       ],
     );
   }

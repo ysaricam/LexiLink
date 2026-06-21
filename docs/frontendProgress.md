@@ -5,6 +5,29 @@ yeniden yazilmaz.
 
 ---
 
+## Home/Game UI polish (2026-06-21, working tree)
+
+- Game screen Undo UX updated: the standalone Undo button was removed.
+  The previous-link option in the outgoing word grid now performs the
+  inventory-backed undo action directly and refreshes the Undo balance after
+  use. The previous-link tile is disabled when the player has no Undo balance.
+- Game secondary actions were simplified: Hint remains as a normal secondary
+  action and Reset is surfaced as a visible secondary action instead of being
+  hidden in the overflow menu.
+- Home screen layout was reworked from a side-rail/stack layout to a top bar
+  plus bottom action dock. The top bar now gives the resource area the full
+  remaining width after the profile button, so Energy countdown text can fit
+  on mobile.
+- Home top resource/action order is right-to-left: Energy, Diamond,
+  Earn Diamonds. Earn Diamonds moved out of the bottom dock and into the top
+  bar as an icon action.
+- Energy badge supports compact mode while still showing refill timing:
+  compact badges render the shorter countdown form (for example `11m 31s`)
+  and full badges keep the longer `Next in ...` wording.
+- Gate: `flutter analyze` clean. Focused checks during the slice included
+  Energy repository/cubit tests and prior Game data/repository/sound-effect
+  tests.
+
 ## Sprint CL — Content Localization / Phase 2 — in progress
 
 ### Slice CL3 — Admin content language controls (2026-06-01, working tree)

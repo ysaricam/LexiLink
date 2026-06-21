@@ -20,6 +20,8 @@ import 'package:lexilink_app/features/energy/data/energy_repository.dart';
 import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
 import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
+import 'package:lexilink_app/features/market/data/market_models.dart';
+import 'package:lexilink_app/features/market/presentation/market_screen.dart';
 import 'package:lexilink_app/features/session/application/session_cubit.dart';
 import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/shared/ads/ad_config.dart';
@@ -463,8 +465,9 @@ class _CategoryDeckState extends State<_CategoryDeck> {
                             context.read<AudioService>().playEffect(
                               SoundEffect.buttonTap,
                             );
-                            context.read<GameStartCubit>().startGame(
-                              categoryId: widget.categories[_currentIndex].id,
+                            _startGameOrOpenEnergyMarket(
+                              context,
+                              widget.categories[_currentIndex].id,
                             );
                           },
                   ),
@@ -484,6 +487,24 @@ class _CategoryDeckState extends State<_CategoryDeck> {
       ),
     );
   }
+}
+
+Future<void> _startGameOrOpenEnergyMarket(
+  BuildContext context,
+  String categoryId,
+) async {
+  final energyCubit = context.read<EnergyCubit>();
+  final diamondCubit = context.read<DiamondCubit>();
+  final gameStartCubit = context.read<GameStartCubit>();
+  final energy = energyCubit.state.energy;
+  if (energy != null && energy.currentAmount <= 0) {
+    await showMarketSheet(context, initialItemType: MarketItemType.energy);
+    await energyCubit.loadEnergy();
+    await diamondCubit.loadDiamond();
+    return;
+  }
+
+  await gameStartCubit.startGame(categoryId: categoryId);
 }
 
 class _LexiLinkWordmark extends StatelessWidget {

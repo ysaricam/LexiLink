@@ -292,6 +292,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get diamondUnavailable => 'Diamond unavailable';
 
   @override
+  String get energyTitle => 'Energy';
+
+  @override
   String get loadingDiamonds => 'Loading diamonds...';
 
   @override

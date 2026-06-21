@@ -183,6 +183,7 @@
     }
   },
   "diamondUnavailable": "Diamond unavailable",
+  "energyTitle": "Energy",
   "loadingDiamonds": "Loading diamonds...",
   "openingDiamonds": "Opening diamonds...",
   "diamondsTitle": "Diamonds",

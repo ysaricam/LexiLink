@@ -608,6 +608,12 @@ abstract class AppLocalizations {
   /// **'Diamond unavailable'**
   String get diamondUnavailable;
 
+  /// No description provided for @energyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get energyTitle;
+
   /// No description provided for @loadingDiamonds.
   ///
   /// In en, this message translates to:

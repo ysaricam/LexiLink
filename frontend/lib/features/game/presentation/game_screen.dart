@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:lexilink_app/app/theme/app_layout.dart';
 import 'package:lexilink_app/app/theme/app_palette.dart';
+import 'package:lexilink_app/features/diamond/application/diamond_cubit.dart';
+import 'package:lexilink_app/features/diamond/data/diamond_repository.dart';
 import 'package:lexilink_app/features/game/application/game_details_cubit.dart';
 import 'package:lexilink_app/features/game/application/game_sound_effects.dart';
 import 'package:lexilink_app/features/game/data/game_details.dart';
@@ -13,6 +15,8 @@ import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/game/data/outgoing_link.dart';
 import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
 import 'package:lexilink_app/features/hint/data/hint_repository.dart';
+import 'package:lexilink_app/features/market/data/market_models.dart';
+import 'package:lexilink_app/features/market/presentation/market_screen.dart';
 import 'package:lexilink_app/features/reset/application/reset_cubit.dart';
 import 'package:lexilink_app/features/reset/data/reset_repository.dart';
 import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
@@ -97,6 +101,7 @@ class _GameProvidersState extends State<_GameProviders> {
   late final HintCubit _hintCubit;
   late final UndoCubit _undoCubit;
   late final ResetCubit _resetCubit;
+  late final DiamondCubit _diamondCubit;
 
   @override
   void initState() {
@@ -119,10 +124,14 @@ class _GameProvidersState extends State<_GameProviders> {
     _resetCubit = ResetCubit(
       resetRepository: ResetRepository(apiClient: apiClient),
     );
+    _diamondCubit = DiamondCubit(
+      diamondRepository: DiamondRepository(apiClient: apiClient),
+    );
     unawaited(_gameDetailsCubit.loadGame(widget.gameId));
     unawaited(_hintCubit.loadHint());
     unawaited(_undoCubit.loadUndo());
     unawaited(_resetCubit.loadReset());
+    unawaited(_diamondCubit.loadDiamond());
   }
 
   @override
@@ -130,6 +139,7 @@ class _GameProvidersState extends State<_GameProviders> {
     _resetCubit.close();
     _undoCubit.close();
     _hintCubit.close();
+    _diamondCubit.close();
     _gameDetailsCubit.close();
     _httpClient.close();
     super.dispose();
@@ -143,6 +153,7 @@ class _GameProvidersState extends State<_GameProviders> {
         BlocProvider.value(value: _hintCubit),
         BlocProvider.value(value: _undoCubit),
         BlocProvider.value(value: _resetCubit),
+        BlocProvider.value(value: _diamondCubit),
       ],
       child: _GameView(gameId: widget.gameId),
     );
@@ -689,13 +700,13 @@ class _OptionsGrid extends StatelessWidget {
         final isRecommended = option.id == recommendedLinkId;
         final isPrevious =
             previousLinkId != null && option.id == previousLinkId;
-        final tileDisabled =
-            disabled || !option.isActive || (isPrevious && undoBalance <= 0);
+        final tileDisabled = disabled || !option.isActive;
         return _OptionTile(
           option: option,
           highlighted: isRecommended,
           isPrevious: isPrevious,
           disabled: tileDisabled,
+          hasUndoBalance: undoBalance > 0,
         );
       },
     );
@@ -708,12 +719,14 @@ class _OptionTile extends StatelessWidget {
     required this.highlighted,
     required this.isPrevious,
     required this.disabled,
+    required this.hasUndoBalance,
   });
 
   final OutgoingLink option;
   final bool highlighted;
   final bool isPrevious;
   final bool disabled;
+  final bool hasUndoBalance;
 
   @override
   Widget build(BuildContext context) {
@@ -754,6 +767,10 @@ class _OptionTile extends StatelessWidget {
             ? null
             : () async {
                 if (isPrevious) {
+                  if (!hasUndoBalance) {
+                    await _openMarketFor(context, MarketItemType.undo);
+                    return;
+                  }
                   await context.read<GameDetailsCubit>().undo();
                   if (context.mounted) {
                     await context.read<UndoCubit>().loadUndo();
@@ -822,9 +839,14 @@ class _SecondaryActions extends StatelessWidget {
       children: [
         AppSecondaryButton(
           label: context.l10n.hintAction(hintBalance),
-          onPressed: isBusy || game.isFinished || hintBalance <= 0
+          onPressed: isBusy || game.isFinished
               ? null
               : () async {
+                  if (hintBalance <= 0) {
+                    await _openMarketFor(context, MarketItemType.hint);
+                    return;
+                  }
+
                   await context.read<GameDetailsCubit>().useHint();
                   if (context.mounted) {
                     await context.read<HintCubit>().loadHint();
@@ -834,9 +856,14 @@ class _SecondaryActions extends StatelessWidget {
         const SizedBox(height: 10),
         AppSecondaryButton(
           label: context.l10n.commonReset,
-          onPressed: isBusy || game.isFinished || resetBalance <= 0
+          onPressed: isBusy || game.isFinished
               ? null
               : () async {
+                  if (resetBalance <= 0) {
+                    await _openMarketFor(context, MarketItemType.reset);
+                    return;
+                  }
+
                   await context.read<GameDetailsCubit>().reset();
                   if (context.mounted) {
                     await context.read<ResetCubit>().loadReset();
@@ -846,6 +873,21 @@ class _SecondaryActions extends StatelessWidget {
       ],
     );
   }
+}
+
+Future<void> _openMarketFor(
+  BuildContext context,
+  MarketItemType itemType,
+) async {
+  await showMarketSheet(context, initialItemType: itemType);
+  if (!context.mounted) return;
+
+  await Future.wait([
+    context.read<HintCubit>().loadHint(),
+    context.read<UndoCubit>().loadUndo(),
+    context.read<ResetCubit>().loadReset(),
+    context.read<DiamondCubit>().loadDiamond(),
+  ]);
 }
 
 class _ResultSheet extends StatelessWidget {

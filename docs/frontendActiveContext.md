@@ -4,7 +4,7 @@ Frontend'in o anki yonu ve en yakin sira. Backend tarafinin aktif hafizasi
 `activeContext.md`, frontend teslim gecmisi `frontendProgress.md`, frontend
 plani `frontendRoadmap.md` icindedir.
 
-> Last updated: 2026-06-01 (Sprint GO — backend deploy healthy at api.wordlope.com; CL closed.)
+> Last updated: 2026-06-21 (Home/Game UI polish — undo tile merge and top-bar resource layout.)
 
 ---
 
@@ -112,6 +112,14 @@ ayrimidir.
 ---
 
 ## Next Action
+
+**Home/Game UI polish (2026-06-21, working tree):** Game Undo was folded into
+the previous-link option tile instead of a standalone button. Home was adjusted
+to a top bar plus bottom action dock: the top resource area now expands to the
+available width, shows Energy with its refill countdown, Diamond, and the
+Earn Diamonds action in right-to-left visual order (Energy → Diamond →
+Earn Diamonds). Earn Diamonds was removed from the bottom dock. Latest gate:
+`flutter analyze` clean; focused Energy/Game tests passed during the slice.
 
 **Sprint GO — Production Launch — active.** Backend deploy is healthy at
 `https://api.wordlope.com`. The frontend launch-relevant next step is store

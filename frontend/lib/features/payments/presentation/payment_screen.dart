@@ -16,15 +16,15 @@ import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
-import 'package:lexilink_app/shared/widgets/app_button.dart';
 import 'package:lexilink_app/shared/widgets/app_empty_state.dart';
 import 'package:lexilink_app/shared/widgets/app_error_state.dart';
 import 'package:lexilink_app/shared/widgets/app_loading_state.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({super.key, this.cubitFactory});
+  const PaymentScreen({super.key, this.cubitFactory, this.modal = false});
 
   final PaymentCubit Function()? cubitFactory;
+  final bool modal;
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -85,12 +85,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       );
     }
-    return BlocProvider.value(value: cubit, child: const _PaymentView());
+    return BlocProvider.value(
+      value: cubit,
+      child: _PaymentView(modal: widget.modal),
+    );
   }
 }
 
 class _PaymentView extends StatelessWidget {
-  const _PaymentView();
+  const _PaymentView({required this.modal});
+
+  final bool modal;
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +120,13 @@ class _PaymentView extends StatelessWidget {
           body: SafeArea(
             child: Column(
               children: [
-                AppBackBar(title: context.l10n.diamondsTitle),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  child: AppBackBar(
+                    title: context.l10n.diamondsTitle,
+                    onBack: modal ? () => Navigator.of(context).pop() : null,
+                  ),
+                ),
                 Expanded(child: _body(context, state)),
               ],
             ),
@@ -139,8 +150,7 @@ class _PaymentView extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: AppEmptyState(
             title: context.l10n.purchasesUnavailable,
-            message:
-                state.message ?? context.l10n.purchasesUnavailableMessage,
+            message: state.message ?? context.l10n.purchasesUnavailableMessage,
             actionLabel: context.l10n.commonRetry,
             onAction: () => context.read<PaymentCubit>().load(),
           ),
@@ -170,10 +180,10 @@ class _PaymentView extends StatelessWidget {
     return RefreshIndicator(
       onRefresh: () => context.read<PaymentCubit>().load(),
       child: GridView.builder(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 24),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 280,
-          mainAxisExtent: 220,
+          maxCrossAxisExtent: 220,
+          mainAxisExtent: 228,
           crossAxisSpacing: 14,
           mainAxisSpacing: 14,
         ),
@@ -188,6 +198,34 @@ class _PaymentView extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> showPaymentSheet(BuildContext context) {
+  final diamondCubit = _readIfPresent<DiamondCubit>(context);
+
+  return showDialog<void>(
+    context: context,
+    builder: (_) {
+      final dialog = Dialog(
+        insetPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 28),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        clipBehavior: Clip.antiAlias,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 520, maxHeight: 640),
+          child: const PaymentScreen(modal: true),
+        ),
+      );
+
+      if (diamondCubit == null) {
+        return dialog;
+      }
+
+      return BlocProvider<DiamondCubit>.value(
+        value: diamondCubit,
+        child: dialog,
+      );
+    },
+  );
 }
 
 class _DiamondBundleCard extends StatelessWidget {
@@ -210,57 +248,73 @@ class _DiamondBundleCard extends StatelessWidget {
         ? context.l10n.commonBuy
         : context.l10n.commonUnavailable;
 
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xffe8f6f3), Color(0xfffff2cf)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const Icon(
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colorScheme.surface,
+        border: Border.all(color: AppPalette.focus.withValues(alpha: 0.18)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 58,
+                  height: 58,
+                  decoration: BoxDecoration(
+                    color: AppPalette.focus.withValues(alpha: 0.14),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(
                     Icons.diamond_outlined,
                     size: 34,
                     color: AppPalette.focus,
                   ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      '${bundle.product.diamondAmount} diamonds',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    '${bundle.product.diamondAmount} diamonds',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 14),
+            _PricePill(text: bundle.displayPrice),
+            const SizedBox(height: 12),
+            Text(
+              bundle.storeProduct?.title ?? bundle.product.storeProductId,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(height: 14),
-              _PricePill(text: bundle.displayPrice),
-              const SizedBox(height: 12),
-              Text(
-                bundle.storeProduct?.title ?? bundle.product.storeProductId,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const Spacer(),
-              AppPrimaryButton(
-                label: actionLabel,
+            ),
+            const Spacer(),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                icon: Icon(
+                  disabled ? Icons.block : Icons.shopping_bag_outlined,
+                ),
+                label: Text(actionLabel),
                 onPressed: disabled
                     ? null
                     : () => context.read<PaymentCubit>().buy(bundle),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

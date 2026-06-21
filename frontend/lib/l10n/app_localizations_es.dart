@@ -293,6 +293,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get diamondUnavailable => 'Diamantes no disponibles';
 
   @override
+  String get energyTitle => 'Energía';
+
+  @override
   String get loadingDiamonds => 'Cargando diamantes...';
 
   @override

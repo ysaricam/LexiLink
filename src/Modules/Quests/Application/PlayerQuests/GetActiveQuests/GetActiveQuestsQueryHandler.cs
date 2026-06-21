@@ -43,8 +43,9 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
 
         // Delete first, then sync — an expired Daily row in the DB would
         // otherwise look "existing" to the sync pass and prevent re-issue
-        // for the new day. With this order the sync sees the deleted slot
-        // as missing and inserts a fresh row with today's baseline.
+        // for the new day. Claimed daily rows must expire too; otherwise a
+        // yesterday claim blocks today's daily quest through the unique
+        // PlayerId + QuestDefinitionId slot.
         await DeleteExpiredDailyPlayerQuestsAsync(connection, query.PlayerId, now, cancellationToken);
         await SyncMissingPlayerQuestsAsync(connection, query.PlayerId, counters, now, cancellationToken);
 
@@ -154,7 +155,6 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         const string sql = """
             DELETE FROM "quests"."PlayerQuests"
             WHERE "PlayerId" = @PlayerId
-              AND "State" = 'Active'
               AND "ExpiresAt" IS NOT NULL
               AND "ExpiresAt" <= @Now;
         """;

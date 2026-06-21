@@ -84,6 +84,7 @@
   "buyConfirmTitle": "{quantity} {type} satın al?",
   "buyConfirmMessage": "Bu {price} elmas harcar.",
   "diamondUnavailable": "Elmas kullanılamıyor",
+  "energyTitle": "Enerji",
   "loadingDiamonds": "Elmaslar yükleniyor...",
   "openingDiamonds": "Elmaslar açılıyor...",
   "diamondsTitle": "Elmaslar",

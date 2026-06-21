@@ -293,6 +293,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get diamondUnavailable => 'Diamants indisponibles';
 
   @override
+  String get energyTitle => 'Énergie';
+
+  @override
   String get loadingDiamonds => 'Chargement des diamants...';
 
   @override
