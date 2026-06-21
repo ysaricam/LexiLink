@@ -12,6 +12,11 @@
   "@languageLabel": {
     "description": "Label for the language selector in settings."
   },
+  "settingsColorSection": "Color palette",
+  "colorPaletteClassic": "Classic",
+  "colorPaletteForest": "Forest",
+  "colorPaletteSunset": "Sunset",
+  "colorPaletteGraphite": "Graphite",
   "commonCancel": "Cancel",
   "commonApply": "Apply",
   "commonRetry": "Retry",
@@ -247,6 +252,11 @@
       }
     }
   },
+  "linkAccount": "Link account",
+  "linkGoogle": "Link Google",
+  "linkApple": "Link Apple",
+  "linkingAccount": "Linking...",
+  "accountLinked": "Account linked.",
   "statGamesCompleted": "Games completed",
   "statBestScore": "Best score",
   "statTotalScore": "Total score",

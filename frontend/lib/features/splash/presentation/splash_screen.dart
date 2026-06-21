@@ -2,7 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lexilink_app/app/theme/app_palette.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -49,14 +48,15 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final letterStyle = (theme.textTheme.displaySmall ?? const TextStyle())
         .copyWith(
           fontSize: 56,
           fontWeight: FontWeight.w700,
           letterSpacing: 1.4,
-          color: AppPalette.focus,
+          color: colorScheme.secondary,
         );
-    const grainColor = AppPalette.focus;
+    final grainColor = colorScheme.secondary;
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,

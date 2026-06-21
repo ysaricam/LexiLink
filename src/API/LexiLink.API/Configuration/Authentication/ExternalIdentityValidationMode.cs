@@ -10,6 +10,10 @@ public enum ExternalIdentityValidationMode
     // Allowed in Production (unlike DevelopmentExternalToken).
     GuestDevice = 2,
 
+    // Production-safe player identity path: accepts GuestDevice plus verified
+    // Google/Apple ID tokens for configured client ids.
+    GuestDeviceAndSocial = 4,
+
     // Production-safe admin bootstrap path: accepts an operator-owned shared
     // external token before issuing an admin JWT. The email must still map to
     // an active AdminUser.

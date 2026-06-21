@@ -22,6 +22,13 @@ LEXILINK_API_BASE_URL   default http://127.0.0.1:5000   →  https://api.wordlop
 
 (`lib/shared/api/api_config.dart` reads `String.fromEnvironment('LEXILINK_API_BASE_URL')`.)
 
+Google account linking also needs the OAuth web/server client id at build time
+so the mobile SDK returns an ID token the backend can verify:
+
+```
+GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id>
+```
+
 ## 2. Real ad ids (AdMob)
 
 Defaults are Google **test** ids (work without an account, never bill). For
@@ -60,6 +67,7 @@ Android App Bundle (for Play):
 cd frontend
 flutter build appbundle --release \
   --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
+  --dart-define=GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id> \
   --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=<real> \
   --dart-define=ADMOB_REWARDED_AD_UNIT_ID=<real>
 ```
@@ -70,6 +78,7 @@ iOS (archive in Xcode or):
 cd frontend
 flutter build ipa --release \
   --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
+  --dart-define=GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id> \
   --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=<real> \
   --dart-define=ADMOB_REWARDED_AD_UNIT_ID=<real>
 ```

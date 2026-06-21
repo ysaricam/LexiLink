@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lexilink_app/app/app.dart';
 import 'package:lexilink_app/features/settings/data/audio_preferences_repository.dart';
+import 'package:lexilink_app/features/settings/data/color_palette_preferences_repository.dart';
 import 'package:lexilink_app/features/settings/data/locale_preferences_repository.dart';
 import 'package:lexilink_app/features/settings/data/player_locale_writer.dart';
 import 'package:lexilink_app/features/splash/presentation/splash_screen.dart';
@@ -36,6 +37,8 @@ void main() {
         audioService: AudioService(),
         adsService: AdsService(platform: _UnsupportedAdsPlatform()),
         audioPreferencesRepository: InMemoryAudioPreferencesRepository(),
+        colorPalettePreferencesRepository:
+            InMemoryColorPalettePreferencesRepository(),
         localePreferencesRepository: InMemoryLocalePreferencesRepository(),
         playerLocaleWriter: const NoopPlayerLocaleWriter(),
       ),

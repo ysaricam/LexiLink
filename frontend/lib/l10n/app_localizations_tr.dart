@@ -18,6 +18,21 @@ class AppLocalizationsTr extends AppLocalizations {
   String get languageLabel => 'Dil';
 
   @override
+  String get settingsColorSection => 'Renk paleti';
+
+  @override
+  String get colorPaletteClassic => 'Klasik';
+
+  @override
+  String get colorPaletteForest => 'Orman';
+
+  @override
+  String get colorPaletteSunset => 'Gün batımı';
+
+  @override
+  String get colorPaletteGraphite => 'Grafit';
+
+  @override
   String get commonCancel => 'İptal';
 
   @override
@@ -431,6 +446,21 @@ class AppLocalizationsTr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get linkAccount => 'Hesap bağla';
+
+  @override
+  String get linkGoogle => 'Google bağla';
+
+  @override
+  String get linkApple => 'Apple bağla';
+
+  @override
+  String get linkingAccount => 'Bağlanıyor...';
+
+  @override
+  String get accountLinked => 'Hesap bağlandı.';
 
   @override
   String get statGamesCompleted => 'Tamamlanan oyun';

@@ -122,6 +122,36 @@ abstract class AppLocalizations {
   /// **'Language'**
   String get languageLabel;
 
+  /// No description provided for @settingsColorSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Color palette'**
+  String get settingsColorSection;
+
+  /// No description provided for @colorPaletteClassic.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic'**
+  String get colorPaletteClassic;
+
+  /// No description provided for @colorPaletteForest.
+  ///
+  /// In en, this message translates to:
+  /// **'Forest'**
+  String get colorPaletteForest;
+
+  /// No description provided for @colorPaletteSunset.
+  ///
+  /// In en, this message translates to:
+  /// **'Sunset'**
+  String get colorPaletteSunset;
+
+  /// No description provided for @colorPaletteGraphite.
+  ///
+  /// In en, this message translates to:
+  /// **'Graphite'**
+  String get colorPaletteGraphite;
+
   /// No description provided for @commonCancel.
   ///
   /// In en, this message translates to:
@@ -847,6 +877,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 provider linked} other{{count} providers linked}}'**
   String providersLinked(int count);
+
+  /// No description provided for @linkAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Link account'**
+  String get linkAccount;
+
+  /// No description provided for @linkGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Google'**
+  String get linkGoogle;
+
+  /// No description provided for @linkApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Link Apple'**
+  String get linkApple;
+
+  /// No description provided for @linkingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Linking...'**
+  String get linkingAccount;
+
+  /// No description provided for @accountLinked.
+  ///
+  /// In en, this message translates to:
+  /// **'Account linked.'**
+  String get accountLinked;
 
   /// No description provided for @statGamesCompleted.
   ///

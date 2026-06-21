@@ -18,6 +18,21 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languageLabel => 'Sprache';
 
   @override
+  String get settingsColorSection => 'Farbpalette';
+
+  @override
+  String get colorPaletteClassic => 'Klassisch';
+
+  @override
+  String get colorPaletteForest => 'Wald';
+
+  @override
+  String get colorPaletteSunset => 'Sonnenuntergang';
+
+  @override
+  String get colorPaletteGraphite => 'Graphit';
+
+  @override
   String get commonCancel => 'Abbrechen';
 
   @override
@@ -433,6 +448,21 @@ class AppLocalizationsDe extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get linkAccount => 'Konto verknüpfen';
+
+  @override
+  String get linkGoogle => 'Google verknüpfen';
+
+  @override
+  String get linkApple => 'Apple verknüpfen';
+
+  @override
+  String get linkingAccount => 'Wird verknüpft...';
+
+  @override
+  String get accountLinked => 'Konto verknüpft.';
 
   @override
   String get statGamesCompleted => 'Abgeschlossene Spiele';

@@ -18,6 +18,21 @@ class AppLocalizationsEs extends AppLocalizations {
   String get languageLabel => 'Idioma';
 
   @override
+  String get settingsColorSection => 'Paleta de colores';
+
+  @override
+  String get colorPaletteClassic => 'Clásica';
+
+  @override
+  String get colorPaletteForest => 'Bosque';
+
+  @override
+  String get colorPaletteSunset => 'Atardecer';
+
+  @override
+  String get colorPaletteGraphite => 'Grafito';
+
+  @override
   String get commonCancel => 'Cancelar';
 
   @override
@@ -432,6 +447,21 @@ class AppLocalizationsEs extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get linkAccount => 'Vincular cuenta';
+
+  @override
+  String get linkGoogle => 'Vincular Google';
+
+  @override
+  String get linkApple => 'Vincular Apple';
+
+  @override
+  String get linkingAccount => 'Vinculando...';
+
+  @override
+  String get accountLinked => 'Cuenta vinculada.';
 
   @override
   String get statGamesCompleted => 'Partidas completadas';

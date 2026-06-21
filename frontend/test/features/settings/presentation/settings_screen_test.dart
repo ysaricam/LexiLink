@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lexilink_app/features/settings/application/audio_settings_cubit.dart';
+import 'package:lexilink_app/features/settings/application/color_palette_cubit.dart';
 import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/features/settings/data/audio_preferences_repository.dart';
+import 'package:lexilink_app/features/settings/data/color_palette_preferences_repository.dart';
 import 'package:lexilink_app/features/settings/data/locale_preferences_repository.dart';
 import 'package:lexilink_app/features/settings/data/player_locale_writer.dart';
 import 'package:lexilink_app/features/settings/presentation/settings_screen.dart';
@@ -35,6 +37,11 @@ void main() {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<AudioSettingsCubit>.value(value: cubit),
+              BlocProvider<ColorPaletteCubit>(
+                create: (_) => ColorPaletteCubit(
+                  repository: InMemoryColorPalettePreferencesRepository(),
+                ),
+              ),
               BlocProvider<LocaleCubit>(
                 create: (_) => LocaleCubit(
                   repository: InMemoryLocalePreferencesRepository(),
@@ -59,8 +66,11 @@ void main() {
 
     await pumpScreen(tester, cubit);
 
+    expect(find.byType(DropdownButtonHideUnderline), findsNWidgets(2));
     expect(find.byType(Switch), findsNWidgets(2));
     expect(find.byType(Slider), findsNWidgets(2));
+    expect(find.text('Color palette'), findsOneWidget);
+    expect(find.text('Classic'), findsOneWidget);
     expect(find.text('Music'), findsOneWidget);
     expect(find.text('Sound effects'), findsOneWidget);
   });

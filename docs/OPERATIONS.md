@@ -27,6 +27,8 @@ unsafe development mode is enabled.
 | `Authentication__Jwt__SigningKey` | Yes for `ProductionJwt` | empty | HMAC signing key. Must be at least 32 characters. Treat as a secret. |
 | `Authentication__Jwt__AccessTokenLifetimeMinutes` | No | `60` | First-party access token lifetime. |
 | `Authentication__TokenExchange__Mode` | Yes (for guest login) | `Disabled` | Controls `POST /auth/token`. `Disabled` rejects all token exchange → **no player can authenticate**. Use **`GuestDevice`** in Production to enable the guest-first flow (Guest provider only; Apple/Google rejected until real social sign-in is wired). `DevelopmentExternalToken` is allowed only outside `Production`. |
+| `Authentication__SocialIdentity__GoogleClientIds__0` | Yes for Google sign-in | empty | Google OAuth client id accepted as the `aud` of Google ID tokens. Add more indexes for additional client ids. |
+| `Authentication__SocialIdentity__AppleClientIds__0` | Yes for Apple sign-in | empty | Apple bundle id / service id accepted as the `aud` of Apple identity tokens. Add more indexes for additional ids. |
 | `Authentication__AdminTokenExchange__Mode` | No | `Disabled` | Controls `POST /auth/admin/token`. Use `AdminSharedSecret` for the first production browser admin console. `DevelopmentExternalToken` is allowed only outside `Production`. |
 | `Authentication__AdminTokenExchange__SharedSecret` | Yes for `AdminSharedSecret` | empty | Strong operator-owned token entered as the admin login "External token". Must be at least 32 characters and kept out of git. |
 
@@ -46,7 +48,9 @@ Authentication__Mode=ProductionJwt
 Authentication__Jwt__Issuer='LexiLink'
 Authentication__Jwt__Audience='LexiLink.Api'
 Authentication__Jwt__SigningKey='<at-least-32-character-secret>'
-Authentication__TokenExchange__Mode=GuestDevice
+Authentication__TokenExchange__Mode=GuestDeviceAndSocial
+Authentication__SocialIdentity__GoogleClientIds__0='<google-oauth-client-id>'
+Authentication__SocialIdentity__AppleClientIds__0='com.wordlope.app'
 Authentication__AdminTokenExchange__Mode=AdminSharedSecret
 Authentication__AdminTokenExchange__SharedSecret='<at-least-32-character-admin-secret>'
 ```

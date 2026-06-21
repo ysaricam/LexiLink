@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
-import 'package:lexilink_app/app/theme/app_palette.dart';
 import 'package:lexilink_app/features/auth/application/guest_entry_cubit.dart';
 import 'package:lexilink_app/features/auth/data/guest_device_id_store.dart';
 import 'package:lexilink_app/features/auth/data/guest_player_repository.dart';
@@ -517,7 +516,7 @@ class _LexiLinkWordmark extends StatelessWidget {
       'LexiLink',
       textAlign: TextAlign.center,
       style: theme.textTheme.headlineMedium?.copyWith(
-        color: AppPalette.focus,
+        color: theme.colorScheme.secondary,
         letterSpacing: 1.2,
         fontWeight: FontWeight.w700,
       ),
@@ -544,7 +543,8 @@ class _CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final visuals = _categoryVisuals(category.name);
+    final colorScheme = Theme.of(context).colorScheme;
+    final visuals = _categoryVisuals(category.name, colorScheme);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
@@ -776,30 +776,42 @@ class _CategoryVisual {
   final List<Color> gradient;
 }
 
-_CategoryVisual _categoryVisuals(String name) {
+_CategoryVisual _categoryVisuals(String name, ColorScheme colorScheme) {
   final lower = name.toLowerCase();
   if (lower.contains('hayv')) {
-    return const _CategoryVisual(
+    return _CategoryVisual(
       emoji: '🦊',
-      gradient: [Color(0xff3d7c5a), Color(0xff1f5040)],
+      gradient: [
+        colorScheme.primary,
+        Color.lerp(colorScheme.primary, Colors.black, 0.36)!,
+      ],
     );
   }
   if (lower.contains('yem') || lower.contains('food')) {
-    return const _CategoryVisual(
+    return _CategoryVisual(
       emoji: '🍜',
-      gradient: [Color(0xffe39d4a), Color(0xffb04d2b)],
+      gradient: [
+        colorScheme.secondary,
+        Color.lerp(colorScheme.secondary, Colors.black, 0.34)!,
+      ],
     );
   }
   if (lower.contains('doğa') ||
       lower.contains('doga') ||
       lower.contains('nature')) {
-    return const _CategoryVisual(
+    return _CategoryVisual(
       emoji: '🌿',
-      gradient: [Color(0xff2f7e93), Color(0xff124559)],
+      gradient: [
+        Color.lerp(colorScheme.primary, colorScheme.secondary, 0.28)!,
+        Color.lerp(colorScheme.primary, Colors.black, 0.42)!,
+      ],
     );
   }
-  return const _CategoryVisual(
+  return _CategoryVisual(
     emoji: '🎲',
-    gradient: [AppPalette.primary, AppPalette.primaryPressed],
+    gradient: [
+      colorScheme.primary,
+      Color.lerp(colorScheme.primary, colorScheme.secondary, 0.38)!,
+    ],
   );
 }

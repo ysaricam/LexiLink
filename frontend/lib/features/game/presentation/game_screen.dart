@@ -292,16 +292,17 @@ class _GameContent extends StatelessWidget {
     final undoBalance = context.watch<UndoCubit>().state.undo?.balance ?? 0;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         AppBackBar(
           title: context.l10n.gameTitle,
           onBack: () => _onBackPressed(context, game, isBusy),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 28),
+        const _GameLogo(),
+        const SizedBox(height: 51),
         _GameObjectivePanel(game: game),
-        const SizedBox(height: 8),
+        const SizedBox(height: 10),
         _Breadcrumb(game: game),
         if (game.score != null) ...[
           const SizedBox(height: 10),
@@ -426,11 +427,12 @@ class _GameObjectivePanel extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
                   child: Column(
@@ -459,17 +461,17 @@ class _GameObjectivePanel extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 8),
                 Icon(
                   Icons.arrow_forward_rounded,
                   color: colorScheme.onSurfaceVariant,
                   size: 18,
                 ),
-                const SizedBox(width: 12),
-                _TargetPill(value: game.targetWord),
+                const SizedBox(width: 8),
+                _TargetWord(value: game.targetWord),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Text(
@@ -485,7 +487,7 @@ class _GameObjectivePanel extends StatelessWidget {
                     borderRadius: BorderRadius.circular(999),
                     child: LinearProgressIndicator(
                       value: progress,
-                      minHeight: 5,
+                      minHeight: 7,
                       backgroundColor: AppPalette.primary.withValues(
                         alpha: 0.1,
                       ),
@@ -502,54 +504,70 @@ class _GameObjectivePanel extends StatelessWidget {
   }
 }
 
-class _TargetPill extends StatelessWidget {
-  const _TargetPill({required this.value});
+class _GameLogo extends StatelessWidget {
+  const _GameLogo();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 350),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            context.l10n.appTitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: theme.textTheme.displayMedium?.copyWith(
+              fontSize: (theme.textTheme.displayMedium?.fontSize ?? 36) * 1.5,
+              color: theme.colorScheme.secondary,
+              fontWeight: FontWeight.w900,
+              height: 1,
+              letterSpacing: 0,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _TargetWord extends StatelessWidget {
+  const _TargetWord({required this.value});
 
   final String value;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    return Container(
-      constraints: const BoxConstraints(maxWidth: 132),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppPalette.focus.withValues(alpha: 0.1),
-        border: Border.all(color: AppPalette.focus.withValues(alpha: 0.22)),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    return Flexible(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          const Icon(Icons.flag_rounded, color: AppPalette.focus, size: 16),
-          const SizedBox(width: 6),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  context.l10n.anchorTarget,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: textTheme.labelSmall?.copyWith(
-                    color: AppPalette.focus,
-                    fontWeight: FontWeight.w800,
-                    height: 1,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  value,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: textTheme.titleSmall?.copyWith(
-                    color: AppPalette.focus,
-                    fontWeight: FontWeight.w900,
-                    height: 1,
-                  ),
-                ),
-              ],
+          Text(
+            context.l10n.anchorTarget,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.end,
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 2),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerRight,
+            child: Text(
+              value,
+              maxLines: 1,
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: colorScheme.onSurface,
+                fontWeight: FontWeight.w900,
+                height: 1,
+              ),
             ),
           ),
         ],
@@ -575,8 +593,9 @@ class _Breadcrumb extends StatelessWidget {
     return Center(
       child: Text(
         tail.join(' › '),
-        style: theme.textTheme.bodySmall?.copyWith(
+        style: theme.textTheme.bodyMedium?.copyWith(
           color: AppPalette.lightTextMuted,
+          fontWeight: FontWeight.w700,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -841,7 +860,7 @@ class _SecondaryActions extends StatelessWidget {
         Expanded(
           child: _PowerActionCard(
             icon: Icons.restart_alt_rounded,
-            label: context.l10n.commonReset,
+            label: '${context.l10n.commonReset} ($resetBalance)',
             color: AppPalette.danger,
             disabled: isBusy || game.isFinished,
             onPressed: () async {

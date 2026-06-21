@@ -5,7 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:lexilink_app/app/theme/app_layout.dart';
+import 'package:lexilink_app/features/auth/data/social_sign_in_service.dart';
+import 'package:lexilink_app/features/profile/application/account_link_cubit.dart';
 import 'package:lexilink_app/features/profile/application/profile_summary_cubit.dart';
+import 'package:lexilink_app/features/profile/data/account_link_repository.dart';
 import 'package:lexilink_app/features/profile/data/player_stats.dart';
 import 'package:lexilink_app/features/profile/data/player_stats_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
@@ -74,6 +77,7 @@ class _ProfileSummaryProviders extends StatefulWidget {
 class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
   late final http.Client _httpClient;
   late final ProfileSummaryCubit _profileSummaryCubit;
+  late final AccountLinkCubit _accountLinkCubit;
 
   @override
   void initState() {
@@ -88,11 +92,17 @@ class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
       playerStatsRepository: PlayerStatsRepository(apiClient: apiClient),
       tokenStore: widget.tokenStore,
     );
+    _accountLinkCubit = AccountLinkCubit(
+      accountLinkRepository: AccountLinkRepository(apiClient: apiClient),
+      socialSignInService: SocialSignInService(),
+      tokenStore: widget.tokenStore,
+    );
     unawaited(_profileSummaryCubit.loadSummary());
   }
 
   @override
   void dispose() {
+    _accountLinkCubit.close();
     _profileSummaryCubit.close();
     _httpClient.close();
     super.dispose();
@@ -100,8 +110,11 @@ class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: _profileSummaryCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _profileSummaryCubit),
+        BlocProvider.value(value: _accountLinkCubit),
+      ],
       child: const _ProfileSummaryView(),
     );
   }
@@ -112,41 +125,55 @@ class _ProfileSummaryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppScreen(
-      size: AppScreenSize.wide,
-      child: BlocBuilder<ProfileSummaryCubit, ProfileSummaryState>(
-        builder: (context, state) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              AppBackBar(title: context.l10n.navProfile),
-              const SizedBox(height: 20),
-              if (state.isLoading)
-                AppLoadingState(message: context.l10n.loadingProfile)
-              else if (state.status == ProfileSummaryStatus.failure)
-                AppErrorState(
-                  title: context.l10n.couldNotLoadProfile,
-                  message: state.message ?? context.l10n.commonTryAgain,
-                  onRetry: () =>
-                      context.read<ProfileSummaryCubit>().loadSummary(),
-                )
-              else if (state.status == ProfileSummaryStatus.success &&
-                  state.stats != null)
-                _ProfileSummaryCard(stats: state.stats!)
-              else
-                AppEmptyState(
-                  title: context.l10n.noProfileTitle,
-                  message: context.l10n.noProfileMessage,
-                ),
-              const SizedBox(height: 20),
-              FilledButton.icon(
-                icon: const Icon(Icons.leaderboard_outlined),
-                label: Text(context.l10n.viewLeaderboard),
-                onPressed: () => context.go('/leaderboard'),
-              ),
-            ],
+    return BlocListener<AccountLinkCubit, AccountLinkState>(
+      listener: (context, state) {
+        if (state.status == AccountLinkStatus.success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(context.l10n.accountLinked)),
           );
-        },
+          context.read<ProfileSummaryCubit>().loadSummary();
+        } else if (state.status == AccountLinkStatus.failure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(state.message ?? context.l10n.actionFailed)),
+          );
+        }
+      },
+      child: AppScreen(
+        size: AppScreenSize.wide,
+        child: BlocBuilder<ProfileSummaryCubit, ProfileSummaryState>(
+          builder: (context, state) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppBackBar(title: context.l10n.navProfile),
+                const SizedBox(height: 20),
+                if (state.isLoading)
+                  AppLoadingState(message: context.l10n.loadingProfile)
+                else if (state.status == ProfileSummaryStatus.failure)
+                  AppErrorState(
+                    title: context.l10n.couldNotLoadProfile,
+                    message: state.message ?? context.l10n.commonTryAgain,
+                    onRetry: () =>
+                        context.read<ProfileSummaryCubit>().loadSummary(),
+                  )
+                else if (state.status == ProfileSummaryStatus.success &&
+                    state.stats != null)
+                  _ProfileSummaryCard(stats: state.stats!)
+                else
+                  AppEmptyState(
+                    title: context.l10n.noProfileTitle,
+                    message: context.l10n.noProfileMessage,
+                  ),
+                const SizedBox(height: 20),
+                FilledButton.icon(
+                  icon: const Icon(Icons.leaderboard_outlined),
+                  label: Text(context.l10n.viewLeaderboard),
+                  onPressed: () => context.go('/leaderboard'),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }
@@ -180,6 +207,7 @@ class _ProfileSummaryCard extends StatelessWidget {
         _ProfileAccountPanel(
           providerLabel: providerLabel,
           localeLabel: localeLabel,
+          authProvidersLinked: stats.authProvidersLinked,
         ),
         const SizedBox(height: 4),
       ],
@@ -464,10 +492,12 @@ class _ProfileAccountPanel extends StatelessWidget {
   const _ProfileAccountPanel({
     required this.providerLabel,
     required this.localeLabel,
+    required this.authProvidersLinked,
   });
 
   final String providerLabel;
   final String localeLabel;
+  final int authProvidersLinked;
 
   @override
   Widget build(BuildContext context) {
@@ -494,9 +524,66 @@ class _ProfileAccountPanel extends StatelessWidget {
               icon: Icons.language_outlined,
               label: '${context.l10n.languageLabel}: $localeLabel',
             ),
+            const SizedBox(height: 14),
+            _AccountLinkActions(authProvidersLinked: authProvidersLinked),
           ],
         ),
       ),
+    );
+  }
+}
+
+class _AccountLinkActions extends StatelessWidget {
+  const _AccountLinkActions({required this.authProvidersLinked});
+
+  final int authProvidersLinked;
+
+  @override
+  Widget build(BuildContext context) {
+    final linkState = context.watch<AccountLinkCubit>().state;
+    final isBusy = linkState.isBusy;
+    final canLinkMore = authProvidersLinked < 2;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            context.l10n.linkAccount,
+            style: Theme.of(context).textTheme.labelLarge,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: [
+            OutlinedButton.icon(
+              icon: const Icon(Icons.g_mobiledata_rounded),
+              label: Text(
+                linkState.status == AccountLinkStatus.linkingGoogle
+                    ? context.l10n.linkingAccount
+                    : context.l10n.linkGoogle,
+              ),
+              onPressed: isBusy || !canLinkMore
+                  ? null
+                  : () => context.read<AccountLinkCubit>().linkGoogle(),
+            ),
+            OutlinedButton.icon(
+              icon: const Icon(Icons.apple),
+              label: Text(
+                linkState.status == AccountLinkStatus.linkingApple
+                    ? context.l10n.linkingAccount
+                    : context.l10n.linkApple,
+              ),
+              onPressed: isBusy || !canLinkMore
+                  ? null
+                  : () => context.read<AccountLinkCubit>().linkApple(),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

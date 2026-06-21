@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:lexilink_app/app/theme/app_color_palette.dart';
 import 'package:lexilink_app/app/theme/app_palette.dart';
 
 class AppTheme {
   const AppTheme._();
 
-  static ThemeData get light {
+  static ThemeData light([
+    AppColorPalette palette = AppColorPalette.fallback,
+  ]) {
+    final appColors = palette.scheme;
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppPalette.seed,
-      primary: AppPalette.primary,
-      secondary: AppPalette.focus,
+      seedColor: appColors.seed,
+      primary: appColors.primary,
+      secondary: appColors.focus,
       surface: AppPalette.lightSurface,
       error: AppPalette.danger,
     );
 
     return ThemeData(
       colorScheme: colorScheme.copyWith(
-        primary: AppPalette.primary,
+        primary: appColors.primary,
         onPrimary: Colors.white,
-        primaryContainer: AppPalette.primarySoft,
+        primaryContainer: appColors.primarySoft,
         onPrimaryContainer: AppPalette.lightText,
-        secondary: AppPalette.focus,
+        secondary: appColors.focus,
         onSecondary: AppPalette.lightText,
-        secondaryContainer: AppPalette.focusSoft,
+        secondaryContainer: appColors.focusSoft,
         onSecondaryContainer: AppPalette.lightText,
         surface: AppPalette.lightSurface,
         onSurface: AppPalette.lightText,
-        surfaceContainerHighest: AppPalette.lightSurfaceMuted,
-        outline: const Color(0xffbdc9c4),
+        surfaceContainerHighest: appColors.lightSurfaceMuted,
+        outline: appColors.lightOutline,
       ),
       useMaterial3: true,
-      scaffoldBackgroundColor: AppPalette.lightBackground,
+      scaffoldBackgroundColor: appColors.lightBackground,
       textTheme: _textTheme,
       filledButtonTheme: _filledButtonTheme,
       outlinedButtonTheme: _outlinedButtonTheme,
@@ -38,11 +42,14 @@ class AppTheme {
     );
   }
 
-  static ThemeData get dark {
+  static ThemeData dark([
+    AppColorPalette palette = AppColorPalette.fallback,
+  ]) {
+    final appColors = palette.scheme;
     final colorScheme = ColorScheme.fromSeed(
-      seedColor: AppPalette.seed,
-      primary: const Color(0xff7bc9d7),
-      secondary: const Color(0xffe7b85f),
+      seedColor: appColors.seed,
+      primary: appColors.darkPrimary,
+      secondary: appColors.darkFocus,
       surface: AppPalette.darkSurface,
       error: const Color(0xffffb4ab),
       brightness: Brightness.dark,
@@ -50,13 +57,13 @@ class AppTheme {
 
     return ThemeData(
       colorScheme: colorScheme.copyWith(
-        primary: const Color(0xff7bc9d7),
-        onPrimary: const Color(0xff06363f),
-        primaryContainer: const Color(0xff164f5c),
+        primary: appColors.darkPrimary,
+        onPrimary: appColors.darkOnPrimary,
+        primaryContainer: appColors.darkPrimaryContainer,
         onPrimaryContainer: AppPalette.darkText,
-        secondary: const Color(0xffe7b85f),
-        onSecondary: const Color(0xff3c2a04),
-        secondaryContainer: const Color(0xff5b410c),
+        secondary: appColors.darkFocus,
+        onSecondary: appColors.darkOnFocus,
+        secondaryContainer: appColors.darkFocusContainer,
         onSecondaryContainer: AppPalette.darkText,
         surface: AppPalette.darkSurface,
         onSurface: AppPalette.darkText,

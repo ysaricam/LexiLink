@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lexilink_app/app/theme/app_color_palette.dart';
 import 'package:lexilink_app/app/theme/app_layout.dart';
-import 'package:lexilink_app/app/theme/app_palette.dart';
 import 'package:lexilink_app/features/settings/application/audio_settings_cubit.dart';
+import 'package:lexilink_app/features/settings/application/color_palette_cubit.dart';
 import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/features/settings/data/app_language.dart';
 import 'package:lexilink_app/features/settings/data/audio_settings.dart';
@@ -32,6 +33,8 @@ class SettingsScreen extends StatelessWidget {
               const _SettingsHero(),
               const SizedBox(height: 16),
               const _LanguageSection(),
+              const SizedBox(height: 14),
+              const _ColorPaletteSection(),
               const SizedBox(height: 14),
               _SettingsSection(
                 icon: Icons.volume_up_outlined,
@@ -96,7 +99,9 @@ class _SettingsHero extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colorScheme.primaryContainer,
-        border: Border.all(color: AppPalette.primary.withValues(alpha: 0.16)),
+        border: Border.all(
+          color: colorScheme.primary.withValues(alpha: 0.16),
+        ),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
@@ -164,7 +169,7 @@ class _LanguageRow extends StatelessWidget {
         ),
         DecoratedBox(
           decoration: BoxDecoration(
-            color: AppPalette.primary.withValues(alpha: 0.1),
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(8),
           ),
           child: Padding(
@@ -191,6 +196,107 @@ class _LanguageRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _ColorPaletteSection extends StatelessWidget {
+  const _ColorPaletteSection();
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.watch<ColorPaletteCubit>().state;
+    return _SettingsSection(
+      icon: Icons.palette_outlined,
+      title: context.l10n.settingsColorSection,
+      children: [
+        _ColorPaletteRow(palette: palette),
+      ],
+    );
+  }
+}
+
+class _ColorPaletteRow extends StatelessWidget {
+  const _ColorPaletteRow({required this.palette});
+
+  final AppColorPalette palette;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = palette.scheme;
+    return Row(
+      children: [
+        Expanded(
+          child: Wrap(
+            spacing: 7,
+            runSpacing: 7,
+            children: [
+              _PaletteSwatch(color: colors.primary),
+              _PaletteSwatch(color: colors.focus),
+              _PaletteSwatch(color: colors.primarySoft),
+            ],
+          ),
+        ),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<AppColorPalette>(
+                value: palette,
+                borderRadius: BorderRadius.circular(8),
+                icon: const Icon(Icons.keyboard_arrow_down),
+                onChanged: (selected) {
+                  if (selected != null) {
+                    context.read<ColorPaletteCubit>().setPalette(selected);
+                  }
+                },
+                items: [
+                  for (final option in AppColorPalette.values)
+                    DropdownMenuItem<AppColorPalette>(
+                      value: option,
+                      child: Text(_paletteLabel(context, option)),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  String _paletteLabel(BuildContext context, AppColorPalette palette) {
+    final l10n = context.l10n;
+    return switch (palette) {
+      AppColorPalette.classic => l10n.colorPaletteClassic,
+      AppColorPalette.forest => l10n.colorPaletteForest,
+      AppColorPalette.sunset => l10n.colorPaletteSunset,
+      AppColorPalette.graphite => l10n.colorPaletteGraphite,
+    };
+  }
+}
+
+class _PaletteSwatch extends StatelessWidget {
+  const _PaletteSwatch({required this.color});
+
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 26,
+      height: 26,
+      decoration: BoxDecoration(
+        color: color,
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.28),
+        ),
+        borderRadius: BorderRadius.circular(8),
+      ),
     );
   }
 }

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lexilink_app/app/router/app_router.dart';
+import 'package:lexilink_app/app/theme/app_color_palette.dart';
 import 'package:lexilink_app/app/theme/app_theme.dart';
 import 'package:lexilink_app/features/settings/application/audio_settings_cubit.dart';
+import 'package:lexilink_app/features/settings/application/color_palette_cubit.dart';
 import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/features/settings/data/app_language.dart';
 import 'package:lexilink_app/features/settings/data/audio_preferences_repository.dart';
+import 'package:lexilink_app/features/settings/data/color_palette_preferences_repository.dart';
 import 'package:lexilink_app/features/settings/data/locale_preferences_repository.dart';
 import 'package:lexilink_app/features/settings/data/player_locale_writer.dart';
 import 'package:lexilink_app/l10n/app_localizations.dart';
@@ -19,6 +22,7 @@ class LexiLinkApp extends StatefulWidget {
     required this.audioService,
     required this.adsService,
     this.audioPreferencesRepository,
+    this.colorPalettePreferencesRepository,
     this.localePreferencesRepository,
     this.playerLocaleWriter,
     super.key,
@@ -39,6 +43,10 @@ class LexiLinkApp extends StatefulWidget {
 
   /// Overridable for tests; defaults to the device-local SharedPreferences
   /// store in production.
+  final ColorPalettePreferencesRepository? colorPalettePreferencesRepository;
+
+  /// Overridable for tests; defaults to the device-local SharedPreferences
+  /// store in production.
   final LocalePreferencesRepository? localePreferencesRepository;
 
   /// Overridable for tests; defaults to the backend `Player.Locale` writer.
@@ -52,6 +60,7 @@ class _LexiLinkAppState extends State<LexiLinkApp> {
   late final AudioPreferencesRepository _audioPreferencesRepository;
   late final AudioSettingsCubit _audioSettingsCubit;
   late final Future<void> _audioSettingsLoad;
+  late final ColorPaletteCubit _colorPaletteCubit;
 
   @override
   void initState() {
@@ -64,10 +73,17 @@ class _LexiLinkAppState extends State<LexiLinkApp> {
       repository: _audioPreferencesRepository,
     );
     _audioSettingsLoad = _audioSettingsCubit.load();
+    _colorPaletteCubit = ColorPaletteCubit(
+      repository:
+          widget.colorPalettePreferencesRepository ??
+          SharedPreferencesColorPalettePreferencesRepository(),
+    );
+    _colorPaletteCubit.load();
   }
 
   @override
   void dispose() {
+    _colorPaletteCubit.close();
     _audioSettingsCubit.close();
     super.dispose();
   }
@@ -81,6 +97,7 @@ class _LexiLinkAppState extends State<LexiLinkApp> {
         child: MultiBlocProvider(
           providers: [
             BlocProvider<AudioSettingsCubit>.value(value: _audioSettingsCubit),
+            BlocProvider<ColorPaletteCubit>.value(value: _colorPaletteCubit),
             BlocProvider<LocaleCubit>(
               create: (_) => LocaleCubit(
                 repository:
@@ -156,7 +173,13 @@ class _LocalizedRouterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LocaleCubit, AppLanguage>(
-      builder: (context, language) => MaterialApp.router(
+      builder: _buildWithLanguage,
+    );
+  }
+
+  Widget _buildWithLanguage(BuildContext context, AppLanguage language) {
+    return BlocBuilder<ColorPaletteCubit, AppColorPalette>(
+      builder: (context, palette) => MaterialApp.router(
         onGenerateTitle: (context) => context.l10n.appTitle,
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
@@ -164,8 +187,8 @@ class _LocalizedRouterApp extends StatelessWidget {
         // defensive fallback to English for any unexpected unsupported value.
         locale: language.locale,
         localeListResolutionCallback: _LexiLinkAppState._resolveLocale,
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
+        theme: AppTheme.light(palette),
+        darkTheme: AppTheme.dark(palette),
         routerConfig: appRouter,
       ),
     );

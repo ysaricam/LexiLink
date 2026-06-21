@@ -8,6 +8,8 @@ public sealed class LexiLinkAuthOptions
 
     public TokenExchangeOptions TokenExchange { get; set; } = new();
 
+    public SocialIdentityOptions SocialIdentity { get; set; } = new();
+
     public AdminTokenExchangeOptions AdminTokenExchange { get; set; } = new();
 }
 
@@ -25,6 +27,13 @@ public sealed class JwtAuthOptions
 public sealed class TokenExchangeOptions
 {
     public ExternalIdentityValidationMode Mode { get; set; } = ExternalIdentityValidationMode.Disabled;
+}
+
+public sealed class SocialIdentityOptions
+{
+    public string[] GoogleClientIds { get; set; } = [];
+
+    public string[] AppleClientIds { get; set; } = [];
 }
 
 public sealed class AdminTokenExchangeOptions

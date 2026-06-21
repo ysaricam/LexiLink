@@ -1,5 +1,6 @@
 using LexiLink.API.Configuration.Authentication;
 using LexiLink.API.Configuration.ExceptionHandling;
+using LexiLink.Common.Application;
 using LexiLink.Modules.Players.Application.Players.GetPlayerByAuthProvider;
 using LexiLink.Modules.Players.Application.Players.GetPlayerById;
 using LexiLink.Modules.Players.Application.Players.LinkAuthProvider;
@@ -29,8 +30,30 @@ public static class PlayerEndpoints
         }).AllowAnonymous();
 
         group.MapPost("/{id:guid}/auth-providers",
-            async (Guid id, LinkAuthProviderRequest body, IPlayersModule playersModule, CancellationToken ct) =>
+            async (
+                Guid id,
+                LinkAuthProviderRequest body,
+                IExecutionContextAccessor executionContextAccessor,
+                IExternalIdentityVerifier externalIdentityVerifier,
+                IPlayersModule playersModule,
+                CancellationToken ct) =>
         {
+            if (executionContextAccessor.UserId != id)
+            {
+                return Results.Forbid();
+            }
+
+            var verified = await externalIdentityVerifier.VerifyAsync(
+                body.Provider,
+                body.ExternalId,
+                body.ExternalToken,
+                ct);
+
+            if (!verified)
+            {
+                return Results.Unauthorized();
+            }
+
             await playersModule.ExecuteCommandAsync(
                 new LinkAuthProviderCommand(id, body.Provider, body.ExternalId, body.Email), ct);
             return Results.NoContent();
@@ -66,5 +89,5 @@ public static class PlayerEndpoints
 }
 
 public record RegisterGuestPlayerRequest(string DeviceId, string DisplayName, string Locale);
-public record LinkAuthProviderRequest(AuthProvider Provider, string ExternalId, string? Email);
+public record LinkAuthProviderRequest(AuthProvider Provider, string ExternalId, string ExternalToken, string? Email);
 public record UpdatePlayerProfileRequest(string? AvatarUrl, string Locale);

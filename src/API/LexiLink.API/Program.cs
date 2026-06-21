@@ -213,6 +213,7 @@ builder.Services.AddSingleton<IExternalIdentityVerifier>(
     {
         ExternalIdentityValidationMode.DevelopmentExternalToken => new DevelopmentExternalIdentityVerifier(),
         ExternalIdentityValidationMode.GuestDevice => new GuestExternalIdentityVerifier(),
+        ExternalIdentityValidationMode.GuestDeviceAndSocial => new SocialExternalIdentityVerifier(authOptions),
         _ => new DisabledExternalIdentityVerifier()
     });
 builder.Services.AddSingleton<IExternalAdminIdentityVerifier>(

@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:lexilink_app/features/auth/data/social_identity.dart';
+import 'package:lexilink_app/features/profile/data/account_link_repository.dart';
 import 'package:lexilink_app/features/profile/data/leaderboard_query.dart';
 import 'package:lexilink_app/features/profile/data/player_stats_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
@@ -97,5 +99,34 @@ void main() {
     expect(entries, hasLength(1));
     expect(entries.single.playerId, 'player-1');
     expect(entries.single.totalScore, 500);
+  });
+
+  test('links auth provider', () async {
+    final repository = AccountLinkRepository(
+      apiClient: ApiClient(
+        config: const ApiConfig(baseUrl: 'http://localhost:5000'),
+        tokenStore: InMemoryTokenStore(),
+        httpClient: MockClient((request) async {
+          expect(request.url.path, '/players/player-1/auth-providers');
+          expect(request.method, 'POST');
+          expect(request.body, contains('"provider":"Google"'));
+          expect(request.body, contains('"externalId":"google-sub"'));
+          expect(request.body, contains('"externalToken":"id-token"'));
+          expect(request.body, contains('"email":"yasin@example.com"'));
+
+          return http.Response('', 204);
+        }),
+      ),
+    );
+
+    await repository.linkProvider(
+      playerId: 'player-1',
+      identity: const SocialIdentity(
+        provider: SocialAuthProvider.google,
+        externalId: 'google-sub',
+        externalToken: 'id-token',
+        email: 'yasin@example.com',
+      ),
+    );
   });
 }

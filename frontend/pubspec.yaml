@@ -23,10 +23,12 @@ dependencies:
     sdk: flutter
   go_router: ^16.2.5
   google_mobile_ads: ^5.1.0
+  google_sign_in: ^6.3.0
   http: ^1.6.0
   in_app_purchase: ^3.2.3
   intl: any
   shared_preferences: ^2.5.5
+  sign_in_with_apple: ^6.1.4
 
 dev_dependencies:
   bloc_test: ^10.0.0
