@@ -12,7 +12,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-  static const _logoText = 'LexiLink';
+  static const _logoText = 'WordLope';
   static const _letterStagger = Duration(milliseconds: 220);
   static const _letterDuration = Duration(milliseconds: 780);
   static const _holdAfterComplete = Duration(milliseconds: 480);

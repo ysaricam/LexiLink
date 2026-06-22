@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "LexiLink",
+  "appTitle": "WordLope",
   "@appTitle": {
     "description": "The application name shown as the app title."
   },
@@ -268,9 +268,9 @@
   "leaderboardAllTime": "All-time",
   "leaderboardDaily": "Daily",
   "leaderboardWeekly": "Weekly",
-  "leaderboardAllTimeDesc": "All-time best score across players.",
-  "leaderboardDailyDesc": "Best score today (UTC).",
-  "leaderboardWeeklyDesc": "Best score this week (UTC, Monday start).",
+  "leaderboardAllTimeDesc": "All-time total score across players.",
+  "leaderboardDailyDesc": "Total score today (UTC).",
+  "leaderboardWeeklyDesc": "Total score this week (UTC, Monday start).",
   "leaderboardAllTimeEmpty": "Complete a game to appear on the leaderboard.",
   "leaderboardDailyEmpty": "No scores recorded today yet.",
   "leaderboardWeeklyEmpty": "No scores recorded this week yet.",

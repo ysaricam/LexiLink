@@ -57,7 +57,7 @@ void main() {
       build: () => _buildCubit(
         handler: (request) async {
           expect(request.url.path, '/stats/leaderboard');
-          expect(request.url.queryParameters['orderBy'], 'bestScore');
+          expect(request.url.queryParameters['orderBy'], 'totalScore');
           expect(request.url.queryParameters['period'], 'allTime');
 
           return http.Response(_leaderboardBody, 200);

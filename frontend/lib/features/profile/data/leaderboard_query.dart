@@ -22,7 +22,7 @@ enum LeaderboardPeriod {
 
 class LeaderboardQuery extends Equatable {
   const LeaderboardQuery({
-    this.orderBy = LeaderboardOrderBy.bestScore,
+    this.orderBy = LeaderboardOrderBy.totalScore,
     this.period = LeaderboardPeriod.allTime,
     this.periodStart,
     this.limit = 50,

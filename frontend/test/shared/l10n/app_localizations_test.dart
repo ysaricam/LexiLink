@@ -46,7 +46,7 @@ void main() {
 
       for (final entry in expected.entries) {
         final l10n = await _localizationsFor(tester, Locale(entry.key));
-        expect(l10n.appTitle, 'LexiLink');
+        expect(l10n.appTitle, 'WordLope');
         expect(
           l10n.settingsTitle,
           entry.value,

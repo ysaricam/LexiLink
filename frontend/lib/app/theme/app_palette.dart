@@ -21,8 +21,8 @@ class AppPalette {
   static const primaryPressed = Color(0xff155968);
   static const primarySoft = Color(0xffd8eef1);
 
-  static const focus = Color(0xffd49a35);
-  static const focusSoft = Color(0xffffedc4);
+  static const focus = Color(0xff3c8f84);
+  static const focusSoft = Color(0xffd8f0ec);
 
   static const success = Color(0xff3d7c5a);
   static const danger = Color(0xffb14f4b);

@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 class ApiConfig {
   const ApiConfig({
     required this.baseUrl,
@@ -5,13 +7,17 @@ class ApiConfig {
   });
 
   factory ApiConfig.local() {
-    return const ApiConfig(
-      baseUrl: String.fromEnvironment(
-        'LEXILINK_API_BASE_URL',
-        defaultValue: 'http://127.0.0.1:5000',
-      ),
+    const configuredBaseUrl = String.fromEnvironment('LEXILINK_API_BASE_URL');
+    return ApiConfig(
+      baseUrl: configuredBaseUrl.isEmpty
+          ? _defaultBaseUrl
+          : configuredBaseUrl,
     );
   }
+
+  static const _defaultBaseUrl = kIsWeb
+      ? 'http://127.0.0.1:5000'
+      : 'https://api.wordlope.com';
 
   final String baseUrl;
   final Duration timeout;

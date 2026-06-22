@@ -45,7 +45,7 @@ public static class StatsEndpoints
                 ignoreCase: true,
                 out var requestedOrderBy)
                 ? requestedOrderBy
-                : LeaderboardOrderBy.BestScore;
+                : LeaderboardOrderBy.TotalScore;
 
             var parsedPeriod = Enum.TryParse<LeaderboardPeriod>(
                 period,

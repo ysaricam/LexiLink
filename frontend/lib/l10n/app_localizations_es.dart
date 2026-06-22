@@ -9,7 +9,7 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appTitle => 'LexiLink';
+  String get appTitle => 'WordLope';
 
   @override
   String get settingsTitle => 'Ajustes';
@@ -498,14 +498,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get leaderboardAllTimeDesc =>
-      'Mejor puntuación histórica entre todos los jugadores.';
+      'Puntuación total histórica entre todos los jugadores.';
 
   @override
-  String get leaderboardDailyDesc => 'Mejor puntuación de hoy (UTC).';
+  String get leaderboardDailyDesc => 'Puntuación total de hoy (UTC).';
 
   @override
   String get leaderboardWeeklyDesc =>
-      'Mejor puntuación de esta semana (UTC, inicio el lunes).';
+      'Puntuación total de esta semana (UTC, inicio el lunes).';
 
   @override
   String get leaderboardAllTimeEmpty =>

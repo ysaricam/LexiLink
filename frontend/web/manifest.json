@@ -1,6 +1,6 @@
 {
-    "name": "lexilink_app",
-    "short_name": "lexilink_app",
+    "name": "WordLope",
+    "short_name": "WordLope",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

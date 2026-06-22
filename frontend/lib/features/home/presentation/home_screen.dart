@@ -159,7 +159,10 @@ class _HomeProvidersState extends State<_HomeProviders> {
       tokenStore: widget.bootstrap.tokenStore,
     );
 
-    unawaited(_sessionCubit.checkSession());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      unawaited(_sessionCubit.checkSession());
+    });
   }
 
   @override
@@ -402,7 +405,7 @@ class _CategoryDeckState extends State<_CategoryDeck> {
                   width: cardSize * 0.72,
                   child: const FittedBox(
                     fit: BoxFit.fitWidth,
-                    child: _LexiLinkWordmark(),
+                    child: _WordLopeWordmark(),
                   ),
                 ),
                 const SizedBox(height: 18),
@@ -506,14 +509,14 @@ Future<void> _startGameOrOpenEnergyMarket(
   await gameStartCubit.startGame(categoryId: categoryId);
 }
 
-class _LexiLinkWordmark extends StatelessWidget {
-  const _LexiLinkWordmark();
+class _WordLopeWordmark extends StatelessWidget {
+  const _WordLopeWordmark();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Text(
-      'LexiLink',
+      'WordLope',
       textAlign: TextAlign.center,
       style: theme.textTheme.headlineMedium?.copyWith(
         color: theme.colorScheme.secondary,

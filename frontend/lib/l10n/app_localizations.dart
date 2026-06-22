@@ -107,7 +107,7 @@ abstract class AppLocalizations {
   /// The application name shown as the app title.
   ///
   /// In en, this message translates to:
-  /// **'LexiLink'**
+  /// **'WordLope'**
   String get appTitle;
 
   /// Title of the settings screen.
@@ -977,19 +977,19 @@ abstract class AppLocalizations {
   /// No description provided for @leaderboardAllTimeDesc.
   ///
   /// In en, this message translates to:
-  /// **'All-time best score across players.'**
+  /// **'All-time total score across players.'**
   String get leaderboardAllTimeDesc;
 
   /// No description provided for @leaderboardDailyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Best score today (UTC).'**
+  /// **'Total score today (UTC).'**
   String get leaderboardDailyDesc;
 
   /// No description provided for @leaderboardWeeklyDesc.
   ///
   /// In en, this message translates to:
-  /// **'Best score this week (UTC, Monday start).'**
+  /// **'Total score this week (UTC, Monday start).'**
   String get leaderboardWeeklyDesc;
 
   /// No description provided for @leaderboardAllTimeEmpty.

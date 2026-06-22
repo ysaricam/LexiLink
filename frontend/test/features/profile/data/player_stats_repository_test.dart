@@ -89,7 +89,6 @@ void main() {
 
     final entries = await repository.getLeaderboard(
       query: LeaderboardQuery(
-        orderBy: LeaderboardOrderBy.totalScore,
         period: LeaderboardPeriod.weekly,
         periodStart: DateTime(2026, 5, 11),
         limit: 10,

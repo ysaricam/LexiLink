@@ -9,7 +9,7 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appTitle => 'LexiLink';
+  String get appTitle => 'WordLope';
 
   @override
   String get settingsTitle => 'Ayarlar';
@@ -497,14 +497,14 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get leaderboardAllTimeDesc =>
-      'Tüm zamanların en iyi puanı (tüm oyuncular).';
+      'Tüm zamanların toplam puanı (tüm oyuncular).';
 
   @override
-  String get leaderboardDailyDesc => 'Bugünün en iyi puanı (UTC).';
+  String get leaderboardDailyDesc => 'Bugünün toplam puanı (UTC).';
 
   @override
   String get leaderboardWeeklyDesc =>
-      'Bu haftanın en iyi puanı (UTC, Pazartesi başlangıç).';
+      'Bu haftanın toplam puanı (UTC, Pazartesi başlangıç).';
 
   @override
   String get leaderboardAllTimeEmpty =>

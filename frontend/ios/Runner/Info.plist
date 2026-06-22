@@ -2,18 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<!-- AdMob application id. Google's public TEST app id so ads work
-	     without a real AdMob account; the real id replaces this value
-	     (no code change) when credentials arrive. -->
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-3940256099942544~1458002511</string>
-	<!-- Shown in the iOS App Tracking Transparency prompt requested before
-	     ad requests. -->
+	<key>GIDClientID</key>
+	<string>380265795394-519gdb1qmjqnp76bgsoqh6enouvei3id.apps.googleusercontent.com</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Your data is used to show you more relevant ads.</string>
-	<!-- SKAdNetwork identifiers published by Google for AdMob conversion
-	     tracking. Keep this list in sync with Google's iOS privacy guide
-	     before App Store release. -->
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
@@ -222,7 +216,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>LexiLink</string>
+	<string>WordLope</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -230,13 +224,22 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>LexiLink</string>
+	<string>WordLope</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.380265795394-519gdb1qmjqnp76bgsoqh6enouvei3id</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
