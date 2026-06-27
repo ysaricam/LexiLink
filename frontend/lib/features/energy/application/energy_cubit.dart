@@ -14,8 +14,9 @@ enum EnergyStatus {
 class EnergyCubit extends Cubit<EnergyState> {
   EnergyCubit({
     required EnergyRepository energyRepository,
+    EnergyState initialState = const EnergyState.initial(),
   }) : _energyRepository = energyRepository,
-       super(const EnergyState.initial());
+       super(initialState);
 
   final EnergyRepository _energyRepository;
 

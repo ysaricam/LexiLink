@@ -13,8 +13,9 @@ enum SessionStatus {
 class SessionCubit extends Cubit<SessionState> {
   SessionCubit({
     required TokenStore tokenStore,
+    SessionState initialState = const SessionState.checking(),
   }) : _tokenStore = tokenStore,
-       super(const SessionState.checking());
+       super(initialState);
 
   final TokenStore _tokenStore;
 

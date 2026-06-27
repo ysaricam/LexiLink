@@ -64,6 +64,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get preparingSession => 'Sitzung wird vorbereitet...';
 
   @override
+  String get splashStageSession => 'Sitzung wird geprüft';
+
+  @override
+  String get splashStagePlayer => 'Spieler wird vorbereitet';
+
+  @override
+  String get splashStageCategories => 'Wortpfade werden geladen';
+
+  @override
+  String get splashStageResources => 'Ressourcen werden vorbereitet';
+
+  @override
+  String get splashStageReady => 'Bereit';
+
+  @override
+  String get splashLoadingSubtitle => 'Startdaten werden vorbereitet.';
+
+  @override
+  String get splashFailedTitle => 'Start konnte nicht abgeschlossen werden';
+
+  @override
+  String get splashFailedMessage =>
+      'Prüfe deine Verbindung und versuche es erneut.';
+
+  @override
   String get navProfile => 'Profil';
 
   @override
@@ -122,6 +147,52 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get gameTitle => 'Spiel';
+
+  @override
+  String get gameTutorialTitle => 'So spielst du';
+
+  @override
+  String get gameTutorialHelpTooltip => 'Tutorial öffnen';
+
+  @override
+  String get gameTutorialSkip => 'Überspringen';
+
+  @override
+  String get gameTutorialBack => 'Zurück';
+
+  @override
+  String get gameTutorialNext => 'Weiter';
+
+  @override
+  String get gameTutorialDone => 'Losspielen';
+
+  @override
+  String get gameTutorialGoalTitle => 'Erreiche das Zielwort';
+
+  @override
+  String get gameTutorialGoalBody =>
+      'Jedes Spiel gibt dir ein Startwort und ein Zielwort. Bewege dich über verbundene Wörter, bis du das Ziel erreichst.';
+
+  @override
+  String get gameTutorialMoveTitle => 'Wähle das nächste Wort';
+
+  @override
+  String get gameTutorialMoveBody =>
+      'Die Optionen in der Mitte sind Verbindungen vom aktuellen Wort. Tippe eine an, um deinen Pfad dorthin zu bewegen.';
+
+  @override
+  String get gameTutorialStepsTitle => 'Achte auf deine Schritte';
+
+  @override
+  String get gameTutorialStepsBody =>
+      'Der Zähler oben zeigt, wie viele Schritte du nutzen kannst. Erreiche das Ziel, bevor sie aufgebraucht sind.';
+
+  @override
+  String get gameTutorialPowerTitle => 'Nutze Hilfe, wenn du feststeckst';
+
+  @override
+  String get gameTutorialPowerBody =>
+      'Hinweis führt dich in Richtung des richtigen Pfads. Zurücksetzen bringt dich zum Start; das vorherige Wort nutzt Rückgängig.';
 
   @override
   String get pickNextWord => 'Wähle das nächste Wort';

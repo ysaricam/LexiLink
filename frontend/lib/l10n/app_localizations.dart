@@ -212,6 +212,54 @@ abstract class AppLocalizations {
   /// **'Preparing session...'**
   String get preparingSession;
 
+  /// No description provided for @splashStageSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking session'**
+  String get splashStageSession;
+
+  /// No description provided for @splashStagePlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing player'**
+  String get splashStagePlayer;
+
+  /// No description provided for @splashStageCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading word paths'**
+  String get splashStageCategories;
+
+  /// No description provided for @splashStageResources.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing resources'**
+  String get splashStageResources;
+
+  /// No description provided for @splashStageReady.
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get splashStageReady;
+
+  /// No description provided for @splashLoadingSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your starting data.'**
+  String get splashLoadingSubtitle;
+
+  /// No description provided for @splashFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Startup could not finish'**
+  String get splashFailedTitle;
+
+  /// No description provided for @splashFailedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your connection and try again.'**
+  String get splashFailedMessage;
+
   /// No description provided for @navProfile.
   ///
   /// In en, this message translates to:
@@ -325,6 +373,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Game'**
   String get gameTitle;
+
+  /// No description provided for @gameTutorialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to play'**
+  String get gameTutorialTitle;
+
+  /// No description provided for @gameTutorialHelpTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Open tutorial'**
+  String get gameTutorialHelpTooltip;
+
+  /// No description provided for @gameTutorialSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get gameTutorialSkip;
+
+  /// No description provided for @gameTutorialBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get gameTutorialBack;
+
+  /// No description provided for @gameTutorialNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get gameTutorialNext;
+
+  /// No description provided for @gameTutorialDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Start playing'**
+  String get gameTutorialDone;
+
+  /// No description provided for @gameTutorialGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reach the target word'**
+  String get gameTutorialGoalTitle;
+
+  /// No description provided for @gameTutorialGoalBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Each game gives you a start word and a target word. Move through connected words until you reach the target.'**
+  String get gameTutorialGoalBody;
+
+  /// No description provided for @gameTutorialMoveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the next word'**
+  String get gameTutorialMoveTitle;
+
+  /// No description provided for @gameTutorialMoveBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The options in the middle are links from your current word. Tap one to move your path to that word.'**
+  String get gameTutorialMoveBody;
+
+  /// No description provided for @gameTutorialStepsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch your steps'**
+  String get gameTutorialStepsTitle;
+
+  /// No description provided for @gameTutorialStepsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The counter at the top shows how many steps you can use. Reach the target before your steps run out to complete the game.'**
+  String get gameTutorialStepsBody;
+
+  /// No description provided for @gameTutorialPowerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Use help when stuck'**
+  String get gameTutorialPowerTitle;
+
+  /// No description provided for @gameTutorialPowerBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Hint points you toward the right path. Reset returns to the start; tapping the previous word uses an undo.'**
+  String get gameTutorialPowerBody;
 
   /// No description provided for @pickNextWord.
   ///

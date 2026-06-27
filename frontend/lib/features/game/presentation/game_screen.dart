@@ -12,7 +12,9 @@ import 'package:lexilink_app/features/game/application/game_details_cubit.dart';
 import 'package:lexilink_app/features/game/application/game_sound_effects.dart';
 import 'package:lexilink_app/features/game/data/game_details.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
+import 'package:lexilink_app/features/game/data/game_tutorial_store.dart';
 import 'package:lexilink_app/features/game/data/outgoing_link.dart';
+import 'package:lexilink_app/features/game/presentation/game_tutorial_sheet.dart';
 import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
 import 'package:lexilink_app/features/hint/data/hint_repository.dart';
 import 'package:lexilink_app/features/market/data/market_models.dart';
@@ -170,7 +172,10 @@ class _GameView extends StatefulWidget {
 }
 
 class _GameViewState extends State<_GameView> {
+  final GameTutorialStore _tutorialStore = SharedPreferencesGameTutorialStore();
   bool _resultShown = false;
+  bool _tutorialCheckStarted = false;
+  bool _tutorialSheetOpen = false;
   GameDetailsState? _previousState;
 
   @override
@@ -181,6 +186,16 @@ class _GameViewState extends State<_GameView> {
           listener: (context, state) {
             _playActionAudio(context, _previousState, state);
             _previousState = state;
+          },
+        ),
+        BlocListener<GameDetailsCubit, GameDetailsState>(
+          listenWhen: (previous, current) =>
+              previous.status != GameDetailsStatus.success &&
+              current.status == GameDetailsStatus.success,
+          listener: (context, state) {
+            final game = state.game;
+            if (game == null || game.isFinished) return;
+            unawaited(_maybeShowFirstGameTutorial(context));
           },
         ),
         BlocListener<GameDetailsCubit, GameDetailsState>(
@@ -238,6 +253,9 @@ class _GameViewState extends State<_GameView> {
                       activeAction: state.activeAction,
                       recommendedLinkId: state.recommendedLinkId,
                       message: state.message,
+                      onShowTutorial: () => unawaited(
+                        _showTutorial(context, markCompleted: false),
+                      ),
                     );
                   },
                 ),
@@ -268,6 +286,40 @@ class _GameViewState extends State<_GameView> {
       builder: (sheetContext) => _ResultSheet(game: game),
     );
   }
+
+  Future<void> _maybeShowFirstGameTutorial(BuildContext context) async {
+    if (_tutorialCheckStarted) return;
+    _tutorialCheckStarted = true;
+
+    final completed = await _tutorialStore.isCompleted();
+    if (completed || !context.mounted) return;
+
+    await WidgetsBinding.instance.endOfFrame;
+    if (!context.mounted) return;
+
+    await _showTutorial(context, markCompleted: true);
+  }
+
+  Future<void> _showTutorial(
+    BuildContext context, {
+    required bool markCompleted,
+  }) async {
+    if (_tutorialSheetOpen) return;
+    _tutorialSheetOpen = true;
+    final completed = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      isDismissible: false,
+      enableDrag: false,
+      backgroundColor: Colors.transparent,
+      builder: (_) => const GameTutorialSheet(),
+    );
+    _tutorialSheetOpen = false;
+
+    if ((completed ?? false) && markCompleted) {
+      await _tutorialStore.markCompleted();
+    }
+  }
 }
 
 class _GameContent extends StatelessWidget {
@@ -277,6 +329,7 @@ class _GameContent extends StatelessWidget {
     required this.activeAction,
     required this.recommendedLinkId,
     required this.message,
+    required this.onShowTutorial,
   });
 
   final GameDetails game;
@@ -284,6 +337,7 @@ class _GameContent extends StatelessWidget {
   final GameAction activeAction;
   final String? recommendedLinkId;
   final String? message;
+  final VoidCallback onShowTutorial;
 
   @override
   Widget build(BuildContext context) {
@@ -297,6 +351,11 @@ class _GameContent extends StatelessWidget {
         AppBackBar(
           title: context.l10n.gameTitle,
           onBack: () => _onBackPressed(context, game, isBusy),
+          trailing: IconButton(
+            tooltip: context.l10n.gameTutorialHelpTooltip,
+            onPressed: onShowTutorial,
+            icon: const Icon(Icons.help_outline_rounded),
+          ),
         ),
         const SizedBox(height: 28),
         const _GameLogo(),

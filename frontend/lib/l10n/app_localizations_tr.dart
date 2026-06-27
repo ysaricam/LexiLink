@@ -64,6 +64,30 @@ class AppLocalizationsTr extends AppLocalizations {
   String get preparingSession => 'Oturum hazırlanıyor...';
 
   @override
+  String get splashStageSession => 'Oturum kontrol ediliyor';
+
+  @override
+  String get splashStagePlayer => 'Oyuncu hazırlanıyor';
+
+  @override
+  String get splashStageCategories => 'Kelime yolları yükleniyor';
+
+  @override
+  String get splashStageResources => 'Kaynaklar hazırlanıyor';
+
+  @override
+  String get splashStageReady => 'Hazır';
+
+  @override
+  String get splashLoadingSubtitle => 'Başlangıç verileri hazırlanıyor.';
+
+  @override
+  String get splashFailedTitle => 'Başlangıç tamamlanamadı';
+
+  @override
+  String get splashFailedMessage => 'Bağlantını kontrol edip tekrar dene.';
+
+  @override
   String get navProfile => 'Profil';
 
   @override
@@ -121,6 +145,52 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get gameTitle => 'Oyun';
+
+  @override
+  String get gameTutorialTitle => 'Nasıl oynanır';
+
+  @override
+  String get gameTutorialHelpTooltip => 'Öğreticiyi aç';
+
+  @override
+  String get gameTutorialSkip => 'Geç';
+
+  @override
+  String get gameTutorialBack => 'Geri';
+
+  @override
+  String get gameTutorialNext => 'İleri';
+
+  @override
+  String get gameTutorialDone => 'Oynamaya başla';
+
+  @override
+  String get gameTutorialGoalTitle => 'Hedef kelimeye ulaş';
+
+  @override
+  String get gameTutorialGoalBody =>
+      'Her oyun bir başlangıç kelimesi ve bir hedef kelime verir. Amacın bağlantılı kelimelerden ilerleyerek hedefe varmaktır.';
+
+  @override
+  String get gameTutorialMoveTitle => 'Sonraki kelimeyi seç';
+
+  @override
+  String get gameTutorialMoveBody =>
+      'Ortadaki seçenekler şu anki kelimeden gidilebilen bağlantılardır. Bir seçeneğe dokununca yolun o kelimeye ilerler.';
+
+  @override
+  String get gameTutorialStepsTitle => 'Adımlarını takip et';
+
+  @override
+  String get gameTutorialStepsBody =>
+      'Üstteki sayaç kaç adım hakkın kaldığını gösterir. Hedefe adımlar bitmeden ulaşırsan oyunu tamamlarsın.';
+
+  @override
+  String get gameTutorialPowerTitle => 'Takılırsan yardım kullan';
+
+  @override
+  String get gameTutorialPowerBody =>
+      'İpucu doğru yola yaklaşmanı sağlar. Sıfırla başa döndürür; önceki kelimeye dokunmak geri alma hakkı kullanır.';
 
   @override
   String get pickNextWord => 'Sonraki kelimeyi seç';

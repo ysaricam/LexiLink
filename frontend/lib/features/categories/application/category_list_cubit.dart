@@ -14,8 +14,9 @@ enum CategoryListStatus {
 class CategoryListCubit extends Cubit<CategoryListState> {
   CategoryListCubit({
     required CategoryRepository categoryRepository,
+    CategoryListState initialState = const CategoryListState.initial(),
   }) : _categoryRepository = categoryRepository,
-       super(const CategoryListState.initial());
+       super(initialState);
 
   final CategoryRepository _categoryRepository;
 

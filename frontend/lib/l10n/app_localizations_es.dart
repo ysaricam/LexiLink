@@ -64,6 +64,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get preparingSession => 'Preparando la sesión...';
 
   @override
+  String get splashStageSession => 'Comprobando sesión';
+
+  @override
+  String get splashStagePlayer => 'Preparando jugador';
+
+  @override
+  String get splashStageCategories => 'Cargando caminos de palabras';
+
+  @override
+  String get splashStageResources => 'Preparando recursos';
+
+  @override
+  String get splashStageReady => 'Listo';
+
+  @override
+  String get splashLoadingSubtitle => 'Preparando tus datos iniciales.';
+
+  @override
+  String get splashFailedTitle => 'No se pudo completar el inicio';
+
+  @override
+  String get splashFailedMessage =>
+      'Comprueba tu conexión e inténtalo de nuevo.';
+
+  @override
   String get navProfile => 'Perfil';
 
   @override
@@ -121,6 +146,52 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get gameTitle => 'Partida';
+
+  @override
+  String get gameTutorialTitle => 'Cómo jugar';
+
+  @override
+  String get gameTutorialHelpTooltip => 'Abrir tutorial';
+
+  @override
+  String get gameTutorialSkip => 'Saltar';
+
+  @override
+  String get gameTutorialBack => 'Atrás';
+
+  @override
+  String get gameTutorialNext => 'Siguiente';
+
+  @override
+  String get gameTutorialDone => 'Empezar a jugar';
+
+  @override
+  String get gameTutorialGoalTitle => 'Llega a la palabra objetivo';
+
+  @override
+  String get gameTutorialGoalBody =>
+      'Cada partida te da una palabra inicial y una palabra objetivo. Avanza por palabras conectadas hasta llegar al objetivo.';
+
+  @override
+  String get gameTutorialMoveTitle => 'Elige la siguiente palabra';
+
+  @override
+  String get gameTutorialMoveBody =>
+      'Las opciones del centro son enlaces desde tu palabra actual. Toca una para mover tu camino a esa palabra.';
+
+  @override
+  String get gameTutorialStepsTitle => 'Controla tus pasos';
+
+  @override
+  String get gameTutorialStepsBody =>
+      'El contador superior muestra cuántos pasos puedes usar. Llega al objetivo antes de quedarte sin pasos.';
+
+  @override
+  String get gameTutorialPowerTitle => 'Usa ayuda si te atascas';
+
+  @override
+  String get gameTutorialPowerBody =>
+      'Pista te acerca al camino correcto. Reiniciar vuelve al inicio; tocar la palabra anterior usa deshacer.';
 
   @override
   String get pickNextWord => 'Elige la siguiente palabra';

@@ -13,9 +13,11 @@ import 'package:lexilink_app/features/categories/data/category.dart';
 import 'package:lexilink_app/features/categories/data/category_repository.dart';
 import 'package:lexilink_app/features/diamond/application/diamond_cubit.dart';
 import 'package:lexilink_app/features/diamond/data/diamond_repository.dart';
+import 'package:lexilink_app/features/diamond/data/player_diamond.dart';
 import 'package:lexilink_app/features/diamond/presentation/diamond_badge.dart';
 import 'package:lexilink_app/features/energy/application/energy_cubit.dart';
 import 'package:lexilink_app/features/energy/data/energy_repository.dart';
+import 'package:lexilink_app/features/energy/data/player_energy.dart';
 import 'package:lexilink_app/features/energy/presentation/energy_badge.dart';
 import 'package:lexilink_app/features/game/application/game_start_cubit.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
@@ -35,7 +37,12 @@ import 'package:lexilink_app/shared/widgets/app_error_state.dart';
 import 'package:lexilink_app/shared/widgets/app_loading_state.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({
+    this.initialData,
+    super.key,
+  });
+
+  final HomeInitialData? initialData;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -47,7 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _bootstrapFuture = _createBootstrap();
+    _bootstrapFuture = widget.initialData == null
+        ? _createBootstrap()
+        : Future.value(_HomeBootstrap.fromInitialData(widget.initialData!));
   }
 
   Future<_HomeBootstrap> _createBootstrap() async {
@@ -106,10 +115,38 @@ class _HomeBootstrap {
   const _HomeBootstrap({
     required this.tokenStore,
     required this.guestDeviceId,
+    this.initialData,
+  });
+
+  factory _HomeBootstrap.fromInitialData(HomeInitialData initialData) {
+    return _HomeBootstrap(
+      tokenStore: initialData.tokenStore,
+      guestDeviceId: initialData.guestDeviceId,
+      initialData: initialData,
+    );
+  }
+
+  final TokenStore tokenStore;
+  final String guestDeviceId;
+  final HomeInitialData? initialData;
+}
+
+class HomeInitialData {
+  const HomeInitialData({
+    required this.tokenStore,
+    required this.guestDeviceId,
+    required this.accessToken,
+    required this.categories,
+    required this.energy,
+    required this.diamond,
   });
 
   final TokenStore tokenStore;
   final String guestDeviceId;
+  final String accessToken;
+  final List<Category> categories;
+  final PlayerEnergy energy;
+  final PlayerDiamond diamond;
 }
 
 class _HomeProviders extends StatefulWidget {
@@ -140,29 +177,46 @@ class _HomeProvidersState extends State<_HomeProviders> {
       tokenStore: widget.bootstrap.tokenStore,
     );
 
-    _sessionCubit = SessionCubit(tokenStore: widget.bootstrap.tokenStore);
+    final initialData = widget.bootstrap.initialData;
+    _sessionCubit = SessionCubit(
+      tokenStore: widget.bootstrap.tokenStore,
+      initialState: initialData == null
+          ? const SessionState.checking()
+          : SessionState.authenticated(accessToken: initialData.accessToken),
+    );
     _guestEntryCubit = GuestEntryCubit(
       guestPlayerRepository: GuestPlayerRepository(apiClient: apiClient),
       sessionCubit: _sessionCubit,
     );
     _categoryListCubit = CategoryListCubit(
       categoryRepository: CategoryRepository(apiClient: apiClient),
+      initialState: initialData == null
+          ? const CategoryListState.initial()
+          : CategoryListState.success(categories: initialData.categories),
     );
     _energyCubit = EnergyCubit(
       energyRepository: EnergyRepository(apiClient: apiClient),
+      initialState: initialData == null
+          ? const EnergyState.initial()
+          : EnergyState.success(energy: initialData.energy),
     );
     _diamondCubit = DiamondCubit(
       diamondRepository: DiamondRepository(apiClient: apiClient),
+      initialState: initialData == null
+          ? const DiamondState.initial()
+          : DiamondState.success(diamond: initialData.diamond),
     );
     _gameStartCubit = GameStartCubit(
       gameRepository: GameRepository(apiClient: apiClient),
       tokenStore: widget.bootstrap.tokenStore,
     );
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      unawaited(_sessionCubit.checkSession());
-    });
+    if (initialData == null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        unawaited(_sessionCubit.checkSession());
+      });
+    }
   }
 
   @override

@@ -63,6 +63,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get preparingSession => 'Preparing session...';
 
   @override
+  String get splashStageSession => 'Checking session';
+
+  @override
+  String get splashStagePlayer => 'Preparing player';
+
+  @override
+  String get splashStageCategories => 'Loading word paths';
+
+  @override
+  String get splashStageResources => 'Preparing resources';
+
+  @override
+  String get splashStageReady => 'Ready';
+
+  @override
+  String get splashLoadingSubtitle => 'Preparing your starting data.';
+
+  @override
+  String get splashFailedTitle => 'Startup could not finish';
+
+  @override
+  String get splashFailedMessage => 'Check your connection and try again.';
+
+  @override
   String get navProfile => 'Profile';
 
   @override
@@ -120,6 +144,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gameTitle => 'Game';
+
+  @override
+  String get gameTutorialTitle => 'How to play';
+
+  @override
+  String get gameTutorialHelpTooltip => 'Open tutorial';
+
+  @override
+  String get gameTutorialSkip => 'Skip';
+
+  @override
+  String get gameTutorialBack => 'Back';
+
+  @override
+  String get gameTutorialNext => 'Next';
+
+  @override
+  String get gameTutorialDone => 'Start playing';
+
+  @override
+  String get gameTutorialGoalTitle => 'Reach the target word';
+
+  @override
+  String get gameTutorialGoalBody =>
+      'Each game gives you a start word and a target word. Move through connected words until you reach the target.';
+
+  @override
+  String get gameTutorialMoveTitle => 'Choose the next word';
+
+  @override
+  String get gameTutorialMoveBody =>
+      'The options in the middle are links from your current word. Tap one to move your path to that word.';
+
+  @override
+  String get gameTutorialStepsTitle => 'Watch your steps';
+
+  @override
+  String get gameTutorialStepsBody =>
+      'The counter at the top shows how many steps you can use. Reach the target before your steps run out to complete the game.';
+
+  @override
+  String get gameTutorialPowerTitle => 'Use help when stuck';
+
+  @override
+  String get gameTutorialPowerBody =>
+      'Hint points you toward the right path. Reset returns to the start; tapping the previous word uses an undo.';
 
   @override
   String get pickNextWord => 'Pick the next word';

@@ -29,7 +29,11 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => HomeScreen(
+        initialData: state.extra is HomeInitialData
+            ? state.extra! as HomeInitialData
+            : null,
+      ),
     ),
     GoRoute(
       path: '/categories',

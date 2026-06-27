@@ -7,9 +7,11 @@ import 'package:lexilink_app/shared/api/api_error.dart';
 enum DiamondStatus { initial, loading, success, failure }
 
 class DiamondCubit extends Cubit<DiamondState> {
-  DiamondCubit({required DiamondRepository diamondRepository})
-    : _diamondRepository = diamondRepository,
-      super(const DiamondState.initial());
+  DiamondCubit({
+    required DiamondRepository diamondRepository,
+    DiamondState initialState = const DiamondState.initial(),
+  }) : _diamondRepository = diamondRepository,
+       super(initialState);
 
   final DiamondRepository _diamondRepository;
 

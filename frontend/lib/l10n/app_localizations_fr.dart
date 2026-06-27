@@ -64,6 +64,30 @@ class AppLocalizationsFr extends AppLocalizations {
   String get preparingSession => 'Préparation de la session...';
 
   @override
+  String get splashStageSession => 'Vérification de la session';
+
+  @override
+  String get splashStagePlayer => 'Préparation du joueur';
+
+  @override
+  String get splashStageCategories => 'Chargement des chemins de mots';
+
+  @override
+  String get splashStageResources => 'Préparation des ressources';
+
+  @override
+  String get splashStageReady => 'Prêt';
+
+  @override
+  String get splashLoadingSubtitle => 'Préparation des données de départ.';
+
+  @override
+  String get splashFailedTitle => 'Le démarrage n\'a pas pu se terminer';
+
+  @override
+  String get splashFailedMessage => 'Vérifiez votre connexion et réessayez.';
+
+  @override
   String get navProfile => 'Profil';
 
   @override
@@ -121,6 +145,52 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get gameTitle => 'Partie';
+
+  @override
+  String get gameTutorialTitle => 'Comment jouer';
+
+  @override
+  String get gameTutorialHelpTooltip => 'Ouvrir le tutoriel';
+
+  @override
+  String get gameTutorialSkip => 'Passer';
+
+  @override
+  String get gameTutorialBack => 'Retour';
+
+  @override
+  String get gameTutorialNext => 'Suivant';
+
+  @override
+  String get gameTutorialDone => 'Commencer';
+
+  @override
+  String get gameTutorialGoalTitle => 'Atteignez le mot cible';
+
+  @override
+  String get gameTutorialGoalBody =>
+      'Chaque partie donne un mot de départ et un mot cible. Avancez par mots connectés jusqu\'à atteindre la cible.';
+
+  @override
+  String get gameTutorialMoveTitle => 'Choisissez le mot suivant';
+
+  @override
+  String get gameTutorialMoveBody =>
+      'Les options au centre sont les liens depuis votre mot actuel. Touchez-en une pour avancer vers ce mot.';
+
+  @override
+  String get gameTutorialStepsTitle => 'Surveillez vos étapes';
+
+  @override
+  String get gameTutorialStepsBody =>
+      'Le compteur en haut indique combien d\'étapes vous pouvez utiliser. Atteignez la cible avant de les épuiser.';
+
+  @override
+  String get gameTutorialPowerTitle => 'Utilisez de l\'aide si besoin';
+
+  @override
+  String get gameTutorialPowerBody =>
+      'Indice vous rapproche du bon chemin. Réinitialiser revient au départ ; toucher le mot précédent utilise une annulation.';
 
   @override
   String get pickNextWord => 'Choisissez le mot suivant';
