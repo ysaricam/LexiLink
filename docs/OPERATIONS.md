@@ -199,15 +199,16 @@ Missing or unparseable values fall back to the defaults above.
 ## Payments Module Settings
 
 Payments owns Apple/Google IAP verification, server notification
-reconciliation, and support-facing purchase history. The local/dev adapter
-shells are intentionally fail-closed until real store credentials are
-configured.
+reconciliation, and support-facing purchase history. Store adapters are
+intentionally fail-closed when required credentials are missing.
 
 | Setting | Default | Notes |
 | --- | --- | --- |
 | `Payments__Apple__BundleId` | empty | iOS app bundle id expected in App Store verification responses. |
 | `Payments__Apple__Environment` | `Sandbox` | Store environment for verification. Production must match the App Store deployment target. |
-| `Payments__Apple__SharedSecret` / credential material | empty | App Store Server API / notification verification secrets. Store in secret config, not source. |
+| `Payments__Apple__IssuerId` | empty | App Store Connect API issuer id used to sign App Store Server API JWTs. |
+| `Payments__Apple__KeyId` | empty | App Store Connect API key id used in the JWT header. |
+| `Payments__Apple__PrivateKey` | empty | App Store Connect `.p8` private key content. Use secret config only; escaped `\n` newlines are supported. |
 | `Payments__Google__PackageName` | empty | Android package name expected in Google Play verification responses. |
 | `Payments__Google__Environment` | `Sandbox` | Store environment for verification. |
 | `Payments__Google__ServiceAccountJson` / credential material | empty | Google Play Developer API credentials. Store in secret config, not source. |
@@ -219,6 +220,10 @@ Operational notes:
 - `POST /payments/iap/verify` is the normal grant path. The backend ignores
   client-supplied amount/price and resolves Diamond amount from
   `payments.PaymentProducts`.
+- Apple IAP verification calls App Store Server API
+  `/inApps/v1/transactions/{transactionId}`, verifies the returned signed
+  transaction JWS signature, then enforces bundle id, product id, environment,
+  account token when provided, and revocation status before granting Diamonds.
 - Duplicate Apple transaction ids, Google purchase tokens, or player
   client-request ids replay the existing purchase result without double grant.
 - iOS clients finish StoreKit transactions only when the response returns

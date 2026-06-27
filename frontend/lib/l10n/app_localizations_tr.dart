@@ -406,6 +406,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get noBundlesTitle => 'Henüz paket yok';
 
   @override
+  String diamondBundleAmount(Object amount) {
+    return '$amount elmas';
+  }
+
+  @override
+  String diamondsAddedSnack(Object amount) {
+    return '+$amount elmas eklendi.';
+  }
+
+  @override
   String get openingRewards => 'Ödüller açılıyor...';
 
   @override

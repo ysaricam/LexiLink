@@ -824,6 +824,18 @@ abstract class AppLocalizations {
   /// **'No bundles yet'**
   String get noBundlesTitle;
 
+  /// No description provided for @diamondBundleAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} diamonds'**
+  String diamondBundleAmount(Object amount);
+
+  /// No description provided for @diamondsAddedSnack.
+  ///
+  /// In en, this message translates to:
+  /// **'+{amount} diamonds added.'**
+  String diamondsAddedSnack(Object amount);
+
   /// No description provided for @openingRewards.
   ///
   /// In en, this message translates to:

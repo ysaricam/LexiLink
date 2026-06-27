@@ -50,9 +50,19 @@ callback at `https://api.wordlope.com/ads/rewarded/callback`.
 
 ## 3. In-app purchase (IAP) — gated for launch
 
-- Create the consumable products in **App Store Connect** and **Play Console**
-  matching the backend `PaymentProduct` ids (`diamond_100`, `diamond_550`,
-  `diamond_1200`, `diamond_2500`).
+- Create these **consumable** products in **App Store Connect** and
+  **Play Console**. Product ids must exactly match the backend
+  `PaymentProduct.StoreProductId` values:
+
+  | Product id | Diamond amount |
+  | --- | ---: |
+  | `diamond_100` | 100 |
+  | `diamond_550` | 550 |
+  | `diamond_1200` | 1200 |
+  | `diamond_2500` | 2500 |
+
+  If a product is missing in either store, the app keeps the bundle visible
+  but marks it unavailable because the localized store price cannot be loaded.
 - Configure backend verification creds (`Payments:Apple`, `Payments:Google`);
   these are fail-closed shells until real creds arrive.
 - **Do not enable real-money IAP until social sign-in exists.** Guest accounts

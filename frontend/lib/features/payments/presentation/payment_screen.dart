@@ -102,18 +102,34 @@ class _PaymentView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<PaymentCubit, PaymentState>(
       listenWhen: (previous, current) =>
-          previous.message != current.message && current.message != null,
+          previous.message != current.message ||
+          previous.grantedDiamondAmount != current.grantedDiamondAmount,
       listener: (context, state) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text(state.message!)));
         if (state.status == PaymentStatus.success) {
+          final amount = state.grantedDiamondAmount;
+          final message = amount == null
+              ? state.message
+              : context.l10n.diamondsAddedSnack(amount);
+          if (message != null) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(message)));
+          }
           _readIfPresent<AudioService>(context)?.playEffect(
             SoundEffect.purchase,
           );
           _readIfPresent<DiamondCubit>(context)?.loadDiamond();
         } else if (state.status == PaymentStatus.failure) {
+          if (state.message != null) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message!)));
+          }
           _readIfPresent<AudioService>(context)?.playEffect(SoundEffect.error);
+        } else if (state.message != null) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.message!)));
         }
       },
       builder: (context, state) {
@@ -289,7 +305,9 @@ class _DiamondBundleCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    '${bundle.product.diamondAmount} diamonds',
+                    context.l10n.diamondBundleAmount(
+                      bundle.product.diamondAmount,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: textTheme.titleMedium?.copyWith(

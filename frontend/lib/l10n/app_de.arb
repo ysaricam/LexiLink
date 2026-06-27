@@ -120,6 +120,18 @@
   "purchasesUnavailableMessage": "Diamantenkauf ist hier nicht verfügbar.",
   "couldNotLoadDiamonds": "Diamanten konnten nicht geladen werden",
   "noBundlesTitle": "Noch keine Pakete",
+  "diamondBundleAmount": "{amount} Diamanten",
+  "@diamondBundleAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "diamondsAddedSnack": "+{amount} Diamanten hinzugefügt.",
+  "@diamondsAddedSnack": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
   "openingRewards": "Belohnungen werden geöffnet...",
   "rewardWatchedSnack": "Danke fürs Zuschauen! Diamanten kommen nach der Bestätigung an.",
   "loadingRewards": "Belohnungen werden geladen...",

@@ -45,12 +45,19 @@ class PaymentCubit extends Cubit<PaymentState> {
         state.copyWith(
           status: PaymentStatus.unavailable,
           message: 'Diamonds purchase is available on iOS and Android.',
+          clearGrantedDiamondAmount: true,
         ),
       );
       return;
     }
 
-    emit(state.copyWith(status: PaymentStatus.loading, clearMessage: true));
+    emit(
+      state.copyWith(
+        status: PaymentStatus.loading,
+        clearMessage: true,
+        clearGrantedDiamondAmount: true,
+      ),
+    );
     try {
       final storeAvailable = await _storeService.isAvailable();
       if (isClosed) return;
@@ -59,6 +66,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           state.copyWith(
             status: PaymentStatus.unavailable,
             message: 'The store is unavailable on this device.',
+            clearGrantedDiamondAmount: true,
           ),
         );
         return;
@@ -86,16 +94,29 @@ class PaymentCubit extends Cubit<PaymentState> {
           )
           .toList(growable: false);
 
-      emit(state.copyWith(status: PaymentStatus.loaded, bundles: bundles));
+      emit(
+        state.copyWith(
+          status: PaymentStatus.loaded,
+          bundles: bundles,
+          clearGrantedDiamondAmount: true,
+        ),
+      );
     } on ApiException catch (e) {
       if (isClosed) return;
-      emit(state.copyWith(status: PaymentStatus.failure, message: e.message));
+      emit(
+        state.copyWith(
+          status: PaymentStatus.failure,
+          message: e.message,
+          clearGrantedDiamondAmount: true,
+        ),
+      );
     } on Object catch (_) {
       if (isClosed) return;
       emit(
         state.copyWith(
           status: PaymentStatus.failure,
           message: 'Could not load diamond bundles.',
+          clearGrantedDiamondAmount: true,
         ),
       );
     }
@@ -108,6 +129,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         state.copyWith(
           status: PaymentStatus.failure,
           message: 'This diamond bundle is unavailable.',
+          clearGrantedDiamondAmount: true,
         ),
       );
       return;
@@ -118,6 +140,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         status: PaymentStatus.purchasing,
         selectedProductId: bundle.product.storeProductId,
         clearMessage: true,
+        clearGrantedDiamondAmount: true,
       ),
     );
     try {
@@ -129,6 +152,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           status: PaymentStatus.failure,
           clearSelectedProductId: true,
           message: 'Purchase could not be started.',
+          clearGrantedDiamondAmount: true,
         ),
       );
     }
@@ -143,6 +167,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         status: PaymentStatus.verifying,
         selectedProductId: proof.productId,
         clearMessage: true,
+        clearGrantedDiamondAmount: true,
       ),
     );
 
@@ -166,6 +191,7 @@ class PaymentCubit extends Cubit<PaymentState> {
             message:
                 result.postProcessingFailureReason ??
                 'Purchase delivery is pending.',
+            clearGrantedDiamondAmount: true,
           ),
         );
         return;
@@ -175,7 +201,7 @@ class PaymentCubit extends Cubit<PaymentState> {
         state.copyWith(
           status: PaymentStatus.success,
           clearSelectedProductId: true,
-          message: '+${result.diamondAmount} diamonds added.',
+          grantedDiamondAmount: result.diamondAmount,
         ),
       );
     } on ApiException catch (e) {
@@ -185,6 +211,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           status: PaymentStatus.failure,
           clearSelectedProductId: true,
           message: e.message,
+          clearGrantedDiamondAmount: true,
         ),
       );
     } on Object catch (_) {
@@ -194,6 +221,7 @@ class PaymentCubit extends Cubit<PaymentState> {
           status: PaymentStatus.failure,
           clearSelectedProductId: true,
           message: 'Purchase verification failed.',
+          clearGrantedDiamondAmount: true,
         ),
       );
     }
@@ -221,6 +249,7 @@ class PaymentState extends Equatable {
     required this.bundles,
     this.selectedProductId,
     this.message,
+    this.grantedDiamondAmount,
   });
 
   const PaymentState.initial({required PaymentPlatform? platform})
@@ -235,6 +264,7 @@ class PaymentState extends Equatable {
   final List<DiamondBundle> bundles;
   final String? selectedProductId;
   final String? message;
+  final int? grantedDiamondAmount;
 
   bool get isBusy =>
       status == PaymentStatus.loading ||
@@ -247,8 +277,10 @@ class PaymentState extends Equatable {
     List<DiamondBundle>? bundles,
     String? selectedProductId,
     String? message,
+    int? grantedDiamondAmount,
     bool clearMessage = false,
     bool clearSelectedProductId = false,
+    bool clearGrantedDiamondAmount = false,
   }) {
     return PaymentState(
       status: status ?? this.status,
@@ -258,6 +290,9 @@ class PaymentState extends Equatable {
           ? null
           : (selectedProductId ?? this.selectedProductId),
       message: clearMessage ? null : (message ?? this.message),
+      grantedDiamondAmount: clearGrantedDiamondAmount
+          ? null
+          : (grantedDiamondAmount ?? this.grantedDiamondAmount),
     );
   }
 
@@ -268,5 +303,6 @@ class PaymentState extends Equatable {
     bundles,
     selectedProductId,
     message,
+    grantedDiamondAmount,
   ];
 }

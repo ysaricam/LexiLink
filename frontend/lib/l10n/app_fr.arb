@@ -120,6 +120,18 @@
   "purchasesUnavailableMessage": "L'achat de diamants n'est pas disponible ici.",
   "couldNotLoadDiamonds": "Impossible de charger les diamants",
   "noBundlesTitle": "Aucun pack pour l'instant",
+  "diamondBundleAmount": "{amount} diamants",
+  "@diamondBundleAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "diamondsAddedSnack": "+{amount} diamants ajoutés.",
+  "@diamondsAddedSnack": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
   "openingRewards": "Ouverture des récompenses...",
   "rewardWatchedSnack": "Merci d'avoir regardé ! Les diamants arrivent après vérification.",
   "loadingRewards": "Chargement des récompenses...",

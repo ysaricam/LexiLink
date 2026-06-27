@@ -408,6 +408,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noBundlesTitle => 'Noch keine Pakete';
 
   @override
+  String diamondBundleAmount(Object amount) {
+    return '$amount Diamanten';
+  }
+
+  @override
+  String diamondsAddedSnack(Object amount) {
+    return '+$amount Diamanten hinzugefügt.';
+  }
+
+  @override
   String get openingRewards => 'Belohnungen werden geöffnet...';
 
   @override

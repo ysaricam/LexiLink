@@ -108,9 +108,15 @@ certificate / provisioning eksik olduğu için bloklu.
       `Ads__Ssv__Mode=Production` kalsın; API Google'ın rotating public
       key'leriyle imzayı doğrular. AdMob **SSV callback**'ini
       `https://api.wordlope.com/ads/rewarded/callback` yap.
-- [ ] **IAP:** consumable ürünleri (`diamond_100/550/1200/2500`) iki store'da
-      oluştur; backend `Payments:Apple` / `Payments:Google` creds'lerini
-      ayarla.
+- [ ] **IAP:** consumable ürünleri iki store'da birebir aynı product id ile
+      oluştur:
+      `diamond_100` = 100 elmas,
+      `diamond_550` = 550 elmas,
+      `diamond_1200` = 1200 elmas,
+      `diamond_2500` = 2500 elmas.
+      Backend `Payments:Apple` / `Payments:Google` creds'lerini ayarla.
+      Store'da eksik ürün olursa uygulama paketi listeler ama fiyat
+      gelmediği için "Kullanılamıyor" gösterir.
 - [ ] ⚠️ **Gerçek-para IAP'ı social sign-in gelene kadar KAPALI tut** — guest
       hesaplar cihaza bağlı, cihaz değişince satın alım kaybolur.
 

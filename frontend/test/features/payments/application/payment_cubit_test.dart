@@ -13,8 +13,14 @@ import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 const _productsBody =
-    '[{"id":"p1","storeProductId":"diamonds_100",'
-    '"diamondAmount":100,"isActive":true}]';
+    '[{"id":"p1","storeProductId":"diamond_100",'
+    '"diamondAmount":100,"isActive":true},'
+    '{"id":"p2","storeProductId":"diamond_550",'
+    '"diamondAmount":550,"isActive":true},'
+    '{"id":"p3","storeProductId":"diamond_1200",'
+    '"diamondAmount":1200,"isActive":true},'
+    '{"id":"p4","storeProductId":"diamond_2500",'
+    '"diamondAmount":2500,"isActive":true}]';
 const _grantedBody =
     '{"paymentId":"pay-1","productId":"p1","diamondAmount":100,'
     '"status":"Granted","canFinishTransaction":true,"isReplay":false}';
@@ -41,7 +47,7 @@ void main() {
         storeService: _FakePaymentStoreService(
           products: const [
             StorePaymentProduct(
-              id: 'diamonds_100',
+              id: 'diamond_100',
               title: '100 Diamonds',
               description: 'Small pack',
               price: r'$0.99',
@@ -57,8 +63,16 @@ void main() {
       act: (cubit) => cubit.load(),
       verify: (cubit) {
         expect(cubit.state.status, PaymentStatus.loaded);
-        expect(cubit.state.bundles.single.displayPrice, r'$0.99');
-        expect(cubit.state.bundles.single.isAvailable, isTrue);
+        expect(
+          cubit.state.bundles.map((bundle) => bundle.product.storeProductId),
+          ['diamond_100', 'diamond_550', 'diamond_1200', 'diamond_2500'],
+        );
+        expect(cubit.state.bundles.first.displayPrice, r'$0.99');
+        expect(cubit.state.bundles.first.isAvailable, isTrue);
+        expect(
+          cubit.state.bundles.skip(1).every((bundle) => !bundle.isAvailable),
+          isTrue,
+        );
       },
     );
 
@@ -92,7 +106,7 @@ void main() {
         final store = _FakePaymentStoreService(
           products: const [
             StorePaymentProduct(
-              id: 'diamonds_100',
+              id: 'diamond_100',
               title: '100 Diamonds',
               description: 'Small pack',
               price: r'$0.99',
@@ -115,7 +129,7 @@ void main() {
         await Future<void>.delayed(Duration.zero);
         cubit.debugStore.addPurchase(
           const StorePurchaseProof(
-            productId: 'diamonds_100',
+            productId: 'diamond_100',
             purchaseId: 'tx-1',
             verificationData: 'signed-jws',
           ),
@@ -125,7 +139,7 @@ void main() {
       verify: (cubit) {
         final store = cubit.debugStore;
         expect(cubit.state.status, PaymentStatus.success);
-        expect(cubit.state.message, '+100 diamonds added.');
+        expect(cubit.state.grantedDiamondAmount, 100);
         expect(store.finishedProofs, hasLength(1));
         expect(store.finishedProofs.single.purchaseId, 'tx-1');
       },

@@ -406,6 +406,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noBundlesTitle => 'Aucun pack pour l\'instant';
 
   @override
+  String diamondBundleAmount(Object amount) {
+    return '$amount diamants';
+  }
+
+  @override
+  String diamondsAddedSnack(Object amount) {
+    return '+$amount diamants ajoutés.';
+  }
+
+  @override
   String get openingRewards => 'Ouverture des récompenses...';
 
   @override

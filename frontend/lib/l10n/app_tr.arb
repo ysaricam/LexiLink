@@ -120,6 +120,18 @@
   "purchasesUnavailableMessage": "Elmas satın alma burada kullanılamıyor.",
   "couldNotLoadDiamonds": "Elmaslar yüklenemedi",
   "noBundlesTitle": "Henüz paket yok",
+  "diamondBundleAmount": "{amount} elmas",
+  "@diamondBundleAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "diamondsAddedSnack": "+{amount} elmas eklendi.",
+  "@diamondsAddedSnack": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
   "openingRewards": "Ödüller açılıyor...",
   "rewardWatchedSnack": "İzlediğin için teşekkürler! Elmaslar doğrulandıktan sonra eklenir.",
   "loadingRewards": "Ödüller yükleniyor...",

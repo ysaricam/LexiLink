@@ -10,8 +10,14 @@ import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 
 const _productsBody =
-    '[{"id":"p1","storeProductId":"diamonds_100",'
-    '"diamondAmount":100,"isActive":true}]';
+    '[{"id":"p1","storeProductId":"diamond_100",'
+    '"diamondAmount":100,"isActive":true},'
+    '{"id":"p2","storeProductId":"diamond_550",'
+    '"diamondAmount":550,"isActive":true},'
+    '{"id":"p3","storeProductId":"diamond_1200",'
+    '"diamondAmount":1200,"isActive":true},'
+    '{"id":"p4","storeProductId":"diamond_2500",'
+    '"diamondAmount":2500,"isActive":true}]';
 const _appleVerifyBody =
     '{"paymentId":"pay-1","productId":"p1","diamondAmount":100,'
     '"status":"Granted","canFinishTransaction":true,"isReplay":false}';
@@ -41,9 +47,14 @@ void main() {
 
       final products = await repository.fetchProducts(PaymentPlatform.apple);
 
-      expect(products, hasLength(1));
-      expect(products.single.storeProductId, 'diamonds_100');
-      expect(products.single.diamondAmount, 100);
+      expect(
+        products.map((product) => product.storeProductId),
+        ['diamond_100', 'diamond_550', 'diamond_1200', 'diamond_2500'],
+      );
+      expect(
+        products.map((product) => product.diamondAmount),
+        [100, 550, 1200, 2500],
+      );
     });
 
     test('verifyPurchase sends Apple transaction proof', () async {
@@ -52,7 +63,7 @@ void main() {
         expect(request.url.path, '/payments/iap/verify');
         final body = jsonDecode(request.body) as Map<String, dynamic>;
         expect(body['platform'], 'Apple');
-        expect(body['storeProductId'], 'diamonds_100');
+        expect(body['storeProductId'], 'diamond_100');
         expect(body['storeTransactionId'], 'tx-1');
         expect(body['signedTransactionJws'], 'signed-jws');
         expect(body['clientRequestId'], 'request-1');
@@ -62,7 +73,7 @@ void main() {
       final result = await repository.verifyPurchase(
         platform: PaymentPlatform.apple,
         proof: const StorePurchaseProof(
-          productId: 'diamonds_100',
+          productId: 'diamond_100',
           purchaseId: 'tx-1',
           verificationData: 'signed-jws',
         ),
@@ -77,7 +88,7 @@ void main() {
       final repository = _repository((request) async {
         final body = jsonDecode(request.body) as Map<String, dynamic>;
         expect(body['platform'], 'Google');
-        expect(body['storeProductId'], 'diamonds_250');
+        expect(body['storeProductId'], 'diamond_2500');
         expect(body['purchaseToken'], 'token-1');
         expect(body.containsKey('storeTransactionId'), isFalse);
         return http.Response(_googleVerifyBody, 200);
@@ -86,7 +97,7 @@ void main() {
       final result = await repository.verifyPurchase(
         platform: PaymentPlatform.google,
         proof: const StorePurchaseProof(
-          productId: 'diamonds_250',
+          productId: 'diamond_2500',
           verificationData: 'token-1',
         ),
         clientRequestId: 'request-2',

@@ -1,15 +1,15 @@
 # Audio assets
 
 These files back the `SoundEffect` and `MusicTrack` catalogs in
-`lib/shared/audio/audio_service.dart`. They are currently **placeholder
-tones** generated as short sine beeps so the audio pipeline works end to end.
+`lib/shared/audio/audio_service.dart`. The current files are production
+candidate WAV assets copied from `docs/ses/`.
 
 ## Replacing with real sounds
 
 Drop a real file at the **same path with the same name** and it plays with no
 code change. Keep the filenames; the enum entries map to them by path.
 
-- Prefer `.wav` (or `.mp3`/`.ogg`) — if you change the extension, update the
+- Prefer `.wav` (or `.mp3`/`.ogg`) - if you change the extension, update the
   matching enum entry's `asset` string in `audio_service.dart`.
 - Keep SFX short (≤ ~1s). Keep music seamlessly loopable (it plays with
   `ReleaseMode.loop`).
@@ -18,6 +18,8 @@ code change. Keep the filenames; the enum entries map to them by path.
   rebuild so the browser/web cache picks up new bytes.
 
 ## Files
+
+Current format: WAV PCM, 16-bit stereo, 48 kHz.
 
 ### `sfx/` — one-shot effects (`SoundEffect`)
 

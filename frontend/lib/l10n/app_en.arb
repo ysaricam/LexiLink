@@ -219,6 +219,18 @@
   "purchasesUnavailableMessage": "Diamonds purchase is not available here.",
   "couldNotLoadDiamonds": "Could not load diamonds",
   "noBundlesTitle": "No bundles yet",
+  "diamondBundleAmount": "{amount} diamonds",
+  "@diamondBundleAmount": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
+  "diamondsAddedSnack": "+{amount} diamonds added.",
+  "@diamondsAddedSnack": {
+    "placeholders": {
+      "amount": {}
+    }
+  },
   "openingRewards": "Opening rewards...",
   "rewardWatchedSnack": "Thanks for watching! Diamonds arrive once verified.",
   "loadingRewards": "Loading rewards...",
