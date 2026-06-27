@@ -55,16 +55,16 @@ class AdsService {
 
   /// Shows a rewarded ad tagged with [userId] as the SSV `user_id`. The
   /// Diamond grant is backend-owned (verified SSV callback), never the local
-  /// earned-reward event. [onClosed] is invoked exactly once when the ad
-  /// finishes or cannot be shown, so the caller can refresh state and never
-  /// gets stuck waiting. No-ops (and still signals [onClosed]) when ads are
-  /// unsupported or the SDK is not initialized.
+  /// earned-reward event. [onClosed] is invoked only after an ad was shown and
+  /// dismissed. [onUnavailable] is invoked when the SDK is unsupported, not
+  /// initialized, or the ad cannot be loaded/shown.
   Future<void> showRewarded({
     required String userId,
     required void Function() onClosed,
+    required void Function() onUnavailable,
   }) async {
     if (!_platform.isSupported || !_initialized) {
-      onClosed();
+      onUnavailable();
       return;
     }
     try {
@@ -72,10 +72,10 @@ class AdsService {
         adUnitId: AdConfig.rewardedAdUnitId,
         userId: userId,
         onClosed: onClosed,
+        onUnavailable: onUnavailable,
       );
     } on Object catch (_) {
-      // Best-effort: surface the close so the UI recovers.
-      onClosed();
+      onUnavailable();
     }
   }
 }

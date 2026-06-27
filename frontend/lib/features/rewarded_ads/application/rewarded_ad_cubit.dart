@@ -77,7 +77,11 @@ class RewardedAdCubit extends Cubit<RewardedAdState> {
     }
 
     emit(RewardedAdState.watching(status: data));
-    await _adsService.showRewarded(userId: _userId!, onClosed: _onAdClosed);
+    await _adsService.showRewarded(
+      userId: _userId!,
+      onClosed: _onAdClosed,
+      onUnavailable: _onAdUnavailable,
+    );
   }
 
   Future<void> _onAdClosed() async {
@@ -92,6 +96,21 @@ class RewardedAdCubit extends Cubit<RewardedAdState> {
         emit(RewardedAdState.ready(status: last, rewardJustWatched: true));
       }
     }
+  }
+
+  Future<void> _onAdUnavailable() async {
+    final last = state.data;
+    if (last == null) {
+      await load();
+      return;
+    }
+
+    emit(
+      RewardedAdState.ready(
+        status: last,
+        message: 'Reklam şu anda yüklenemedi. Biraz sonra tekrar dene.',
+      ),
+    );
   }
 }
 

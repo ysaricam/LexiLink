@@ -94,6 +94,7 @@ class MobileAdsPlatform implements AdsPlatform {
     required String adUnitId,
     required String userId,
     required void Function() onClosed,
+    required void Function() onUnavailable,
   }) {
     return RewardedAd.load(
       adUnitId: adUnitId,
@@ -111,14 +112,14 @@ class MobileAdsPlatform implements AdsPlatform {
               },
               onAdFailedToShowFullScreenContent: (ad, _) {
                 ad.dispose();
-                onClosed();
+                onUnavailable();
               },
             )
             // The Diamond grant is backend-owned via SSV; the local
             // earned-reward callback is intentionally a no-op.
             ..show(onUserEarnedReward: (_, _) {});
         },
-        onAdFailedToLoad: (_) => onClosed(),
+        onAdFailedToLoad: (_) => onUnavailable(),
       ),
     );
   }

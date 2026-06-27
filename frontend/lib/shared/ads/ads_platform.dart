@@ -23,12 +23,13 @@ abstract class AdsPlatform {
   /// with [userId] as the AdMob Server-Side Verification `user_id` so the
   /// backend can resolve the player when AdMob's signed callback arrives.
   /// The Diamond grant is backend-owned — the local earned-reward callback is
-  /// intentionally ignored. [onClosed] is invoked exactly once when the ad is
-  /// dismissed, fails to show, or fails to load, so the caller can recover and
-  /// refresh state.
+  /// intentionally ignored. [onClosed] is invoked only after an ad was shown
+  /// and dismissed. [onUnavailable] is invoked when an ad cannot be loaded or
+  /// shown, so the caller can recover without treating it as a watched ad.
   Future<void> showRewarded({
     required String adUnitId,
     required String userId,
     required void Function() onClosed,
+    required void Function() onUnavailable,
   });
 }

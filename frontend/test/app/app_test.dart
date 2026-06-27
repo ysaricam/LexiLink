@@ -27,6 +27,7 @@ class _UnsupportedAdsPlatform implements AdsPlatform {
     required String adUnitId,
     required String userId,
     required void Function() onClosed,
+    required void Function() onUnavailable,
   }) async {}
 }
 

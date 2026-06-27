@@ -18,6 +18,7 @@ class _FakeAdsPlatform implements AdsPlatform {
   int showRewardedCallCount = 0;
   String? lastRewardedUserId;
   bool autoInvokeOnClosed = true;
+  bool autoInvokeOnUnavailable = false;
   final List<String> callLog = [];
 
   @override
@@ -45,10 +46,12 @@ class _FakeAdsPlatform implements AdsPlatform {
     required String adUnitId,
     required String userId,
     required void Function() onClosed,
+    required void Function() onUnavailable,
   }) async {
     showRewardedCallCount++;
     lastRewardedUserId = userId;
     if (autoInvokeOnClosed) onClosed();
+    if (autoInvokeOnUnavailable) onUnavailable();
   }
 }
 
@@ -197,6 +200,7 @@ void main() {
       await service.showRewarded(
         userId: 'player-1',
         onClosed: () => closed = true,
+        onUnavailable: () {},
       );
 
       expect(platform.showRewardedCallCount, 1);
@@ -204,33 +208,39 @@ void main() {
       expect(closed, isTrue);
     });
 
-    test('still signals close when unsupported (so the UI recovers)', () async {
+    test('signals unavailable when unsupported (so the UI recovers)', () async {
       final platform = _FakeAdsPlatform(isSupported: false);
       final service = AdsService(platform: platform);
       await service.initialize();
       var closed = false;
+      var unavailable = false;
 
       await service.showRewarded(
         userId: 'player-1',
         onClosed: () => closed = true,
+        onUnavailable: () => unavailable = true,
       );
 
       expect(platform.showRewardedCallCount, 0);
-      expect(closed, isTrue);
+      expect(closed, isFalse);
+      expect(unavailable, isTrue);
     });
 
-    test('signals close when not initialized', () async {
+    test('signals unavailable when not initialized', () async {
       final platform = _FakeAdsPlatform(isSupported: true);
       final service = AdsService(platform: platform);
       var closed = false;
+      var unavailable = false;
 
       await service.showRewarded(
         userId: 'player-1',
         onClosed: () => closed = true,
+        onUnavailable: () => unavailable = true,
       );
 
       expect(platform.showRewardedCallCount, 0);
-      expect(closed, isTrue);
+      expect(closed, isFalse);
+      expect(unavailable, isTrue);
     });
   });
 

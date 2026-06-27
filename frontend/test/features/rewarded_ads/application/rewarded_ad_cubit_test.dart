@@ -23,6 +23,7 @@ class _FakeAdsPlatform implements AdsPlatform {
 
   int showRewardedCallCount = 0;
   String? lastUserId;
+  bool failRewarded = false;
 
   @override
   Future<void> gatherConsent() async {}
@@ -38,10 +39,15 @@ class _FakeAdsPlatform implements AdsPlatform {
     required String adUnitId,
     required String userId,
     required void Function() onClosed,
+    required void Function() onUnavailable,
   }) async {
     showRewardedCallCount++;
     lastUserId = userId;
-    onClosed();
+    if (failRewarded) {
+      onUnavailable();
+    } else {
+      onClosed();
+    }
   }
 }
 
@@ -106,6 +112,27 @@ void main() {
       verify: (cubit) {
         expect(_cappedPlatform.showRewardedCallCount, 0);
         expect(cubit.state.message, contains('limit'));
+      },
+    );
+
+    blocTest<RewardedAdCubit, RewardedAdState>(
+      'does not flag reward watched when the ad cannot load',
+      build: () {
+        final platform = _FakeAdsPlatform(isSupported: true)
+          ..failRewarded = true;
+        return _buildCubit(
+          adsPlatform: platform,
+          handler: (_) async => http.Response(_statusBody, 200),
+        );
+      },
+      act: (cubit) async {
+        await cubit.load();
+        await cubit.watch();
+      },
+      verify: (cubit) {
+        expect(cubit.state.status, RewardedAdStatusState.ready);
+        expect(cubit.state.rewardJustWatched, isFalse);
+        expect(cubit.state.message, contains('yüklenemedi'));
       },
     );
   });
