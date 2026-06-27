@@ -33,7 +33,7 @@ internal class LoggingCommandHandlerWithResultDecorator<T, TResult> : ICommandHa
         {
             try
             {
-                _logger.Information("Executing command {@Command}", command);
+                _logger.Information("Executing command {@Command}", SanitizeCommand(command));
 
                 var result = await _decorated.Handle(command, cancellationToken);
 
@@ -47,6 +47,28 @@ internal class LoggingCommandHandlerWithResultDecorator<T, TResult> : ICommandHa
                 throw;
             }
         }
+    }
+
+    private static object SanitizeCommand(T command)
+    {
+        if (command is LexiLink.Modules.Payments.Application.IapPurchases.VerifyIapPurchase.VerifyIapPurchaseCommand verifyIapPurchaseCommand)
+        {
+            return new
+            {
+                verifyIapPurchaseCommand.Id,
+                verifyIapPurchaseCommand.PlayerId,
+                verifyIapPurchaseCommand.Platform,
+                verifyIapPurchaseCommand.StoreProductId,
+                verifyIapPurchaseCommand.StoreTransactionId,
+                verifyIapPurchaseCommand.PurchaseToken,
+                SignedTransactionJws = "***HIDDEN***",
+                verifyIapPurchaseCommand.AccountToken,
+                verifyIapPurchaseCommand.ClientRequestId,
+                Type = nameof(LexiLink.Modules.Payments.Application.IapPurchases.VerifyIapPurchase.VerifyIapPurchaseCommand)
+            };
+        }
+
+        return command;
     }
 
     private class CommandLogEnricher : ILogEventEnricher

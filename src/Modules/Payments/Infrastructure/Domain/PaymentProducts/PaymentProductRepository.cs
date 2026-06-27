@@ -20,9 +20,15 @@ internal class PaymentProductRepository : IPaymentProductRepository
     public Task<PaymentProduct?> GetByStoreProductIdAsync(
         StoreProductId storeProductId,
         CancellationToken cancellationToken = default) =>
-        _context.PaymentProducts.FirstOrDefaultAsync(
-            x => x.StoreProductId.Value == storeProductId.Value,
-            cancellationToken);
+        _context.PaymentProducts
+            .FromSqlInterpolated($"""
+                SELECT *
+                FROM payments."PaymentProducts"
+                WHERE "StoreProductId" = {storeProductId.Value}
+                LIMIT 1
+                """)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
     public async Task AddAsync(PaymentProduct product, CancellationToken cancellationToken = default) =>
         await _context.PaymentProducts.AddAsync(product, cancellationToken);
