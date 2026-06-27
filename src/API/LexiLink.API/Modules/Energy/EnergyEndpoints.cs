@@ -2,6 +2,7 @@ using LexiLink.API.Configuration.Authentication;
 using LexiLink.Common.Application;
 using LexiLink.Common.Application.Exceptions;
 using LexiLink.Modules.Energy.Application.Contracts;
+using LexiLink.Modules.Energy.Application.PlayerEnergies.EnsurePlayerEnergyExists;
 using LexiLink.Modules.Energy.Application.PlayerEnergies.GetPlayerEnergy;
 
 namespace LexiLink.API.Modules.Energy;
@@ -22,6 +23,10 @@ public static class EnergyEndpoints
             IEnergyModule energyModule,
             CancellationToken cancellationToken) =>
         {
+            await energyModule.ExecuteCommandAsync(
+                new EnsurePlayerEnergyExistsCommand(executionContextAccessor.UserId),
+                cancellationToken);
+
             var snapshot = await energyModule.ExecuteQueryAsync(
                 new GetPlayerEnergyQuery(executionContextAccessor.UserId),
                 cancellationToken);

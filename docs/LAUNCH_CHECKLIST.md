@@ -101,8 +101,10 @@ certificate / provisioning eksik olduğu için bloklu.
       iOS app id de `Info.plist` (`GADApplicationIdentifier`) içine yazıldı.
       Rewarded ad-unit id:
       `ca-app-pub-2115638398802394/3077352370`; release build'de
-      `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` ile geç. Interstitial ve
-      farklı platform id'leri kullanacaksan aynı şekilde güncelle. Backend production'da
+      `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` ile geç. iOS interstitial
+      ad-unit id: `ca-app-pub-2115638398802394/4516380950`; release build'de
+      `--dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=...` ile geç. Farklı
+      platform id'leri kullanacaksan aynı şekilde güncelle. Backend production'da
       `Ads__Ssv__Mode=Production` kalsın; API Google'ın rotating public
       key'leriyle imzayı doğrular. AdMob **SSV callback**'ini
       `https://api.wordlope.com/ads/rewarded/callback` yap.

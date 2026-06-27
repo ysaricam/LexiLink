@@ -252,7 +252,14 @@ class _QuestTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         border: Border.all(color: tone.withValues(alpha: 0.22)),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppPalette.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -387,7 +394,7 @@ class _QuestStateIcon extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         border: Border.all(color: color.withValues(alpha: 0.18)),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Icon(icon, color: color, size: 22),
     );

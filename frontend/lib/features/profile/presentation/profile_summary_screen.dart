@@ -235,11 +235,18 @@ class _ProfileHero extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colorScheme.primaryContainer,
+        color: colorScheme.surface,
         border: Border.all(
           color: colorScheme.primary.withValues(alpha: 0.18),
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.1),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(18),
@@ -259,7 +266,8 @@ class _ProfileHero extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: textTheme.titleLarge?.copyWith(
-                      color: colorScheme.onPrimaryContainer,
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                   const SizedBox(height: 6),
@@ -268,9 +276,7 @@ class _ProfileHero extends StatelessWidget {
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onPrimaryContainer.withValues(
-                        alpha: 0.74,
-                      ),
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: 12),
@@ -357,7 +363,8 @@ class _ProfileChip extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colorScheme.surface.withValues(alpha: 0.82),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: colorScheme.primary.withValues(alpha: 0.12)),
+        borderRadius: BorderRadius.circular(999),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
@@ -455,9 +462,16 @@ class _ProfileMetricTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: colorScheme.surface,
           border: Border.all(
-            color: colorScheme.outline.withValues(alpha: 0.24),
+            color: colorScheme.primary.withValues(alpha: 0.14),
           ),
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: colorScheme.primary.withValues(alpha: 0.08),
+              blurRadius: 16,
+              offset: const Offset(0, 8),
+            ),
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(12),
@@ -507,9 +521,16 @@ class _ProfileAccountPanel extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.24),
+          color: colorScheme.primary.withValues(alpha: 0.14),
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

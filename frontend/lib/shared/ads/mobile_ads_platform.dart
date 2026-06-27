@@ -84,7 +84,9 @@ class MobileAdsPlatform implements AdsPlatform {
         },
         // Best-effort: a failed load is silently ignored — interstitials
         // never block gameplay or navigation.
-        onAdFailedToLoad: (_) {},
+        onAdFailedToLoad: (error) {
+          debugPrint('AdMob interstitial failed to load: $error');
+        },
       ),
     );
   }
@@ -96,6 +98,7 @@ class MobileAdsPlatform implements AdsPlatform {
     required void Function() onClosed,
     required void Function() onUnavailable,
   }) {
+    debugPrint('AdMob rewarded loading adUnitId: $adUnitId');
     return RewardedAd.load(
       adUnitId: adUnitId,
       request: const AdRequest(),
@@ -110,7 +113,8 @@ class MobileAdsPlatform implements AdsPlatform {
                 ad.dispose();
                 onClosed();
               },
-              onAdFailedToShowFullScreenContent: (ad, _) {
+              onAdFailedToShowFullScreenContent: (ad, error) {
+                debugPrint('AdMob rewarded failed to show: $error');
                 ad.dispose();
                 onUnavailable();
               },
@@ -119,7 +123,10 @@ class MobileAdsPlatform implements AdsPlatform {
             // earned-reward callback is intentionally a no-op.
             ..show(onUserEarnedReward: (_, _) {});
         },
-        onAdFailedToLoad: (_) => onUnavailable(),
+        onAdFailedToLoad: (error) {
+          debugPrint('AdMob rewarded failed to load: $error');
+          onUnavailable();
+        },
       ),
     );
   }

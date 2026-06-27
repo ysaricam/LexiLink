@@ -48,7 +48,7 @@ public sealed class EnergyEndpointsTests
     }
 
     [Test]
-    public async Task GetEnergyMe_WhenAggregateMissing_ReturnsNotFound()
+    public async Task GetEnergyMe_WhenAggregateMissing_InitializesAndReturnsSnapshot()
     {
         var playerId = Guid.NewGuid();
         await DeletePlayerEnergyAsync(playerId);
@@ -58,7 +58,14 @@ public sealed class EnergyEndpointsTests
 
         var response = await client.GetAsync("/energy/me");
 
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var body = await JsonDocument.ParseAsync(await response.Content.ReadAsStreamAsync());
+        body.RootElement.GetProperty("playerId").GetGuid().Should().Be(playerId);
+        body.RootElement.GetProperty("currentAmount").GetInt32().Should()
+            .Be(body.RootElement.GetProperty("maximumAmount").GetInt32());
+        body.RootElement.GetProperty("isFull").GetBoolean().Should().BeTrue();
+
+        await DeletePlayerEnergyAsync(playerId);
     }
 
     [Test]

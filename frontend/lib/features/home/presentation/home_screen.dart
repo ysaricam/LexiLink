@@ -308,16 +308,28 @@ class _HomeScaffold extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: const SafeArea(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(16, 12, 16, 18),
-          child: Column(
-            children: [
-              _HomeTopBar(),
-              Expanded(child: _HomeContent()),
-              SizedBox(height: 14),
-              _HomeActionDock(),
+      body: const DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment(0, -0.36),
+            radius: 1.12,
+            colors: [
+              Color(0xffffffff),
+              Color(0xffeee9ff),
             ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16, 12, 16, 18),
+            child: Column(
+              children: [
+                _HomeTopBar(),
+                Expanded(child: _HomeContent()),
+                SizedBox(height: 14),
+                _HomeActionDock(),
+              ],
+            ),
           ),
         ),
       ),
@@ -574,8 +586,13 @@ class _WordLopeWordmark extends StatelessWidget {
       textAlign: TextAlign.center,
       style: theme.textTheme.headlineMedium?.copyWith(
         color: theme.colorScheme.secondary,
-        letterSpacing: 1.2,
-        fontWeight: FontWeight.w700,
+        shadows: [
+          Shadow(
+            color: theme.colorScheme.secondary.withValues(alpha: 0.18),
+            blurRadius: 10,
+          ),
+        ],
+        fontWeight: FontWeight.w800,
       ),
     );
   }
@@ -612,12 +629,22 @@ class _CategoryCard extends StatelessWidget {
             end: Alignment.bottomRight,
             colors: visuals.gradient,
           ),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.12),
+          ),
           boxShadow: [
             BoxShadow(
-              color: visuals.gradient.last.withValues(alpha: 0.22),
-              blurRadius: 14,
-              offset: const Offset(0, 8),
+              color: Theme.of(context).colorScheme.primary.withValues(
+                alpha: 0.14,
+              ),
+              blurRadius: 18,
+              offset: const Offset(0, 10),
+            ),
+            BoxShadow(
+              color: visuals.gradient.first.withValues(alpha: 0.14),
+              blurRadius: 12,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
@@ -635,9 +662,26 @@ class _CategoryCard extends StatelessWidget {
               ),
               const Spacer(),
               Center(
-                child: Text(
-                  visuals.emoji,
-                  style: const TextStyle(fontSize: 72, height: 1),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.1),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.primary.withValues(alpha: 0.14),
+                        blurRadius: 16,
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(22),
+                    child: Text(
+                      visuals.emoji,
+                      style: const TextStyle(fontSize: 72, height: 1),
+                    ),
+                  ),
                 ),
               ),
               const Spacer(),
@@ -709,16 +753,18 @@ class _HomeActionDock extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.surface.withValues(alpha: 0.94),
         border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.22),
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.76),
         ),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 6),
+            color: Theme.of(context).colorScheme.primary.withValues(
+              alpha: 0.14,
+            ),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -805,9 +851,10 @@ class _TopIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Material(
-      color: colorScheme.surface,
+      color: colorScheme.surface.withValues(alpha: 0.96),
       shape: const CircleBorder(),
       elevation: 1,
+      shadowColor: colorScheme.primary.withValues(alpha: 0.18),
       child: InkWell(
         customBorder: const CircleBorder(),
         onTap: () {
@@ -818,7 +865,7 @@ class _TopIconButton extends StatelessWidget {
           message: tooltip,
           child: Padding(
             padding: const EdgeInsets.all(10),
-            child: Icon(icon, color: colorScheme.primary),
+            child: Icon(icon, color: colorScheme.secondary),
           ),
         ),
       ),
@@ -839,8 +886,9 @@ _CategoryVisual _categoryVisuals(String name, ColorScheme colorScheme) {
     return _CategoryVisual(
       emoji: '🦊',
       gradient: [
+        const Color(0xff4c1d95),
         colorScheme.primary,
-        Color.lerp(colorScheme.primary, Colors.black, 0.36)!,
+        const Color(0xff8b5cf6),
       ],
     );
   }
@@ -848,27 +896,30 @@ _CategoryVisual _categoryVisuals(String name, ColorScheme colorScheme) {
     return _CategoryVisual(
       emoji: '🍜',
       gradient: [
+        const Color(0xff4c1d95),
+        colorScheme.primary,
         colorScheme.secondary,
-        Color.lerp(colorScheme.secondary, Colors.black, 0.34)!,
       ],
     );
   }
   if (lower.contains('doğa') ||
       lower.contains('doga') ||
       lower.contains('nature')) {
-    return _CategoryVisual(
+    return const _CategoryVisual(
       emoji: '🌿',
       gradient: [
-        Color.lerp(colorScheme.primary, colorScheme.secondary, 0.28)!,
-        Color.lerp(colorScheme.primary, Colors.black, 0.42)!,
+        Color(0xff24134f),
+        Color(0xff6d28d9),
+        Color(0xff22c55e),
       ],
     );
   }
   return _CategoryVisual(
     emoji: '🎲',
     gradient: [
+      const Color(0xff4c1d95),
       colorScheme.primary,
-      Color.lerp(colorScheme.primary, colorScheme.secondary, 0.38)!,
+      const Color(0xff8b5cf6),
     ],
   );
 }

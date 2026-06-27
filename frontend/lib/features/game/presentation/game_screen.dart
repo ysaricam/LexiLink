@@ -344,78 +344,91 @@ class _GameContent extends StatelessWidget {
     final isBusy = activeAction != GameAction.none;
     final isFinished = game.isFinished;
     final undoBalance = context.watch<UndoCubit>().state.undo?.balance ?? 0;
+    final theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        AppBackBar(
-          title: context.l10n.gameTitle,
-          onBack: () => _onBackPressed(context, game, isBusy),
-          trailing: IconButton(
-            tooltip: context.l10n.gameTutorialHelpTooltip,
-            onPressed: onShowTutorial,
-            icon: const Icon(Icons.help_outline_rounded),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        boxShadow: [
+          BoxShadow(
+            color: theme.colorScheme.primary.withValues(alpha: 0.06),
+            blurRadius: 16,
           ),
-        ),
-        const SizedBox(height: 28),
-        const _GameLogo(),
-        const SizedBox(height: 51),
-        _GameObjectivePanel(game: game),
-        const SizedBox(height: 10),
-        _Breadcrumb(game: game),
-        if (game.score != null) ...[
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AppBackBar(
+            title: context.l10n.gameTitle,
+            onBack: () => _onBackPressed(context, game, isBusy),
+            trailing: IconButton(
+              tooltip: context.l10n.gameTutorialHelpTooltip,
+              onPressed: onShowTutorial,
+              icon: const Icon(Icons.help_outline_rounded),
+            ),
+          ),
+          const SizedBox(height: 28),
+          const _GameLogo(),
+          const SizedBox(height: 42),
+          _GameObjectivePanel(game: game),
           const SizedBox(height: 10),
-          _StatusRow(game: game),
-        ],
-        const SizedBox(height: 16),
-        if (!isFinished) ...[
-          Text(
-            context.l10n.pickNextWord,
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w800,
+          _Breadcrumb(game: game),
+          if (game.score != null) ...[
+            const SizedBox(height: 10),
+            _StatusRow(game: game),
+          ],
+          const SizedBox(height: 18),
+          if (!isFinished) ...[
+            Text(
+              context.l10n.pickNextWord,
+              style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                color: theme.colorScheme.onSurface,
+                fontWeight: FontWeight.w800,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 12),
-          if (outgoingLinks.isEmpty)
+            const SizedBox(height: 12),
+            if (outgoingLinks.isEmpty)
+              AppErrorState(
+                title: context.l10n.noMovesTitle,
+                message: context.l10n.noMovesMessage,
+              )
+            else
+              _OptionsGrid(
+                options: outgoingLinks,
+                recommendedLinkId: recommendedLinkId,
+                previousLinkId: game.backtrackParentLinkId,
+                undoBalance: undoBalance,
+                disabled: isBusy || isFinished,
+              ),
+            const SizedBox(height: 16),
+            _SecondaryActions(game: game, isBusy: isBusy),
+          ],
+          if (message != null) ...[
+            const SizedBox(height: 16),
             AppErrorState(
-              title: context.l10n.noMovesTitle,
-              message: context.l10n.noMovesMessage,
-            )
-          else
-            _OptionsGrid(
-              options: outgoingLinks,
-              recommendedLinkId: recommendedLinkId,
-              previousLinkId: game.backtrackParentLinkId,
-              undoBalance: undoBalance,
-              disabled: isBusy || isFinished,
+              title: context.l10n.actionFailed,
+              message: message!,
             ),
-          const SizedBox(height: 16),
-          _SecondaryActions(game: game, isBusy: isBusy),
-        ],
-        if (message != null) ...[
-          const SizedBox(height: 16),
-          AppErrorState(
-            title: context.l10n.actionFailed,
-            message: message!,
-          ),
-        ],
-        if (isBusy) ...[
-          const SizedBox(height: 16),
-          AppLoadingState(
-            message: _actionMessage(context, activeAction),
-            compact: true,
-          ),
-        ],
-        if (isFinished) ...[
+          ],
+          if (isBusy) ...[
+            const SizedBox(height: 16),
+            AppLoadingState(
+              message: _actionMessage(context, activeAction),
+              compact: true,
+            ),
+          ],
+          if (isFinished) ...[
+            const SizedBox(height: 24),
+            AppPrimaryButton(
+              label: context.l10n.backToHome,
+              onPressed: () => context.go('/home'),
+            ),
+          ],
           const SizedBox(height: 24),
-          AppPrimaryButton(
-            label: context.l10n.backToHome,
-            onPressed: () => context.go('/home'),
-          ),
         ],
-        const SizedBox(height: 24),
-      ],
+      ),
     );
   }
 
@@ -481,12 +494,23 @@ class _GameObjectivePanel extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colorScheme.surface,
-        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.18)),
-        borderRadius: BorderRadius.circular(8),
+        color: AppPalette.lightSurface,
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.62)),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.12),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.2),
+            blurRadius: 24,
+          ),
+        ],
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -500,7 +524,7 @@ class _GameObjectivePanel extends StatelessWidget {
                       Text(
                         context.l10n.currentLabel,
                         style: theme.textTheme.labelSmall?.copyWith(
-                          color: colorScheme.onSurfaceVariant,
+                          color: AppPalette.textHint,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
@@ -511,9 +535,17 @@ class _GameObjectivePanel extends StatelessWidget {
                         child: Text(
                           game.currentWord,
                           style: theme.textTheme.headlineSmall?.copyWith(
-                            color: colorScheme.onSurface,
+                            color: colorScheme.primary,
                             fontWeight: FontWeight.w900,
                             height: 1,
+                            shadows: [
+                              Shadow(
+                                color: colorScheme.primary.withValues(
+                                  alpha: 0.12,
+                                ),
+                                blurRadius: 8,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -523,7 +555,7 @@ class _GameObjectivePanel extends StatelessWidget {
                 const SizedBox(width: 8),
                 Icon(
                   Icons.arrow_forward_rounded,
-                  color: colorScheme.onSurfaceVariant,
+                  color: colorScheme.secondary,
                   size: 18,
                 ),
                 const SizedBox(width: 8),
@@ -536,7 +568,7 @@ class _GameObjectivePanel extends StatelessWidget {
                 Text(
                   context.l10n.hudSteps(game.stepsTaken, game.maxSteps),
                   style: theme.textTheme.labelSmall?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
+                    color: AppPalette.lightTextMuted,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -548,9 +580,9 @@ class _GameObjectivePanel extends StatelessWidget {
                       value: progress,
                       minHeight: 7,
                       backgroundColor: AppPalette.primary.withValues(
-                        alpha: 0.1,
+                        alpha: 0.22,
                       ),
-                      color: AppPalette.focus,
+                      color: colorScheme.secondary,
                     ),
                   ),
                 ),
@@ -584,6 +616,12 @@ class _GameLogo extends StatelessWidget {
               fontWeight: FontWeight.w900,
               height: 1,
               letterSpacing: 0,
+              shadows: [
+                Shadow(
+                  color: theme.colorScheme.secondary.withValues(alpha: 0.16),
+                  blurRadius: 10,
+                ),
+              ],
             ),
           ),
         ),
@@ -611,7 +649,7 @@ class _TargetWord extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.end,
             style: theme.textTheme.labelSmall?.copyWith(
-              color: colorScheme.onSurfaceVariant,
+              color: AppPalette.textHint,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -623,9 +661,15 @@ class _TargetWord extends StatelessWidget {
               value,
               maxLines: 1,
               style: theme.textTheme.headlineSmall?.copyWith(
-                color: colorScheme.onSurface,
+                color: colorScheme.secondary,
                 fontWeight: FontWeight.w900,
                 height: 1,
+                shadows: [
+                  Shadow(
+                    color: colorScheme.secondary.withValues(alpha: 0.28),
+                    blurRadius: 14,
+                  ),
+                ],
               ),
             ),
           ),
@@ -653,7 +697,7 @@ class _Breadcrumb extends StatelessWidget {
       child: Text(
         tail.join(' › '),
         style: theme.textTheme.bodyMedium?.copyWith(
-          color: AppPalette.lightTextMuted,
+          color: AppPalette.lightTextMuted.withValues(alpha: 0.9),
           fontWeight: FontWeight.w700,
         ),
         maxLines: 1,
@@ -701,13 +745,16 @@ class _StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAccent = tone == _StatusChipTone.accent;
-    final background = isAccent ? AppPalette.focusSoft : AppPalette.primarySoft;
-    final foreground = isAccent ? AppPalette.focus : AppPalette.primary;
+    final background = isAccent
+        ? AppPalette.focus.withValues(alpha: 0.16)
+        : AppPalette.primarySoft;
+    final foreground = isAccent ? AppPalette.focus : AppPalette.lightTextMuted;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: background,
+        border: Border.all(color: foreground.withValues(alpha: 0.32)),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
@@ -795,27 +842,50 @@ class _OptionTile extends StatelessWidget {
     final Color foreground;
     final Color border;
     final double borderWidth;
+    final List<BoxShadow> shadows;
 
     if (disabled) {
       background = AppPalette.lightSurfaceMuted;
-      foreground = AppPalette.lightTextMuted;
-      border = AppPalette.primary.withValues(alpha: 0.18);
+      foreground = AppPalette.disabled;
+      border = AppPalette.disabled.withValues(alpha: 0.26);
       borderWidth = 1;
+      shadows = const [];
     } else if (highlighted) {
-      background = AppPalette.focusSoft;
+      background = AppPalette.focus.withValues(alpha: 0.16);
       foreground = AppPalette.focus;
       border = AppPalette.focus;
       borderWidth = 2;
+      shadows = [
+        BoxShadow(
+          color: AppPalette.focus.withValues(alpha: 0.12),
+          blurRadius: 10,
+          offset: const Offset(0, 5),
+        ),
+      ];
     } else if (isPrevious) {
       background = AppPalette.primarySoft;
-      foreground = AppPalette.primary;
-      border = AppPalette.primary.withValues(alpha: 0.44);
+      foreground = AppPalette.lightText;
+      border = AppPalette.primary.withValues(alpha: 0.7);
       borderWidth = 2;
+      shadows = [
+        BoxShadow(
+          color: AppPalette.primary.withValues(alpha: 0.14),
+          blurRadius: 10,
+          offset: const Offset(0, 5),
+        ),
+      ];
     } else {
       background = AppPalette.lightSurface;
       foreground = AppPalette.lightText;
-      border = AppPalette.primary.withValues(alpha: 0.28);
+      border = AppPalette.primary.withValues(alpha: 0.2);
       borderWidth = 1;
+      shadows = [
+        BoxShadow(
+          color: AppPalette.primary.withValues(alpha: 0.06),
+          blurRadius: 8,
+          offset: const Offset(0, 4),
+        ),
+      ];
     }
 
     return Material(
@@ -844,6 +914,7 @@ class _OptionTile extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: border, width: borderWidth),
             borderRadius: BorderRadius.circular(12),
+            boxShadow: shadows,
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -900,7 +971,7 @@ class _SecondaryActions extends StatelessWidget {
           child: _PowerActionCard(
             icon: Icons.lightbulb_rounded,
             label: context.l10n.hintAction(hintBalance),
-            color: AppPalette.success,
+            color: AppPalette.focus,
             disabled: isBusy || game.isFinished,
             onPressed: () async {
               if (hintBalance <= 0) {
@@ -957,25 +1028,32 @@ class _PowerActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final foreground = disabled
-        ? Theme.of(context).colorScheme.onSurfaceVariant
-        : color;
+    final foreground = disabled ? AppPalette.disabled : color;
     final background = disabled
         ? Theme.of(context).colorScheme.surfaceContainerHighest
-        : Theme.of(context).colorScheme.surface;
+        : AppPalette.lightSurface;
 
     return Material(
       color: background,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         onTap: disabled ? null : onPressed,
         child: Container(
           constraints: const BoxConstraints(minHeight: 44),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
-            border: Border.all(color: foreground.withValues(alpha: 0.18)),
-            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: foreground.withValues(alpha: 0.32)),
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: disabled
+                ? null
+                : [
+                    BoxShadow(
+                      color: foreground.withValues(alpha: 0.08),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -1032,10 +1110,13 @@ class _ResultSheet extends StatelessWidget {
         decoration: BoxDecoration(
           color: AppPalette.lightSurface,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+          border: const Border(
+            top: BorderSide(color: AppPalette.focusSoft, width: 1.2),
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.08),
-              blurRadius: 18,
+              color: AppPalette.primary.withValues(alpha: 0.14),
+              blurRadius: 22,
               offset: const Offset(0, -4),
             ),
           ],
@@ -1050,7 +1131,7 @@ class _ResultSheet extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: AppPalette.lightSurfaceMuted,
+                  color: AppPalette.lightTextMuted.withValues(alpha: 0.4),
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -1102,12 +1183,18 @@ class _ResultSheet extends StatelessWidget {
             const SizedBox(height: 18),
             Text(
               context.l10n.resultPath,
-              style: theme.textTheme.titleSmall,
+              style: theme.textTheme.titleSmall?.copyWith(
+                color: AppPalette.lightText,
+                fontWeight: FontWeight.w800,
+              ),
             ),
             const SizedBox(height: 6),
             Text(
               _pathFor(game),
-              style: theme.textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: AppPalette.lightTextMuted,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(height: 22),
             AppPrimaryButton(
@@ -1148,13 +1235,13 @@ class _ResultSheet extends StatelessWidget {
       ),
       'Abandoned' => _Outcome(
         icon: Icons.flag_outlined,
-        color: AppPalette.lightTextMuted,
+        color: AppPalette.textHint,
         title: l10n.outcomeAbandonedTitle,
         subtitle: (_) => l10n.outcomeAbandonedSubtitle,
       ),
       _ => _Outcome(
         icon: Icons.help_outline,
-        color: AppPalette.lightTextMuted,
+        color: AppPalette.textHint,
         title: state,
         subtitle: (_) => l10n.outcomeEndedSubtitle,
       ),
@@ -1191,13 +1278,15 @@ class _SummaryStat extends StatelessWidget {
         Text(
           label,
           style: theme.textTheme.labelSmall?.copyWith(
-            color: AppPalette.lightTextMuted,
+            color: AppPalette.textHint,
+            fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 2),
         Text(
           value,
           style: theme.textTheme.titleMedium?.copyWith(
+            color: AppPalette.lightText,
             fontWeight: FontWeight.w700,
           ),
         ),

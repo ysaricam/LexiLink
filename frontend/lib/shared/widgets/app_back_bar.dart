@@ -24,6 +24,7 @@ class AppBackBar extends StatelessWidget {
           color: theme.colorScheme.surface,
           shape: const CircleBorder(),
           elevation: 1,
+          shadowColor: theme.colorScheme.primary.withValues(alpha: 0.18),
           child: InkWell(
             customBorder: const CircleBorder(),
             onTap: onBack ?? () => context.go(fallbackRoute),
@@ -38,7 +39,13 @@ class AppBackBar extends StatelessWidget {
         ),
         const SizedBox(width: 12),
         Expanded(
-          child: Text(title, style: theme.textTheme.titleLarge),
+          child: Text(
+            title,
+            style: theme.textTheme.titleLarge?.copyWith(
+              color: theme.colorScheme.onSurface,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
         ),
         if (trailing != null) trailing!,
       ],

@@ -83,6 +83,7 @@ class _EarnDiamondsScreenState extends State<EarnDiamondsScreen> {
     final cubit = _cubit;
     if (cubit == null) {
       return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Center(
           child: AppLoadingState(message: context.l10n.openingRewards),
         ),
@@ -119,10 +120,14 @@ class _EarnDiamondsView extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
-                AppBackBar(title: context.l10n.navEarnDiamonds),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+                  child: AppBackBar(title: context.l10n.navEarnDiamonds),
+                ),
                 Expanded(child: _body(context, state)),
               ],
             ),
@@ -145,8 +150,7 @@ class _EarnDiamondsView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: AppEmptyState(
               title: context.l10n.rewardedUnavailableTitle,
-              message:
-                  state.message ?? context.l10n.rewardedUnavailableMessage,
+              message: state.message ?? context.l10n.rewardedUnavailableMessage,
             ),
           ),
         );
@@ -189,10 +193,17 @@ class _RewardPanel extends StatelessWidget {
         children: [
           Card(
             clipBehavior: Clip.antiAlias,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(14),
+              side: BorderSide(
+                color: AppPalette.primary.withValues(alpha: 0.14),
+              ),
+            ),
             child: DecoratedBox(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xffe8f6f3), Color(0xfffff2cf)],
+                  colors: [Color(0xffffffff), Color(0xfffff7d6)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),

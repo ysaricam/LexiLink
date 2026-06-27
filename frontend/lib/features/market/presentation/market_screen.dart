@@ -94,6 +94,7 @@ class _MarketScreenState extends State<MarketScreen> {
     final cubit = _cubit;
     if (cubit == null) {
       return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Center(
           child: AppLoadingState(message: context.l10n.openingMarket),
         ),
@@ -155,6 +156,7 @@ class _MarketViewState extends State<_MarketView> {
       },
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
@@ -313,9 +315,16 @@ class _MarketDiamondBalancePill extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppPalette.focus.withValues(alpha: 0.12),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: AppPalette.focus.withValues(alpha: 0.24)),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppPalette.focus.withValues(alpha: 0.32)),
+        boxShadow: [
+          BoxShadow(
+            color: AppPalette.focus.withValues(alpha: 0.1),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
@@ -361,8 +370,15 @@ class _MarketItemCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        border: Border.all(color: AppPalette.primary.withValues(alpha: 0.16)),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppPalette.primary.withValues(alpha: 0.14)),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppPalette.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -378,7 +394,7 @@ class _MarketItemCard extends StatelessWidget {
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: _itemTone(item.itemType).withValues(alpha: 0.14),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: Text(
                     item.itemType.symbol,

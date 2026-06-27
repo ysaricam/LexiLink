@@ -304,8 +304,16 @@ class _LeaderboardSummary extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colorScheme.primaryContainer.withValues(alpha: 0.72),
-        borderRadius: BorderRadius.circular(8),
+        color: colorScheme.surface,
+        border: Border.all(color: colorScheme.primary.withValues(alpha: 0.16)),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -332,14 +340,15 @@ class _LeaderboardSummary extends StatelessWidget {
                   Text(
                     _periodSubtitle(context, period),
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colorScheme.onPrimaryContainer,
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${context.l10n.statTotalScore}: $leaderScore',
                     style: theme.textTheme.titleMedium?.copyWith(
-                      color: colorScheme.onPrimaryContainer,
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ],
@@ -483,7 +492,14 @@ class _LeaderboardRow extends StatelessWidget {
               ? colorScheme.secondary.withValues(alpha: 0.5)
               : colorScheme.outline.withValues(alpha: 0.24),
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),

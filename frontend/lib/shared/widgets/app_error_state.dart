@@ -23,8 +23,16 @@ class AppErrorState extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
+        color: colorScheme.surface,
         border: Border.all(color: colorScheme.error.withValues(alpha: 0.34)),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),

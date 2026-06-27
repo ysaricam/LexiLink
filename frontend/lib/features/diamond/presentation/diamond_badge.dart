@@ -79,8 +79,15 @@ class _Pill extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.42)),
+        border: Border.all(color: colorScheme.secondary.withValues(alpha: 0.3)),
         borderRadius: BorderRadius.circular(999),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.secondary.withValues(alpha: 0.1),
+            blurRadius: 12,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

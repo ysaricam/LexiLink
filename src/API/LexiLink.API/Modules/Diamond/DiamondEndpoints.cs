@@ -1,6 +1,7 @@
 using LexiLink.API.Configuration.Authentication;
 using LexiLink.Common.Application;
 using LexiLink.Modules.Diamond.Application.Contracts;
+using LexiLink.Modules.Diamond.Application.PlayerDiamondInventories.EnsurePlayerDiamondInventoryExists;
 using LexiLink.Modules.Diamond.Application.PlayerDiamondInventories.GetPlayerDiamond;
 
 namespace LexiLink.API.Modules.Diamond;
@@ -21,6 +22,10 @@ public static class DiamondEndpoints
             IDiamondModule diamondModule,
             CancellationToken cancellationToken) =>
         {
+            await diamondModule.ExecuteCommandAsync(
+                new EnsurePlayerDiamondInventoryExistsCommand(executionContextAccessor.UserId),
+                cancellationToken);
+
             var snapshot = await diamondModule.ExecuteQueryAsync(
                 new GetPlayerDiamondQuery(executionContextAccessor.UserId),
                 cancellationToken);

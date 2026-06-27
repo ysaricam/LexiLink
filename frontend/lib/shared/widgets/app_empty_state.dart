@@ -22,8 +22,16 @@ class AppEmptyState extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colorScheme.secondaryContainer.withValues(alpha: 0.42),
-        borderRadius: BorderRadius.circular(8),
+        color: colorScheme.surface,
+        border: Border.all(color: colorScheme.secondary.withValues(alpha: 0.3)),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),

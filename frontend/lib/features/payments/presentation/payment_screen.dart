@@ -80,6 +80,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     final cubit = _cubit;
     if (cubit == null) {
       return Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: Center(
           child: AppLoadingState(message: context.l10n.openingDiamonds),
         ),
@@ -117,6 +118,7 @@ class _PaymentView extends StatelessWidget {
       },
       builder: (context, state) {
         return Scaffold(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: SafeArea(
             child: Column(
               children: [
@@ -254,8 +256,15 @@ class _DiamondBundleCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: colorScheme.surface,
-        border: Border.all(color: AppPalette.focus.withValues(alpha: 0.18)),
-        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: AppPalette.focus.withValues(alpha: 0.2)),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: AppPalette.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -269,7 +278,7 @@ class _DiamondBundleCard extends StatelessWidget {
                   height: 58,
                   decoration: BoxDecoration(
                     color: AppPalette.focus.withValues(alpha: 0.14),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Icon(
                     Icons.diamond_outlined,

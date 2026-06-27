@@ -98,11 +98,18 @@ class _SettingsHero extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: colorScheme.primaryContainer,
+        color: colorScheme.surface,
         border: Border.all(
-          color: colorScheme.primary.withValues(alpha: 0.16),
+          color: colorScheme.primary.withValues(alpha: 0.22),
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.1),
+            blurRadius: 18,
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(14),
@@ -125,7 +132,8 @@ class _SettingsHero extends StatelessWidget {
               child: Text(
                 context.l10n.settingsTitle,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  color: colorScheme.onPrimaryContainer,
+                  color: colorScheme.onSurface,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
@@ -320,9 +328,16 @@ class _SettingsSection extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surface,
         border: Border.all(
-          color: colorScheme.outline.withValues(alpha: 0.24),
+          color: colorScheme.primary.withValues(alpha: 0.14),
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: colorScheme.primary.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(14),

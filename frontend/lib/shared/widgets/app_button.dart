@@ -32,7 +32,12 @@ class AppSecondaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return OutlinedButton(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: colorScheme.secondary,
+        side: BorderSide(color: colorScheme.secondary),
+      ),
       onPressed: onPressed,
       child: Text(label),
     );
