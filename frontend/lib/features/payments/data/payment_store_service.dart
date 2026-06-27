@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:lexilink_app/features/payments/data/payment_models.dart';
 
@@ -32,6 +33,8 @@ class InAppPurchaseStoreService implements PaymentStoreService {
   @override
   Future<List<StorePaymentProduct>> loadProducts(Set<String> productIds) async {
     final response = await _iap.queryProductDetails(productIds);
+    _debugPrintProductResponse('IAP', productIds, response);
+
     return response.productDetails
         .map(
           (product) => StorePaymentProduct(
@@ -47,6 +50,8 @@ class InAppPurchaseStoreService implements PaymentStoreService {
   @override
   Future<void> buy(StorePaymentProduct product) async {
     final response = await _iap.queryProductDetails({product.id});
+    _debugPrintProductResponse('IAP buy', {product.id}, response);
+
     final productDetails = response.productDetails.firstWhere(
       (x) => x.id == product.id,
     );
@@ -87,5 +92,19 @@ class InAppPurchaseStoreService implements PaymentStoreService {
       return '${proof.productId}:$purchaseId';
     }
     return proof.productId;
+  }
+
+  void _debugPrintProductResponse(
+    String prefix,
+    Set<String> productIds,
+    ProductDetailsResponse response,
+  ) {
+    debugPrint('$prefix requested ids: $productIds');
+    debugPrint(
+      '$prefix returned products: '
+      '${response.productDetails.map((p) => '${p.id} / ${p.title} / ${p.price}').toList()}',
+    );
+    debugPrint('$prefix not found ids: ${response.notFoundIDs}');
+    debugPrint('$prefix error: ${response.error}');
   }
 }
