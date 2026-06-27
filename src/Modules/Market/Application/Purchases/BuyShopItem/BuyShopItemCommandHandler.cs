@@ -88,6 +88,14 @@ internal sealed class BuyShopItemCommandHandler
 
         var effectivePrice = shopItem.EffectivePriceAt(now);
 
+        if (shopItem.ItemType == ItemType.Energy)
+        {
+            await _energyGrant.EnsureCanAcceptAsync(
+                request.PlayerId,
+                shopItem.Quantity,
+                cancellationToken);
+        }
+
         await _diamondGuard.EnsureDiamondAvailableAsync(
             request.PlayerId,
             effectivePrice,

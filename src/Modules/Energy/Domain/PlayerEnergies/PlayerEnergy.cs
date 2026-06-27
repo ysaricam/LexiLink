@@ -98,6 +98,14 @@ public class PlayerEnergy : Entity, IAggregateRoot
     internal void GrantBonus(int amount, DateTime now)
     {
         CheckRule(new BonusAmountMustBePositiveRule(amount));
+        CheckRule(new BonusEnergyMustFitWithinMaximumRule(_currentAmount, _maximumAmount, amount));
+
+        _currentAmount += amount;
+    }
+
+    internal void GrantBonusCapped(int amount, DateTime now)
+    {
+        CheckRule(new BonusAmountMustBePositiveRule(amount));
 
         _currentAmount = Math.Min(_maximumAmount, _currentAmount + amount);
     }

@@ -4,6 +4,11 @@ namespace LexiLink.Modules.Energy.Application.Configuration.CrossModule;
 // Market checkout. The API host implementation dispatches GrantEnergyCommand.
 public interface IEnergyGrant
 {
+    Task EnsureCanAcceptAsync(
+        Guid playerId,
+        int amount,
+        CancellationToken cancellationToken = default);
+
     Task GrantAsync(
         Guid playerId,
         int amount,

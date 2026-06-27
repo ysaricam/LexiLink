@@ -14,7 +14,13 @@ public sealed class StandardGameConfigurationService : IGameConfigurationService
 
     public int ResolveMaxSteps(Difficulty difficulty, int targetDepth) => difficulty switch
     {
-        Difficulty.Easy => targetDepth + 5,
+        Difficulty.Easy => targetDepth switch
+        {
+            3 => 5,
+            4 => 7,
+            5 => 8,
+            _ => targetDepth + 3
+        },
         Difficulty.Medium => targetDepth + 4,
         Difficulty.Hard => targetDepth + 3,
         _ => throw new ArgumentOutOfRangeException(nameof(difficulty), difficulty, null)

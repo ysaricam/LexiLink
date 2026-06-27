@@ -67,22 +67,25 @@ public sealed class Puzzle : ValueObject
             .Select(pair => (pair.StartLinkId, pair.TargetLinkId))
             .ToHashSet();
 
-        foreach (var startLinkId in Shuffle(categoryLinkIds, random))
+        foreach (var (candidateMinDepth, candidateMaxDepth) in ResolveDepthSearchOrder(difficulty, minDepth, maxDepth, random))
         {
-            foreach (var targetLinkId in categoryLinkIds.Where(linkId => linkId != startLinkId))
+            foreach (var startLinkId in Shuffle(categoryLinkIds, random))
             {
-                if (completedPairSet.Contains((startLinkId, targetLinkId)))
+                foreach (var targetLinkId in categoryLinkIds.Where(linkId => linkId != startLinkId))
                 {
-                    continue;
-                }
+                    if (completedPairSet.Contains((startLinkId, targetLinkId)))
+                    {
+                        continue;
+                    }
 
-                var optimalPath = pathFinder.FindOptimalPath(startLinkId, targetLinkId);
-                if (optimalPath.Count < minDepth || optimalPath.Count > maxDepth)
-                {
-                    continue;
-                }
+                    var optimalPath = pathFinder.FindOptimalPath(startLinkId, targetLinkId);
+                    if (optimalPath.Count < candidateMinDepth || optimalPath.Count > candidateMaxDepth)
+                    {
+                        continue;
+                    }
 
-                return new Puzzle(categoryId, difficulty, startLinkId, targetLinkId, optimalPath);
+                    return new Puzzle(categoryId, difficulty, startLinkId, targetLinkId, optimalPath);
+                }
             }
         }
 
@@ -168,4 +171,35 @@ public sealed class Puzzle : ValueObject
 
     private static IReadOnlyList<LinkId> Shuffle(IReadOnlyList<LinkId> linkIds, Random random) =>
         linkIds.OrderBy(_ => random.Next()).ToList();
+
+    private static IReadOnlyList<(int MinDepth, int MaxDepth)> ResolveDepthSearchOrder(
+        Difficulty difficulty,
+        int minDepth,
+        int maxDepth,
+        Random random)
+    {
+        if (difficulty != Difficulty.Easy || minDepth > 3 || maxDepth < 5)
+        {
+            return [(minDepth, maxDepth)];
+        }
+
+        var preferredDepth = random.Next(100) switch
+        {
+            < 60 => 4,
+            < 90 => 3,
+            _ => 5
+        };
+
+        return new[]
+            {
+                preferredDepth,
+                4,
+                3,
+                5
+            }
+            .Distinct()
+            .Select(depth => (depth, depth))
+            .Append((minDepth, maxDepth))
+            .ToList();
+    }
 }

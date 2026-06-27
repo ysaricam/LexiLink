@@ -1,19 +1,30 @@
-using MediatR;
+using LexiLink.Common.Application.Exceptions;
+using LexiLink.Common.Application.Time;
 using LexiLink.Modules.Energy.Application.Configuration.Commands;
-using LexiLink.Modules.Energy.Application.PlayerEnergies.GrantEnergy;
+using LexiLink.Modules.Energy.Domain.PlayerEnergies;
 
 namespace LexiLink.Modules.Energy.Application.Admin.GrantBonusEnergy;
 
 internal sealed class GrantBonusEnergyCommandHandler : ICommandHandler<GrantBonusEnergyCommand>
 {
-    private readonly ISender _sender;
+    private readonly IPlayerEnergyRepository _playerEnergyRepository;
+    private readonly IClock _clock;
 
-    internal GrantBonusEnergyCommandHandler(ISender sender)
+    internal GrantBonusEnergyCommandHandler(
+        IPlayerEnergyRepository playerEnergyRepository,
+        IClock clock)
     {
-        _sender = sender;
+        _playerEnergyRepository = playerEnergyRepository;
+        _clock = clock;
     }
 
-    public Task Handle(GrantBonusEnergyCommand request, CancellationToken cancellationToken) =>
-        // Wraps the internal GrantEnergyCommand so capped bonus behavior stays in one place.
-        _sender.Send(new GrantEnergyCommand(request.PlayerId, request.Amount), cancellationToken);
+    public async Task Handle(GrantBonusEnergyCommand request, CancellationToken cancellationToken)
+    {
+        var playerEnergy = await _playerEnergyRepository.GetByIdAsync(
+            new PlayerEnergyId(request.PlayerId),
+            cancellationToken)
+            ?? throw new NotFoundException(nameof(PlayerEnergy), request.PlayerId);
+
+        playerEnergy.GrantBonusCapped(request.Amount, _clock.UtcNow);
+    }
 }

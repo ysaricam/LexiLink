@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math' as math;
 import 'dart:ui';
 
@@ -16,6 +17,7 @@ import 'package:lexilink_app/features/settings/data/app_language.dart';
 import 'package:lexilink_app/features/settings/data/locale_preferences_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
+import 'package:lexilink_app/shared/api/api_error.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_error_state.dart';
@@ -66,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  Future<void> _bootstrap() async {
+  Future<void> _bootstrap({bool retriedAfterUnauthorized = false}) async {
     setState(() {
       _stage = _SplashStage.session;
       _error = null;
@@ -75,11 +77,17 @@ class _SplashScreenState extends State<SplashScreen>
     try {
       final backendLocale = await _resolveBackendLocale();
       final tokenStore = await SharedPreferencesTokenStore.create();
-      final accessToken = await tokenStore.readAccessToken();
+      var accessToken = await tokenStore.readAccessToken();
       final playerId = await tokenStore.readPlayerId();
       final hasExistingSession =
           (accessToken != null && accessToken.isNotEmpty) ||
           (playerId != null && playerId.isNotEmpty);
+      if (accessToken != null &&
+          accessToken.isNotEmpty &&
+          _isExpiredJwt(accessToken)) {
+        await tokenStore.clear();
+        accessToken = null;
+      }
       final guestDeviceId = await GuestDeviceIdStore().readOrCreate(
         preferLegacyDeviceId: hasExistingSession,
       );
@@ -133,6 +141,17 @@ class _SplashScreenState extends State<SplashScreen>
           diamond: diamond,
         ),
       );
+    } on ApiException catch (error) {
+      if (error.isUnauthorized && !retriedAfterUnauthorized) {
+        final tokenStore = await SharedPreferencesTokenStore.create();
+        await tokenStore.clear();
+        if (!mounted) return;
+        await _bootstrap(retriedAfterUnauthorized: true);
+        return;
+      }
+
+      if (!mounted) return;
+      setState(() => _error = error);
     } on Object catch (error) {
       if (!mounted) return;
       setState(() => _error = error);
@@ -190,6 +209,36 @@ class _SplashScreenState extends State<SplashScreen>
       }
     }
     Error.throwWithStackTrace(lastError!, StackTrace.current);
+  }
+
+  bool _isExpiredJwt(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      return false;
+    }
+
+    try {
+      final payload = utf8.decode(
+        base64Url.decode(base64Url.normalize(parts[1])),
+      );
+      final json = jsonDecode(payload);
+      if (json is! Map<String, dynamic>) {
+        return false;
+      }
+
+      final exp = json['exp'];
+      if (exp is! int) {
+        return false;
+      }
+
+      final expiresAt = DateTime.fromMillisecondsSinceEpoch(
+        exp * 1000,
+        isUtc: true,
+      );
+      return !expiresAt.isAfter(DateTime.now().toUtc());
+    } on Object {
+      return false;
+    }
   }
 
   @override

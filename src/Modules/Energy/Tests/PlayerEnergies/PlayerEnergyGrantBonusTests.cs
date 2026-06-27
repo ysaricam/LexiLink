@@ -6,22 +6,31 @@ namespace LexiLink.Modules.Energy.Tests.PlayerEnergies;
 public class PlayerEnergyGrantBonusTests : PlayerEnergyTestsBase
 {
     [Test]
-    public void GrantBonus_FromMaximum_DoesNotExceedMaximum()
+    public void GrantBonus_FromMaximum_BreaksBonusEnergyMustFitWithinMaximumRule()
     {
         var energy = CreateAtMaximum();
 
-        energy.GrantBonus(3, FixedInitializedAt.AddSeconds(60));
-
-        energy.CurrentAmount.Should().Be(DefaultMaximumAmount);
+        AssertBrokenRule<BonusEnergyMustFitWithinMaximumRule>(() =>
+            energy.GrantBonus(3, FixedInitializedAt.AddSeconds(60)));
     }
 
     [Test]
-    public void GrantBonus_WhenRewardExceedsMissingAmount_CapsAtMaximum()
+    public void GrantBonus_WhenRewardExceedsMissingAmount_BreaksBonusEnergyMustFitWithinMaximumRule()
     {
         var energy = CreateAtMaximum();
         energy.Consume(2, FixedInitializedAt.AddSeconds(60));
 
-        energy.GrantBonus(5, FixedInitializedAt.AddSeconds(120));
+        AssertBrokenRule<BonusEnergyMustFitWithinMaximumRule>(() =>
+            energy.GrantBonus(5, FixedInitializedAt.AddSeconds(120)));
+    }
+
+    [Test]
+    public void GrantBonus_WhenRewardFits_AddsFullAmount()
+    {
+        var energy = CreateAtMaximum();
+        energy.Consume(2, FixedInitializedAt.AddSeconds(60));
+
+        energy.GrantBonus(2, FixedInitializedAt.AddSeconds(120));
 
         energy.CurrentAmount.Should().Be(DefaultMaximumAmount);
     }
@@ -30,12 +39,24 @@ public class PlayerEnergyGrantBonusTests : PlayerEnergyTestsBase
     public void GrantBonus_DoesNotResetRefillTimer()
     {
         var energy = CreateAtMaximum();
+        energy.Consume(2, FixedInitializedAt.AddSeconds(30));
         var bonusAt = FixedInitializedAt.AddSeconds(60);
 
         energy.GrantBonus(2, bonusAt);
 
-        energy.LastRefilledOn.Should().Be(FixedInitializedAt,
+        energy.LastRefilledOn.Should().Be(FixedInitializedAt.AddSeconds(30),
             "bonus must not affect the recharge cycle");
+    }
+
+    [Test]
+    public void GrantBonusCapped_WhenRewardExceedsMissingAmount_CapsAtMaximum()
+    {
+        var energy = CreateAtMaximum();
+        energy.Consume(2, FixedInitializedAt.AddSeconds(60));
+
+        energy.GrantBonusCapped(5, FixedInitializedAt.AddSeconds(120));
+
+        energy.CurrentAmount.Should().Be(DefaultMaximumAmount);
     }
 
     [Test]

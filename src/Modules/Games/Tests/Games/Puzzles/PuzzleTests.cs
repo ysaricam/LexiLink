@@ -58,6 +58,22 @@ public class PuzzleTests : TestBase
         return config;
     }
 
+    private static IPathFinderService PathFinderByTargetDepth(IReadOnlyDictionary<LinkId, int> depthsByTarget)
+    {
+        var pathFinder = Substitute.For<IPathFinderService>();
+        pathFinder
+            .FindOptimalPath(Arg.Any<LinkId>(), Arg.Any<LinkId>())
+            .Returns(callInfo =>
+            {
+                var target = callInfo.ArgAt<LinkId>(1);
+                return Enumerable
+                    .Range(0, depthsByTarget[target])
+                    .Select(_ => NewLinkId())
+                    .ToList();
+            });
+        return pathFinder;
+    }
+
     [Test]
     public void Create_WithFewerThanFiveCategoryLinks_BreaksCategoryMustHaveEnoughLinksToStartGameRule()
     {
@@ -95,6 +111,33 @@ public class PuzzleTests : TestBase
         puzzle.OptimalPath.Should().BeEquivalentTo(optimal);
         puzzle.Depth.Should().Be(optimal.Count);
         fiveLinks.Should().Contain(puzzle.StartLinkId);
+    }
+
+    [TestCase(0, 4)]
+    [TestCase(60, 3)]
+    [TestCase(90, 5)]
+    public void Create_ForEasyDifficulty_PrefersWeightedTargetDepth(int randomRoll, int expectedDepth)
+    {
+        var categoryId = NewCategoryId();
+        var links = CategoryLinks(6);
+        var depthsByTarget = new Dictionary<LinkId, int>
+        {
+            [links[1]] = 4,
+            [links[2]] = 3,
+            [links[3]] = 5,
+            [links[4]] = 4,
+            [links[5]] = 3
+        };
+
+        var puzzle = Puzzle.Create(
+            categoryId,
+            links,
+            Difficulty.Easy,
+            PathFinderByTargetDepth(depthsByTarget),
+            GameConfig(minDepth: 3, maxDepth: 5),
+            new FixedFirstRollRandom(randomRoll));
+
+        puzzle.Depth.Should().Be(expectedDepth);
     }
 
     [Test]
@@ -193,5 +236,29 @@ public class PuzzleTests : TestBase
             resolver.GetOutgoingLinkIds(from).Returns(to);
         }
         return resolver;
+    }
+
+    private sealed class FixedFirstRollRandom : Random
+    {
+        private readonly int _firstRoll;
+        private bool _usedFirstRoll;
+
+        public FixedFirstRollRandom(int firstRoll)
+        {
+            _firstRoll = firstRoll;
+        }
+
+        public override int Next(int maxValue)
+        {
+            if (!_usedFirstRoll)
+            {
+                _usedFirstRoll = true;
+                return _firstRoll;
+            }
+
+            return 0;
+        }
+
+        public override int Next() => 0;
     }
 }

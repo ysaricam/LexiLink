@@ -296,6 +296,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
     containerBuilder.RegisterType<EnergyGrant>()
         .As<IEnergyGrant>()
+        .As<LexiLink.Modules.Quests.Application.Configuration.CrossModule.IQuestEnergyRewardGuard>()
         .InstancePerLifetimeScope();
 
     containerBuilder.RegisterType<HintGrant>()
