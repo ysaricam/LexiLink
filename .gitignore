@@ -10,6 +10,9 @@ TestResults/
 .packages
 build/
 coverage/
+frontend/android/key.properties
+frontend/android/*.jks
+frontend/android/*.keystore
 
 # IDE
 .idea/

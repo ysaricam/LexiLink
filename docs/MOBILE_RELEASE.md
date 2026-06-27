@@ -37,13 +37,16 @@ production, supply real ids:
 | What | Where | How |
 | --- | --- | --- |
 | Interstitial ad-unit | `--dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=...` | per build |
-| Rewarded ad-unit | `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` | per build; Android production rewarded id: `ca-app-pub-2115638398802394/3077352370`. |
+| Rewarded ad-unit | `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` | per build; current production rewarded id: `ca-app-pub-2115638398802394/3077352370`. |
 | AdMob **app** id (Android) | `android/app/src/main/AndroidManifest.xml` → `com.google.android.gms.ads.APPLICATION_ID` | `ca-app-pub-2115638398802394~7914746084`. |
-| AdMob **app** id (iOS) | `ios/Runner/Info.plist` → `GADApplicationIdentifier` | edit (currently the test id) |
+| AdMob **app** id (iOS) | `ios/Runner/Info.plist` → `GADApplicationIdentifier` | `ca-app-pub-2115638398802394~7914746084`. |
 
-Backend SSV (rewarded → Diamond): set `Ads__Ssv__Mode=Production` with real
-AdMob keys, and in the AdMob console point the **server-side verification
-callback** at `https://api.wordlope.com/ads/rewarded/callback`.
+Backend SSV (rewarded → Diamond): keep `Ads__Ssv__Mode=Production` in
+production. The API verifies AdMob's rotating public keys from
+`Ads__Ssv__VerificationKeysUrl` (default:
+`https://www.gstatic.com/admob/reward/verifier-keys.json`). In the AdMob
+console, enable server-side verification for the rewarded ad unit and point the
+callback at `https://api.wordlope.com/ads/rewarded/callback`.
 
 ## 3. In-app purchase (IAP) — gated for launch
 
@@ -80,7 +83,7 @@ flutter build ipa --release \
   --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
   --dart-define=GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id> \
   --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=<real> \
-  --dart-define=ADMOB_REWARDED_AD_UNIT_ID=<real>
+  --dart-define=ADMOB_REWARDED_AD_UNIT_ID=ca-app-pub-2115638398802394/3077352370
 ```
 
 > Tip: keep the `--dart-define` set in a build script or `--dart-define-from-file`
@@ -105,8 +108,9 @@ flutter build ipa --release \
 
 **Signing:**
 
-- [ ] Android upload/release **keystore** configured (`key.properties` +
-      `signingConfigs`); keystore kept out of git.
+- [ ] Android upload/release **keystore** configured (`android/key.properties`
+      from `android/key.properties.example`; keystore kept out of git). Release
+      builds fail if this file is missing.
 - [ ] iOS distribution **certificate** + **provisioning profile** (Apple
       Developer account); automatic signing in Xcode or fastlane.
 

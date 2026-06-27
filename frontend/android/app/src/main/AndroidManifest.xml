@@ -26,7 +26,7 @@
             </intent-filter>
         </activity>
         <!-- AdMob application id for the Android app. Ad unit ids stay
-             build-time values via --dart-define so development can keep
+             build-time values via Flutter dart-define so development can keep
              using Google's test ad units. -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

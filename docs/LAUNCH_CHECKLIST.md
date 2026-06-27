@@ -79,8 +79,9 @@ içerik yüklemezsen oyuncu boş bir oyun görür.
 - [x] **Görünen adı** `LexiLink` yap (`android:label`,
       `CFBundleDisplayName`/`CFBundleName`).
 - [x] `pubspec.yaml` **sürümünü** yükselt (`0.1.0+1` → `1.0.0+1`).
-- [ ] **Signing** kur: Android upload keystore + `key.properties`; iOS
-      distribution sertifikası + provisioning profile.
+- [ ] **Signing** kur: Android upload keystore + `key.properties` (örnek:
+      `frontend/android/key.properties.example`; release build dosya yoksa
+      hata verir); iOS distribution sertifikası + provisioning profile.
 - [x] Production'a bakacak şekilde **Android build al:**
       `flutter build appbundle --release --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com ...`
       (`build/app/outputs/bundle/release/app-release.aab`, 50.3MB). iOS için
@@ -97,13 +98,14 @@ certificate / provisioning eksik olduğu için bloklu.
 
 - [ ] **AdMob:** Android app id `AndroidManifest.xml`
       (`APPLICATION_ID=ca-app-pub-2115638398802394~7914746084`) içine yazıldı.
-      iOS için `Info.plist` (`GADApplicationIdentifier`) hâlâ gerçek iOS AdMob
-      app id bekler. Android rewarded ad-unit id:
+      iOS app id de `Info.plist` (`GADApplicationIdentifier`) içine yazıldı.
+      Rewarded ad-unit id:
       `ca-app-pub-2115638398802394/3077352370`; release build'de
       `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` ile geç. Interstitial ve
-      iOS rewarded id'leri geldiğinde aynı şekilde ekle. Backend
-      `Ads__Ssv__Mode=Production` + gerçek anahtarları ayarla ve AdMob **SSV
-      callback**'ini `https://api.wordlope.com/ads/rewarded/callback` yap.
+      farklı platform id'leri kullanacaksan aynı şekilde güncelle. Backend production'da
+      `Ads__Ssv__Mode=Production` kalsın; API Google'ın rotating public
+      key'leriyle imzayı doğrular. AdMob **SSV callback**'ini
+      `https://api.wordlope.com/ads/rewarded/callback` yap.
 - [ ] **IAP:** consumable ürünleri (`diamond_100/550/1200/2500`) iki store'da
       oluştur; backend `Payments:Apple` / `Payments:Google` creds'lerini
       ayarla.

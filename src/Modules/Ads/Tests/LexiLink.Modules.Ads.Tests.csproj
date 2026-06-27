@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\LexiLink.Modules.Ads.Domain.csproj" />
     <ProjectReference Include="..\Application\LexiLink.Modules.Ads.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\LexiLink.Modules.Ads.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

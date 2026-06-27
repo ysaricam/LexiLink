@@ -254,8 +254,8 @@ client only requests/shows the ad and passes the player id as the SSV
 | --- | --- | --- |
 | `Ads__RewardedDiamondAmount` | `5` | Backend-owned Diamond granted per verified rewarded ad. The ad-network/client reward value is ignored. |
 | `Ads__RewardedDailyLimit` | `10` | Max rewarded-ad grants per player per UTC day. Hitting the cap is a benign "no reward", not an error. |
-| `Ads__Ssv__Mode` | `Production` | `Production` selects the fail-closed `AdMobSsvVerifier` (rejects until real key verification is wired). `DevelopmentFailOpen` selects the fail-open dev verifier (set in `appsettings.Development.json`) because Google's SSV servers cannot reach `localhost`. **Never use `DevelopmentFailOpen` in production.** |
-| `Ads__Ssv__VerificationKeysUrl` | Google's verifier-keys URL | Source of AdMob's rotating public keys for signature verification (used by the real verifier once implemented). |
+| `Ads__Ssv__Mode` | `Production` | `Production` selects the real `AdMobSsvVerifier`, which fails closed when a callback cannot be verified. `DevelopmentFailOpen` selects the fail-open dev verifier (set in `appsettings.Development.json`) because Google's SSV servers cannot reach `localhost`. **Never use `DevelopmentFailOpen` in production.** |
+| `Ads__Ssv__VerificationKeysUrl` | Google's verifier-keys URL | Source of AdMob's rotating public keys for signature verification. Keys are cached for up to 24 hours. |
 
 Frontend ad-unit ids are Google **test** ids by default and override via
 `--dart-define` (`ADMOB_INTERSTITIAL_AD_UNIT_ID`,
