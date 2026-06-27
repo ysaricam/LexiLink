@@ -949,7 +949,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get adminGrantEnergyHelper =>
-      'Ajouté par-dessus ; peut dépasser le maximum.';
+      'Ajoute à l\'énergie actuelle, sans dépasser le maximum.';
 
   @override
   String get adminResetEnergyTitle => 'Réinitialiser l’énergie ?';

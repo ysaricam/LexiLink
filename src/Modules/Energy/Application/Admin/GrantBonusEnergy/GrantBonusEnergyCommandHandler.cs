@@ -14,7 +14,6 @@ internal sealed class GrantBonusEnergyCommandHandler : ICommandHandler<GrantBonu
     }
 
     public Task Handle(GrantBonusEnergyCommand request, CancellationToken cancellationToken) =>
-        // Wraps the internal GrantEnergyCommand so the bonus path (which
-        // intentionally allows over-max) stays in one place.
+        // Wraps the internal GrantEnergyCommand so capped bonus behavior stays in one place.
         _sender.Send(new GrantEnergyCommand(request.PlayerId, request.Amount), cancellationToken);
 }

@@ -307,7 +307,7 @@
   "adminSetEnergyHelper": "Setzt die aktuelle Energie des Spielers auf diesen Wert (>= 0).",
   "adminGrantBonusEnergyTitle": "Bonusenergie gewähren",
   "adminBonusAmount": "Bonusmenge",
-  "adminGrantEnergyHelper": "Wird addiert und kann den aktuellen Wert über das Maximum heben.",
+  "adminGrantEnergyHelper": "Wird zur aktuellen Energie addiert, aber nur bis zum Maximum.",
   "adminResetEnergyTitle": "Energie zurücksetzen?",
   "adminResetEnergyMessage": "Setzt den Spieler auf maximale Energie zurück.",
   "adminHintConsoleTitle": "Hinweiskonsole",

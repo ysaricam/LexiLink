@@ -307,7 +307,7 @@
   "adminSetEnergyHelper": "Oyuncunun mevcut enerjisini bu değere sabitler (>= 0).",
   "adminGrantBonusEnergyTitle": "Bonus enerji ver",
   "adminBonusAmount": "Bonus miktarı",
-  "adminGrantEnergyHelper": "Üstüne eklenir; mevcut miktarı maksimumun üstüne çıkarabilir.",
+  "adminGrantEnergyHelper": "Mevcut enerjiye eklenir; maksimumu aşarsa yalnızca eksik kadar uygulanır.",
   "adminResetEnergyTitle": "Enerji sıfırlansın mı?",
   "adminResetEnergyMessage": "Oyuncuyu maksimum enerjiye sıfırlar.",
   "adminHintConsoleTitle": "İpucu konsolu",

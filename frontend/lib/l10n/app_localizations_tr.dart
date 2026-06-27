@@ -948,7 +948,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get adminGrantEnergyHelper =>
-      'Üstüne eklenir; mevcut miktarı maksimumun üstüne çıkarabilir.';
+      'Mevcut enerjiye eklenir; maksimumu aşarsa yalnızca eksik kadar uygulanır.';
 
   @override
   String get adminResetEnergyTitle => 'Enerji sıfırlansın mı?';

@@ -892,7 +892,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminEnergyConsoleHelp =>
-      'Lookup by player GUID, then snap / grant / reset. Grant intentionally allows over-max balance.';
+      'Lookup by player GUID, then snap / grant / reset. Grant is capped at the player\'s maximum energy.';
 
   @override
   String get adminNoEnergyAggregate => 'No energy aggregate.';
@@ -942,7 +942,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminGrantEnergyHelper =>
-      'Added on top - may push current above maximum.';
+      'Adds to current energy, capped at the player\'s maximum.';
 
   @override
   String get adminResetEnergyTitle => 'Reset energy?';

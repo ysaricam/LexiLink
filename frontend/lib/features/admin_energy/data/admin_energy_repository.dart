@@ -22,7 +22,7 @@ class AdminEnergyRepository {
     );
   }
 
-  /// Permits over-max balance per Energy.PlayerEnergy.GrantBonus.
+  /// Grants only up to the player's configured maximum energy.
   Future<void> grant({required String playerId, required int amount}) async {
     await _apiClient.postJson(
       '/admin/players/$playerId/energy/grant',

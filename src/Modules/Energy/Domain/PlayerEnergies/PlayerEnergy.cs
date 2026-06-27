@@ -99,17 +99,12 @@ public class PlayerEnergy : Entity, IAggregateRoot
     {
         CheckRule(new BonusAmountMustBePositiveRule(amount));
 
-        // Bonus may push current above max; this is intentional. The recharge
-        // calculator already short-circuits when current >= max, so the timer
-        // stays idle while the over-max balance is drained back down.
-        _currentAmount += amount;
+        _currentAmount = Math.Min(_maximumAmount, _currentAmount + amount);
     }
 
     /// <summary>
     /// Admin override: snap the current amount to a specific value. Must
-    /// be within [0, maxAmount] — over-max writes are not permitted via
-    /// this path (use <see cref="GrantBonus"/> for the intentional
-    /// over-max bonus path). The recharge timer is rearmed when the
+    /// be within [0, maxAmount]. The recharge timer is rearmed when the
     /// override drops the bucket below max from at/above max.
     /// </summary>
     public void AdminSet(int newAmount, DateTime now)

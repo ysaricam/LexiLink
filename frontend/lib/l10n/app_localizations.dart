@@ -1733,7 +1733,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminEnergyConsoleHelp.
   ///
   /// In en, this message translates to:
-  /// **'Lookup by player GUID, then snap / grant / reset. Grant intentionally allows over-max balance.'**
+  /// **'Lookup by player GUID, then snap / grant / reset. Grant is capped at the player\'s maximum energy.'**
   String get adminEnergyConsoleHelp;
 
   /// No description provided for @adminNoEnergyAggregate.
@@ -1829,7 +1829,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminGrantEnergyHelper.
   ///
   /// In en, this message translates to:
-  /// **'Added on top - may push current above maximum.'**
+  /// **'Adds to current energy, capped at the player\'s maximum.'**
   String get adminGrantEnergyHelper;
 
   /// No description provided for @adminResetEnergyTitle.

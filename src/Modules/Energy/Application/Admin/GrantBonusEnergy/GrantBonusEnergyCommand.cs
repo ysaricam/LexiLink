@@ -6,7 +6,7 @@ namespace LexiLink.Modules.Energy.Application.Admin.GrantBonusEnergy;
 /// <summary>
 /// Admin variant of the internal GrantEnergyCommand. The internal command
 /// is invoked by quest reward delivery; this admin-marked twin gives ops
-/// a way to grant bonus energy directly and is audited.
+/// a way to grant capped bonus energy directly and is audited.
 /// </summary>
 public sealed class GrantBonusEnergyCommand : CommandBase, IAdminCommand
 {

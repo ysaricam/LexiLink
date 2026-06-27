@@ -55,7 +55,7 @@ public sealed class EnergyAdminCommandTests : TestBase
     }
 
     [Test]
-    public async Task GrantBonusEnergy_AsAdmin_PushesAboveMax_AndAudits()
+    public async Task GrantBonusEnergy_AsAdmin_DoesNotExceedMax_AndAudits()
     {
         AdminContext.LoginAs(AdminId);
         var playerId = await ProvisionPlayerWithEnergyAsync("device-energy-admin-grant");
@@ -69,7 +69,7 @@ public sealed class EnergyAdminCommandTests : TestBase
         var current = await QuerySingleOrDefaultAsync<int>("""
             SELECT "CurrentAmount" FROM "energy"."PlayerEnergies" WHERE "PlayerId" = @PlayerId
             """, new { PlayerId = playerId });
-        current.Should().Be(maxAmount + 3, "GrantBonus intentionally permits over-max balance");
+        current.Should().Be(maxAmount, "bonus energy is capped at maximum");
 
         await ProcessOutboxAsync();
 

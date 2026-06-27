@@ -952,7 +952,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get adminGrantEnergyHelper =>
-      'Se añade encima; puede dejar la cantidad actual por encima del máximo.';
+      'Se suma a la energía actual, sin superar el máximo.';
 
   @override
   String get adminResetEnergyTitle => '¿Restablecer energía?';

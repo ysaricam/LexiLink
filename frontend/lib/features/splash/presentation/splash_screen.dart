@@ -1,17 +1,19 @@
 import 'dart:async';
 import 'dart:math' as math;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:lexilink_app/features/auth/data/guest_device_id_store.dart';
 import 'package:lexilink_app/features/auth/data/guest_player_repository.dart';
+import 'package:lexilink_app/features/categories/data/category.dart';
 import 'package:lexilink_app/features/categories/data/category_repository.dart';
 import 'package:lexilink_app/features/diamond/data/diamond_repository.dart';
 import 'package:lexilink_app/features/energy/data/energy_repository.dart';
 import 'package:lexilink_app/features/home/presentation/home_screen.dart';
-import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
+import 'package:lexilink_app/features/settings/data/app_language.dart';
+import 'package:lexilink_app/features/settings/data/locale_preferences_repository.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
@@ -65,13 +67,13 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<void> _bootstrap() async {
-    final backendLocale = context.read<LocaleCubit>().state.backendLocale;
     setState(() {
       _stage = _SplashStage.session;
       _error = null;
     });
 
     try {
+      final backendLocale = await _resolveBackendLocale();
       final tokenStore = await SharedPreferencesTokenStore.create();
       final accessToken = await tokenStore.readAccessToken();
       final playerId = await tokenStore.readPlayerId();
@@ -105,9 +107,10 @@ class _SplashScreenState extends State<SplashScreen>
       }
 
       _setStage(_SplashStage.categories);
-      final categories = await CategoryRepository(
-        apiClient: apiClient,
-      ).getCategories(locale: backendLocale);
+      final categories = await _loadNonEmptyCategories(
+        CategoryRepository(apiClient: apiClient),
+        preferredLocale: backendLocale,
+      );
 
       _setStage(_SplashStage.resources);
       final (energy, diamond) = await (
@@ -134,6 +137,41 @@ class _SplashScreenState extends State<SplashScreen>
       if (!mounted) return;
       setState(() => _error = error);
     }
+  }
+
+  Future<String> _resolveBackendLocale() async {
+    AppLanguage? stored;
+    try {
+      stored = await SharedPreferencesLocalePreferencesRepository().load();
+    } on Object {
+      stored = null;
+    }
+    final device =
+        AppLanguage.fromCode(PlatformDispatcher.instance.locale.languageCode) ??
+        AppLanguage.fallback;
+    return (stored ?? device).backendLocale;
+  }
+
+  Future<List<Category>> _loadNonEmptyCategories(
+    CategoryRepository repository, {
+    required String preferredLocale,
+  }) async {
+    final locales = <String>{
+      preferredLocale,
+      AppLanguage.turkish.backendLocale,
+      AppLanguage.english.backendLocale,
+    };
+
+    for (final locale in locales) {
+      final categories = await _retry(
+        () => repository.getCategories(locale: locale),
+      );
+      if (categories.isNotEmpty) {
+        return categories;
+      }
+    }
+
+    throw StateError('No playable categories are available.');
   }
 
   void _setStage(_SplashStage stage) {
