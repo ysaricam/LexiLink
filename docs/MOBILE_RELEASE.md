@@ -37,8 +37,8 @@ production, supply real ids:
 | What | Where | How |
 | --- | --- | --- |
 | Interstitial ad-unit | `--dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=...` | per build |
-| Rewarded ad-unit | `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` | per build |
-| AdMob **app** id (Android) | `android/app/src/main/AndroidManifest.xml` → `com.google.android.gms.ads.APPLICATION_ID` | edit (currently the test id `ca-app-pub-3940256099942544~3347511713`) |
+| Rewarded ad-unit | `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` | per build; Android production rewarded id: `ca-app-pub-2115638398802394/3077352370`. |
+| AdMob **app** id (Android) | `android/app/src/main/AndroidManifest.xml` → `com.google.android.gms.ads.APPLICATION_ID` | `ca-app-pub-2115638398802394~7914746084`. |
 | AdMob **app** id (iOS) | `ios/Runner/Info.plist` → `GADApplicationIdentifier` | edit (currently the test id) |
 
 Backend SSV (rewarded → Diamond): set `Ads__Ssv__Mode=Production` with real
@@ -69,7 +69,7 @@ flutter build appbundle --release \
   --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
   --dart-define=GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id> \
   --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=<real> \
-  --dart-define=ADMOB_REWARDED_AD_UNIT_ID=<real>
+  --dart-define=ADMOB_REWARDED_AD_UNIT_ID=ca-app-pub-2115638398802394/3077352370
 ```
 
 iOS (archive in Xcode or):

@@ -95,9 +95,13 @@ certificate / provisioning eksik olduğu için bloklu.
 
 ## 4. Reklam & IAP kimlik bilgileri (operatör-sahipli)
 
-- [ ] **AdMob:** gerçek hesap → app id'leri `AndroidManifest.xml`
-      (`APPLICATION_ID`) + `Info.plist` (`GADApplicationIdentifier`) içine yaz,
-      gerçek ad-unit id'lerini `--dart-define` ile geç, backend
+- [ ] **AdMob:** Android app id `AndroidManifest.xml`
+      (`APPLICATION_ID=ca-app-pub-2115638398802394~7914746084`) içine yazıldı.
+      iOS için `Info.plist` (`GADApplicationIdentifier`) hâlâ gerçek iOS AdMob
+      app id bekler. Android rewarded ad-unit id:
+      `ca-app-pub-2115638398802394/3077352370`; release build'de
+      `--dart-define=ADMOB_REWARDED_AD_UNIT_ID=...` ile geç. Interstitial ve
+      iOS rewarded id'leri geldiğinde aynı şekilde ekle. Backend
       `Ads__Ssv__Mode=Production` + gerçek anahtarları ayarla ve AdMob **SSV
       callback**'ini `https://api.wordlope.com/ads/rewarded/callback` yap.
 - [ ] **IAP:** consumable ürünleri (`diamond_100/550/1200/2500`) iki store'da
