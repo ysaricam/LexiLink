@@ -92,23 +92,19 @@ class _SplashScreenState extends State<SplashScreen>
         preferLegacyDeviceId: hasExistingSession,
       );
 
-      final apiClient = ApiClient(
-        config: ApiConfig.local(),
-        httpClient: _httpClient,
-        tokenStore: tokenStore,
-      );
-
       var resolvedAccessToken = accessToken;
       if (resolvedAccessToken == null || resolvedAccessToken.isEmpty) {
         _setStage(_SplashStage.player);
-        final session =
-            await GuestPlayerRepository(
-              apiClient: apiClient,
-            ).registerGuest(
-              deviceId: guestDeviceId,
-              displayName: _guestDisplayName,
-              locale: backendLocale,
-            );
+        final session = await _retry(
+          () =>
+              GuestPlayerRepository(
+                apiClient: _apiClient(tokenStore),
+              ).registerGuest(
+                deviceId: guestDeviceId,
+                displayName: _guestDisplayName,
+                locale: backendLocale,
+              ),
+        );
         await tokenStore.saveAccessToken(session.accessToken);
         await tokenStore.savePlayerId(session.playerId);
         resolvedAccessToken = session.accessToken;
@@ -116,14 +112,18 @@ class _SplashScreenState extends State<SplashScreen>
 
       _setStage(_SplashStage.categories);
       final categories = await _loadNonEmptyCategories(
-        CategoryRepository(apiClient: apiClient),
+        tokenStore,
         preferredLocale: backendLocale,
       );
 
       _setStage(_SplashStage.resources);
       final (energy, diamond) = await (
-        _retry(() => EnergyRepository(apiClient: apiClient).getMe()),
-        _retry(() => DiamondRepository(apiClient: apiClient).getMe()),
+        _retry(
+          () => EnergyRepository(apiClient: _apiClient(tokenStore)).getMe(),
+        ),
+        _retry(
+          () => DiamondRepository(apiClient: _apiClient(tokenStore)).getMe(),
+        ),
       ).wait;
 
       _setStage(_SplashStage.ready);
@@ -158,6 +158,19 @@ class _SplashScreenState extends State<SplashScreen>
     }
   }
 
+  ApiClient _apiClient(TokenStore tokenStore) {
+    return ApiClient(
+      config: ApiConfig.local(),
+      httpClient: _httpClient,
+      tokenStore: tokenStore,
+    );
+  }
+
+  void _restartHttpClient() {
+    _httpClient.close();
+    _httpClient = http.Client();
+  }
+
   Future<String> _resolveBackendLocale() async {
     AppLanguage? stored;
     try {
@@ -172,7 +185,7 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<List<Category>> _loadNonEmptyCategories(
-    CategoryRepository repository, {
+    TokenStore tokenStore, {
     required String preferredLocale,
   }) async {
     final locales = <String>{
@@ -183,7 +196,9 @@ class _SplashScreenState extends State<SplashScreen>
 
     for (final locale in locales) {
       final categories = await _retry(
-        () => repository.getCategories(locale: locale),
+        () => CategoryRepository(
+          apiClient: _apiClient(tokenStore),
+        ).getCategories(locale: locale),
       );
       if (categories.isNotEmpty) {
         return categories;
@@ -199,16 +214,36 @@ class _SplashScreenState extends State<SplashScreen>
   }
 
   Future<T> _retry<T>(Future<T> Function() request) async {
-    Object? lastError;
-    for (var attempt = 0; attempt < 4; attempt++) {
+    const maxAttempts = 4;
+    for (var attempt = 0; attempt < maxAttempts; attempt++) {
       try {
         return await request();
-      } on Object catch (error) {
-        lastError = error;
+      } on Object catch (error, stackTrace) {
+        if (!mounted) {
+          Error.throwWithStackTrace(error, stackTrace);
+        }
+
+        if (!_isRetryable(error) || attempt == maxAttempts - 1) {
+          Error.throwWithStackTrace(error, stackTrace);
+        }
+
+        _restartHttpClient();
         await Future<void>.delayed(Duration(milliseconds: 350 * (attempt + 1)));
       }
     }
-    Error.throwWithStackTrace(lastError!, StackTrace.current);
+
+    throw StateError('Retry loop exited unexpectedly.');
+  }
+
+  bool _isRetryable(Object error) {
+    if (error is ApiException) {
+      return error.statusCode == 0 ||
+          error.statusCode == 408 ||
+          error.statusCode == 429 ||
+          error.statusCode >= 500;
+    }
+
+    return false;
   }
 
   bool _isExpiredJwt(String token) {
@@ -262,13 +297,18 @@ class _SplashScreenState extends State<SplashScreen>
                   stage: _stage,
                 )
               else
-                _SplashRetry(error: _error!, onRetry: _bootstrap),
+                _SplashRetry(error: _error!, onRetry: _handleRetry),
               const Spacer(flex: 3),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _handleRetry() {
+    _restartHttpClient();
+    unawaited(_bootstrap());
   }
 }
 

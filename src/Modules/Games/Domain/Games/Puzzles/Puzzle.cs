@@ -10,10 +10,10 @@ public sealed class Puzzle : ValueObject
 {
     private readonly List<OptimalPathStep> _optimalPath;
 
-    public CategoryId CategoryId { get; }
+    public CategoryId CategoryId { get; } = default!;
     public Difficulty Difficulty { get; }
-    public LinkId StartLinkId { get; }
-    public LinkId TargetLinkId { get; }
+    public LinkId StartLinkId { get; } = default!;
+    public LinkId TargetLinkId { get; } = default!;
 
     public IReadOnlyList<LinkId> OptimalPath =>
         _optimalPath

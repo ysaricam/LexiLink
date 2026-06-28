@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lexilink_app/features/admin/presentation/admin_placeholder_page.dart';
@@ -19,6 +20,11 @@ import 'package:lexilink_app/features/quests/presentation/quests_screen.dart';
 import 'package:lexilink_app/features/rewarded_ads/presentation/earn_diamonds_screen.dart';
 import 'package:lexilink_app/features/settings/presentation/settings_screen.dart';
 import 'package:lexilink_app/features/splash/presentation/splash_screen.dart';
+
+const bool _adminRoutesEnabled = bool.fromEnvironment(
+  'LEXILINK_ENABLE_ADMIN',
+  defaultValue: !kReleaseMode,
+);
 
 final appRouter = GoRouter(
   redirect: _adminAuthGuard,
@@ -72,88 +78,92 @@ final appRouter = GoRouter(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),
     ),
-    GoRoute(
-      path: '/admin/login',
-      builder: (context, state) => const AdminLoginScreen(),
-    ),
-    // /admin → /admin/quests (default destination)
-    GoRoute(
-      path: '/admin',
-      redirect: (_, _) => '/admin/quests',
-    ),
-    ShellRoute(
-      builder: (context, state, child) => AppAdminShell(
-        location: state.uri.toString(),
-        child: child,
-      ),
-      routes: [
-        GoRoute(
-          path: '/admin/quests',
-          builder: (context, state) => const AdminQuestsPage(),
-        ),
-        GoRoute(
-          path: '/admin/players',
-          builder: (context, state) => const AdminPlayersPage(),
-        ),
-        GoRoute(
-          path: '/admin/energy',
-          builder: (context, state) => const AdminEnergyPage(),
-        ),
-        GoRoute(
-          path: '/admin/hint',
-          builder: (context, state) => const AdminHintPage(),
-        ),
-        GoRoute(
-          path: '/admin/undo',
-          builder: (context, state) => const AdminUndoPage(),
-        ),
-        GoRoute(
-          path: '/admin/reset',
-          builder: (context, state) => const AdminResetPage(),
-        ),
-        GoRoute(
-          path: '/admin/diamond',
-          builder: (context, state) => const AdminDiamondPage(),
-        ),
-        GoRoute(
-          path: '/admin/market',
-          redirect: (_, _) => '/admin/market/categories',
-        ),
-        GoRoute(
-          path: '/admin/market/categories',
-          builder: (context, state) => const AdminMarketPage(),
-        ),
-        GoRoute(
-          path: '/admin/market/items',
-          builder: (context, state) => const AdminMarketPage(
-            initialTab: AdminMarketTab.items,
-          ),
-        ),
-        GoRoute(
-          path: '/admin/market/orders',
-          builder: (context, state) => const AdminMarketPage(
-            initialTab: AdminMarketTab.orders,
-          ),
-        ),
-        GoRoute(
-          path: '/admin/market/orders/:playerId',
-          builder: (context, state) => AdminMarketPage(
-            initialTab: AdminMarketTab.orders,
-            initialPlayerId: state.pathParameters['playerId'],
-          ),
-        ),
-        GoRoute(
-          path: '/admin/content',
-          builder: (context, state) => const AdminContentScreen(),
-        ),
-        GoRoute(
-          path: '/admin/audit',
-          builder: (context, state) => const AdminAuditPage(),
-        ),
-      ],
-    ),
+    if (_adminRoutesEnabled) ..._adminRoutes,
   ],
 );
+
+final List<RouteBase> _adminRoutes = [
+  GoRoute(
+    path: '/admin/login',
+    builder: (context, state) => const AdminLoginScreen(),
+  ),
+  // /admin → /admin/quests (default destination)
+  GoRoute(
+    path: '/admin',
+    redirect: (_, _) => '/admin/quests',
+  ),
+  ShellRoute(
+    builder: (context, state, child) => AppAdminShell(
+      location: state.uri.toString(),
+      child: child,
+    ),
+    routes: [
+      GoRoute(
+        path: '/admin/quests',
+        builder: (context, state) => const AdminQuestsPage(),
+      ),
+      GoRoute(
+        path: '/admin/players',
+        builder: (context, state) => const AdminPlayersPage(),
+      ),
+      GoRoute(
+        path: '/admin/energy',
+        builder: (context, state) => const AdminEnergyPage(),
+      ),
+      GoRoute(
+        path: '/admin/hint',
+        builder: (context, state) => const AdminHintPage(),
+      ),
+      GoRoute(
+        path: '/admin/undo',
+        builder: (context, state) => const AdminUndoPage(),
+      ),
+      GoRoute(
+        path: '/admin/reset',
+        builder: (context, state) => const AdminResetPage(),
+      ),
+      GoRoute(
+        path: '/admin/diamond',
+        builder: (context, state) => const AdminDiamondPage(),
+      ),
+      GoRoute(
+        path: '/admin/market',
+        redirect: (_, _) => '/admin/market/categories',
+      ),
+      GoRoute(
+        path: '/admin/market/categories',
+        builder: (context, state) => const AdminMarketPage(),
+      ),
+      GoRoute(
+        path: '/admin/market/items',
+        builder: (context, state) => const AdminMarketPage(
+          initialTab: AdminMarketTab.items,
+        ),
+      ),
+      GoRoute(
+        path: '/admin/market/orders',
+        builder: (context, state) => const AdminMarketPage(
+          initialTab: AdminMarketTab.orders,
+        ),
+      ),
+      GoRoute(
+        path: '/admin/market/orders/:playerId',
+        builder: (context, state) => AdminMarketPage(
+          initialTab: AdminMarketTab.orders,
+          initialPlayerId: state.pathParameters['playerId'],
+        ),
+      ),
+      GoRoute(
+        path: '/admin/content',
+        builder: (context, state) => const AdminContentScreen(),
+      ),
+      GoRoute(
+        path: '/admin/audit',
+        builder: (context, state) => const AdminAuditPage(),
+      ),
+    ],
+  ),
+];
 
 /// Router-level guard for /admin/* paths. Non-admin routes return
 /// synchronously so the player-facing splash/home stack is not stalled
@@ -166,6 +176,7 @@ FutureOr<String?> _adminAuthGuard(
 ) {
   final path = state.uri.path;
   if (!path.startsWith('/admin')) return null;
+  if (!_adminRoutesEnabled) return '/';
   if (path == '/admin/login') return null;
   return _redirectIfNoAdminToken();
 }

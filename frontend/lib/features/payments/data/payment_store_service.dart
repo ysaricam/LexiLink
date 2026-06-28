@@ -99,10 +99,17 @@ class InAppPurchaseStoreService implements PaymentStoreService {
     Set<String> productIds,
     ProductDetailsResponse response,
   ) {
+    if (!kDebugMode) {
+      return;
+    }
+
     debugPrint('$prefix requested ids: $productIds');
+    final returnedProducts = response.productDetails
+        .map((p) => '${p.id} / ${p.title} / ${p.price}')
+        .toList();
     debugPrint(
       '$prefix returned products: '
-      '${response.productDetails.map((p) => '${p.id} / ${p.title} / ${p.price}').toList()}',
+      '$returnedProducts',
     );
     debugPrint('$prefix not found ids: ${response.notFoundIDs}');
     debugPrint('$prefix error: ${response.error}');

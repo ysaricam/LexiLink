@@ -25,6 +25,7 @@ class AdConfig {
   static String get interstitialAdUnitId {
     const override = String.fromEnvironment('ADMOB_INTERSTITIAL_AD_UNIT_ID');
     if (override.isNotEmpty) return override;
+    if (kReleaseMode) return '';
     return _isIos ? _testInterstitialIos : _testInterstitialAndroid;
   }
 
@@ -33,6 +34,7 @@ class AdConfig {
   static String get rewardedAdUnitId {
     const override = String.fromEnvironment('ADMOB_REWARDED_AD_UNIT_ID');
     if (override.isNotEmpty) return override;
+    if (kReleaseMode) return '';
     return _isIos ? _testRewardedIos : _testRewardedAndroid;
   }
 

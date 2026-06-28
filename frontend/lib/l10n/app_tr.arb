@@ -226,7 +226,7 @@
   "adminNavContent": "İçerik",
   "adminNavAudit": "Denetim",
   "adminSignInTitle": "Admin girişi",
-  "adminSignInHelp": "Geliştirme doğrulayıcısı: admin e-postanı ve tam olarak \"dev:admin:<email>\" token’ını gir. Production SSO daha sonra gelecek.",
+  "adminSignInHelp": "Yönetici e-postanı ve erişim tokenını gir.",
   "adminEmailLabel": "E-posta",
   "adminExternalTokenLabel": "Harici token",
   "adminSigningIn": "Giriş yapılıyor...",

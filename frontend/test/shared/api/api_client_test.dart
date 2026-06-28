@@ -97,5 +97,55 @@ void main() {
         ),
       );
     });
+
+    test('maps request timeouts to network api errors', () async {
+      final client = ApiClient(
+        config: const ApiConfig(
+          baseUrl: 'http://localhost:5000',
+          timeout: Duration(milliseconds: 1),
+        ),
+        tokenStore: InMemoryTokenStore(),
+        httpClient: MockClient((_) async {
+          await Future<void>.delayed(const Duration(seconds: 1));
+          return http.Response('{"ok":true}', 200);
+        }),
+      );
+
+      await expectLater(
+        client.getJson('/slow'),
+        throwsA(
+          isA<ApiException>()
+              .having((error) => error.statusCode, 'statusCode', 0)
+              .having(
+                (error) => error.message,
+                'message',
+                'Connection timed out. Try again.',
+              ),
+        ),
+      );
+    });
+
+    test('maps http client failures to network api errors', () async {
+      final client = ApiClient(
+        config: const ApiConfig(baseUrl: 'http://localhost:5000'),
+        tokenStore: InMemoryTokenStore(),
+        httpClient: MockClient((_) async {
+          throw http.ClientException('connection closed');
+        }),
+      );
+
+      await expectLater(
+        client.getJson('/closed'),
+        throwsA(
+          isA<ApiException>()
+              .having((error) => error.statusCode, 'statusCode', 0)
+              .having(
+                (error) => error.message,
+                'message',
+                'We could not reach the server. Try again.',
+              ),
+        ),
+      );
+    });
   });
 }

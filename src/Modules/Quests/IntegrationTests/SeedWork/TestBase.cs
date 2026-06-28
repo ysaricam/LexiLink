@@ -77,6 +77,7 @@ public abstract class TestBase
         services.AddSingleton<IHintGuard>(new AlwaysAllowingHintGuard());
         services.AddSingleton<IUndoGuard>(new AlwaysAllowingUndoGuard());
         services.AddSingleton<IResetGuard>(new AlwaysAllowingResetGuard());
+        services.AddSingleton<IQuestEnergyRewardGuard>(new AlwaysAllowingQuestEnergyRewardGuard());
         services.AddSingleton<MutableQuestCounterReader>();
         services.AddSingleton<IQuestCounterReader>(sp => sp.GetRequiredService<MutableQuestCounterReader>());
 
@@ -166,6 +167,15 @@ public abstract class TestBase
     private sealed class AlwaysAllowingResetGuard : IResetGuard
     {
         public Task EnsureResetAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
+            Task.CompletedTask;
+    }
+
+    private sealed class AlwaysAllowingQuestEnergyRewardGuard : IQuestEnergyRewardGuard
+    {
+        public Task EnsureEnergyRewardCanBeAcceptedAsync(
+            Guid playerId,
+            int amount,
+            CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
     }
 

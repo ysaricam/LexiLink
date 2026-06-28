@@ -349,7 +349,7 @@
   "adminNavContent": "Content",
   "adminNavAudit": "Audit",
   "adminSignInTitle": "Admin sign-in",
-  "adminSignInHelp": "Development verifier: enter your admin email and the literal \"dev:admin:<email>\" token. Production SSO arrives later.",
+  "adminSignInHelp": "Enter your administrator email and access token.",
   "adminEmailLabel": "Email",
   "adminExternalTokenLabel": "External token",
   "adminSigningIn": "Signing in...",

@@ -11,19 +11,19 @@ namespace LexiLink.Modules.Games.Domain.Games;
 public class Game : Entity, IAggregateRoot
 {
     private readonly List<GameHistoryStep> _history;
-    private readonly Puzzle _puzzle;
+    private readonly Puzzle _puzzle = null!;
     private Score? _score;
 
-    public GameId Id { get; private set; }
+    public GameId Id { get; private set; } = default!;
     public Guid PlayerId { get; private set; }
 
-    private LinkId _currentLinkId;
+    private LinkId _currentLinkId = default!;
 
     private GameState _gameState;
 
-    private StepBudget _stepBudget;
+    private StepBudget _stepBudget = null!;
 
-    private HintAllowance _hintAllowance;
+    private HintAllowance _hintAllowance = null!;
     private int _undosUsed;
     private int _resetsUsed;
 

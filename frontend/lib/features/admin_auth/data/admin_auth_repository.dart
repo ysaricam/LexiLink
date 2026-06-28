@@ -7,11 +7,9 @@ class AdminAuthRepository {
 
   final ApiClient _apiClient;
 
-  /// Exchanges an external admin identity (today: the
-  /// `dev:admin:{email}` development verifier; production sso later)
-  /// for a first-party admin JWT. The returned [AdminSession] is what
-  /// callers persist via the admin token store and inject into subsequent
-  /// admin API calls.
+  /// Exchanges an external admin identity for a first-party admin JWT. The
+  /// returned [AdminSession] is what callers persist via the admin token store
+  /// and inject into subsequent admin API calls.
   Future<AdminSession> exchangeToken({
     required String email,
     required String externalToken,

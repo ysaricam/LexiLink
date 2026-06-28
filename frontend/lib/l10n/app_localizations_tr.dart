@@ -708,8 +708,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get adminSignInTitle => 'Admin girişi';
 
   @override
-  String get adminSignInHelp =>
-      'Geliştirme doğrulayıcısı: admin e-postanı ve tam olarak \"dev:admin:<email>\" token’ını gir. Production SSO daha sonra gelecek.';
+  String get adminSignInHelp => 'Yönetici e-postanı ve erişim tokenını gir.';
 
   @override
   String get adminEmailLabel => 'E-posta';

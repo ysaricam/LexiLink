@@ -6,7 +6,7 @@ namespace LexiLink.Modules.Games.Domain.Games.Puzzles;
 public sealed class OptimalPathStep : ValueObject
 {
     public int Position { get; }
-    public LinkId LinkId { get; }
+    public LinkId LinkId { get; } = default!;
 
     private OptimalPathStep() { }
 

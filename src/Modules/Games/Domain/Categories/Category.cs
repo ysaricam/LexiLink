@@ -6,11 +6,11 @@ namespace LexiLink.Modules.Games.Domain.Categories;
 
 public class Category : Entity, IAggregateRoot
 {
-    public CategoryId Id { get; private set; }
+    public CategoryId Id { get; private set; } = default!;
 
-    private string _name;
-    private string _description;
-    private string _language;
+    private string _name = null!;
+    private string _description = null!;
+    private string _language = null!;
 
     public string Language => _language;
 

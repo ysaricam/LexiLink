@@ -46,8 +46,11 @@ class AdsService {
   Future<void> maybeShowInterstitial(double probability) async {
     if (!_platform.isSupported || !_initialized) return;
     if (_random.nextDouble() >= probability) return;
+    final adUnitId = AdConfig.interstitialAdUnitId;
+    if (adUnitId.isEmpty) return;
+
     try {
-      await _platform.showInterstitial(AdConfig.interstitialAdUnitId);
+      await _platform.showInterstitial(adUnitId);
     } on Object catch (_) {
       // Best-effort: a failed interstitial never interrupts gameplay.
     }
@@ -67,9 +70,15 @@ class AdsService {
       onUnavailable();
       return;
     }
+    final adUnitId = AdConfig.rewardedAdUnitId;
+    if (adUnitId.isEmpty) {
+      onUnavailable();
+      return;
+    }
+
     try {
       await _platform.showRewarded(
-        adUnitId: AdConfig.rewardedAdUnitId,
+        adUnitId: adUnitId,
         userId: userId,
         onClosed: onClosed,
         onUnavailable: onUnavailable,

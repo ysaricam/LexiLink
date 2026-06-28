@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -97,7 +98,20 @@ class ApiClient {
   }
 
   Future<http.Response> _send(Future<http.Response> Function() request) async {
-    final response = await request().timeout(_config.timeout);
+    final http.Response response;
+    try {
+      response = await request().timeout(_config.timeout);
+    } on TimeoutException {
+      throw const ApiException(
+        statusCode: 0,
+        message: 'Connection timed out. Try again.',
+      );
+    } on http.ClientException {
+      throw const ApiException(
+        statusCode: 0,
+        message: 'We could not reach the server. Try again.',
+      );
+    }
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
       return response;

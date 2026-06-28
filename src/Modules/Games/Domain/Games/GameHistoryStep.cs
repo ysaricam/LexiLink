@@ -6,7 +6,7 @@ namespace LexiLink.Modules.Games.Domain.Games;
 public sealed class GameHistoryStep : ValueObject
 {
     public int StepNumber { get; }
-    public LinkId LinkId { get; }
+    public LinkId LinkId { get; } = default!;
 
     private GameHistoryStep() { }
 

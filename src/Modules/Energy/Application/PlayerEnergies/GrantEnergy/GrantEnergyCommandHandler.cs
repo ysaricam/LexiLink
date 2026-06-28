@@ -25,6 +25,6 @@ internal class GrantEnergyCommandHandler : ICommandHandler<GrantEnergyCommand>
             cancellationToken)
             ?? throw new NotFoundException(nameof(PlayerEnergy), request.PlayerId);
 
-        playerEnergy.GrantBonus(request.Amount, _clock.UtcNow);
+        playerEnergy.GrantBonusCapped(request.Amount, _clock.UtcNow);
     }
 }

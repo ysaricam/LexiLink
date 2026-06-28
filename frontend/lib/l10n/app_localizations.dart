@@ -1373,7 +1373,7 @@ abstract class AppLocalizations {
   /// No description provided for @adminSignInHelp.
   ///
   /// In en, this message translates to:
-  /// **'Development verifier: enter your admin email and the literal \"dev:admin:<email>\" token. Production SSO arrives later.'**
+  /// **'Enter your administrator email and access token.'**
   String get adminSignInHelp;
 
   /// No description provided for @adminEmailLabel.

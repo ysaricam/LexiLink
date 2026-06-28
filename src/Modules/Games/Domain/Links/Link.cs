@@ -7,11 +7,11 @@ namespace LexiLink.Modules.Games.Domain.Links;
 
 public class Link : Entity, IAggregateRoot
 {
-    public LinkId Id { get; }
+    public LinkId Id { get; } = default!;
     private readonly List<OutgoingLink> _outgoingLinks;
-    private readonly CategoryId _categoryId;
-    private string _value;
-    private string _description;
+    private readonly CategoryId _categoryId = default!;
+    private string _value = null!;
+    private string _description = null!;
     private bool _isActive;
 
     public CategoryId CategoryId => _categoryId;

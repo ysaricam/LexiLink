@@ -50,8 +50,12 @@ internal class EnergyGrant : IEnergyGrant, IQuestEnergyRewardGuard
     public Task EnsureEnergyRewardCanBeAcceptedAsync(
         Guid playerId,
         int amount,
-        CancellationToken cancellationToken = default) =>
-        EnsureCanAcceptAsync(playerId, amount, cancellationToken);
+        CancellationToken cancellationToken = default)
+    {
+        // Quest rewards are capped during delivery, so claiming a completed
+        // quest is never blocked just because the player's energy is full.
+        return Task.CompletedTask;
+    }
 
     public Task GrantAsync(
         Guid playerId,

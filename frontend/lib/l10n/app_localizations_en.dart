@@ -705,7 +705,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get adminSignInHelp =>
-      'Development verifier: enter your admin email and the literal \"dev:admin:<email>\" token. Production SSO arrives later.';
+      'Enter your administrator email and access token.';
 
   @override
   String get adminEmailLabel => 'Email';

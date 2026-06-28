@@ -713,7 +713,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get adminSignInHelp =>
-      'Entwicklungsprüfer: Gib deine Admin-E-Mail und exakt das Token \"dev:admin:<email>\" ein. Production-SSO folgt später.';
+      'Gib deine Administrator-E-Mail und dein Zugriffstoken ein.';
 
   @override
   String get adminEmailLabel => 'E-Mail';

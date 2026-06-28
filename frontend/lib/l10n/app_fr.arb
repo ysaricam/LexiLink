@@ -226,7 +226,7 @@
   "adminNavContent": "Contenu",
   "adminNavAudit": "Audit",
   "adminSignInTitle": "Connexion admin",
-  "adminSignInHelp": "Vérificateur de développement : saisissez votre e-mail admin et le token exact \"dev:admin:<email>\". Le SSO de production viendra plus tard.",
+  "adminSignInHelp": "Saisissez votre e-mail administrateur et votre jeton d'accès.",
   "adminEmailLabel": "E-mail",
   "adminExternalTokenLabel": "Token externe",
   "adminSigningIn": "Connexion...",
