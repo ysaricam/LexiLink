@@ -15,7 +15,7 @@ public class OutgoingLinkSelectorTests
     private static readonly Guid H = Id(8);
 
     [Test]
-    public void Select_WhenCandidateCountAtMostLimit_ReturnsAllSortedById()
+    public void Select_WhenCandidateCountAtMostLimit_ReturnsAllInDeterministicOrder()
     {
         var candidates = new[] { D, A, C, B };
         var result = OutgoingLinkSelector.Select(
@@ -26,11 +26,18 @@ public class OutgoingLinkSelectorTests
             pathToTargetLinkId: null,
             limit: 6);
 
-        result.Should().Equal(A, B, C, D);
+        result.Should().BeEquivalentTo(candidates);
+        result.Should().Equal(OutgoingLinkSelector.Select(
+            candidates,
+            EmptyDegrees(candidates),
+            EmptyPairwise(),
+            previousLinkId: null,
+            pathToTargetLinkId: null,
+            limit: 6));
     }
 
     [Test]
-    public void Select_WhenAtMostLimitAndPreviousProvided_PutsPreviousFirst()
+    public void Select_WhenAtMostLimitAndPreviousProvided_PutsPreviousFirstAndShufflesRest()
     {
         var candidates = new[] { D, A, C, B };
         var result = OutgoingLinkSelector.Select(
@@ -41,7 +48,8 @@ public class OutgoingLinkSelectorTests
             pathToTargetLinkId: null,
             limit: 6);
 
-        result.Should().Equal(C, A, B, D);
+        result[0].Should().Be(C);
+        result.Skip(1).Should().BeEquivalentTo(new[] { A, B, D });
     }
 
     [Test]
@@ -72,7 +80,7 @@ public class OutgoingLinkSelectorTests
     }
 
     [Test]
-    public void Select_DeterministicTieBreak_LowerIdWins()
+    public void Select_DeterministicTieBreak_LowerIdWinsSelectionBeforeShuffle()
     {
         // All pairwise scores zero; all degrees equal — must fall back to id ASC.
         var candidates = new[] { F, A, D, B, E, C, G };
@@ -84,7 +92,7 @@ public class OutgoingLinkSelectorTests
             pathToTargetLinkId: null,
             limit: 6);
 
-        result.Should().Equal(A, B, C, D, E, F);
+        result.Should().BeEquivalentTo(new[] { A, B, C, D, E, F });
     }
 
     [Test]
@@ -103,7 +111,7 @@ public class OutgoingLinkSelectorTests
             pathToTargetLinkId: null,
             limit: 6);
 
-        result.Should().Equal(C, G, D, E, F, A);
+        result.Should().BeEquivalentTo(new[] { C, G, D, E, F, A });
     }
 
     [Test]
@@ -118,7 +126,7 @@ public class OutgoingLinkSelectorTests
             pathToTargetLinkId: null,
             limit: 6);
 
-        result.Should().Equal(A, B, C, D, E, F);
+        result.Should().BeEquivalentTo(new[] { A, B, C, D, E, F });
         result.Should().NotContain(H);
     }
 
@@ -233,8 +241,26 @@ public class OutgoingLinkSelectorTests
 
         result.Count.Should().Be(6);
         result[0].Should().Be(H, "previous is the first slot");
-        result[1].Should().Be(G, "path-to-target is the second slot");
+        result.Should().Contain(G, "path-to-target must be present without leaking a fixed slot");
         result.Distinct().Count().Should().Be(6, "no duplicates");
+    }
+
+    [Test]
+    public void Select_DoesNotAlwaysPlacePathToTargetNextToPrevious()
+    {
+        var candidates = new[] { A, B, C, D, E, F, G, H };
+        var result = OutgoingLinkSelector.Select(
+            candidates,
+            EmptyDegrees(candidates),
+            EmptyPairwise(),
+            previousLinkId: H,
+            pathToTargetLinkId: G,
+            limit: 6);
+
+        result[0].Should().Be(H, "previous remains the stable undo slot");
+        result.Should().Contain(G, "path-to-target must remain playable");
+        result[1].Should().NotBe(G,
+            "path-to-target should not be pinned next to previous and leak the answer");
     }
 
     [Test]

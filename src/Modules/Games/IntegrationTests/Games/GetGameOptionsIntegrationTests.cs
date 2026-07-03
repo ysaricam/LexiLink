@@ -252,6 +252,47 @@ public class GetGameOptionsIntegrationTests : TestBase
             "the only outlink leading toward target must be locked in");
     }
 
+    [Test]
+    public async Task GetGameOptions_DoesNotPinPathToTargetNextToPrevious()
+    {
+        var categoryId = Id(100);
+        var optionIds = new[] { Id(1), Id(2), Id(3), Id(4), Id(5), Id(6) };
+        var targetId = Id(7);
+        var previousId = Id(8);
+        var centerId = Id(9);
+
+        await SeedCategoryAsync(categoryId);
+        await SeedLinkAsync(previousId, categoryId, "previous");
+        await SeedLinkAsync(centerId, categoryId, "center");
+        await SeedLinkAsync(targetId, categoryId, "target");
+        foreach (var optionId in optionIds)
+        {
+            await SeedLinkAsync(optionId, categoryId, $"option-{optionId}");
+            await SeedOutgoingAsync(centerId, optionId);
+        }
+        await SeedOutgoingAsync(centerId, targetId);
+        await SeedOutgoingAsync(previousId, centerId);
+
+        var gameId = await InsertInProgressGameAsync(
+            categoryId: categoryId,
+            startLinkId: previousId,
+            currentLinkId: previousId,
+            targetLinkId: targetId);
+
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, centerId));
+
+        var options = await ExecuteQueryAsync(new GetGameOptionsQuery(gameId));
+
+        options.Count.Should().Be(6);
+        options[0].Id.Should().Be(previousId,
+            "previous remains the stable undo tile");
+        options.Select(o => o.Id).Should().Contain(targetId,
+            "the path-to-target option must remain playable");
+        options[1].Id.Should().NotBe(targetId,
+            "the correct next step should not be pinned next to previous");
+        options.Select(o => o.Id).Should().OnlyHaveUniqueItems();
+    }
+
     /// <summary>
     /// Seeds: 1 Category; `center` connected to 6 cluster leafs (cluster1..6)
     /// AND `isolated`; cluster leafs are fully connected to each other;
@@ -402,4 +443,37 @@ public class GetGameOptionsIntegrationTests : TestBase
 
         return gameId;
     }
+
+    private async Task SeedCategoryAsync(Guid categoryId)
+    {
+        await DbContext.Database.ExecuteSqlRawAsync(
+            """
+            INSERT INTO "games"."Categories" ("Id", "Name", "Description", "Language")
+            VALUES ({0}, {1}, {2}, 'tr-TR');
+            """,
+            categoryId, $"category-{categoryId}", "test category");
+    }
+
+    private async Task SeedLinkAsync(Guid linkId, Guid categoryId, string value)
+    {
+        await DbContext.Database.ExecuteSqlRawAsync(
+            """
+            INSERT INTO "games"."Links" ("Id", "Value", "Description", "IsActive", "CategoryId")
+            VALUES ({0}, {1}, '', TRUE, {2});
+            """,
+            linkId, value, categoryId);
+    }
+
+    private async Task SeedOutgoingAsync(Guid from, Guid to)
+    {
+        await DbContext.Database.ExecuteSqlRawAsync(
+            """
+            INSERT INTO "games"."LinkOutgoingLinks" ("LinkId", "OutgoingLinkId")
+            VALUES ({0}, {1});
+            """,
+            from, to);
+    }
+
+    private static Guid Id(int n) =>
+        new($"00000000-0000-0000-0000-{n:D12}");
 }

@@ -109,7 +109,7 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
 
         if (candidates.Count <= OptionLimit)
         {
-            return Order(candidates.Select(c => c.Id).ToList(), previousLinkId, pathToTargetLinkId)
+            return Order(candidates.Select(c => c.Id).ToList(), previousLinkId)
                 .Select(id => ToDto(byId[id]))
                 .ToList();
         }
@@ -329,23 +329,8 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
         return path.Count >= 2 ? path[^2] : null;
     }
 
-    private static List<Guid> Order(List<Guid> ids, Guid? previousLinkId, Guid? pathToTargetLinkId)
-    {
-        var sorted = ids.OrderBy(id => id).ToList();
-        if (pathToTargetLinkId is { } target
-            && target != previousLinkId
-            && sorted.Contains(target))
-        {
-            sorted.Remove(target);
-            sorted.Insert(0, target);
-        }
-        if (previousLinkId is { } prev && sorted.Contains(prev))
-        {
-            sorted.Remove(prev);
-            sorted.Insert(0, prev);
-        }
-        return sorted;
-    }
+    private static List<Guid> Order(List<Guid> ids, Guid? previousLinkId)
+        => OutgoingLinkOrderer.OrderForDisplay(ids, previousLinkId);
 
     private static OutgoingLinkDto ToDto(CandidateRow row) =>
         new(row.Id, row.Value, row.IsActive);

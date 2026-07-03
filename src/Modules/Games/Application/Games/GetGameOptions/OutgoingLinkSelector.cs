@@ -27,7 +27,7 @@ internal static class OutgoingLinkSelector
 
         if (candidates.Count <= limit)
         {
-            return Order(candidates, previousLinkId, pathToTargetLinkId);
+            return Order(candidates, previousLinkId);
         }
 
         var remaining = new HashSet<Guid>(candidates);
@@ -67,29 +67,13 @@ internal static class OutgoingLinkSelector
             remaining.Remove(next);
         }
 
-        return selected;
+        return Order(selected, previousLinkId);
     }
 
     private static List<Guid> Order(
         IReadOnlyList<Guid> candidates,
-        Guid? previousLinkId,
-        Guid? pathToTargetLinkId)
-    {
-        var sorted = candidates.OrderBy(id => id).ToList();
-        if (pathToTargetLinkId is { } target
-            && target != previousLinkId
-            && sorted.Contains(target))
-        {
-            sorted.Remove(target);
-            sorted.Insert(0, target);
-        }
-        if (previousLinkId is { } prev && sorted.Contains(prev))
-        {
-            sorted.Remove(prev);
-            sorted.Insert(0, prev);
-        }
-        return sorted;
-    }
+        Guid? previousLinkId)
+        => OutgoingLinkOrderer.OrderForDisplay(candidates, previousLinkId);
 
     private static Guid PickBest(
         HashSet<Guid> pool,
