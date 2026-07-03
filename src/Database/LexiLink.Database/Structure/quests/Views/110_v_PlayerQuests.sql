@@ -4,6 +4,8 @@ SELECT
     "PlayerId",
     "QuestDefinitionId",
     "ProgressBaselineSnapshot",
+    "RemainingEnergyReward",
+    "NonEnergyRewardsClaimed",
     "State",
     "IssuedAt",
     "ClaimedAt",

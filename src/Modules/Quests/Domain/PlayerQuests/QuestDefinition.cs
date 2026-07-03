@@ -14,9 +14,9 @@ namespace LexiLink.Modules.Quests.Domain.PlayerQuests;
 ///
 /// Sprint H expanded the single reward int into Energy + Hint; UR5
 /// adds Undo + Reset; D3 adds Diamond. All reward amounts are non-negative and at
-/// least one must be positive. Each resource module consumes
-/// <c>QuestClaimedIntegrationEvent</c> independently and grants its
-/// portion.
+/// least one must be positive. Energy is granted synchronously during
+/// claim so any overflow can remain on the quest; the other resource
+/// modules consume <c>QuestClaimedIntegrationEvent</c> independently.
 /// </summary>
 public sealed class QuestDefinition : Entity, IAggregateRoot
 {

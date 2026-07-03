@@ -4,6 +4,8 @@ CREATE TABLE IF NOT EXISTS "quests"."PlayerQuests"
     "PlayerId"                 uuid                        NOT NULL,
     "QuestDefinitionId"        uuid                        NOT NULL,
     "ProgressBaselineSnapshot" integer                     NOT NULL,
+    "RemainingEnergyReward"    integer                     NOT NULL DEFAULT 0,
+    "NonEnergyRewardsClaimed"  boolean                     NOT NULL DEFAULT FALSE,
     "State"                    varchar(32)                 NOT NULL,
     "IssuedAt"                 timestamp without time zone NOT NULL,
     "ClaimedAt"                timestamp without time zone NULL,

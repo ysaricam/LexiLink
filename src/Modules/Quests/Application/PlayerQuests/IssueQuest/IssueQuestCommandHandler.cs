@@ -62,6 +62,7 @@ internal class IssueQuestCommandHandler : ICommandHandler<IssueQuestCommand>
             request.PlayerId,
             definitionId,
             baseline,
+            definition.EnergyReward,
             now,
             expiresAt);
 

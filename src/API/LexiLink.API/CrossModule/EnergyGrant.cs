@@ -10,7 +10,7 @@ using LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 namespace LexiLink.API.CrossModule;
 
 // API-host adapter for Market -> Energy grants.
-internal class EnergyGrant : IEnergyGrant, IQuestEnergyRewardGuard
+internal class EnergyGrant : IEnergyGrant, IQuestEnergyRewardGrant
 {
     private readonly IEnergyModule _energyModule;
 
@@ -47,14 +47,23 @@ internal class EnergyGrant : IEnergyGrant, IQuestEnergyRewardGuard
         }
     }
 
-    public Task EnsureEnergyRewardCanBeAcceptedAsync(
+    public async Task<int> GrantEnergyRewardAsync(
         Guid playerId,
         int amount,
         CancellationToken cancellationToken = default)
     {
-        // Quest rewards are capped during delivery, so claiming a completed
-        // quest is never blocked just because the player's energy is full.
-        return Task.CompletedTask;
+        if (amount <= 0)
+        {
+            return 0;
+        }
+
+        await _energyModule.ExecuteCommandAsync(
+            new EnsurePlayerEnergyExistsCommand(playerId),
+            cancellationToken);
+
+        return await _energyModule.ExecuteCommandAsync(
+            new GrantCappedEnergyCommand(playerId, amount),
+            cancellationToken);
     }
 
     public Task GrantAsync(

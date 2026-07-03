@@ -104,9 +104,11 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         const string insertSql = """
             INSERT INTO "quests"."PlayerQuests"
                 ("Id", "PlayerId", "QuestDefinitionId", "ProgressBaselineSnapshot",
+                 "RemainingEnergyReward", "NonEnergyRewardsClaimed",
                  "State", "IssuedAt", "ClaimedAt", "ExpiresAt")
             VALUES
                 (@Id, @PlayerId, @QuestDefinitionId, @ProgressBaselineSnapshot,
+                 @RemainingEnergyReward, FALSE,
                  @State, @IssuedAt, NULL, @ExpiresAt)
             ON CONFLICT ("PlayerId", "QuestDefinitionId") DO NOTHING;
         """;
@@ -138,6 +140,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
                     PlayerId = playerId,
                     QuestDefinitionId = def.Id,
                     ProgressBaselineSnapshot = baselineSnapshot,
+                    RemainingEnergyReward = def.EnergyReward,
                     State = nameof(QuestState.Active),
                     IssuedAt = now,
                     ExpiresAt = expiresAt,
@@ -175,6 +178,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
                 pq."PlayerId"                 AS "PlayerId",
                 pq."QuestDefinitionId"        AS "QuestDefinitionId",
                 pq."ProgressBaselineSnapshot" AS "ProgressBaselineSnapshot",
+                pq."RemainingEnergyReward"    AS "RemainingEnergyReward",
                 pq."State"                    AS "State",
                 pq."IssuedAt"                 AS "IssuedAt",
                 pq."ClaimedAt"                AS "ClaimedAt",
@@ -220,7 +224,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
             DisplayState: displayState,
             Progress: progress,
             Threshold: row.Threshold,
-            EnergyReward: row.EnergyReward,
+            EnergyReward: dbState == QuestState.Claimed ? 0 : row.RemainingEnergyReward,
             HintReward: row.HintReward,
             UndoReward: row.UndoReward,
             ResetReward: row.ResetReward,
@@ -295,6 +299,7 @@ internal class GetActiveQuestsQueryHandler : IQueryHandler<GetActiveQuestsQuery,
         public Guid PlayerId { get; init; }
         public Guid QuestDefinitionId { get; init; }
         public int ProgressBaselineSnapshot { get; init; }
+        public int RemainingEnergyReward { get; init; }
         public string State { get; init; } = string.Empty;
         public DateTime IssuedAt { get; init; }
         public DateTime? ClaimedAt { get; init; }

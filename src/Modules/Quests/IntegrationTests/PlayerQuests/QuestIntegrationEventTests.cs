@@ -275,7 +275,8 @@ public class QuestIntegrationEventTests : TestBase
         using (var json = JsonDocument.Parse(queued.Data))
         {
             var root = json.RootElement;
-            root.GetProperty("EnergyReward").GetInt32().Should().Be(5);
+            root.GetProperty("EnergyReward").GetInt32().Should().Be(0,
+                "quest energy is now granted synchronously by the claim command");
             root.GetProperty("HintReward").GetInt32().Should().Be(2);
             root.GetProperty("UndoReward").GetInt32().Should().Be(1);
             root.GetProperty("ResetReward").GetInt32().Should().Be(1);
@@ -292,6 +293,141 @@ public class QuestIntegrationEventTests : TestBase
             LIMIT 1;
         """);
         processed!.ProcessedDate.Should().NotBeNull("outbox processor should mark the row as processed");
+    }
+
+    [Test]
+    public async Task ClaimQuest_WhenEnergyRewardPartiallyFits_LeavesRemainingEnergyClaimable()
+    {
+        var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedToday = 0;
+
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+        QuestCounterReader.GamesCompletedToday = 3;
+
+        var questId = await QuerySingleOrDefaultAsync<Guid>("""
+            SELECT "Id" FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId LIMIT 1;
+        """, new { PlayerId = playerId });
+
+        QuestEnergyRewardGrant.GrantedAmount = 4;
+        await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
+
+        var partial = await QuerySingleOrDefaultAsync<PlayerQuestRewardState>("""
+            SELECT "State" AS "State", "RemainingEnergyReward" AS "RemainingEnergyReward"
+            FROM "quests"."PlayerQuests"
+            WHERE "Id" = @QuestId;
+        """, new { QuestId = questId });
+
+        partial.Should().NotBeNull();
+        partial!.State.Should().Be(nameof(QuestState.Active));
+        partial.RemainingEnergyReward.Should().Be(1);
+        QuestEnergyRewardGrant.LastRequestedAmount.Should().Be(5);
+
+        var quests = await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+        var dto = quests.Single(q => q.Id == questId);
+        dto.DisplayState.Should().Be("ReadyToClaim");
+        dto.EnergyReward.Should().Be(1);
+
+        QuestEnergyRewardGrant.GrantedAmount = 1;
+        await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
+
+        var completed = await QuerySingleOrDefaultAsync<PlayerQuestRewardState>("""
+            SELECT "State" AS "State", "RemainingEnergyReward" AS "RemainingEnergyReward"
+            FROM "quests"."PlayerQuests"
+            WHERE "Id" = @QuestId;
+        """, new { QuestId = questId });
+
+        completed.Should().NotBeNull();
+        completed!.State.Should().Be(nameof(QuestState.Claimed));
+        completed.RemainingEnergyReward.Should().Be(0);
+        QuestEnergyRewardGrant.LastRequestedAmount.Should().Be(1);
+    }
+
+    [Test]
+    public async Task ClaimQuest_WhenEnergyOnlyRewardCannotFit_BreaksBusinessRuleAndKeepsQuestActive()
+    {
+        var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedToday = 0;
+
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+        QuestCounterReader.GamesCompletedToday = 3;
+
+        var questId = await QuerySingleOrDefaultAsync<Guid>("""
+            SELECT "Id" FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId LIMIT 1;
+        """, new { PlayerId = playerId });
+
+        QuestEnergyRewardGrant.GrantedAmount = 0;
+
+        var act = async () => await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
+
+        await act.Should().ThrowAsync<Common.Domain.BusinessRuleValidationException>();
+
+        var state = await QuerySingleOrDefaultAsync<PlayerQuestRewardState>("""
+            SELECT "State" AS "State", "RemainingEnergyReward" AS "RemainingEnergyReward"
+            FROM "quests"."PlayerQuests"
+            WHERE "Id" = @QuestId;
+        """, new { QuestId = questId });
+
+        state.Should().NotBeNull();
+        state!.State.Should().Be(nameof(QuestState.Active));
+        state.RemainingEnergyReward.Should().Be(5);
+    }
+
+    [Test]
+    public async Task ClaimQuest_WhenEnergyIsPartial_DoesNotQueueNonEnergyRewardsTwice()
+    {
+        var playerId = Guid.NewGuid();
+        QuestCounterReader.GamesCompletedToday = 0;
+
+        AdminContext.LoginAs(AdminId);
+        await QuestsModule.ExecuteCommandAsync(new UpdateQuestDefinitionCommand(
+            questDefinitionId: SeedDailyQuestDefinitionId,
+            description: "Bugün 3 oyun tamamla.",
+            threshold: 3,
+            energyReward: 5,
+            hintReward: 2,
+            undoReward: 1,
+            resetReward: 1,
+            diamondReward: 3,
+            prerequisiteQuestDefinitionId: null,
+            progressBaseline: ProgressBaseline.FromSnapshot));
+        AdminContext.Logout();
+
+        await QuestsModule.ExecuteQueryAsync(new GetActiveQuestsQuery(playerId));
+        QuestCounterReader.GamesCompletedToday = 3;
+
+        var questId = await QuerySingleOrDefaultAsync<Guid>("""
+            SELECT "Id" FROM "quests"."PlayerQuests" WHERE "PlayerId" = @PlayerId LIMIT 1;
+        """, new { PlayerId = playerId });
+
+        QuestEnergyRewardGrant.GrantedAmount = 4;
+        await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
+
+        var queuedAfterFirstClaim = await QueryAsync<OutboxRow>("""
+            SELECT "Type" AS "Type", "Data" AS "Data", "ProcessedDate" AS "ProcessedDate"
+            FROM "quests"."OutboxMessages"
+            WHERE "Type" = 'Quests.PlayerQuestClaimedDomainEventNotification';
+        """);
+        queuedAfterFirstClaim.Should().HaveCount(1);
+        using (var json = JsonDocument.Parse(queuedAfterFirstClaim[0].Data))
+        {
+            var root = json.RootElement;
+            root.GetProperty("EnergyReward").GetInt32().Should().Be(0);
+            root.GetProperty("HintReward").GetInt32().Should().Be(2);
+            root.GetProperty("UndoReward").GetInt32().Should().Be(1);
+            root.GetProperty("ResetReward").GetInt32().Should().Be(1);
+            root.GetProperty("DiamondReward").GetInt32().Should().Be(3);
+        }
+
+        QuestEnergyRewardGrant.GrantedAmount = 1;
+        await QuestsModule.ExecuteCommandAsync(new ClaimQuestCommand(questId, playerId));
+
+        var queuedAfterSecondClaim = await QueryAsync<OutboxRow>("""
+            SELECT "Type" AS "Type", "Data" AS "Data", "ProcessedDate" AS "ProcessedDate"
+            FROM "quests"."OutboxMessages"
+            WHERE "Type" = 'Quests.PlayerQuestClaimedDomainEventNotification';
+        """);
+        queuedAfterSecondClaim.Should().HaveCount(1,
+            "non-energy rewards must not be granted again while collecting leftover energy");
     }
 
     [Test]
@@ -319,5 +455,11 @@ public class QuestIntegrationEventTests : TestBase
         public string Type { get; init; } = string.Empty;
         public string Data { get; init; } = string.Empty;
         public DateTime? ProcessedDate { get; init; }
+    }
+
+    private sealed class PlayerQuestRewardState
+    {
+        public string State { get; init; } = string.Empty;
+        public int RemainingEnergyReward { get; init; }
     }
 }

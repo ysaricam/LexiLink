@@ -163,9 +163,11 @@ public sealed class QuestEndpointsTests
         await using var command = new NpgsqlCommand("""
             INSERT INTO "quests"."PlayerQuests"
                 ("Id", "PlayerId", "QuestDefinitionId", "ProgressBaselineSnapshot",
+                 "RemainingEnergyReward", "NonEnergyRewardsClaimed",
                  "State", "IssuedAt", "ClaimedAt", "ExpiresAt")
             VALUES
                 (@Id, @PlayerId, @QuestDefinitionId, @ProgressBaselineSnapshot,
+                 5, FALSE,
                  'Active', @IssuedAt, NULL, NULL)
             ON CONFLICT ("Id") DO UPDATE SET
                 "State" = EXCLUDED."State",

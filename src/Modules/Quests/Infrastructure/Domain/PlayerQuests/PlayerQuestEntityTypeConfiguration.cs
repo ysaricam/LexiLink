@@ -17,6 +17,8 @@ internal class PlayerQuestEntityTypeConfiguration : IEntityTypeConfiguration<Pla
         builder.Property<Guid>("_playerId").HasColumnName("PlayerId");
         builder.Property<QuestDefinitionId>("_questDefinitionId").HasColumnName("QuestDefinitionId");
         builder.Property<int>("_progressBaselineSnapshot").HasColumnName("ProgressBaselineSnapshot");
+        builder.Property<int>("_remainingEnergyReward").HasColumnName("RemainingEnergyReward");
+        builder.Property<bool>("_nonEnergyRewardsClaimed").HasColumnName("NonEnergyRewardsClaimed");
         builder.Property<QuestState>("_state")
             .HasColumnName("State")
             .HasConversion<string>()

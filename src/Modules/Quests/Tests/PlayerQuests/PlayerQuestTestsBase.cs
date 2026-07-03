@@ -31,6 +31,7 @@ public abstract class PlayerQuestTestsBase : TestBase
             SamplePlayerId,
             questDefinitionId ?? SampleDefinitionId,
             baselineSnapshot,
+            SampleEnergyReward,
             issuedAt ?? FixedIssuedAt,
             expiresAt);
     }

@@ -1,8 +1,8 @@
 namespace LexiLink.Modules.Quests.Application.Configuration.CrossModule;
 
-public interface IQuestEnergyRewardGuard
+public interface IQuestEnergyRewardGrant
 {
-    Task EnsureEnergyRewardCanBeAcceptedAsync(
+    Task<int> GrantEnergyRewardAsync(
         Guid playerId,
         int amount,
         CancellationToken cancellationToken = default);

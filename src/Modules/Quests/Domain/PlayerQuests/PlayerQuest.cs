@@ -19,6 +19,8 @@ public class PlayerQuest : Entity, IAggregateRoot
     private Guid _playerId;
     private QuestDefinitionId _questDefinitionId = null!;
     private int _progressBaselineSnapshot;
+    private int _remainingEnergyReward;
+    private bool _nonEnergyRewardsClaimed;
     private QuestState _state;
     private DateTime _issuedAt;
     private DateTime? _claimedAt;
@@ -27,6 +29,8 @@ public class PlayerQuest : Entity, IAggregateRoot
     public Guid PlayerId => _playerId;
     public QuestDefinitionId QuestDefinitionId => _questDefinitionId;
     public int ProgressBaselineSnapshot => _progressBaselineSnapshot;
+    public int RemainingEnergyReward => _remainingEnergyReward;
+    public bool NonEnergyRewardsClaimed => _nonEnergyRewardsClaimed;
     public QuestState State => _state;
     public DateTime IssuedAt => _issuedAt;
     public DateTime? ClaimedAt => _claimedAt;
@@ -42,6 +46,7 @@ public class PlayerQuest : Entity, IAggregateRoot
         Guid playerId,
         QuestDefinitionId questDefinitionId,
         int progressBaselineSnapshot,
+        int energyReward,
         DateTime issuedAt,
         DateTime? expiresAt)
     {
@@ -49,6 +54,8 @@ public class PlayerQuest : Entity, IAggregateRoot
         _playerId = playerId;
         _questDefinitionId = questDefinitionId;
         _progressBaselineSnapshot = Math.Max(0, progressBaselineSnapshot);
+        _remainingEnergyReward = Math.Max(0, energyReward);
+        _nonEnergyRewardsClaimed = false;
         _state = QuestState.Active;
         _issuedAt = issuedAt;
         _expiresAt = expiresAt;
@@ -60,6 +67,7 @@ public class PlayerQuest : Entity, IAggregateRoot
         Guid playerId,
         QuestDefinitionId questDefinitionId,
         int progressBaselineSnapshot,
+        int energyReward,
         DateTime issuedAt,
         DateTime? expiresAt = null)
     {
@@ -68,6 +76,7 @@ public class PlayerQuest : Entity, IAggregateRoot
             playerId,
             questDefinitionId,
             progressBaselineSnapshot,
+            energyReward,
             issuedAt,
             expiresAt);
     }
@@ -78,32 +87,57 @@ public class PlayerQuest : Entity, IAggregateRoot
     /// (<c>counter - <see cref="ProgressBaselineSnapshot"/> &gt;=
     /// QuestDefinition.Threshold</c>) and the caller has also verified
     /// the row is not already past <see cref="ExpiresAt"/>. Reward
-    /// values live on <see cref="QuestDefinition"/> and are carried
-    /// into the claimed domain event by the handler so Energy, Hint,
-    /// Undo, Reset, and Diamond can each grant their portion event-driven.
+    /// values live on <see cref="QuestDefinition"/>. Energy is already
+    /// granted by the command handler and only the amount that actually
+    /// fit is passed here; any remainder stays on this quest. Hint,
+    /// Undo, Reset, and Diamond are still emitted once for event-driven
+    /// delivery.
     /// </summary>
     internal void Claim(
         DateTime now,
         bool isReadyToClaim,
-        int energyReward,
+        int grantedEnergyReward,
         int hintReward,
         int undoReward,
         int resetReward,
         int diamondReward)
     {
         CheckRule(new QuestMustBeReadyToBeClaimedRule(_state, isReadyToClaim));
+        grantedEnergyReward = Math.Clamp(grantedEnergyReward, 0, _remainingEnergyReward);
 
-        _state = QuestState.Claimed;
-        _claimedAt = now;
+        var shouldClaimNonEnergyRewards =
+            !_nonEnergyRewardsClaimed &&
+            (hintReward > 0 || undoReward > 0 || resetReward > 0 || diamondReward > 0);
 
-        AddDomainEvent(new PlayerQuestClaimedDomainEvent(
-            Id,
-            _playerId,
-            _questDefinitionId,
-            energyReward,
-            hintReward,
-            undoReward,
-            resetReward,
-            diamondReward));
+        CheckRule(new QuestEnergyRewardMustHaveCapacityRule(
+            _remainingEnergyReward,
+            grantedEnergyReward,
+            shouldClaimNonEnergyRewards));
+
+        _remainingEnergyReward -= grantedEnergyReward;
+
+        if (!_nonEnergyRewardsClaimed)
+        {
+            _nonEnergyRewardsClaimed = true;
+        }
+
+        if (_remainingEnergyReward == 0)
+        {
+            _state = QuestState.Claimed;
+            _claimedAt = now;
+        }
+
+        if (shouldClaimNonEnergyRewards)
+        {
+            AddDomainEvent(new PlayerQuestClaimedDomainEvent(
+                Id,
+                _playerId,
+                _questDefinitionId,
+                energyReward: 0,
+                hintReward,
+                undoReward,
+                resetReward,
+                diamondReward));
+        }
     }
 }

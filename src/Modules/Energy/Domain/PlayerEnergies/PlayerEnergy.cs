@@ -103,11 +103,13 @@ public class PlayerEnergy : Entity, IAggregateRoot
         _currentAmount += amount;
     }
 
-    internal void GrantBonusCapped(int amount, DateTime now)
+    internal int GrantBonusCapped(int amount, DateTime now)
     {
         CheckRule(new BonusAmountMustBePositiveRule(amount));
 
+        var before = _currentAmount;
         _currentAmount = Math.Min(_maximumAmount, _currentAmount + amount);
+        return _currentAmount - before;
     }
 
     /// <summary>

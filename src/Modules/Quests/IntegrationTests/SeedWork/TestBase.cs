@@ -45,6 +45,7 @@ public abstract class TestBase
     protected IReadOnlyCollection<IOutboxProcessor> OutboxProcessors { get; private set; } = null!;
     protected TestAdminAuthorizationContext AdminContext { get; private set; } = null!;
     protected MutableQuestCounterReader QuestCounterReader { get; private set; } = null!;
+    protected MutableQuestEnergyRewardGrant QuestEnergyRewardGrant { get; private set; } = null!;
     protected string ConnectionString => _connectionString;
 
     [OneTimeSetUp]
@@ -77,7 +78,8 @@ public abstract class TestBase
         services.AddSingleton<IHintGuard>(new AlwaysAllowingHintGuard());
         services.AddSingleton<IUndoGuard>(new AlwaysAllowingUndoGuard());
         services.AddSingleton<IResetGuard>(new AlwaysAllowingResetGuard());
-        services.AddSingleton<IQuestEnergyRewardGuard>(new AlwaysAllowingQuestEnergyRewardGuard());
+        services.AddSingleton<MutableQuestEnergyRewardGrant>();
+        services.AddSingleton<IQuestEnergyRewardGrant>(sp => sp.GetRequiredService<MutableQuestEnergyRewardGrant>());
         services.AddSingleton<MutableQuestCounterReader>();
         services.AddSingleton<IQuestCounterReader>(sp => sp.GetRequiredService<MutableQuestCounterReader>());
 
@@ -103,6 +105,8 @@ public abstract class TestBase
         OutboxProcessors = Scope.Resolve<IEnumerable<IOutboxProcessor>>().ToArray();
         QuestCounterReader = Scope.Resolve<MutableQuestCounterReader>();
         QuestCounterReader.Reset();
+        QuestEnergyRewardGrant = Scope.Resolve<MutableQuestEnergyRewardGrant>();
+        QuestEnergyRewardGrant.Reset();
 
         await ClearDatabaseAsync();
     }
@@ -167,15 +171,6 @@ public abstract class TestBase
     private sealed class AlwaysAllowingResetGuard : IResetGuard
     {
         public Task EnsureResetAvailableAsync(Guid playerId, CancellationToken cancellationToken = default) =>
-            Task.CompletedTask;
-    }
-
-    private sealed class AlwaysAllowingQuestEnergyRewardGuard : IQuestEnergyRewardGuard
-    {
-        public Task EnsureEnergyRewardCanBeAcceptedAsync(
-            Guid playerId,
-            int amount,
-            CancellationToken cancellationToken = default) =>
             Task.CompletedTask;
     }
 
@@ -250,5 +245,29 @@ public sealed class MutableQuestCounterReader : IQuestCounterReader
         GamesCompletedTotal = 0;
         GamesCompletedToday = 0;
         AuthProviderLinked = false;
+    }
+}
+
+public sealed class MutableQuestEnergyRewardGrant : IQuestEnergyRewardGrant
+{
+    public int GrantedAmount { get; set; } = int.MaxValue;
+    public int LastRequestedAmount { get; private set; }
+    public int Calls { get; private set; }
+
+    public void Reset()
+    {
+        GrantedAmount = int.MaxValue;
+        LastRequestedAmount = 0;
+        Calls = 0;
+    }
+
+    public Task<int> GrantEnergyRewardAsync(
+        Guid playerId,
+        int amount,
+        CancellationToken cancellationToken = default)
+    {
+        Calls++;
+        LastRequestedAmount = amount;
+        return Task.FromResult(Math.Min(amount, Math.Max(0, GrantedAmount)));
     }
 }

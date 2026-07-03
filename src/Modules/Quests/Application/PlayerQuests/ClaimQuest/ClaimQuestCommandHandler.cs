@@ -11,20 +11,20 @@ internal class ClaimQuestCommandHandler : ICommandHandler<ClaimQuestCommand>
     private readonly IPlayerQuestRepository _playerQuestRepository;
     private readonly IQuestCatalog _questCatalog;
     private readonly IQuestCounterReader _counterReader;
-    private readonly IQuestEnergyRewardGuard _energyRewardGuard;
+    private readonly IQuestEnergyRewardGrant _energyRewardGrant;
     private readonly IClock _clock;
 
     internal ClaimQuestCommandHandler(
         IPlayerQuestRepository playerQuestRepository,
         IQuestCatalog questCatalog,
         IQuestCounterReader counterReader,
-        IQuestEnergyRewardGuard energyRewardGuard,
+        IQuestEnergyRewardGrant energyRewardGrant,
         IClock clock)
     {
         _playerQuestRepository = playerQuestRepository;
         _questCatalog = questCatalog;
         _counterReader = counterReader;
-        _energyRewardGuard = energyRewardGuard;
+        _energyRewardGrant = energyRewardGrant;
         _clock = clock;
     }
 
@@ -52,18 +52,19 @@ internal class ClaimQuestCommandHandler : ICommandHandler<ClaimQuestCommand>
         var counters = await _counterReader.ReadAsync(request.PlayerId, now, cancellationToken);
         var isReadyToClaim = ComputeIsReadyToClaim(quest, definition, counters, now);
 
-        if (isReadyToClaim && definition.EnergyReward > 0)
+        var grantedEnergyReward = 0;
+        if (isReadyToClaim && quest.RemainingEnergyReward > 0)
         {
-            await _energyRewardGuard.EnsureEnergyRewardCanBeAcceptedAsync(
+            grantedEnergyReward = await _energyRewardGrant.GrantEnergyRewardAsync(
                 request.PlayerId,
-                definition.EnergyReward,
+                quest.RemainingEnergyReward,
                 cancellationToken);
         }
 
         quest.Claim(
             now,
             isReadyToClaim,
-            definition.EnergyReward,
+            grantedEnergyReward,
             definition.HintReward,
             definition.UndoReward,
             definition.ResetReward,
