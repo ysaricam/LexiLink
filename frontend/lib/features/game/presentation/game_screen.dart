@@ -14,6 +14,7 @@ import 'package:lexilink_app/features/game/data/game_details.dart';
 import 'package:lexilink_app/features/game/data/game_repository.dart';
 import 'package:lexilink_app/features/game/data/game_tutorial_store.dart';
 import 'package:lexilink_app/features/game/data/outgoing_link.dart';
+import 'package:lexilink_app/features/game/presentation/game_option_tile_state.dart';
 import 'package:lexilink_app/features/game/presentation/game_tutorial_sheet.dart';
 import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
 import 'package:lexilink_app/features/hint/data/hint_repository.dart';
@@ -807,7 +808,11 @@ class _OptionsGrid extends StatelessWidget {
         final isRecommended = option.id == recommendedLinkId;
         final isPrevious =
             previousLinkId != null && option.id == previousLinkId;
-        final tileDisabled = disabled || !option.isActive;
+        final tileDisabled = isGameOptionTileDisabled(
+          screenDisabled: disabled,
+          optionIsActive: option.isActive,
+          optionIsPrevious: isPrevious,
+        );
         return _OptionTile(
           option: option,
           highlighted: isRecommended,

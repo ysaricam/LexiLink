@@ -22,4 +22,7 @@ internal static class LinkHelper
         await sender.Send(new AddOutgoingLinkCommand(a, b));
         await sender.Send(new AddOutgoingLinkCommand(b, a));
     }
+
+    public static Task LinkOneWayAsync(ISender sender, Guid from, Guid to)
+        => sender.Send(new AddOutgoingLinkCommand(from, to));
 }

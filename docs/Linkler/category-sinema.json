@@ -1,0 +1,9616 @@
+{
+  "$schema": "lexilink/category/v1",
+  "category": {
+    "name": "Sinema",
+    "description": "Filmler, yönetmenler, oyuncular, türler, ödüller ve sinema kültürüyle ilgili kavram bağlantıları.",
+    "language": "tr-TR"
+  },
+  "links": [
+    {
+      "value": "Sinema",
+      "description": "Sinema, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Film",
+      "description": "Film, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne",
+      "description": "Sahne, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hikaye",
+      "description": "Hikaye, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Karakter",
+      "description": "Karakter, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Diyalog",
+      "description": "Diyalog, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Senaryo",
+      "description": "Senaryo, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kurgu",
+      "description": "Kurgu, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Görüntü",
+      "description": "Görüntü, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzik",
+      "description": "Müzik, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Oyunculuk",
+      "description": "Oyunculuk, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yönetmenlik",
+      "description": "Yönetmenlik, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Prodüksiyon",
+      "description": "Prodüksiyon, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gösterim",
+      "description": "Gösterim, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İzleyici",
+      "description": "İzleyici, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Eleştiri",
+      "description": "Eleştiri, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fragman",
+      "description": "Fragman, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Afiş",
+      "description": "Afiş, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gişe",
+      "description": "Gişe, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Devam Filmi",
+      "description": "Devam Filmi, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uyarlama",
+      "description": "Uyarlama, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Final Sahnesi",
+      "description": "Final Sahnesi, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Açılış Sahnesi",
+      "description": "Açılış Sahnesi, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kült Film",
+      "description": "Kült Film, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Başyapıt",
+      "description": "Başyapıt, sinema dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hababam Sınıfı",
+      "description": "Hababam Sınıfı, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Selvi Boylum Al Yazmalım",
+      "description": "Selvi Boylum Al Yazmalım, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Eşkıya",
+      "description": "Eşkıya, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Babam ve Oğlum",
+      "description": "Babam ve Oğlum, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kış Uykusu",
+      "description": "Kış Uykusu, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ahlat Ağacı",
+      "description": "Ahlat Ağacı, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kelebeğin Rüyası",
+      "description": "Kelebeğin Rüyası, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Organize İşler",
+      "description": "Organize İşler, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Recep İvedik",
+      "description": "Recep İvedik, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Vizontele",
+      "description": "Vizontele, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yol",
+      "description": "Yol, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uzak",
+      "description": "Uzak, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bir Zamanlar Anadolu",
+      "description": "Bir Zamanlar Anadolu, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Masumiyet",
+      "description": "Masumiyet, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gemide",
+      "description": "Gemide, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gora",
+      "description": "Gora, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Arog",
+      "description": "Arog, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dağ",
+      "description": "Dağ, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Düğün Dernek",
+      "description": "Düğün Dernek, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bergen",
+      "description": "Bergen, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "The Godfather",
+      "description": "The Godfather, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Titanic",
+      "description": "Titanic, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Avatar",
+      "description": "Avatar, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Inception",
+      "description": "Inception, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Matrix",
+      "description": "Matrix, geniş kitlelerce bilinen veya sinema tarihinde öne çıkan bir filmdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nuri Bilge Ceylan",
+      "description": "Nuri Bilge Ceylan, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yılmaz Güney",
+      "description": "Yılmaz Güney, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çağan Irmak",
+      "description": "Çağan Irmak, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Zeki Demirkubuz",
+      "description": "Zeki Demirkubuz, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ferzan Özpetek",
+      "description": "Ferzan Özpetek, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cem Yılmaz",
+      "description": "Cem Yılmaz, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yavuz Turgul",
+      "description": "Yavuz Turgul, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ömer Faruk Sorak",
+      "description": "Ömer Faruk Sorak, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Metin Erksan",
+      "description": "Metin Erksan, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Atıf Yılmaz",
+      "description": "Atıf Yılmaz, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Steven Spielberg",
+      "description": "Steven Spielberg, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Martin Scorsese",
+      "description": "Martin Scorsese, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Christopher Nolan",
+      "description": "Christopher Nolan, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Quentin Tarantino",
+      "description": "Quentin Tarantino, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "James Cameron",
+      "description": "James Cameron, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Francis Ford Coppola",
+      "description": "Francis Ford Coppola, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Alfred Hitchcock",
+      "description": "Alfred Hitchcock, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Stanley Kubrick",
+      "description": "Stanley Kubrick, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Akira Kurosawa",
+      "description": "Akira Kurosawa, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hayao Miyazaki",
+      "description": "Hayao Miyazaki, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ridley Scott",
+      "description": "Ridley Scott, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Denis Villeneuve",
+      "description": "Denis Villeneuve, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Greta Gerwig",
+      "description": "Greta Gerwig, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sofia Coppola",
+      "description": "Sofia Coppola, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bong Joon Ho",
+      "description": "Bong Joon Ho, sinema tarihinde önemli filmlerle tanınan bir yönetmendir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şener Şen",
+      "description": "Şener Şen, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kemal Sunal",
+      "description": "Kemal Sunal, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Türkan Şoray",
+      "description": "Türkan Şoray, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kadir İnanır",
+      "description": "Kadir İnanır, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Münir Özkul",
+      "description": "Münir Özkul, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Adile Naşit",
+      "description": "Adile Naşit, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Haluk Bilginer",
+      "description": "Haluk Bilginer, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cem Yılmaz Oyuncu",
+      "description": "Cem Yılmaz Oyuncu, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yılmaz Erdoğan",
+      "description": "Yılmaz Erdoğan, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Beren Saat",
+      "description": "Beren Saat, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kıvanç Tatlıtuğ",
+      "description": "Kıvanç Tatlıtuğ, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Leonardo DiCaprio",
+      "description": "Leonardo DiCaprio, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Meryl Streep",
+      "description": "Meryl Streep, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tom Hanks",
+      "description": "Tom Hanks, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Robert De Niro",
+      "description": "Robert De Niro, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Al Pacino",
+      "description": "Al Pacino, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Brad Pitt",
+      "description": "Brad Pitt, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Morgan Freeman",
+      "description": "Morgan Freeman, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Natalie Portman",
+      "description": "Natalie Portman, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Scarlett Johansson",
+      "description": "Scarlett Johansson, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Keanu Reeves",
+      "description": "Keanu Reeves, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Denzel Washington",
+      "description": "Denzel Washington, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Joaquin Phoenix",
+      "description": "Joaquin Phoenix, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Emma Stone",
+      "description": "Emma Stone, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Margot Robbie",
+      "description": "Margot Robbie, sinema dünyasında tanınan bir oyuncudur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dram",
+      "description": "Dram, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Komedi",
+      "description": "Komedi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Romantik Komedi",
+      "description": "Romantik Komedi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Aksiyon",
+      "description": "Aksiyon, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Macera",
+      "description": "Macera, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bilim Kurgu",
+      "description": "Bilim Kurgu, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fantastik",
+      "description": "Fantastik, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Korku",
+      "description": "Korku, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gerilim",
+      "description": "Gerilim, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Polisiye",
+      "description": "Polisiye, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Suç Filmi",
+      "description": "Suç Filmi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Animasyon",
+      "description": "Animasyon, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Belgesel",
+      "description": "Belgesel, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Biyografi",
+      "description": "Biyografi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tarihi Film",
+      "description": "Tarihi Film, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Savaş Filmi",
+      "description": "Savaş Filmi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Western",
+      "description": "Western, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzikal",
+      "description": "Müzikal, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Aile Filmi",
+      "description": "Aile Filmi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Spor Filmi",
+      "description": "Spor Filmi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kara Film",
+      "description": "Kara Film, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sanat Filmi",
+      "description": "Sanat Filmi, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bağımsız Film",
+      "description": "Bağımsız Film, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kısa Film",
+      "description": "Kısa Film, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sessiz Film",
+      "description": "Sessiz Film, filmlerin anlatım tarzını veya türünü ifade eden bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Oscar",
+      "description": "Oscar, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Altın Palmiye",
+      "description": "Altın Palmiye, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Altın Küre",
+      "description": "Altın Küre, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "BAFTA",
+      "description": "BAFTA, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cannes Film Festivali",
+      "description": "Cannes Film Festivali, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Venedik Film Festivali",
+      "description": "Venedik Film Festivali, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Berlin Film Festivali",
+      "description": "Berlin Film Festivali, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Antalya Altın Portakal",
+      "description": "Antalya Altın Portakal, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Adana Altın Koza",
+      "description": "Adana Altın Koza, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "En İyi Film",
+      "description": "En İyi Film, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "En İyi Yönetmen",
+      "description": "En İyi Yönetmen, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "En İyi Oyuncu",
+      "description": "En İyi Oyuncu, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "En İyi Senaryo",
+      "description": "En İyi Senaryo, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "En İyi Kurgu",
+      "description": "En İyi Kurgu, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "En İyi Müzik",
+      "description": "En İyi Müzik, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "En İyi Görüntü",
+      "description": "En İyi Görüntü, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kırmızı Halı",
+      "description": "Kırmızı Halı, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Jüri Ödülü",
+      "description": "Jüri Ödülü, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Festival Seçkisi",
+      "description": "Festival Seçkisi, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Adaylık",
+      "description": "Adaylık, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ödül Töreni",
+      "description": "Ödül Töreni, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Eleştirmen Ödülü",
+      "description": "Eleştirmen Ödülü, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Seyirci Ödülü",
+      "description": "Seyirci Ödülü, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yabancı Film",
+      "description": "Yabancı Film, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kısa Film Ödülü",
+      "description": "Kısa Film Ödülü, sinema ödülleri, festivalleri veya endüstri başarısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kamera",
+      "description": "Kamera, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Işık",
+      "description": "Işık, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ses Tasarımı",
+      "description": "Ses Tasarımı, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Görüntü Yönetmeni",
+      "description": "Görüntü Yönetmeni, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sanat Yönetmeni",
+      "description": "Sanat Yönetmeni, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kostüm Tasarımı",
+      "description": "Kostüm Tasarımı, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Makyaj",
+      "description": "Makyaj, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Özel Efekt",
+      "description": "Özel Efekt, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Görsel Efekt",
+      "description": "Görsel Efekt, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yeşil Perde",
+      "description": "Yeşil Perde, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dublaj",
+      "description": "Dublaj, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Altyazı",
+      "description": "Altyazı, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Storyboard",
+      "description": "Storyboard, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çekim Planı",
+      "description": "Çekim Planı, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yakın Plan",
+      "description": "Yakın Plan, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Geniş Açı",
+      "description": "Geniş Açı, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kamera Hareketi",
+      "description": "Kamera Hareketi, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Montaj",
+      "description": "Montaj, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Renk Düzenleme",
+      "description": "Renk Düzenleme, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Set",
+      "description": "Set, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Klaket",
+      "description": "Klaket, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mikrofon",
+      "description": "Mikrofon, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Boom Operatörü",
+      "description": "Boom Operatörü, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dublör",
+      "description": "Dublör, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pratik Efekt",
+      "description": "Pratik Efekt, film yapımında kullanılan teknik, ekipman veya yaratıcı süreçlerden biridir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sinema Salonu",
+      "description": "Sinema Salonu, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Perde",
+      "description": "Perde, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Projeksiyon",
+      "description": "Projeksiyon, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "IMAX",
+      "description": "IMAX, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Üç Boyutlu Film",
+      "description": "Üç Boyutlu Film, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bilet Gişesi",
+      "description": "Bilet Gişesi, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Koltuk",
+      "description": "Koltuk, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Patlamış Mısır",
+      "description": "Patlamış Mısır, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lobi",
+      "description": "Lobi, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Salon Işığı",
+      "description": "Salon Işığı, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ev Sineması",
+      "description": "Ev Sineması, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Açık Hava Sineması",
+      "description": "Açık Hava Sineması, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Film Seti",
+      "description": "Film Seti, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Stüdyo",
+      "description": "Stüdyo, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çekim Mekanı",
+      "description": "Çekim Mekanı, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gala",
+      "description": "Gala, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Basın Gösterimi",
+      "description": "Basın Gösterimi, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ön Gösterim",
+      "description": "Ön Gösterim, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Matine",
+      "description": "Matine, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gece Seansı",
+      "description": "Gece Seansı, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Film Arşivi",
+      "description": "Film Arşivi, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sinematek",
+      "description": "Sinematek, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dijital Platform",
+      "description": "Dijital Platform, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "DVD",
+      "description": "DVD, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Blu Ray",
+      "description": "Blu Ray, sinema salonları, gösterim alanları veya film izleme deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Film Eleştirmeni",
+      "description": "Film Eleştirmeni, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sinema Dergisi",
+      "description": "Sinema Dergisi, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Film Kulübü",
+      "description": "Film Kulübü, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hayran Kitlesi",
+      "description": "Hayran Kitlesi, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Spoiler",
+      "description": "Spoiler, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kameo",
+      "description": "Kameo, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne Arkası",
+      "description": "Sahne Arkası, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yapımcı",
+      "description": "Yapımcı, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dağıtımcı",
+      "description": "Dağıtımcı, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Senarist",
+      "description": "Senarist, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Casting",
+      "description": "Casting, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Oyuncu Seçimi",
+      "description": "Oyuncu Seçimi, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Box Office",
+      "description": "Box Office, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Franchise",
+      "description": "Franchise, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Remake",
+      "description": "Remake, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Reboot",
+      "description": "Reboot, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Prequel",
+      "description": "Prequel, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sequel",
+      "description": "Sequel, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Spin Off",
+      "description": "Spin Off, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sinema Tarihi",
+      "description": "Sinema Tarihi, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yeşilçam",
+      "description": "Yeşilçam, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hollywood",
+      "description": "Hollywood, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bollywood",
+      "description": "Bollywood, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Auteur Sineması",
+      "description": "Auteur Sineması, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Popüler Sinema",
+      "description": "Popüler Sinema, sinema kültürü, izleyici alışkanlıkları veya film endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Film Dili",
+      "description": "Film Dili, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mizansen",
+      "description": "Mizansen, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Alt Metin",
+      "description": "Alt Metin, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tema",
+      "description": "Tema, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Motif",
+      "description": "Motif, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sembolizm",
+      "description": "Sembolizm, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Anlatıcı",
+      "description": "Anlatıcı, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Geri Dönüş",
+      "description": "Geri Dönüş, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Zaman Atlaması",
+      "description": "Zaman Atlaması, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Paralel Kurgu",
+      "description": "Paralel Kurgu, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tek Plan",
+      "description": "Tek Plan, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Plan Sekans",
+      "description": "Plan Sekans, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kamera Açısı",
+      "description": "Kamera Açısı, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bakış Açısı",
+      "description": "Bakış Açısı, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gerçekçilik",
+      "description": "Gerçekçilik, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yeni Dalga",
+      "description": "Yeni Dalga, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dışavurumculuk",
+      "description": "Dışavurumculuk, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yeni Gerçekçilik",
+      "description": "Yeni Gerçekçilik, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Postmodern Sinema",
+      "description": "Postmodern Sinema, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Deneysel Sinema",
+      "description": "Deneysel Sinema, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Minimalist Sinema",
+      "description": "Minimalist Sinema, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Epik Anlatım",
+      "description": "Epik Anlatım, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kahraman Yolculuğu",
+      "description": "Kahraman Yolculuğu, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Karakter Gelişimi",
+      "description": "Karakter Gelişimi, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dramatik Yapı",
+      "description": "Dramatik Yapı, film dili, anlatı yapısı veya sinema akımlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    }
+  ],
+  "edges": [
+    {
+      "from": "Sinema",
+      "to": "Film"
+    },
+    {
+      "from": "Sinema",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sinema",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Sinema",
+      "to": "Karakter"
+    },
+    {
+      "from": "Sinema",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Sinema",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Sinema",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Sinema",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Sinema",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Sinema",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Sinema",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Sinema",
+      "to": "Gişe"
+    },
+    {
+      "from": "Sinema",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Film",
+      "to": "Sahne"
+    },
+    {
+      "from": "Film",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Film",
+      "to": "Karakter"
+    },
+    {
+      "from": "Film",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Film",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Film",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Film",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Film",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Film",
+      "to": "Fragman"
+    },
+    {
+      "from": "Film",
+      "to": "Afiş"
+    },
+    {
+      "from": "Film",
+      "to": "Gişe"
+    },
+    {
+      "from": "Film",
+      "to": "Ödül Töreni"
+    },
+    {
+      "from": "Sahne",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sahne",
+      "to": "Film"
+    },
+    {
+      "from": "Sahne",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Sahne",
+      "to": "Karakter"
+    },
+    {
+      "from": "Sahne",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Sahne",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Sahne",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Hikaye",
+      "to": "Sinema"
+    },
+    {
+      "from": "Hikaye",
+      "to": "Film"
+    },
+    {
+      "from": "Hikaye",
+      "to": "Karakter"
+    },
+    {
+      "from": "Hikaye",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Hikaye",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Hikaye",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Hikaye",
+      "to": "Görüntü"
+    },
+    {
+      "from": "Karakter",
+      "to": "Sinema"
+    },
+    {
+      "from": "Karakter",
+      "to": "Film"
+    },
+    {
+      "from": "Karakter",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Karakter",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Karakter",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Karakter",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Karakter",
+      "to": "Görüntü"
+    },
+    {
+      "from": "Karakter",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Karakter",
+      "to": "Dram"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Sinema"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Film"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Görüntü"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Müzik"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Diyalog",
+      "to": "Dram"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Sinema"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Film"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Görüntü"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Müzik"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Senaryo",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Film"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Görüntü"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Montaj"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Geri Dönüş"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Zaman Atlaması"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Paralel Kurgu"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Tek Plan"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Plan Sekans"
+    },
+    {
+      "from": "Kurgu",
+      "to": "Dramatik Yapı"
+    },
+    {
+      "from": "Görüntü",
+      "to": "Sinema"
+    },
+    {
+      "from": "Görüntü",
+      "to": "Film"
+    },
+    {
+      "from": "Görüntü",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Görüntü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Görüntü",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Görüntü",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Görüntü",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Müzik",
+      "to": "Sinema"
+    },
+    {
+      "from": "Müzik",
+      "to": "Film"
+    },
+    {
+      "from": "Müzik",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Müzik",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Müzik",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Müzik",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Müzik",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Sinema"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Film"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Karakter"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "En İyi Oyuncu"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Dublaj"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Kameo"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Casting"
+    },
+    {
+      "from": "Oyunculuk",
+      "to": "Oyuncu Seçimi"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Film"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Eleştiri"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Kamera"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Görüntü Yönetmeni"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Sanat Yönetmeni"
+    },
+    {
+      "from": "Yönetmenlik",
+      "to": "Set"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Sinema"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Film"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Eleştiri"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Fragman"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Çekim Planı"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Set"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Klaket"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Film Seti"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Yapımcı"
+    },
+    {
+      "from": "Prodüksiyon",
+      "to": "Dağıtımcı"
+    },
+    {
+      "from": "Gösterim",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gösterim",
+      "to": "Film"
+    },
+    {
+      "from": "Gösterim",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Gösterim",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Gösterim",
+      "to": "Eleştiri"
+    },
+    {
+      "from": "Gösterim",
+      "to": "Fragman"
+    },
+    {
+      "from": "Gösterim",
+      "to": "Afiş"
+    },
+    {
+      "from": "Gösterim",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Sinema"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Film"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Hikaye"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Eleştiri"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Fragman"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Afiş"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Gişe"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Komedi"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Korku"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "İzleyici",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Eleştiri",
+      "to": "Sinema"
+    },
+    {
+      "from": "Eleştiri",
+      "to": "Film"
+    },
+    {
+      "from": "Eleştiri",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Eleştiri",
+      "to": "Fragman"
+    },
+    {
+      "from": "Eleştiri",
+      "to": "Afiş"
+    },
+    {
+      "from": "Eleştiri",
+      "to": "Gişe"
+    },
+    {
+      "from": "Eleştiri",
+      "to": "Devam Filmi"
+    },
+    {
+      "from": "Fragman",
+      "to": "Sinema"
+    },
+    {
+      "from": "Fragman",
+      "to": "Film"
+    },
+    {
+      "from": "Fragman",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Fragman",
+      "to": "Afiş"
+    },
+    {
+      "from": "Fragman",
+      "to": "Gişe"
+    },
+    {
+      "from": "Fragman",
+      "to": "Devam Filmi"
+    },
+    {
+      "from": "Fragman",
+      "to": "Uyarlama"
+    },
+    {
+      "from": "Fragman",
+      "to": "Korku"
+    },
+    {
+      "from": "Afiş",
+      "to": "Sinema"
+    },
+    {
+      "from": "Afiş",
+      "to": "Film"
+    },
+    {
+      "from": "Afiş",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Afiş",
+      "to": "Gişe"
+    },
+    {
+      "from": "Afiş",
+      "to": "Devam Filmi"
+    },
+    {
+      "from": "Afiş",
+      "to": "Uyarlama"
+    },
+    {
+      "from": "Afiş",
+      "to": "Final Sahnesi"
+    },
+    {
+      "from": "Gişe",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gişe",
+      "to": "Film"
+    },
+    {
+      "from": "Gişe",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Gişe",
+      "to": "Devam Filmi"
+    },
+    {
+      "from": "Gişe",
+      "to": "Uyarlama"
+    },
+    {
+      "from": "Gişe",
+      "to": "Final Sahnesi"
+    },
+    {
+      "from": "Gişe",
+      "to": "Açılış Sahnesi"
+    },
+    {
+      "from": "Devam Filmi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Devam Filmi",
+      "to": "Film"
+    },
+    {
+      "from": "Devam Filmi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Devam Filmi",
+      "to": "Uyarlama"
+    },
+    {
+      "from": "Devam Filmi",
+      "to": "Final Sahnesi"
+    },
+    {
+      "from": "Devam Filmi",
+      "to": "Açılış Sahnesi"
+    },
+    {
+      "from": "Devam Filmi",
+      "to": "Kült Film"
+    },
+    {
+      "from": "Uyarlama",
+      "to": "Sinema"
+    },
+    {
+      "from": "Uyarlama",
+      "to": "Film"
+    },
+    {
+      "from": "Uyarlama",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Uyarlama",
+      "to": "Final Sahnesi"
+    },
+    {
+      "from": "Uyarlama",
+      "to": "Açılış Sahnesi"
+    },
+    {
+      "from": "Uyarlama",
+      "to": "Kült Film"
+    },
+    {
+      "from": "Uyarlama",
+      "to": "Başyapıt"
+    },
+    {
+      "from": "Final Sahnesi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Final Sahnesi",
+      "to": "Film"
+    },
+    {
+      "from": "Final Sahnesi",
+      "to": "Sahne"
+    },
+    {
+      "from": "Final Sahnesi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Final Sahnesi",
+      "to": "Açılış Sahnesi"
+    },
+    {
+      "from": "Final Sahnesi",
+      "to": "Kült Film"
+    },
+    {
+      "from": "Final Sahnesi",
+      "to": "Başyapıt"
+    },
+    {
+      "from": "Açılış Sahnesi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Açılış Sahnesi",
+      "to": "Film"
+    },
+    {
+      "from": "Açılış Sahnesi",
+      "to": "Sahne"
+    },
+    {
+      "from": "Açılış Sahnesi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Açılış Sahnesi",
+      "to": "Karakter"
+    },
+    {
+      "from": "Açılış Sahnesi",
+      "to": "Kült Film"
+    },
+    {
+      "from": "Açılış Sahnesi",
+      "to": "Başyapıt"
+    },
+    {
+      "from": "Kült Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kült Film",
+      "to": "Film"
+    },
+    {
+      "from": "Kült Film",
+      "to": "Sahne"
+    },
+    {
+      "from": "Kült Film",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Kült Film",
+      "to": "Karakter"
+    },
+    {
+      "from": "Kült Film",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Kült Film",
+      "to": "Başyapıt"
+    },
+    {
+      "from": "Başyapıt",
+      "to": "Sinema"
+    },
+    {
+      "from": "Başyapıt",
+      "to": "Film"
+    },
+    {
+      "from": "Başyapıt",
+      "to": "Sahne"
+    },
+    {
+      "from": "Başyapıt",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Başyapıt",
+      "to": "Karakter"
+    },
+    {
+      "from": "Başyapıt",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Başyapıt",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Film"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Selvi Boylum Al Yazmalım"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Eşkıya"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Babam ve Oğlum"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Kış Uykusu"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Komedi"
+    },
+    {
+      "from": "Hababam Sınıfı",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Selvi Boylum Al Yazmalım",
+      "to": "Sinema"
+    },
+    {
+      "from": "Selvi Boylum Al Yazmalım",
+      "to": "Film"
+    },
+    {
+      "from": "Selvi Boylum Al Yazmalım",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Selvi Boylum Al Yazmalım",
+      "to": "Eşkıya"
+    },
+    {
+      "from": "Selvi Boylum Al Yazmalım",
+      "to": "Babam ve Oğlum"
+    },
+    {
+      "from": "Selvi Boylum Al Yazmalım",
+      "to": "Kış Uykusu"
+    },
+    {
+      "from": "Selvi Boylum Al Yazmalım",
+      "to": "Ahlat Ağacı"
+    },
+    {
+      "from": "Eşkıya",
+      "to": "Sinema"
+    },
+    {
+      "from": "Eşkıya",
+      "to": "Film"
+    },
+    {
+      "from": "Eşkıya",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Eşkıya",
+      "to": "Babam ve Oğlum"
+    },
+    {
+      "from": "Eşkıya",
+      "to": "Kış Uykusu"
+    },
+    {
+      "from": "Eşkıya",
+      "to": "Ahlat Ağacı"
+    },
+    {
+      "from": "Eşkıya",
+      "to": "Kelebeğin Rüyası"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Sinema"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Film"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Kış Uykusu"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Ahlat Ağacı"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Kelebeğin Rüyası"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Organize İşler"
+    },
+    {
+      "from": "Babam ve Oğlum",
+      "to": "Dram"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Film"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Ahlat Ağacı"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Kelebeğin Rüyası"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Organize İşler"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Recep İvedik"
+    },
+    {
+      "from": "Kış Uykusu",
+      "to": "Dram"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Film"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Kelebeğin Rüyası"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Organize İşler"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Recep İvedik"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Vizontele"
+    },
+    {
+      "from": "Ahlat Ağacı",
+      "to": "Dram"
+    },
+    {
+      "from": "Kelebeğin Rüyası",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kelebeğin Rüyası",
+      "to": "Film"
+    },
+    {
+      "from": "Kelebeğin Rüyası",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Kelebeğin Rüyası",
+      "to": "Organize İşler"
+    },
+    {
+      "from": "Kelebeğin Rüyası",
+      "to": "Recep İvedik"
+    },
+    {
+      "from": "Kelebeğin Rüyası",
+      "to": "Vizontele"
+    },
+    {
+      "from": "Kelebeğin Rüyası",
+      "to": "Yol"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Sinema"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Film"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Recep İvedik"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Vizontele"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Yol"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Uzak"
+    },
+    {
+      "from": "Organize İşler",
+      "to": "Komedi"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Sinema"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Film"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Vizontele"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Yol"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Uzak"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Bir Zamanlar Anadolu"
+    },
+    {
+      "from": "Recep İvedik",
+      "to": "Komedi"
+    },
+    {
+      "from": "Vizontele",
+      "to": "Sinema"
+    },
+    {
+      "from": "Vizontele",
+      "to": "Film"
+    },
+    {
+      "from": "Vizontele",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Vizontele",
+      "to": "Yol"
+    },
+    {
+      "from": "Vizontele",
+      "to": "Uzak"
+    },
+    {
+      "from": "Vizontele",
+      "to": "Bir Zamanlar Anadolu"
+    },
+    {
+      "from": "Vizontele",
+      "to": "Masumiyet"
+    },
+    {
+      "from": "Yol",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yol",
+      "to": "Film"
+    },
+    {
+      "from": "Yol",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Yol",
+      "to": "Uzak"
+    },
+    {
+      "from": "Yol",
+      "to": "Bir Zamanlar Anadolu"
+    },
+    {
+      "from": "Yol",
+      "to": "Masumiyet"
+    },
+    {
+      "from": "Yol",
+      "to": "Gemide"
+    },
+    {
+      "from": "Uzak",
+      "to": "Sinema"
+    },
+    {
+      "from": "Uzak",
+      "to": "Film"
+    },
+    {
+      "from": "Uzak",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Uzak",
+      "to": "Bir Zamanlar Anadolu"
+    },
+    {
+      "from": "Uzak",
+      "to": "Masumiyet"
+    },
+    {
+      "from": "Uzak",
+      "to": "Gemide"
+    },
+    {
+      "from": "Uzak",
+      "to": "Gora"
+    },
+    {
+      "from": "Bir Zamanlar Anadolu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bir Zamanlar Anadolu",
+      "to": "Film"
+    },
+    {
+      "from": "Bir Zamanlar Anadolu",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Bir Zamanlar Anadolu",
+      "to": "Masumiyet"
+    },
+    {
+      "from": "Bir Zamanlar Anadolu",
+      "to": "Gemide"
+    },
+    {
+      "from": "Bir Zamanlar Anadolu",
+      "to": "Gora"
+    },
+    {
+      "from": "Bir Zamanlar Anadolu",
+      "to": "Arog"
+    },
+    {
+      "from": "Masumiyet",
+      "to": "Sinema"
+    },
+    {
+      "from": "Masumiyet",
+      "to": "Film"
+    },
+    {
+      "from": "Masumiyet",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Masumiyet",
+      "to": "Gemide"
+    },
+    {
+      "from": "Masumiyet",
+      "to": "Gora"
+    },
+    {
+      "from": "Masumiyet",
+      "to": "Arog"
+    },
+    {
+      "from": "Masumiyet",
+      "to": "Dağ"
+    },
+    {
+      "from": "Gemide",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gemide",
+      "to": "Film"
+    },
+    {
+      "from": "Gemide",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Gemide",
+      "to": "Gora"
+    },
+    {
+      "from": "Gemide",
+      "to": "Arog"
+    },
+    {
+      "from": "Gemide",
+      "to": "Dağ"
+    },
+    {
+      "from": "Gemide",
+      "to": "Düğün Dernek"
+    },
+    {
+      "from": "Gora",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gora",
+      "to": "Film"
+    },
+    {
+      "from": "Gora",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Gora",
+      "to": "Arog"
+    },
+    {
+      "from": "Gora",
+      "to": "Dağ"
+    },
+    {
+      "from": "Gora",
+      "to": "Düğün Dernek"
+    },
+    {
+      "from": "Gora",
+      "to": "Bergen"
+    },
+    {
+      "from": "Gora",
+      "to": "Komedi"
+    },
+    {
+      "from": "Arog",
+      "to": "Sinema"
+    },
+    {
+      "from": "Arog",
+      "to": "Film"
+    },
+    {
+      "from": "Arog",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Arog",
+      "to": "Dağ"
+    },
+    {
+      "from": "Arog",
+      "to": "Düğün Dernek"
+    },
+    {
+      "from": "Arog",
+      "to": "Bergen"
+    },
+    {
+      "from": "Arog",
+      "to": "The Godfather"
+    },
+    {
+      "from": "Dağ",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dağ",
+      "to": "Film"
+    },
+    {
+      "from": "Dağ",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Dağ",
+      "to": "Düğün Dernek"
+    },
+    {
+      "from": "Dağ",
+      "to": "Bergen"
+    },
+    {
+      "from": "Dağ",
+      "to": "The Godfather"
+    },
+    {
+      "from": "Dağ",
+      "to": "Titanic"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "Sinema"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "Film"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "Bergen"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "The Godfather"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "Titanic"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "Avatar"
+    },
+    {
+      "from": "Düğün Dernek",
+      "to": "Komedi"
+    },
+    {
+      "from": "Bergen",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bergen",
+      "to": "Film"
+    },
+    {
+      "from": "Bergen",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Bergen",
+      "to": "The Godfather"
+    },
+    {
+      "from": "Bergen",
+      "to": "Titanic"
+    },
+    {
+      "from": "Bergen",
+      "to": "Avatar"
+    },
+    {
+      "from": "Bergen",
+      "to": "Inception"
+    },
+    {
+      "from": "The Godfather",
+      "to": "Sinema"
+    },
+    {
+      "from": "The Godfather",
+      "to": "Film"
+    },
+    {
+      "from": "The Godfather",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "The Godfather",
+      "to": "Titanic"
+    },
+    {
+      "from": "The Godfather",
+      "to": "Avatar"
+    },
+    {
+      "from": "The Godfather",
+      "to": "Inception"
+    },
+    {
+      "from": "The Godfather",
+      "to": "Matrix"
+    },
+    {
+      "from": "Titanic",
+      "to": "Sinema"
+    },
+    {
+      "from": "Titanic",
+      "to": "Film"
+    },
+    {
+      "from": "Titanic",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Titanic",
+      "to": "Hababam Sınıfı"
+    },
+    {
+      "from": "Titanic",
+      "to": "Avatar"
+    },
+    {
+      "from": "Titanic",
+      "to": "Inception"
+    },
+    {
+      "from": "Titanic",
+      "to": "Matrix"
+    },
+    {
+      "from": "Avatar",
+      "to": "Sinema"
+    },
+    {
+      "from": "Avatar",
+      "to": "Film"
+    },
+    {
+      "from": "Avatar",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Avatar",
+      "to": "Hababam Sınıfı"
+    },
+    {
+      "from": "Avatar",
+      "to": "Selvi Boylum Al Yazmalım"
+    },
+    {
+      "from": "Avatar",
+      "to": "Inception"
+    },
+    {
+      "from": "Avatar",
+      "to": "Matrix"
+    },
+    {
+      "from": "Avatar",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Inception",
+      "to": "Sinema"
+    },
+    {
+      "from": "Inception",
+      "to": "Film"
+    },
+    {
+      "from": "Inception",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Inception",
+      "to": "Hababam Sınıfı"
+    },
+    {
+      "from": "Inception",
+      "to": "Selvi Boylum Al Yazmalım"
+    },
+    {
+      "from": "Inception",
+      "to": "Eşkıya"
+    },
+    {
+      "from": "Inception",
+      "to": "Matrix"
+    },
+    {
+      "from": "Inception",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Matrix",
+      "to": "Sinema"
+    },
+    {
+      "from": "Matrix",
+      "to": "Film"
+    },
+    {
+      "from": "Matrix",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Matrix",
+      "to": "Hababam Sınıfı"
+    },
+    {
+      "from": "Matrix",
+      "to": "Selvi Boylum Al Yazmalım"
+    },
+    {
+      "from": "Matrix",
+      "to": "Eşkıya"
+    },
+    {
+      "from": "Matrix",
+      "to": "Babam ve Oğlum"
+    },
+    {
+      "from": "Matrix",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Nuri Bilge Ceylan",
+      "to": "Sinema"
+    },
+    {
+      "from": "Nuri Bilge Ceylan",
+      "to": "Film"
+    },
+    {
+      "from": "Nuri Bilge Ceylan",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Nuri Bilge Ceylan",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Nuri Bilge Ceylan",
+      "to": "Yılmaz Güney"
+    },
+    {
+      "from": "Nuri Bilge Ceylan",
+      "to": "Çağan Irmak"
+    },
+    {
+      "from": "Nuri Bilge Ceylan",
+      "to": "Zeki Demirkubuz"
+    },
+    {
+      "from": "Yılmaz Güney",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yılmaz Güney",
+      "to": "Film"
+    },
+    {
+      "from": "Yılmaz Güney",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Yılmaz Güney",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Yılmaz Güney",
+      "to": "Çağan Irmak"
+    },
+    {
+      "from": "Yılmaz Güney",
+      "to": "Zeki Demirkubuz"
+    },
+    {
+      "from": "Yılmaz Güney",
+      "to": "Ferzan Özpetek"
+    },
+    {
+      "from": "Çağan Irmak",
+      "to": "Sinema"
+    },
+    {
+      "from": "Çağan Irmak",
+      "to": "Film"
+    },
+    {
+      "from": "Çağan Irmak",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Çağan Irmak",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Çağan Irmak",
+      "to": "Zeki Demirkubuz"
+    },
+    {
+      "from": "Çağan Irmak",
+      "to": "Ferzan Özpetek"
+    },
+    {
+      "from": "Çağan Irmak",
+      "to": "Cem Yılmaz"
+    },
+    {
+      "from": "Zeki Demirkubuz",
+      "to": "Sinema"
+    },
+    {
+      "from": "Zeki Demirkubuz",
+      "to": "Film"
+    },
+    {
+      "from": "Zeki Demirkubuz",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Zeki Demirkubuz",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Zeki Demirkubuz",
+      "to": "Ferzan Özpetek"
+    },
+    {
+      "from": "Zeki Demirkubuz",
+      "to": "Cem Yılmaz"
+    },
+    {
+      "from": "Zeki Demirkubuz",
+      "to": "Yavuz Turgul"
+    },
+    {
+      "from": "Ferzan Özpetek",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ferzan Özpetek",
+      "to": "Film"
+    },
+    {
+      "from": "Ferzan Özpetek",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Ferzan Özpetek",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Ferzan Özpetek",
+      "to": "Cem Yılmaz"
+    },
+    {
+      "from": "Ferzan Özpetek",
+      "to": "Yavuz Turgul"
+    },
+    {
+      "from": "Ferzan Özpetek",
+      "to": "Ömer Faruk Sorak"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Sinema"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Film"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Yavuz Turgul"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Ömer Faruk Sorak"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Metin Erksan"
+    },
+    {
+      "from": "Cem Yılmaz",
+      "to": "Komedi"
+    },
+    {
+      "from": "Yavuz Turgul",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yavuz Turgul",
+      "to": "Film"
+    },
+    {
+      "from": "Yavuz Turgul",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Yavuz Turgul",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Yavuz Turgul",
+      "to": "Ömer Faruk Sorak"
+    },
+    {
+      "from": "Yavuz Turgul",
+      "to": "Metin Erksan"
+    },
+    {
+      "from": "Yavuz Turgul",
+      "to": "Atıf Yılmaz"
+    },
+    {
+      "from": "Ömer Faruk Sorak",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ömer Faruk Sorak",
+      "to": "Film"
+    },
+    {
+      "from": "Ömer Faruk Sorak",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Ömer Faruk Sorak",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Ömer Faruk Sorak",
+      "to": "Metin Erksan"
+    },
+    {
+      "from": "Ömer Faruk Sorak",
+      "to": "Atıf Yılmaz"
+    },
+    {
+      "from": "Ömer Faruk Sorak",
+      "to": "Steven Spielberg"
+    },
+    {
+      "from": "Metin Erksan",
+      "to": "Sinema"
+    },
+    {
+      "from": "Metin Erksan",
+      "to": "Film"
+    },
+    {
+      "from": "Metin Erksan",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Metin Erksan",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Metin Erksan",
+      "to": "Atıf Yılmaz"
+    },
+    {
+      "from": "Metin Erksan",
+      "to": "Steven Spielberg"
+    },
+    {
+      "from": "Metin Erksan",
+      "to": "Martin Scorsese"
+    },
+    {
+      "from": "Atıf Yılmaz",
+      "to": "Sinema"
+    },
+    {
+      "from": "Atıf Yılmaz",
+      "to": "Film"
+    },
+    {
+      "from": "Atıf Yılmaz",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Atıf Yılmaz",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Atıf Yılmaz",
+      "to": "Steven Spielberg"
+    },
+    {
+      "from": "Atıf Yılmaz",
+      "to": "Martin Scorsese"
+    },
+    {
+      "from": "Atıf Yılmaz",
+      "to": "Christopher Nolan"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Sinema"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Film"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Martin Scorsese"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Christopher Nolan"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Quentin Tarantino"
+    },
+    {
+      "from": "Steven Spielberg",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "Sinema"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "Film"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "Christopher Nolan"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "Quentin Tarantino"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "James Cameron"
+    },
+    {
+      "from": "Martin Scorsese",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Christopher Nolan",
+      "to": "Sinema"
+    },
+    {
+      "from": "Christopher Nolan",
+      "to": "Film"
+    },
+    {
+      "from": "Christopher Nolan",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Christopher Nolan",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Christopher Nolan",
+      "to": "Quentin Tarantino"
+    },
+    {
+      "from": "Christopher Nolan",
+      "to": "James Cameron"
+    },
+    {
+      "from": "Christopher Nolan",
+      "to": "Francis Ford Coppola"
+    },
+    {
+      "from": "Quentin Tarantino",
+      "to": "Sinema"
+    },
+    {
+      "from": "Quentin Tarantino",
+      "to": "Film"
+    },
+    {
+      "from": "Quentin Tarantino",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Quentin Tarantino",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Quentin Tarantino",
+      "to": "James Cameron"
+    },
+    {
+      "from": "Quentin Tarantino",
+      "to": "Francis Ford Coppola"
+    },
+    {
+      "from": "Quentin Tarantino",
+      "to": "Alfred Hitchcock"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Sinema"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Film"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Senaryo"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Francis Ford Coppola"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Alfred Hitchcock"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Stanley Kubrick"
+    },
+    {
+      "from": "James Cameron",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Francis Ford Coppola",
+      "to": "Sinema"
+    },
+    {
+      "from": "Francis Ford Coppola",
+      "to": "Film"
+    },
+    {
+      "from": "Francis Ford Coppola",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Francis Ford Coppola",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Francis Ford Coppola",
+      "to": "Alfred Hitchcock"
+    },
+    {
+      "from": "Francis Ford Coppola",
+      "to": "Stanley Kubrick"
+    },
+    {
+      "from": "Francis Ford Coppola",
+      "to": "Akira Kurosawa"
+    },
+    {
+      "from": "Alfred Hitchcock",
+      "to": "Sinema"
+    },
+    {
+      "from": "Alfred Hitchcock",
+      "to": "Film"
+    },
+    {
+      "from": "Alfred Hitchcock",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Alfred Hitchcock",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Alfred Hitchcock",
+      "to": "Stanley Kubrick"
+    },
+    {
+      "from": "Alfred Hitchcock",
+      "to": "Akira Kurosawa"
+    },
+    {
+      "from": "Alfred Hitchcock",
+      "to": "Hayao Miyazaki"
+    },
+    {
+      "from": "Stanley Kubrick",
+      "to": "Sinema"
+    },
+    {
+      "from": "Stanley Kubrick",
+      "to": "Film"
+    },
+    {
+      "from": "Stanley Kubrick",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Stanley Kubrick",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Stanley Kubrick",
+      "to": "Akira Kurosawa"
+    },
+    {
+      "from": "Stanley Kubrick",
+      "to": "Hayao Miyazaki"
+    },
+    {
+      "from": "Stanley Kubrick",
+      "to": "Ridley Scott"
+    },
+    {
+      "from": "Akira Kurosawa",
+      "to": "Sinema"
+    },
+    {
+      "from": "Akira Kurosawa",
+      "to": "Film"
+    },
+    {
+      "from": "Akira Kurosawa",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Akira Kurosawa",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Akira Kurosawa",
+      "to": "Hayao Miyazaki"
+    },
+    {
+      "from": "Akira Kurosawa",
+      "to": "Ridley Scott"
+    },
+    {
+      "from": "Akira Kurosawa",
+      "to": "Denis Villeneuve"
+    },
+    {
+      "from": "Hayao Miyazaki",
+      "to": "Sinema"
+    },
+    {
+      "from": "Hayao Miyazaki",
+      "to": "Film"
+    },
+    {
+      "from": "Hayao Miyazaki",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Hayao Miyazaki",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Hayao Miyazaki",
+      "to": "Ridley Scott"
+    },
+    {
+      "from": "Hayao Miyazaki",
+      "to": "Denis Villeneuve"
+    },
+    {
+      "from": "Hayao Miyazaki",
+      "to": "Greta Gerwig"
+    },
+    {
+      "from": "Ridley Scott",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ridley Scott",
+      "to": "Film"
+    },
+    {
+      "from": "Ridley Scott",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Ridley Scott",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Ridley Scott",
+      "to": "Denis Villeneuve"
+    },
+    {
+      "from": "Ridley Scott",
+      "to": "Greta Gerwig"
+    },
+    {
+      "from": "Ridley Scott",
+      "to": "Sofia Coppola"
+    },
+    {
+      "from": "Denis Villeneuve",
+      "to": "Sinema"
+    },
+    {
+      "from": "Denis Villeneuve",
+      "to": "Film"
+    },
+    {
+      "from": "Denis Villeneuve",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Denis Villeneuve",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Denis Villeneuve",
+      "to": "Greta Gerwig"
+    },
+    {
+      "from": "Denis Villeneuve",
+      "to": "Sofia Coppola"
+    },
+    {
+      "from": "Denis Villeneuve",
+      "to": "Bong Joon Ho"
+    },
+    {
+      "from": "Greta Gerwig",
+      "to": "Sinema"
+    },
+    {
+      "from": "Greta Gerwig",
+      "to": "Film"
+    },
+    {
+      "from": "Greta Gerwig",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Greta Gerwig",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Greta Gerwig",
+      "to": "Nuri Bilge Ceylan"
+    },
+    {
+      "from": "Greta Gerwig",
+      "to": "Sofia Coppola"
+    },
+    {
+      "from": "Greta Gerwig",
+      "to": "Bong Joon Ho"
+    },
+    {
+      "from": "Sofia Coppola",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sofia Coppola",
+      "to": "Film"
+    },
+    {
+      "from": "Sofia Coppola",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Sofia Coppola",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Sofia Coppola",
+      "to": "Nuri Bilge Ceylan"
+    },
+    {
+      "from": "Sofia Coppola",
+      "to": "Yılmaz Güney"
+    },
+    {
+      "from": "Sofia Coppola",
+      "to": "Bong Joon Ho"
+    },
+    {
+      "from": "Bong Joon Ho",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bong Joon Ho",
+      "to": "Film"
+    },
+    {
+      "from": "Bong Joon Ho",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Bong Joon Ho",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Bong Joon Ho",
+      "to": "Nuri Bilge Ceylan"
+    },
+    {
+      "from": "Bong Joon Ho",
+      "to": "Yılmaz Güney"
+    },
+    {
+      "from": "Bong Joon Ho",
+      "to": "Çağan Irmak"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Sinema"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Film"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Karakter"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Kemal Sunal"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Türkan Şoray"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Kadir İnanır"
+    },
+    {
+      "from": "Şener Şen",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Film"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Karakter"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Türkan Şoray"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Kadir İnanır"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Münir Özkul"
+    },
+    {
+      "from": "Kemal Sunal",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Sinema"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Film"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Karakter"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Kadir İnanır"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Münir Özkul"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Adile Naşit"
+    },
+    {
+      "from": "Türkan Şoray",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Film"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Karakter"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Münir Özkul"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Adile Naşit"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Haluk Bilginer"
+    },
+    {
+      "from": "Kadir İnanır",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Sinema"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Film"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Karakter"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Adile Naşit"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Haluk Bilginer"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Cem Yılmaz Oyuncu"
+    },
+    {
+      "from": "Münir Özkul",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Sinema"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Film"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Karakter"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Haluk Bilginer"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Cem Yılmaz Oyuncu"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Yılmaz Erdoğan"
+    },
+    {
+      "from": "Adile Naşit",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Sinema"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Film"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Karakter"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Cem Yılmaz Oyuncu"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Yılmaz Erdoğan"
+    },
+    {
+      "from": "Haluk Bilginer",
+      "to": "Beren Saat"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Film"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Karakter"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Yılmaz Erdoğan"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Beren Saat"
+    },
+    {
+      "from": "Cem Yılmaz Oyuncu",
+      "to": "Kıvanç Tatlıtuğ"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Film"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Karakter"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Beren Saat"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Kıvanç Tatlıtuğ"
+    },
+    {
+      "from": "Yılmaz Erdoğan",
+      "to": "Leonardo DiCaprio"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Sinema"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Film"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Karakter"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Kıvanç Tatlıtuğ"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Leonardo DiCaprio"
+    },
+    {
+      "from": "Beren Saat",
+      "to": "Meryl Streep"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Film"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Karakter"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Leonardo DiCaprio"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Meryl Streep"
+    },
+    {
+      "from": "Kıvanç Tatlıtuğ",
+      "to": "Tom Hanks"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Sinema"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Film"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Karakter"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Meryl Streep"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Tom Hanks"
+    },
+    {
+      "from": "Leonardo DiCaprio",
+      "to": "Robert De Niro"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Sinema"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Film"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Karakter"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Tom Hanks"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Robert De Niro"
+    },
+    {
+      "from": "Meryl Streep",
+      "to": "Al Pacino"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Sinema"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Film"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Karakter"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Robert De Niro"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Al Pacino"
+    },
+    {
+      "from": "Tom Hanks",
+      "to": "Brad Pitt"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Sinema"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Film"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Karakter"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Al Pacino"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Brad Pitt"
+    },
+    {
+      "from": "Robert De Niro",
+      "to": "Morgan Freeman"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Sinema"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Film"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Karakter"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Brad Pitt"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Morgan Freeman"
+    },
+    {
+      "from": "Al Pacino",
+      "to": "Natalie Portman"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Sinema"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Film"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Karakter"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Morgan Freeman"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Natalie Portman"
+    },
+    {
+      "from": "Brad Pitt",
+      "to": "Scarlett Johansson"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Sinema"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Film"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Karakter"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Natalie Portman"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Scarlett Johansson"
+    },
+    {
+      "from": "Morgan Freeman",
+      "to": "Keanu Reeves"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Sinema"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Film"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Karakter"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Scarlett Johansson"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Keanu Reeves"
+    },
+    {
+      "from": "Natalie Portman",
+      "to": "Denzel Washington"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Sinema"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Film"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Karakter"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Keanu Reeves"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Denzel Washington"
+    },
+    {
+      "from": "Scarlett Johansson",
+      "to": "Joaquin Phoenix"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Sinema"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Film"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Karakter"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Denzel Washington"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Joaquin Phoenix"
+    },
+    {
+      "from": "Keanu Reeves",
+      "to": "Emma Stone"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Sinema"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Film"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Karakter"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Joaquin Phoenix"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Emma Stone"
+    },
+    {
+      "from": "Denzel Washington",
+      "to": "Margot Robbie"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Sinema"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Film"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Karakter"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Şener Şen"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Emma Stone"
+    },
+    {
+      "from": "Joaquin Phoenix",
+      "to": "Margot Robbie"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Sinema"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Film"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Karakter"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Şener Şen"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Kemal Sunal"
+    },
+    {
+      "from": "Emma Stone",
+      "to": "Margot Robbie"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Sinema"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Film"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Karakter"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Şener Şen"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Kemal Sunal"
+    },
+    {
+      "from": "Margot Robbie",
+      "to": "Türkan Şoray"
+    },
+    {
+      "from": "Dram",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dram",
+      "to": "Film"
+    },
+    {
+      "from": "Dram",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Dram",
+      "to": "Karakter"
+    },
+    {
+      "from": "Dram",
+      "to": "Diyalog"
+    },
+    {
+      "from": "Dram",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Dram",
+      "to": "Babam ve Oğlum"
+    },
+    {
+      "from": "Dram",
+      "to": "Kış Uykusu"
+    },
+    {
+      "from": "Dram",
+      "to": "Ahlat Ağacı"
+    },
+    {
+      "from": "Dram",
+      "to": "Komedi"
+    },
+    {
+      "from": "Dram",
+      "to": "Romantik Komedi"
+    },
+    {
+      "from": "Dram",
+      "to": "Aksiyon"
+    },
+    {
+      "from": "Dram",
+      "to": "Sanat Filmi"
+    },
+    {
+      "from": "Dram",
+      "to": "En İyi Senaryo"
+    },
+    {
+      "from": "Komedi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Komedi",
+      "to": "Film"
+    },
+    {
+      "from": "Komedi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Komedi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Komedi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Komedi",
+      "to": "Hababam Sınıfı"
+    },
+    {
+      "from": "Komedi",
+      "to": "Organize İşler"
+    },
+    {
+      "from": "Komedi",
+      "to": "Recep İvedik"
+    },
+    {
+      "from": "Komedi",
+      "to": "Gora"
+    },
+    {
+      "from": "Komedi",
+      "to": "Düğün Dernek"
+    },
+    {
+      "from": "Komedi",
+      "to": "Cem Yılmaz"
+    },
+    {
+      "from": "Komedi",
+      "to": "Romantik Komedi"
+    },
+    {
+      "from": "Komedi",
+      "to": "Aksiyon"
+    },
+    {
+      "from": "Komedi",
+      "to": "Macera"
+    },
+    {
+      "from": "Romantik Komedi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Romantik Komedi",
+      "to": "Film"
+    },
+    {
+      "from": "Romantik Komedi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Romantik Komedi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Romantik Komedi",
+      "to": "Aksiyon"
+    },
+    {
+      "from": "Romantik Komedi",
+      "to": "Macera"
+    },
+    {
+      "from": "Romantik Komedi",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Aksiyon",
+      "to": "Sinema"
+    },
+    {
+      "from": "Aksiyon",
+      "to": "Film"
+    },
+    {
+      "from": "Aksiyon",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Aksiyon",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Aksiyon",
+      "to": "Macera"
+    },
+    {
+      "from": "Aksiyon",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Aksiyon",
+      "to": "Fantastik"
+    },
+    {
+      "from": "Macera",
+      "to": "Sinema"
+    },
+    {
+      "from": "Macera",
+      "to": "Film"
+    },
+    {
+      "from": "Macera",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Macera",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Macera",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Macera",
+      "to": "Fantastik"
+    },
+    {
+      "from": "Macera",
+      "to": "Korku"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Film"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Avatar"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Inception"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Matrix"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Aksiyon"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Fantastik"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Korku"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Gerilim"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Görsel Efekt"
+    },
+    {
+      "from": "Bilim Kurgu",
+      "to": "Yeşil Perde"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Sinema"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Film"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Korku"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Gerilim"
+    },
+    {
+      "from": "Fantastik",
+      "to": "Polisiye"
+    },
+    {
+      "from": "Korku",
+      "to": "Sinema"
+    },
+    {
+      "from": "Korku",
+      "to": "Film"
+    },
+    {
+      "from": "Korku",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Korku",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Korku",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Korku",
+      "to": "Fragman"
+    },
+    {
+      "from": "Korku",
+      "to": "Gerilim"
+    },
+    {
+      "from": "Korku",
+      "to": "Polisiye"
+    },
+    {
+      "from": "Korku",
+      "to": "Suç Filmi"
+    },
+    {
+      "from": "Korku",
+      "to": "Işık"
+    },
+    {
+      "from": "Korku",
+      "to": "Ses Tasarımı"
+    },
+    {
+      "from": "Korku",
+      "to": "Yakın Plan"
+    },
+    {
+      "from": "Korku",
+      "to": "Kamera Hareketi"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Film"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Korku"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Polisiye"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Suç Filmi"
+    },
+    {
+      "from": "Gerilim",
+      "to": "Animasyon"
+    },
+    {
+      "from": "Polisiye",
+      "to": "Sinema"
+    },
+    {
+      "from": "Polisiye",
+      "to": "Film"
+    },
+    {
+      "from": "Polisiye",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Polisiye",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Polisiye",
+      "to": "Suç Filmi"
+    },
+    {
+      "from": "Polisiye",
+      "to": "Animasyon"
+    },
+    {
+      "from": "Polisiye",
+      "to": "Belgesel"
+    },
+    {
+      "from": "Suç Filmi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Suç Filmi",
+      "to": "Film"
+    },
+    {
+      "from": "Suç Filmi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Suç Filmi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Suç Filmi",
+      "to": "Animasyon"
+    },
+    {
+      "from": "Suç Filmi",
+      "to": "Belgesel"
+    },
+    {
+      "from": "Suç Filmi",
+      "to": "Biyografi"
+    },
+    {
+      "from": "Animasyon",
+      "to": "Sinema"
+    },
+    {
+      "from": "Animasyon",
+      "to": "Film"
+    },
+    {
+      "from": "Animasyon",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Animasyon",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Animasyon",
+      "to": "Belgesel"
+    },
+    {
+      "from": "Animasyon",
+      "to": "Biyografi"
+    },
+    {
+      "from": "Animasyon",
+      "to": "Tarihi Film"
+    },
+    {
+      "from": "Belgesel",
+      "to": "Sinema"
+    },
+    {
+      "from": "Belgesel",
+      "to": "Film"
+    },
+    {
+      "from": "Belgesel",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Belgesel",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Belgesel",
+      "to": "Biyografi"
+    },
+    {
+      "from": "Belgesel",
+      "to": "Tarihi Film"
+    },
+    {
+      "from": "Belgesel",
+      "to": "Savaş Filmi"
+    },
+    {
+      "from": "Biyografi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Biyografi",
+      "to": "Film"
+    },
+    {
+      "from": "Biyografi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Biyografi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Biyografi",
+      "to": "Tarihi Film"
+    },
+    {
+      "from": "Biyografi",
+      "to": "Savaş Filmi"
+    },
+    {
+      "from": "Biyografi",
+      "to": "Western"
+    },
+    {
+      "from": "Tarihi Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Tarihi Film",
+      "to": "Film"
+    },
+    {
+      "from": "Tarihi Film",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Tarihi Film",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Tarihi Film",
+      "to": "Savaş Filmi"
+    },
+    {
+      "from": "Tarihi Film",
+      "to": "Western"
+    },
+    {
+      "from": "Tarihi Film",
+      "to": "Müzikal"
+    },
+    {
+      "from": "Savaş Filmi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Savaş Filmi",
+      "to": "Film"
+    },
+    {
+      "from": "Savaş Filmi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Savaş Filmi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Savaş Filmi",
+      "to": "Western"
+    },
+    {
+      "from": "Savaş Filmi",
+      "to": "Müzikal"
+    },
+    {
+      "from": "Savaş Filmi",
+      "to": "Aile Filmi"
+    },
+    {
+      "from": "Western",
+      "to": "Sinema"
+    },
+    {
+      "from": "Western",
+      "to": "Film"
+    },
+    {
+      "from": "Western",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Western",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Western",
+      "to": "Müzikal"
+    },
+    {
+      "from": "Western",
+      "to": "Aile Filmi"
+    },
+    {
+      "from": "Western",
+      "to": "Spor Filmi"
+    },
+    {
+      "from": "Müzikal",
+      "to": "Sinema"
+    },
+    {
+      "from": "Müzikal",
+      "to": "Film"
+    },
+    {
+      "from": "Müzikal",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Müzikal",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Müzikal",
+      "to": "Aile Filmi"
+    },
+    {
+      "from": "Müzikal",
+      "to": "Spor Filmi"
+    },
+    {
+      "from": "Müzikal",
+      "to": "Kara Film"
+    },
+    {
+      "from": "Aile Filmi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Aile Filmi",
+      "to": "Film"
+    },
+    {
+      "from": "Aile Filmi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Aile Filmi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Aile Filmi",
+      "to": "Spor Filmi"
+    },
+    {
+      "from": "Aile Filmi",
+      "to": "Kara Film"
+    },
+    {
+      "from": "Aile Filmi",
+      "to": "Sanat Filmi"
+    },
+    {
+      "from": "Spor Filmi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Spor Filmi",
+      "to": "Film"
+    },
+    {
+      "from": "Spor Filmi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Spor Filmi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Spor Filmi",
+      "to": "Kara Film"
+    },
+    {
+      "from": "Spor Filmi",
+      "to": "Sanat Filmi"
+    },
+    {
+      "from": "Spor Filmi",
+      "to": "Bağımsız Film"
+    },
+    {
+      "from": "Kara Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kara Film",
+      "to": "Film"
+    },
+    {
+      "from": "Kara Film",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Kara Film",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Kara Film",
+      "to": "Sanat Filmi"
+    },
+    {
+      "from": "Kara Film",
+      "to": "Bağımsız Film"
+    },
+    {
+      "from": "Kara Film",
+      "to": "Kısa Film"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Film"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Dram"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Bağımsız Film"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Kısa Film"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Sessiz Film"
+    },
+    {
+      "from": "Sanat Filmi",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Bağımsız Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bağımsız Film",
+      "to": "Film"
+    },
+    {
+      "from": "Bağımsız Film",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Bağımsız Film",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Bağımsız Film",
+      "to": "Dram"
+    },
+    {
+      "from": "Bağımsız Film",
+      "to": "Kısa Film"
+    },
+    {
+      "from": "Bağımsız Film",
+      "to": "Sessiz Film"
+    },
+    {
+      "from": "Kısa Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kısa Film",
+      "to": "Film"
+    },
+    {
+      "from": "Kısa Film",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Kısa Film",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Kısa Film",
+      "to": "Dram"
+    },
+    {
+      "from": "Kısa Film",
+      "to": "Komedi"
+    },
+    {
+      "from": "Kısa Film",
+      "to": "Sessiz Film"
+    },
+    {
+      "from": "Sessiz Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sessiz Film",
+      "to": "Film"
+    },
+    {
+      "from": "Sessiz Film",
+      "to": "Hikaye"
+    },
+    {
+      "from": "Sessiz Film",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Sessiz Film",
+      "to": "Dram"
+    },
+    {
+      "from": "Sessiz Film",
+      "to": "Komedi"
+    },
+    {
+      "from": "Sessiz Film",
+      "to": "Romantik Komedi"
+    },
+    {
+      "from": "Oscar",
+      "to": "Sinema"
+    },
+    {
+      "from": "Oscar",
+      "to": "Film"
+    },
+    {
+      "from": "Oscar",
+      "to": "Altın Palmiye"
+    },
+    {
+      "from": "Oscar",
+      "to": "Altın Küre"
+    },
+    {
+      "from": "Oscar",
+      "to": "BAFTA"
+    },
+    {
+      "from": "Oscar",
+      "to": "En İyi Film"
+    },
+    {
+      "from": "Oscar",
+      "to": "En İyi Yönetmen"
+    },
+    {
+      "from": "Oscar",
+      "to": "En İyi Oyuncu"
+    },
+    {
+      "from": "Oscar",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Oscar",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Oscar",
+      "to": "Adaylık"
+    },
+    {
+      "from": "Oscar",
+      "to": "Ödül Töreni"
+    },
+    {
+      "from": "Oscar",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "Sinema"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "Film"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "Oscar"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "Altın Küre"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "BAFTA"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Altın Palmiye",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "Sinema"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "Film"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "Oscar"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "BAFTA"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "Venedik Film Festivali"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Altın Küre",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Sinema"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Film"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Oscar"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Venedik Film Festivali"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Berlin Film Festivali"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "BAFTA",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Sinema"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Film"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Sanat Filmi"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Oscar"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Altın Palmiye"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Venedik Film Festivali"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Berlin Film Festivali"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Antalya Altın Portakal"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Jüri Ödülü"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Yabancı Film"
+    },
+    {
+      "from": "Cannes Film Festivali",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Sinema"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Film"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Oscar"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Berlin Film Festivali"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Antalya Altın Portakal"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Adana Altın Koza"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Venedik Film Festivali",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "Sinema"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "Film"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "Oscar"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "Antalya Altın Portakal"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "Adana Altın Koza"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "En İyi Film"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Berlin Film Festivali",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "Sinema"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "Film"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "Oscar"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "Adana Altın Koza"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "En İyi Film"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "En İyi Yönetmen"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Antalya Altın Portakal",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "Sinema"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "Film"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "Oscar"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "En İyi Film"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "En İyi Yönetmen"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "En İyi Oyuncu"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Adana Altın Koza",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "Film"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "Oscar"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "En İyi Yönetmen"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "En İyi Oyuncu"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "En İyi Senaryo"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "En İyi Film",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "Sinema"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "Film"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "Oscar"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "En İyi Oyuncu"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "En İyi Senaryo"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "En İyi Kurgu"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "En İyi Yönetmen",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "Sinema"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "Film"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "Oscar"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "En İyi Senaryo"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "En İyi Kurgu"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "En İyi Müzik"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "En İyi Oyuncu",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "Sinema"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "Film"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "Dram"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "Oscar"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "En İyi Kurgu"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "En İyi Müzik"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "En İyi Görüntü"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "En İyi Senaryo",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Kurgu",
+      "to": "Sinema"
+    },
+    {
+      "from": "En İyi Kurgu",
+      "to": "Film"
+    },
+    {
+      "from": "En İyi Kurgu",
+      "to": "Oscar"
+    },
+    {
+      "from": "En İyi Kurgu",
+      "to": "En İyi Müzik"
+    },
+    {
+      "from": "En İyi Kurgu",
+      "to": "En İyi Görüntü"
+    },
+    {
+      "from": "En İyi Kurgu",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "En İyi Kurgu",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Müzik",
+      "to": "Sinema"
+    },
+    {
+      "from": "En İyi Müzik",
+      "to": "Film"
+    },
+    {
+      "from": "En İyi Müzik",
+      "to": "Oscar"
+    },
+    {
+      "from": "En İyi Müzik",
+      "to": "En İyi Görüntü"
+    },
+    {
+      "from": "En İyi Müzik",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "En İyi Müzik",
+      "to": "Jüri Ödülü"
+    },
+    {
+      "from": "En İyi Müzik",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Görüntü",
+      "to": "Sinema"
+    },
+    {
+      "from": "En İyi Görüntü",
+      "to": "Film"
+    },
+    {
+      "from": "En İyi Görüntü",
+      "to": "Oscar"
+    },
+    {
+      "from": "En İyi Görüntü",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "En İyi Görüntü",
+      "to": "Jüri Ödülü"
+    },
+    {
+      "from": "En İyi Görüntü",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "En İyi Görüntü",
+      "to": "Adaylık"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Film"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Oscar"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Jüri Ödülü"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Adaylık"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Ödül Töreni"
+    },
+    {
+      "from": "Kırmızı Halı",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Sinema"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Film"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Oscar"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Adaylık"
+    },
+    {
+      "from": "Jüri Ödülü",
+      "to": "Ödül Töreni"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Film"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Oscar"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Adaylık"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Ödül Töreni"
+    },
+    {
+      "from": "Festival Seçkisi",
+      "to": "Eleştirmen Ödülü"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Sinema"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Film"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Oscar"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Ödül Töreni"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Eleştirmen Ödülü"
+    },
+    {
+      "from": "Adaylık",
+      "to": "Seyirci Ödülü"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Film"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Oscar"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Eleştirmen Ödülü"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Seyirci Ödülü"
+    },
+    {
+      "from": "Ödül Töreni",
+      "to": "Yabancı Film"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Sinema"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Film"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Oscar"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Seyirci Ödülü"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Yabancı Film"
+    },
+    {
+      "from": "Eleştirmen Ödülü",
+      "to": "Kısa Film Ödülü"
+    },
+    {
+      "from": "Seyirci Ödülü",
+      "to": "Sinema"
+    },
+    {
+      "from": "Seyirci Ödülü",
+      "to": "Film"
+    },
+    {
+      "from": "Seyirci Ödülü",
+      "to": "Oscar"
+    },
+    {
+      "from": "Seyirci Ödülü",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Seyirci Ödülü",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Seyirci Ödülü",
+      "to": "Yabancı Film"
+    },
+    {
+      "from": "Seyirci Ödülü",
+      "to": "Kısa Film Ödülü"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Film"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Oscar"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Altın Palmiye"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Yabancı Film",
+      "to": "Kısa Film Ödülü"
+    },
+    {
+      "from": "Kısa Film Ödülü",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kısa Film Ödülü",
+      "to": "Film"
+    },
+    {
+      "from": "Kısa Film Ödülü",
+      "to": "Oscar"
+    },
+    {
+      "from": "Kısa Film Ödülü",
+      "to": "Altın Palmiye"
+    },
+    {
+      "from": "Kısa Film Ödülü",
+      "to": "Altın Küre"
+    },
+    {
+      "from": "Kısa Film Ödülü",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Kısa Film Ödülü",
+      "to": "Festival Seçkisi"
+    },
+    {
+      "from": "Kamera",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kamera",
+      "to": "Film"
+    },
+    {
+      "from": "Kamera",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Kamera",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Kamera",
+      "to": "Işık"
+    },
+    {
+      "from": "Kamera",
+      "to": "Ses Tasarımı"
+    },
+    {
+      "from": "Kamera",
+      "to": "Görüntü Yönetmeni"
+    },
+    {
+      "from": "Kamera",
+      "to": "Set"
+    },
+    {
+      "from": "Işık",
+      "to": "Sinema"
+    },
+    {
+      "from": "Işık",
+      "to": "Film"
+    },
+    {
+      "from": "Işık",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Işık",
+      "to": "Korku"
+    },
+    {
+      "from": "Işık",
+      "to": "Kamera"
+    },
+    {
+      "from": "Işık",
+      "to": "Ses Tasarımı"
+    },
+    {
+      "from": "Işık",
+      "to": "Görüntü Yönetmeni"
+    },
+    {
+      "from": "Işık",
+      "to": "Sanat Yönetmeni"
+    },
+    {
+      "from": "Işık",
+      "to": "Set"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Film"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Korku"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Kamera"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Görüntü Yönetmeni"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Sanat Yönetmeni"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Kostüm Tasarımı"
+    },
+    {
+      "from": "Ses Tasarımı",
+      "to": "Set"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Sinema"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Film"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Kamera"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Sanat Yönetmeni"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Kostüm Tasarımı"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Makyaj"
+    },
+    {
+      "from": "Görüntü Yönetmeni",
+      "to": "Set"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Film"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Kamera"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Kostüm Tasarımı"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Makyaj"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Özel Efekt"
+    },
+    {
+      "from": "Sanat Yönetmeni",
+      "to": "Set"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Film"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Kamera"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Makyaj"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Özel Efekt"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Görsel Efekt"
+    },
+    {
+      "from": "Kostüm Tasarımı",
+      "to": "Set"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Sinema"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Film"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Kamera"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Özel Efekt"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Görsel Efekt"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Yeşil Perde"
+    },
+    {
+      "from": "Makyaj",
+      "to": "Set"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Sinema"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Film"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Kamera"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Görsel Efekt"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Yeşil Perde"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Dublaj"
+    },
+    {
+      "from": "Özel Efekt",
+      "to": "Set"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Sinema"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Film"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Kamera"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Yeşil Perde"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Dublaj"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Altyazı"
+    },
+    {
+      "from": "Görsel Efekt",
+      "to": "Set"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Film"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Bilim Kurgu"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Kamera"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Dublaj"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Altyazı"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Storyboard"
+    },
+    {
+      "from": "Yeşil Perde",
+      "to": "Set"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Film"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Kamera"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Altyazı"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Storyboard"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Çekim Planı"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Set"
+    },
+    {
+      "from": "Dublaj",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Film"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Kamera"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Storyboard"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Çekim Planı"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Yakın Plan"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Set"
+    },
+    {
+      "from": "Altyazı",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Sinema"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Film"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Kamera"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Çekim Planı"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Yakın Plan"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Geniş Açı"
+    },
+    {
+      "from": "Storyboard",
+      "to": "Set"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Film"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Kamera"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Yakın Plan"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Geniş Açı"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Kamera Hareketi"
+    },
+    {
+      "from": "Çekim Planı",
+      "to": "Set"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Film"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Korku"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Kamera"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Geniş Açı"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Kamera Hareketi"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Montaj"
+    },
+    {
+      "from": "Yakın Plan",
+      "to": "Set"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Film"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Kamera"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Kamera Hareketi"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Montaj"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Renk Düzenleme"
+    },
+    {
+      "from": "Geniş Açı",
+      "to": "Set"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Film"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Korku"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Kamera"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Montaj"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Renk Düzenleme"
+    },
+    {
+      "from": "Kamera Hareketi",
+      "to": "Set"
+    },
+    {
+      "from": "Montaj",
+      "to": "Sinema"
+    },
+    {
+      "from": "Montaj",
+      "to": "Film"
+    },
+    {
+      "from": "Montaj",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Montaj",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Montaj",
+      "to": "Kamera"
+    },
+    {
+      "from": "Montaj",
+      "to": "Renk Düzenleme"
+    },
+    {
+      "from": "Montaj",
+      "to": "Set"
+    },
+    {
+      "from": "Montaj",
+      "to": "Klaket"
+    },
+    {
+      "from": "Renk Düzenleme",
+      "to": "Sinema"
+    },
+    {
+      "from": "Renk Düzenleme",
+      "to": "Film"
+    },
+    {
+      "from": "Renk Düzenleme",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Renk Düzenleme",
+      "to": "Kamera"
+    },
+    {
+      "from": "Renk Düzenleme",
+      "to": "Set"
+    },
+    {
+      "from": "Renk Düzenleme",
+      "to": "Klaket"
+    },
+    {
+      "from": "Renk Düzenleme",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Set",
+      "to": "Sinema"
+    },
+    {
+      "from": "Set",
+      "to": "Film"
+    },
+    {
+      "from": "Set",
+      "to": "Yönetmenlik"
+    },
+    {
+      "from": "Set",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Set",
+      "to": "Kamera"
+    },
+    {
+      "from": "Set",
+      "to": "Klaket"
+    },
+    {
+      "from": "Set",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Set",
+      "to": "Boom Operatörü"
+    },
+    {
+      "from": "Klaket",
+      "to": "Sinema"
+    },
+    {
+      "from": "Klaket",
+      "to": "Film"
+    },
+    {
+      "from": "Klaket",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Klaket",
+      "to": "Kamera"
+    },
+    {
+      "from": "Klaket",
+      "to": "Set"
+    },
+    {
+      "from": "Klaket",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Klaket",
+      "to": "Boom Operatörü"
+    },
+    {
+      "from": "Klaket",
+      "to": "Dublör"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Sinema"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Film"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Kamera"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Set"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Boom Operatörü"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Dublör"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Pratik Efekt"
+    },
+    {
+      "from": "Boom Operatörü",
+      "to": "Sinema"
+    },
+    {
+      "from": "Boom Operatörü",
+      "to": "Film"
+    },
+    {
+      "from": "Boom Operatörü",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Boom Operatörü",
+      "to": "Kamera"
+    },
+    {
+      "from": "Boom Operatörü",
+      "to": "Set"
+    },
+    {
+      "from": "Boom Operatörü",
+      "to": "Dublör"
+    },
+    {
+      "from": "Boom Operatörü",
+      "to": "Pratik Efekt"
+    },
+    {
+      "from": "Dublör",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dublör",
+      "to": "Film"
+    },
+    {
+      "from": "Dublör",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Dublör",
+      "to": "Kamera"
+    },
+    {
+      "from": "Dublör",
+      "to": "Işık"
+    },
+    {
+      "from": "Dublör",
+      "to": "Set"
+    },
+    {
+      "from": "Dublör",
+      "to": "Pratik Efekt"
+    },
+    {
+      "from": "Pratik Efekt",
+      "to": "Sinema"
+    },
+    {
+      "from": "Pratik Efekt",
+      "to": "Film"
+    },
+    {
+      "from": "Pratik Efekt",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Pratik Efekt",
+      "to": "Kamera"
+    },
+    {
+      "from": "Pratik Efekt",
+      "to": "Işık"
+    },
+    {
+      "from": "Pratik Efekt",
+      "to": "Ses Tasarımı"
+    },
+    {
+      "from": "Pratik Efekt",
+      "to": "Set"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Film"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Perde"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Projeksiyon"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "IMAX"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Bilet Gişesi"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Koltuk"
+    },
+    {
+      "from": "Sinema Salonu",
+      "to": "Patlamış Mısır"
+    },
+    {
+      "from": "Perde",
+      "to": "Sinema"
+    },
+    {
+      "from": "Perde",
+      "to": "Film"
+    },
+    {
+      "from": "Perde",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Perde",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Perde",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Perde",
+      "to": "Projeksiyon"
+    },
+    {
+      "from": "Perde",
+      "to": "IMAX"
+    },
+    {
+      "from": "Perde",
+      "to": "Üç Boyutlu Film"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "Sinema"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "Film"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "IMAX"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "Üç Boyutlu Film"
+    },
+    {
+      "from": "Projeksiyon",
+      "to": "Bilet Gişesi"
+    },
+    {
+      "from": "IMAX",
+      "to": "Sinema"
+    },
+    {
+      "from": "IMAX",
+      "to": "Film"
+    },
+    {
+      "from": "IMAX",
+      "to": "Gösterim"
+    },
+    {
+      "from": "IMAX",
+      "to": "İzleyici"
+    },
+    {
+      "from": "IMAX",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "IMAX",
+      "to": "Üç Boyutlu Film"
+    },
+    {
+      "from": "IMAX",
+      "to": "Bilet Gişesi"
+    },
+    {
+      "from": "IMAX",
+      "to": "Koltuk"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "Sinema"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "Film"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "Bilet Gişesi"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "Koltuk"
+    },
+    {
+      "from": "Üç Boyutlu Film",
+      "to": "Patlamış Mısır"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "Film"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "Koltuk"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "Patlamış Mısır"
+    },
+    {
+      "from": "Bilet Gişesi",
+      "to": "Lobi"
+    },
+    {
+      "from": "Koltuk",
+      "to": "Sinema"
+    },
+    {
+      "from": "Koltuk",
+      "to": "Film"
+    },
+    {
+      "from": "Koltuk",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Koltuk",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Koltuk",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Koltuk",
+      "to": "Patlamış Mısır"
+    },
+    {
+      "from": "Koltuk",
+      "to": "Lobi"
+    },
+    {
+      "from": "Koltuk",
+      "to": "Salon Işığı"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "Sinema"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "Film"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "Lobi"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "Salon Işığı"
+    },
+    {
+      "from": "Patlamış Mısır",
+      "to": "Ev Sineması"
+    },
+    {
+      "from": "Lobi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Lobi",
+      "to": "Film"
+    },
+    {
+      "from": "Lobi",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Lobi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Lobi",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Lobi",
+      "to": "Salon Işığı"
+    },
+    {
+      "from": "Lobi",
+      "to": "Ev Sineması"
+    },
+    {
+      "from": "Lobi",
+      "to": "Açık Hava Sineması"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "Film"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "Ev Sineması"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "Açık Hava Sineması"
+    },
+    {
+      "from": "Salon Işığı",
+      "to": "Film Seti"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Film"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Açık Hava Sineması"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Film Seti"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Ev Sineması",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "Sinema"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "Film"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "Film Seti"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Açık Hava Sineması",
+      "to": "Çekim Mekanı"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Sinema"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Film"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Film Seti",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Çekim Mekanı"
+    },
+    {
+      "from": "Film Seti",
+      "to": "Gala"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Sinema"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Film"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Çekim Mekanı"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Gala"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Basın Gösterimi"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "Film"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "Gala"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "Basın Gösterimi"
+    },
+    {
+      "from": "Çekim Mekanı",
+      "to": "Ön Gösterim"
+    },
+    {
+      "from": "Gala",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gala",
+      "to": "Film"
+    },
+    {
+      "from": "Gala",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Gala",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Gala",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Gala",
+      "to": "Basın Gösterimi"
+    },
+    {
+      "from": "Gala",
+      "to": "Ön Gösterim"
+    },
+    {
+      "from": "Gala",
+      "to": "Matine"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "Film"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "Ön Gösterim"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "Matine"
+    },
+    {
+      "from": "Basın Gösterimi",
+      "to": "Gece Seansı"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "Sinema"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "Film"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "Matine"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "Gece Seansı"
+    },
+    {
+      "from": "Ön Gösterim",
+      "to": "Film Arşivi"
+    },
+    {
+      "from": "Matine",
+      "to": "Sinema"
+    },
+    {
+      "from": "Matine",
+      "to": "Film"
+    },
+    {
+      "from": "Matine",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Matine",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Matine",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Matine",
+      "to": "Gece Seansı"
+    },
+    {
+      "from": "Matine",
+      "to": "Film Arşivi"
+    },
+    {
+      "from": "Matine",
+      "to": "Sinematek"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "Film"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "Film Arşivi"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "Sinematek"
+    },
+    {
+      "from": "Gece Seansı",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "Film"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "Sinematek"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Film Arşivi",
+      "to": "DVD"
+    },
+    {
+      "from": "Sinematek",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sinematek",
+      "to": "Film"
+    },
+    {
+      "from": "Sinematek",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Sinematek",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Sinematek",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Sinematek",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Sinematek",
+      "to": "DVD"
+    },
+    {
+      "from": "Sinematek",
+      "to": "Blu Ray"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Film"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Dublaj"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Altyazı"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Ev Sineması"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Film Arşivi"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "DVD"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Blu Ray"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Box Office"
+    },
+    {
+      "from": "Dijital Platform",
+      "to": "Popüler Sinema"
+    },
+    {
+      "from": "DVD",
+      "to": "Sinema"
+    },
+    {
+      "from": "DVD",
+      "to": "Film"
+    },
+    {
+      "from": "DVD",
+      "to": "Gösterim"
+    },
+    {
+      "from": "DVD",
+      "to": "İzleyici"
+    },
+    {
+      "from": "DVD",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "DVD",
+      "to": "Perde"
+    },
+    {
+      "from": "DVD",
+      "to": "Blu Ray"
+    },
+    {
+      "from": "Blu Ray",
+      "to": "Sinema"
+    },
+    {
+      "from": "Blu Ray",
+      "to": "Film"
+    },
+    {
+      "from": "Blu Ray",
+      "to": "Gösterim"
+    },
+    {
+      "from": "Blu Ray",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Blu Ray",
+      "to": "Sinema Salonu"
+    },
+    {
+      "from": "Blu Ray",
+      "to": "Perde"
+    },
+    {
+      "from": "Blu Ray",
+      "to": "Projeksiyon"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "Sinema"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "Film"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "Cannes Film Festivali"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "Sinema Dergisi"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "Film Kulübü"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Film Eleştirmeni",
+      "to": "Spoiler"
+    },
+    {
+      "from": "Sinema Dergisi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sinema Dergisi",
+      "to": "Film"
+    },
+    {
+      "from": "Sinema Dergisi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Sinema Dergisi",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Sinema Dergisi",
+      "to": "Film Kulübü"
+    },
+    {
+      "from": "Sinema Dergisi",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Sinema Dergisi",
+      "to": "Spoiler"
+    },
+    {
+      "from": "Film Kulübü",
+      "to": "Sinema"
+    },
+    {
+      "from": "Film Kulübü",
+      "to": "Film"
+    },
+    {
+      "from": "Film Kulübü",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Film Kulübü",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Film Kulübü",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Film Kulübü",
+      "to": "Spoiler"
+    },
+    {
+      "from": "Film Kulübü",
+      "to": "Kameo"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Film"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Spoiler"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Kameo"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Sahne Arkası"
+    },
+    {
+      "from": "Spoiler",
+      "to": "Sinema"
+    },
+    {
+      "from": "Spoiler",
+      "to": "Film"
+    },
+    {
+      "from": "Spoiler",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Spoiler",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Spoiler",
+      "to": "Kameo"
+    },
+    {
+      "from": "Spoiler",
+      "to": "Sahne Arkası"
+    },
+    {
+      "from": "Spoiler",
+      "to": "Yapımcı"
+    },
+    {
+      "from": "Kameo",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kameo",
+      "to": "Film"
+    },
+    {
+      "from": "Kameo",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Kameo",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Kameo",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Kameo",
+      "to": "Sahne Arkası"
+    },
+    {
+      "from": "Kameo",
+      "to": "Yapımcı"
+    },
+    {
+      "from": "Kameo",
+      "to": "Dağıtımcı"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Film"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Yapımcı"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Dağıtımcı"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Senarist"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "Film"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "Dağıtımcı"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "Senarist"
+    },
+    {
+      "from": "Yapımcı",
+      "to": "Casting"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "Film"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "Prodüksiyon"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "Senarist"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "Casting"
+    },
+    {
+      "from": "Dağıtımcı",
+      "to": "Oyuncu Seçimi"
+    },
+    {
+      "from": "Senarist",
+      "to": "Sinema"
+    },
+    {
+      "from": "Senarist",
+      "to": "Film"
+    },
+    {
+      "from": "Senarist",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Senarist",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Senarist",
+      "to": "Casting"
+    },
+    {
+      "from": "Senarist",
+      "to": "Oyuncu Seçimi"
+    },
+    {
+      "from": "Senarist",
+      "to": "Box Office"
+    },
+    {
+      "from": "Casting",
+      "to": "Sinema"
+    },
+    {
+      "from": "Casting",
+      "to": "Film"
+    },
+    {
+      "from": "Casting",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Casting",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Casting",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Casting",
+      "to": "Oyuncu Seçimi"
+    },
+    {
+      "from": "Casting",
+      "to": "Box Office"
+    },
+    {
+      "from": "Casting",
+      "to": "Franchise"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "Film"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "Oyunculuk"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "Box Office"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "Franchise"
+    },
+    {
+      "from": "Oyuncu Seçimi",
+      "to": "Remake"
+    },
+    {
+      "from": "Box Office",
+      "to": "Sinema"
+    },
+    {
+      "from": "Box Office",
+      "to": "Film"
+    },
+    {
+      "from": "Box Office",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Box Office",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Box Office",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Box Office",
+      "to": "Franchise"
+    },
+    {
+      "from": "Box Office",
+      "to": "Remake"
+    },
+    {
+      "from": "Box Office",
+      "to": "Reboot"
+    },
+    {
+      "from": "Box Office",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Franchise",
+      "to": "Sinema"
+    },
+    {
+      "from": "Franchise",
+      "to": "Film"
+    },
+    {
+      "from": "Franchise",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Franchise",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Franchise",
+      "to": "Remake"
+    },
+    {
+      "from": "Franchise",
+      "to": "Reboot"
+    },
+    {
+      "from": "Franchise",
+      "to": "Prequel"
+    },
+    {
+      "from": "Franchise",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Remake",
+      "to": "Sinema"
+    },
+    {
+      "from": "Remake",
+      "to": "Film"
+    },
+    {
+      "from": "Remake",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Remake",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Remake",
+      "to": "Reboot"
+    },
+    {
+      "from": "Remake",
+      "to": "Prequel"
+    },
+    {
+      "from": "Remake",
+      "to": "Sequel"
+    },
+    {
+      "from": "Reboot",
+      "to": "Sinema"
+    },
+    {
+      "from": "Reboot",
+      "to": "Film"
+    },
+    {
+      "from": "Reboot",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Reboot",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Reboot",
+      "to": "Prequel"
+    },
+    {
+      "from": "Reboot",
+      "to": "Sequel"
+    },
+    {
+      "from": "Reboot",
+      "to": "Spin Off"
+    },
+    {
+      "from": "Prequel",
+      "to": "Sinema"
+    },
+    {
+      "from": "Prequel",
+      "to": "Film"
+    },
+    {
+      "from": "Prequel",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Prequel",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Prequel",
+      "to": "Sequel"
+    },
+    {
+      "from": "Prequel",
+      "to": "Spin Off"
+    },
+    {
+      "from": "Prequel",
+      "to": "Sinema Tarihi"
+    },
+    {
+      "from": "Sequel",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sequel",
+      "to": "Film"
+    },
+    {
+      "from": "Sequel",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Sequel",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Sequel",
+      "to": "Spin Off"
+    },
+    {
+      "from": "Sequel",
+      "to": "Sinema Tarihi"
+    },
+    {
+      "from": "Sequel",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Spin Off",
+      "to": "Sinema"
+    },
+    {
+      "from": "Spin Off",
+      "to": "Film"
+    },
+    {
+      "from": "Spin Off",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Spin Off",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Spin Off",
+      "to": "Sinema Tarihi"
+    },
+    {
+      "from": "Spin Off",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Spin Off",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Sinema Tarihi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sinema Tarihi",
+      "to": "Film"
+    },
+    {
+      "from": "Sinema Tarihi",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Sinema Tarihi",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Sinema Tarihi",
+      "to": "Yeşilçam"
+    },
+    {
+      "from": "Sinema Tarihi",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Sinema Tarihi",
+      "to": "Bollywood"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Film"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Hababam Sınıfı"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Şener Şen"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Kemal Sunal"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Türkan Şoray"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Kadir İnanır"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Münir Özkul"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Adile Naşit"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Hollywood"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Bollywood"
+    },
+    {
+      "from": "Yeşilçam",
+      "to": "Auteur Sineması"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Sinema"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Film"
+    },
+    {
+      "from": "Hollywood",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Steven Spielberg"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Martin Scorsese"
+    },
+    {
+      "from": "Hollywood",
+      "to": "James Cameron"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Oscar"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Kırmızı Halı"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Box Office"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Franchise"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Bollywood"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Auteur Sineması"
+    },
+    {
+      "from": "Hollywood",
+      "to": "Popüler Sinema"
+    },
+    {
+      "from": "Bollywood",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bollywood",
+      "to": "Film"
+    },
+    {
+      "from": "Bollywood",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Bollywood",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Bollywood",
+      "to": "Sinema Dergisi"
+    },
+    {
+      "from": "Bollywood",
+      "to": "Auteur Sineması"
+    },
+    {
+      "from": "Bollywood",
+      "to": "Popüler Sinema"
+    },
+    {
+      "from": "Auteur Sineması",
+      "to": "Sinema"
+    },
+    {
+      "from": "Auteur Sineması",
+      "to": "Film"
+    },
+    {
+      "from": "Auteur Sineması",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Auteur Sineması",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Auteur Sineması",
+      "to": "Sinema Dergisi"
+    },
+    {
+      "from": "Auteur Sineması",
+      "to": "Film Kulübü"
+    },
+    {
+      "from": "Auteur Sineması",
+      "to": "Popüler Sinema"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "Sinema"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "Film"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "İzleyici"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "Dijital Platform"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "Film Eleştirmeni"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "Sinema Dergisi"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "Film Kulübü"
+    },
+    {
+      "from": "Popüler Sinema",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Sinema"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Film"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Mizansen"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Alt Metin"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Tema"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Sembolizm"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Kamera Açısı"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Bakış Açısı"
+    },
+    {
+      "from": "Film Dili",
+      "to": "Dramatik Yapı"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Sinema"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Film"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Alt Metin"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Tema"
+    },
+    {
+      "from": "Mizansen",
+      "to": "Motif"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Sinema"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Film"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Tema"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Motif"
+    },
+    {
+      "from": "Alt Metin",
+      "to": "Sembolizm"
+    },
+    {
+      "from": "Tema",
+      "to": "Sinema"
+    },
+    {
+      "from": "Tema",
+      "to": "Film"
+    },
+    {
+      "from": "Tema",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Tema",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Tema",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Tema",
+      "to": "Motif"
+    },
+    {
+      "from": "Tema",
+      "to": "Sembolizm"
+    },
+    {
+      "from": "Tema",
+      "to": "Anlatıcı"
+    },
+    {
+      "from": "Motif",
+      "to": "Sinema"
+    },
+    {
+      "from": "Motif",
+      "to": "Film"
+    },
+    {
+      "from": "Motif",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Motif",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Motif",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Motif",
+      "to": "Sembolizm"
+    },
+    {
+      "from": "Motif",
+      "to": "Anlatıcı"
+    },
+    {
+      "from": "Motif",
+      "to": "Geri Dönüş"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Sinema"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Film"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Anlatıcı"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Geri Dönüş"
+    },
+    {
+      "from": "Sembolizm",
+      "to": "Zaman Atlaması"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Film"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Geri Dönüş"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Zaman Atlaması"
+    },
+    {
+      "from": "Anlatıcı",
+      "to": "Paralel Kurgu"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Sinema"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Film"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Zaman Atlaması"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Paralel Kurgu"
+    },
+    {
+      "from": "Geri Dönüş",
+      "to": "Tek Plan"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Sinema"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Film"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Paralel Kurgu"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Tek Plan"
+    },
+    {
+      "from": "Zaman Atlaması",
+      "to": "Plan Sekans"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Film"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Tek Plan"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Plan Sekans"
+    },
+    {
+      "from": "Paralel Kurgu",
+      "to": "Kamera Açısı"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Sinema"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Film"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Plan Sekans"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Kamera Açısı"
+    },
+    {
+      "from": "Tek Plan",
+      "to": "Bakış Açısı"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Sinema"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Film"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Kamera Açısı"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Bakış Açısı"
+    },
+    {
+      "from": "Plan Sekans",
+      "to": "Gerçekçilik"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Film"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Bakış Açısı"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Gerçekçilik"
+    },
+    {
+      "from": "Kamera Açısı",
+      "to": "Yeni Dalga"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Film"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Gerçekçilik"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Yeni Dalga"
+    },
+    {
+      "from": "Bakış Açısı",
+      "to": "Dışavurumculuk"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Sinema"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Film"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Yeni Dalga"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Dışavurumculuk"
+    },
+    {
+      "from": "Gerçekçilik",
+      "to": "Yeni Gerçekçilik"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Film"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Dışavurumculuk"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Yeni Gerçekçilik"
+    },
+    {
+      "from": "Yeni Dalga",
+      "to": "Postmodern Sinema"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Film"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Yeni Gerçekçilik"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Postmodern Sinema"
+    },
+    {
+      "from": "Dışavurumculuk",
+      "to": "Deneysel Sinema"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Sinema"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Film"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Postmodern Sinema"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Deneysel Sinema"
+    },
+    {
+      "from": "Yeni Gerçekçilik",
+      "to": "Minimalist Sinema"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Sinema"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Film"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Deneysel Sinema"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Minimalist Sinema"
+    },
+    {
+      "from": "Postmodern Sinema",
+      "to": "Epik Anlatım"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Sinema"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Film"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Minimalist Sinema"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Epik Anlatım"
+    },
+    {
+      "from": "Deneysel Sinema",
+      "to": "Kahraman Yolculuğu"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Sinema"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Film"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Epik Anlatım"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Kahraman Yolculuğu"
+    },
+    {
+      "from": "Minimalist Sinema",
+      "to": "Karakter Gelişimi"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Sinema"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Film"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Kahraman Yolculuğu"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Karakter Gelişimi"
+    },
+    {
+      "from": "Epik Anlatım",
+      "to": "Dramatik Yapı"
+    },
+    {
+      "from": "Kahraman Yolculuğu",
+      "to": "Sinema"
+    },
+    {
+      "from": "Kahraman Yolculuğu",
+      "to": "Film"
+    },
+    {
+      "from": "Kahraman Yolculuğu",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Kahraman Yolculuğu",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Kahraman Yolculuğu",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Kahraman Yolculuğu",
+      "to": "Karakter Gelişimi"
+    },
+    {
+      "from": "Kahraman Yolculuğu",
+      "to": "Dramatik Yapı"
+    },
+    {
+      "from": "Karakter Gelişimi",
+      "to": "Sinema"
+    },
+    {
+      "from": "Karakter Gelişimi",
+      "to": "Film"
+    },
+    {
+      "from": "Karakter Gelişimi",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Karakter Gelişimi",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Karakter Gelişimi",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Karakter Gelişimi",
+      "to": "Mizansen"
+    },
+    {
+      "from": "Karakter Gelişimi",
+      "to": "Dramatik Yapı"
+    },
+    {
+      "from": "Dramatik Yapı",
+      "to": "Sinema"
+    },
+    {
+      "from": "Dramatik Yapı",
+      "to": "Film"
+    },
+    {
+      "from": "Dramatik Yapı",
+      "to": "Senaryo"
+    },
+    {
+      "from": "Dramatik Yapı",
+      "to": "Kurgu"
+    },
+    {
+      "from": "Dramatik Yapı",
+      "to": "Film Dili"
+    },
+    {
+      "from": "Dramatik Yapı",
+      "to": "Mizansen"
+    },
+    {
+      "from": "Dramatik Yapı",
+      "to": "Alt Metin"
+    }
+  ],
+  "metadata": {
+    "source": "ai-generated",
+    "symmetrized": false,
+    "nodeCount": 250,
+    "minOutgoingPerNode": 6,
+    "language": "tr-TR",
+    "generatorVersion": "lexilink-content-v1"
+  }
+}

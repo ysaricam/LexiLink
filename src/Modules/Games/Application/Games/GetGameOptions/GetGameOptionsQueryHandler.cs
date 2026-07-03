@@ -82,6 +82,13 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
             )
         )).ToList();
 
+        await IncludePreviousLinkIfMissingAsync(
+            connection,
+            candidates,
+            previousLinkId,
+            gameRow.CategoryId,
+            cancellationToken);
+
         if (candidates.Count == 0)
         {
             return new List<OutgoingLinkDto>();
@@ -145,6 +152,47 @@ internal class GetGameOptionsQueryHandler : IQueryHandler<GetGameOptionsQuery, L
             limit: OptionLimit);
 
         return selectedIds.Select(id => ToDto(byId[id])).ToList();
+    }
+
+    private static async Task IncludePreviousLinkIfMissingAsync(
+        System.Data.IDbConnection connection,
+        List<CandidateRow> candidates,
+        Guid? previousLinkId,
+        Guid categoryId,
+        CancellationToken cancellationToken)
+    {
+        if (previousLinkId is not { } previous || candidates.Any(c => c.Id == previous))
+        {
+            return;
+        }
+
+        const string previousSql = """
+            SELECT
+                "Link"."Id"       AS "Id",
+                "Link"."Value"    AS "Value",
+                "Link"."IsActive" AS "IsActive",
+                (
+                    SELECT COUNT(*)::int
+                    FROM "games"."LinkOutgoingLinks" AS "Sub"
+                    WHERE "Sub"."LinkId" = "Link"."Id"
+                )                 AS "Degree"
+            FROM "games"."v_Links" AS "Link"
+            WHERE "Link"."Id" = @PreviousLinkId
+              AND "Link"."CategoryId" = @CategoryId;
+        """;
+
+        var previousRow = await connection.QuerySingleOrDefaultAsync<CandidateRow>(
+            new CommandDefinition(
+                previousSql,
+                new { PreviousLinkId = previous, CategoryId = categoryId },
+                cancellationToken: cancellationToken
+            )
+        );
+
+        if (previousRow is not null)
+        {
+            candidates.Add(previousRow);
+        }
     }
 
     private static async Task<Guid?> ResolvePathToTargetAsync(

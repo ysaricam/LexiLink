@@ -1,0 +1,9980 @@
+{
+  "$schema": "lexilink/category/v1",
+  "category": {
+    "name": "Bilim",
+    "description": "Fizik, uzay, biyoloji, kimya, keşifler ve bilim insanlarıyla ilgili kavram bağlantıları.",
+    "language": "tr-TR"
+  },
+  "links": [
+    {
+      "value": "Bilim",
+      "description": "Bilim, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Araştırma",
+      "description": "Araştırma, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Deney",
+      "description": "Deney, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gözlem",
+      "description": "Gözlem, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hipotez",
+      "description": "Hipotez, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Teori",
+      "description": "Teori, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kanıt",
+      "description": "Kanıt, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Veri",
+      "description": "Veri, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ölçüm",
+      "description": "Ölçüm, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yöntem",
+      "description": "Yöntem, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Analiz",
+      "description": "Analiz, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Model",
+      "description": "Model, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Simülasyon",
+      "description": "Simülasyon, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Keşif",
+      "description": "Keşif, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Buluş",
+      "description": "Buluş, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Teknoloji",
+      "description": "Teknoloji, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mühendislik",
+      "description": "Mühendislik, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Doğa Yasası",
+      "description": "Doğa Yasası, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bilimsel Makale",
+      "description": "Bilimsel Makale, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Akademi",
+      "description": "Akademi, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Laboratuvar",
+      "description": "Laboratuvar, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Etik",
+      "description": "Etik, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Merak",
+      "description": "Merak, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Soru",
+      "description": "Soru, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sonuç",
+      "description": "Sonuç, bilimsel düşünme, araştırma veya temel kavramlarla ilgili bir terimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fizik",
+      "description": "Fizik, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kuvvet",
+      "description": "Kuvvet, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Enerji",
+      "description": "Enerji, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hareket",
+      "description": "Hareket, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hız",
+      "description": "Hız, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İvme",
+      "description": "İvme, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kütle",
+      "description": "Kütle, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yerçekimi",
+      "description": "Yerçekimi, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Momentum",
+      "description": "Momentum, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sürtünme",
+      "description": "Sürtünme, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Basınç",
+      "description": "Basınç, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Isı",
+      "description": "Isı, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sıcaklık",
+      "description": "Sıcaklık, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Işık",
+      "description": "Işık, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ses",
+      "description": "Ses, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Elektrik",
+      "description": "Elektrik, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Manyetizma",
+      "description": "Manyetizma, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dalga",
+      "description": "Dalga, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Atom",
+      "description": "Atom, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Parçacık",
+      "description": "Parçacık, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kuantum",
+      "description": "Kuantum, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Görelilik",
+      "description": "Görelilik, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Termodinamik",
+      "description": "Termodinamik, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nükleer Enerji",
+      "description": "Nükleer Enerji, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kara Delik",
+      "description": "Kara Delik, fizik bilimi, kuvvet, enerji veya maddeyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uzay",
+      "description": "Uzay, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Evren",
+      "description": "Evren, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Galaksi",
+      "description": "Galaksi, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Samanyolu",
+      "description": "Samanyolu, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yıldız",
+      "description": "Yıldız, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gezegen",
+      "description": "Gezegen, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uydu",
+      "description": "Uydu, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Güneş",
+      "description": "Güneş, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ay",
+      "description": "Ay, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mars",
+      "description": "Mars, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Jüpiter",
+      "description": "Jüpiter, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Satürn",
+      "description": "Satürn, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Asteroit",
+      "description": "Asteroit, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kuyruklu Yıldız",
+      "description": "Kuyruklu Yıldız, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Meteor",
+      "description": "Meteor, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nebula",
+      "description": "Nebula, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Teleskop",
+      "description": "Teleskop, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uzay Aracı",
+      "description": "Uzay Aracı, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Roket",
+      "description": "Roket, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Astronot",
+      "description": "Astronot, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uzay İstasyonu",
+      "description": "Uzay İstasyonu, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yörünge",
+      "description": "Yörünge, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Işık Yılı",
+      "description": "Işık Yılı, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Büyük Patlama",
+      "description": "Büyük Patlama, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kozmoloji",
+      "description": "Kozmoloji, uzay, gök cisimleri veya astronomiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Biyoloji",
+      "description": "Biyoloji, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hücre",
+      "description": "Hücre, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "DNA",
+      "description": "DNA, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gen",
+      "description": "Gen, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kromozom",
+      "description": "Kromozom, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Protein",
+      "description": "Protein, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Enzim",
+      "description": "Enzim, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Evrim",
+      "description": "Evrim, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Doğal Seçilim",
+      "description": "Doğal Seçilim, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tür",
+      "description": "Tür, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ekosistem",
+      "description": "Ekosistem, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Habitat",
+      "description": "Habitat, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fotosentez",
+      "description": "Fotosentez, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Solunum",
+      "description": "Solunum, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mikrop",
+      "description": "Mikrop, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bakteri",
+      "description": "Bakteri, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Virüs",
+      "description": "Virüs, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mantar",
+      "description": "Mantar, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bitki",
+      "description": "Bitki, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hayvan",
+      "description": "Hayvan, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İnsan Vücudu",
+      "description": "İnsan Vücudu, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Beyin",
+      "description": "Beyin, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kalp",
+      "description": "Kalp, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bağışıklık",
+      "description": "Bağışıklık, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sinir Sistemi",
+      "description": "Sinir Sistemi, canlılar, hücreler veya yaşam süreçleriyle ilgili bir biyoloji kavramıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kimya",
+      "description": "Kimya, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Element",
+      "description": "Element, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Molekül",
+      "description": "Molekül, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bileşik",
+      "description": "Bileşik, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Karışım",
+      "description": "Karışım, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Atom Numarası",
+      "description": "Atom Numarası, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Periyodik Tablo",
+      "description": "Periyodik Tablo, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Elektron",
+      "description": "Elektron, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Proton",
+      "description": "Proton, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nötron",
+      "description": "Nötron, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İyon",
+      "description": "İyon, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Asit",
+      "description": "Asit, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Baz",
+      "description": "Baz, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tuz",
+      "description": "Tuz, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "pH",
+      "description": "pH, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tepkime",
+      "description": "Tepkime, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Katalizör",
+      "description": "Katalizör, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çözelti",
+      "description": "Çözelti, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gaz",
+      "description": "Gaz, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sıvı",
+      "description": "Sıvı, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Katı",
+      "description": "Katı, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Organik Kimya",
+      "description": "Organik Kimya, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Polimer",
+      "description": "Polimer, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kristal",
+      "description": "Kristal, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yanma",
+      "description": "Yanma, maddeler, tepkimeler veya kimya laboratuvarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Aşı",
+      "description": "Aşı, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Antibiyotik",
+      "description": "Antibiyotik, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Penisilin",
+      "description": "Penisilin, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mikroskop",
+      "description": "Mikroskop, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Elektron Mikroskobu",
+      "description": "Elektron Mikroskobu, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Teleskop Keşfi",
+      "description": "Teleskop Keşfi, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Radyoaktivite",
+      "description": "Radyoaktivite, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Röntgen Işını",
+      "description": "Röntgen Işını, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "DNA Yapısı",
+      "description": "DNA Yapısı, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Genom Projesi",
+      "description": "Genom Projesi, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "CRISPR",
+      "description": "CRISPR, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Elektrik Ampulü",
+      "description": "Elektrik Ampulü, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Telefon",
+      "description": "Telefon, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İnternet",
+      "description": "İnternet, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yapay Zeka",
+      "description": "Yapay Zeka, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kuantum Bilgisayar",
+      "description": "Kuantum Bilgisayar, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lazer",
+      "description": "Lazer, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Transistör",
+      "description": "Transistör, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mikroçip",
+      "description": "Mikroçip, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Buhar Makinesi",
+      "description": "Buhar Makinesi, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Matbaa",
+      "description": "Matbaa, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pusula",
+      "description": "Pusula, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "GPS",
+      "description": "GPS, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Robotik",
+      "description": "Robotik, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nanoteknoloji",
+      "description": "Nanoteknoloji, bilim tarihinde öne çıkan bir keşif, buluş veya teknolojik gelişmedir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Albert Einstein",
+      "description": "Albert Einstein, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Isaac Newton",
+      "description": "Isaac Newton, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Marie Curie",
+      "description": "Marie Curie, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Charles Darwin",
+      "description": "Charles Darwin, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Galileo Galilei",
+      "description": "Galileo Galilei, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nikola Tesla",
+      "description": "Nikola Tesla, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ada Lovelace",
+      "description": "Ada Lovelace, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Alan Turing",
+      "description": "Alan Turing, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Stephen Hawking",
+      "description": "Stephen Hawking, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Carl Sagan",
+      "description": "Carl Sagan, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rosalind Franklin",
+      "description": "Rosalind Franklin, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "James Watson",
+      "description": "James Watson, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Francis Crick",
+      "description": "Francis Crick, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Louis Pasteur",
+      "description": "Louis Pasteur, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Alexander Fleming",
+      "description": "Alexander Fleming, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gregor Mendel",
+      "description": "Gregor Mendel, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dmitri Mendeleyev",
+      "description": "Dmitri Mendeleyev, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Richard Feynman",
+      "description": "Richard Feynman, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Niels Bohr",
+      "description": "Niels Bohr, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Max Planck",
+      "description": "Max Planck, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Aziz Sancar",
+      "description": "Aziz Sancar, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cahit Arf",
+      "description": "Cahit Arf, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Feza Gürsey",
+      "description": "Feza Gürsey, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Canan Dağdeviren",
+      "description": "Canan Dağdeviren, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uğur Şahin",
+      "description": "Uğur Şahin, bilim tarihinde önemli çalışmalarıyla tanınan bir bilim insanıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Deney Tüpü",
+      "description": "Deney Tüpü, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Beher",
+      "description": "Beher, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pipet",
+      "description": "Pipet, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mikroskop Aleti",
+      "description": "Mikroskop Aleti, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Santrifüj",
+      "description": "Santrifüj, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Petri Kabı",
+      "description": "Petri Kabı, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ölçü Silindiri",
+      "description": "Ölçü Silindiri, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hassas Terazi",
+      "description": "Hassas Terazi, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Termometre",
+      "description": "Termometre, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Spektrometre",
+      "description": "Spektrometre, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Koruyucu Gözlük",
+      "description": "Koruyucu Gözlük, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Laboratuvar Önlüğü",
+      "description": "Laboratuvar Önlüğü, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kontrol Grubu",
+      "description": "Kontrol Grubu, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Deney Grubu",
+      "description": "Deney Grubu, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Örnek",
+      "description": "Örnek, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Numune",
+      "description": "Numune, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Protokol",
+      "description": "Protokol, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kalibrasyon",
+      "description": "Kalibrasyon, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hata Payı",
+      "description": "Hata Payı, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tekrar Deneyi",
+      "description": "Tekrar Deneyi, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Veri Seti",
+      "description": "Veri Seti, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Grafik",
+      "description": "Grafik, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tablo",
+      "description": "Tablo, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rapor",
+      "description": "Rapor, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hakem Değerlendirmesi",
+      "description": "Hakem Değerlendirmesi, bilimsel deney, ölçüm veya laboratuvar çalışmalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dünya",
+      "description": "Dünya, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Jeoloji",
+      "description": "Jeoloji, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kayaç",
+      "description": "Kayaç, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mineral",
+      "description": "Mineral, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fosil",
+      "description": "Fosil, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Deprem",
+      "description": "Deprem, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Volkan",
+      "description": "Volkan, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Levha Tektoniği",
+      "description": "Levha Tektoniği, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Okyanus",
+      "description": "Okyanus, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Atmosfer",
+      "description": "Atmosfer, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İklim",
+      "description": "İklim, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hava Durumu",
+      "description": "Hava Durumu, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Karbon Döngüsü",
+      "description": "Karbon Döngüsü, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Su Döngüsü",
+      "description": "Su Döngüsü, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Erozyon",
+      "description": "Erozyon, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Buzul",
+      "description": "Buzul, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çöl",
+      "description": "Çöl, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Orman",
+      "description": "Orman, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Biyoçeşitlilik",
+      "description": "Biyoçeşitlilik, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Küresel Isınma",
+      "description": "Küresel Isınma, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sera Gazı",
+      "description": "Sera Gazı, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ozon Tabakası",
+      "description": "Ozon Tabakası, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yenilenebilir Enerji",
+      "description": "Yenilenebilir Enerji, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Güneş Enerjisi",
+      "description": "Güneş Enerjisi, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rüzgar Enerjisi",
+      "description": "Rüzgar Enerjisi, yer bilimleri, iklim veya doğa olaylarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Matematik",
+      "description": "Matematik, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sayı",
+      "description": "Sayı, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Denklem",
+      "description": "Denklem, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Formül",
+      "description": "Formül, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Geometri",
+      "description": "Geometri, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cebir",
+      "description": "Cebir, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fonksiyon",
+      "description": "Fonksiyon, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Graf",
+      "description": "Graf, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İstatistik",
+      "description": "İstatistik, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Olasılık",
+      "description": "Olasılık, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Algoritma",
+      "description": "Algoritma, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kodlama",
+      "description": "Kodlama, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Veri Bilimi",
+      "description": "Veri Bilimi, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Makine Öğrenmesi",
+      "description": "Makine Öğrenmesi, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yapay Sinir Ağı",
+      "description": "Yapay Sinir Ağı, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mantık",
+      "description": "Mantık, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Türev",
+      "description": "Türev, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İntegral",
+      "description": "İntegral, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Vektör",
+      "description": "Vektör, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Matris",
+      "description": "Matris, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fraktal",
+      "description": "Fraktal, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Optimizasyon",
+      "description": "Optimizasyon, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şifreleme",
+      "description": "Şifreleme, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Simetri",
+      "description": "Simetri, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sonsuzluk",
+      "description": "Sonsuzluk, matematik, veri veya hesaplama alanında kullanılan bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    }
+  ],
+  "edges": [
+    {
+      "from": "Bilim",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Bilim",
+      "to": "Deney"
+    },
+    {
+      "from": "Bilim",
+      "to": "Gözlem"
+    },
+    {
+      "from": "Bilim",
+      "to": "Hipotez"
+    },
+    {
+      "from": "Bilim",
+      "to": "Teori"
+    },
+    {
+      "from": "Bilim",
+      "to": "Kanıt"
+    },
+    {
+      "from": "Bilim",
+      "to": "Veri"
+    },
+    {
+      "from": "Bilim",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Bilim",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Bilim",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Bilim"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Deney"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Gözlem"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Hipotez"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Teori"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Kanıt"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Veri"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Analiz"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Bilimsel Makale"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Akademi"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Veri Seti"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Rapor"
+    },
+    {
+      "from": "Araştırma",
+      "to": "Hakem Değerlendirmesi"
+    },
+    {
+      "from": "Deney",
+      "to": "Bilim"
+    },
+    {
+      "from": "Deney",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Deney",
+      "to": "Gözlem"
+    },
+    {
+      "from": "Deney",
+      "to": "Hipotez"
+    },
+    {
+      "from": "Deney",
+      "to": "Teori"
+    },
+    {
+      "from": "Deney",
+      "to": "Kanıt"
+    },
+    {
+      "from": "Deney",
+      "to": "Veri"
+    },
+    {
+      "from": "Deney",
+      "to": "Kontrol Grubu"
+    },
+    {
+      "from": "Deney",
+      "to": "Deney Grubu"
+    },
+    {
+      "from": "Deney",
+      "to": "Örnek"
+    },
+    {
+      "from": "Deney",
+      "to": "Numune"
+    },
+    {
+      "from": "Deney",
+      "to": "Protokol"
+    },
+    {
+      "from": "Deney",
+      "to": "Hata Payı"
+    },
+    {
+      "from": "Deney",
+      "to": "Tekrar Deneyi"
+    },
+    {
+      "from": "Gözlem",
+      "to": "Bilim"
+    },
+    {
+      "from": "Gözlem",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Gözlem",
+      "to": "Deney"
+    },
+    {
+      "from": "Gözlem",
+      "to": "Hipotez"
+    },
+    {
+      "from": "Gözlem",
+      "to": "Teori"
+    },
+    {
+      "from": "Gözlem",
+      "to": "Kanıt"
+    },
+    {
+      "from": "Gözlem",
+      "to": "Veri"
+    },
+    {
+      "from": "Hipotez",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hipotez",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hipotez",
+      "to": "Deney"
+    },
+    {
+      "from": "Hipotez",
+      "to": "Teori"
+    },
+    {
+      "from": "Hipotez",
+      "to": "Kanıt"
+    },
+    {
+      "from": "Hipotez",
+      "to": "Veri"
+    },
+    {
+      "from": "Hipotez",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Teori",
+      "to": "Bilim"
+    },
+    {
+      "from": "Teori",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Teori",
+      "to": "Deney"
+    },
+    {
+      "from": "Teori",
+      "to": "Kanıt"
+    },
+    {
+      "from": "Teori",
+      "to": "Veri"
+    },
+    {
+      "from": "Teori",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Teori",
+      "to": "Yöntem"
+    },
+    {
+      "from": "Teori",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Teori",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Kanıt",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kanıt",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kanıt",
+      "to": "Deney"
+    },
+    {
+      "from": "Kanıt",
+      "to": "Veri"
+    },
+    {
+      "from": "Kanıt",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Kanıt",
+      "to": "Yöntem"
+    },
+    {
+      "from": "Kanıt",
+      "to": "Analiz"
+    },
+    {
+      "from": "Veri",
+      "to": "Bilim"
+    },
+    {
+      "from": "Veri",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Veri",
+      "to": "Deney"
+    },
+    {
+      "from": "Veri",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Veri",
+      "to": "Yöntem"
+    },
+    {
+      "from": "Veri",
+      "to": "Analiz"
+    },
+    {
+      "from": "Veri",
+      "to": "Model"
+    },
+    {
+      "from": "Ölçüm",
+      "to": "Bilim"
+    },
+    {
+      "from": "Ölçüm",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Ölçüm",
+      "to": "Deney"
+    },
+    {
+      "from": "Ölçüm",
+      "to": "Yöntem"
+    },
+    {
+      "from": "Ölçüm",
+      "to": "Analiz"
+    },
+    {
+      "from": "Ölçüm",
+      "to": "Model"
+    },
+    {
+      "from": "Ölçüm",
+      "to": "Simülasyon"
+    },
+    {
+      "from": "Yöntem",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yöntem",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yöntem",
+      "to": "Deney"
+    },
+    {
+      "from": "Yöntem",
+      "to": "Analiz"
+    },
+    {
+      "from": "Yöntem",
+      "to": "Model"
+    },
+    {
+      "from": "Yöntem",
+      "to": "Simülasyon"
+    },
+    {
+      "from": "Yöntem",
+      "to": "Keşif"
+    },
+    {
+      "from": "Analiz",
+      "to": "Bilim"
+    },
+    {
+      "from": "Analiz",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Analiz",
+      "to": "Deney"
+    },
+    {
+      "from": "Analiz",
+      "to": "Model"
+    },
+    {
+      "from": "Analiz",
+      "to": "Simülasyon"
+    },
+    {
+      "from": "Analiz",
+      "to": "Keşif"
+    },
+    {
+      "from": "Analiz",
+      "to": "Buluş"
+    },
+    {
+      "from": "Analiz",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Model",
+      "to": "Bilim"
+    },
+    {
+      "from": "Model",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Model",
+      "to": "Deney"
+    },
+    {
+      "from": "Model",
+      "to": "Simülasyon"
+    },
+    {
+      "from": "Model",
+      "to": "Keşif"
+    },
+    {
+      "from": "Model",
+      "to": "Buluş"
+    },
+    {
+      "from": "Model",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Simülasyon",
+      "to": "Bilim"
+    },
+    {
+      "from": "Simülasyon",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Simülasyon",
+      "to": "Deney"
+    },
+    {
+      "from": "Simülasyon",
+      "to": "Keşif"
+    },
+    {
+      "from": "Simülasyon",
+      "to": "Buluş"
+    },
+    {
+      "from": "Simülasyon",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Simülasyon",
+      "to": "Mühendislik"
+    },
+    {
+      "from": "Keşif",
+      "to": "Bilim"
+    },
+    {
+      "from": "Keşif",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Keşif",
+      "to": "Deney"
+    },
+    {
+      "from": "Keşif",
+      "to": "Buluş"
+    },
+    {
+      "from": "Keşif",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Keşif",
+      "to": "Mühendislik"
+    },
+    {
+      "from": "Keşif",
+      "to": "Doğa Yasası"
+    },
+    {
+      "from": "Keşif",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Keşif",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Buluş",
+      "to": "Bilim"
+    },
+    {
+      "from": "Buluş",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Buluş",
+      "to": "Deney"
+    },
+    {
+      "from": "Buluş",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Buluş",
+      "to": "Mühendislik"
+    },
+    {
+      "from": "Buluş",
+      "to": "Doğa Yasası"
+    },
+    {
+      "from": "Buluş",
+      "to": "Bilimsel Makale"
+    },
+    {
+      "from": "Teknoloji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Teknoloji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Teknoloji",
+      "to": "Deney"
+    },
+    {
+      "from": "Teknoloji",
+      "to": "Mühendislik"
+    },
+    {
+      "from": "Teknoloji",
+      "to": "Doğa Yasası"
+    },
+    {
+      "from": "Teknoloji",
+      "to": "Bilimsel Makale"
+    },
+    {
+      "from": "Teknoloji",
+      "to": "Akademi"
+    },
+    {
+      "from": "Mühendislik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mühendislik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mühendislik",
+      "to": "Deney"
+    },
+    {
+      "from": "Mühendislik",
+      "to": "Doğa Yasası"
+    },
+    {
+      "from": "Mühendislik",
+      "to": "Bilimsel Makale"
+    },
+    {
+      "from": "Mühendislik",
+      "to": "Akademi"
+    },
+    {
+      "from": "Mühendislik",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Bilim"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Deney"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Bilimsel Makale"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Akademi"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Etik"
+    },
+    {
+      "from": "Doğa Yasası",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Bilim"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Deney"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Akademi"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Etik"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Merak"
+    },
+    {
+      "from": "Bilimsel Makale",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Akademi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Akademi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Akademi",
+      "to": "Deney"
+    },
+    {
+      "from": "Akademi",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Akademi",
+      "to": "Etik"
+    },
+    {
+      "from": "Akademi",
+      "to": "Merak"
+    },
+    {
+      "from": "Akademi",
+      "to": "Soru"
+    },
+    {
+      "from": "Akademi",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Bilim"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Deney"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Etik"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Merak"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Soru"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Sonuç"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Laboratuvar",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Etik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Etik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Etik",
+      "to": "Deney"
+    },
+    {
+      "from": "Etik",
+      "to": "Gözlem"
+    },
+    {
+      "from": "Etik",
+      "to": "Merak"
+    },
+    {
+      "from": "Etik",
+      "to": "Soru"
+    },
+    {
+      "from": "Etik",
+      "to": "Sonuç"
+    },
+    {
+      "from": "Merak",
+      "to": "Bilim"
+    },
+    {
+      "from": "Merak",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Merak",
+      "to": "Deney"
+    },
+    {
+      "from": "Merak",
+      "to": "Gözlem"
+    },
+    {
+      "from": "Merak",
+      "to": "Hipotez"
+    },
+    {
+      "from": "Merak",
+      "to": "Soru"
+    },
+    {
+      "from": "Merak",
+      "to": "Sonuç"
+    },
+    {
+      "from": "Soru",
+      "to": "Bilim"
+    },
+    {
+      "from": "Soru",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Soru",
+      "to": "Deney"
+    },
+    {
+      "from": "Soru",
+      "to": "Gözlem"
+    },
+    {
+      "from": "Soru",
+      "to": "Hipotez"
+    },
+    {
+      "from": "Soru",
+      "to": "Teori"
+    },
+    {
+      "from": "Soru",
+      "to": "Sonuç"
+    },
+    {
+      "from": "Sonuç",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sonuç",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sonuç",
+      "to": "Deney"
+    },
+    {
+      "from": "Sonuç",
+      "to": "Gözlem"
+    },
+    {
+      "from": "Sonuç",
+      "to": "Hipotez"
+    },
+    {
+      "from": "Sonuç",
+      "to": "Teori"
+    },
+    {
+      "from": "Sonuç",
+      "to": "Kanıt"
+    },
+    {
+      "from": "Fizik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Fizik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Fizik",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Fizik",
+      "to": "Enerji"
+    },
+    {
+      "from": "Fizik",
+      "to": "Hareket"
+    },
+    {
+      "from": "Fizik",
+      "to": "Hız"
+    },
+    {
+      "from": "Fizik",
+      "to": "İvme"
+    },
+    {
+      "from": "Fizik",
+      "to": "Atom"
+    },
+    {
+      "from": "Fizik",
+      "to": "Kuantum"
+    },
+    {
+      "from": "Fizik",
+      "to": "Görelilik"
+    },
+    {
+      "from": "Fizik",
+      "to": "Termodinamik"
+    },
+    {
+      "from": "Fizik",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Fizik",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Fizik",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "Fizik"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "Enerji"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "Hareket"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "Hız"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "İvme"
+    },
+    {
+      "from": "Kuvvet",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Enerji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Enerji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Enerji",
+      "to": "Fizik"
+    },
+    {
+      "from": "Enerji",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Enerji",
+      "to": "Hareket"
+    },
+    {
+      "from": "Enerji",
+      "to": "Hız"
+    },
+    {
+      "from": "Enerji",
+      "to": "İvme"
+    },
+    {
+      "from": "Enerji",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Hareket",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hareket",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hareket",
+      "to": "Fizik"
+    },
+    {
+      "from": "Hareket",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Hareket",
+      "to": "Enerji"
+    },
+    {
+      "from": "Hareket",
+      "to": "Hız"
+    },
+    {
+      "from": "Hareket",
+      "to": "İvme"
+    },
+    {
+      "from": "Hareket",
+      "to": "Kütle"
+    },
+    {
+      "from": "Hareket",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Hız",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hız",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hız",
+      "to": "Fizik"
+    },
+    {
+      "from": "Hız",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Hız",
+      "to": "Enerji"
+    },
+    {
+      "from": "Hız",
+      "to": "İvme"
+    },
+    {
+      "from": "Hız",
+      "to": "Kütle"
+    },
+    {
+      "from": "Hız",
+      "to": "Yerçekimi"
+    },
+    {
+      "from": "İvme",
+      "to": "Bilim"
+    },
+    {
+      "from": "İvme",
+      "to": "Araştırma"
+    },
+    {
+      "from": "İvme",
+      "to": "Fizik"
+    },
+    {
+      "from": "İvme",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "İvme",
+      "to": "Enerji"
+    },
+    {
+      "from": "İvme",
+      "to": "Kütle"
+    },
+    {
+      "from": "İvme",
+      "to": "Yerçekimi"
+    },
+    {
+      "from": "İvme",
+      "to": "Momentum"
+    },
+    {
+      "from": "Kütle",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kütle",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kütle",
+      "to": "Fizik"
+    },
+    {
+      "from": "Kütle",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Kütle",
+      "to": "Enerji"
+    },
+    {
+      "from": "Kütle",
+      "to": "Yerçekimi"
+    },
+    {
+      "from": "Kütle",
+      "to": "Momentum"
+    },
+    {
+      "from": "Kütle",
+      "to": "Sürtünme"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Fizik"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Enerji"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Momentum"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Sürtünme"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Basınç"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Yerçekimi",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Momentum",
+      "to": "Bilim"
+    },
+    {
+      "from": "Momentum",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Momentum",
+      "to": "Fizik"
+    },
+    {
+      "from": "Momentum",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Momentum",
+      "to": "Enerji"
+    },
+    {
+      "from": "Momentum",
+      "to": "Sürtünme"
+    },
+    {
+      "from": "Momentum",
+      "to": "Basınç"
+    },
+    {
+      "from": "Momentum",
+      "to": "Isı"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Fizik"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Enerji"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Basınç"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Isı"
+    },
+    {
+      "from": "Sürtünme",
+      "to": "Sıcaklık"
+    },
+    {
+      "from": "Basınç",
+      "to": "Bilim"
+    },
+    {
+      "from": "Basınç",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Basınç",
+      "to": "Fizik"
+    },
+    {
+      "from": "Basınç",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Basınç",
+      "to": "Enerji"
+    },
+    {
+      "from": "Basınç",
+      "to": "Isı"
+    },
+    {
+      "from": "Basınç",
+      "to": "Sıcaklık"
+    },
+    {
+      "from": "Basınç",
+      "to": "Işık"
+    },
+    {
+      "from": "Isı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Isı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Isı",
+      "to": "Fizik"
+    },
+    {
+      "from": "Isı",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Isı",
+      "to": "Enerji"
+    },
+    {
+      "from": "Isı",
+      "to": "Sıcaklık"
+    },
+    {
+      "from": "Isı",
+      "to": "Işık"
+    },
+    {
+      "from": "Isı",
+      "to": "Ses"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Fizik"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Enerji"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Işık"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Ses"
+    },
+    {
+      "from": "Sıcaklık",
+      "to": "Elektrik"
+    },
+    {
+      "from": "Işık",
+      "to": "Bilim"
+    },
+    {
+      "from": "Işık",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Işık",
+      "to": "Fizik"
+    },
+    {
+      "from": "Işık",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Işık",
+      "to": "Enerji"
+    },
+    {
+      "from": "Işık",
+      "to": "Ses"
+    },
+    {
+      "from": "Işık",
+      "to": "Elektrik"
+    },
+    {
+      "from": "Işık",
+      "to": "Manyetizma"
+    },
+    {
+      "from": "Işık",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Ses",
+      "to": "Bilim"
+    },
+    {
+      "from": "Ses",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Ses",
+      "to": "Fizik"
+    },
+    {
+      "from": "Ses",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Ses",
+      "to": "Enerji"
+    },
+    {
+      "from": "Ses",
+      "to": "Elektrik"
+    },
+    {
+      "from": "Ses",
+      "to": "Manyetizma"
+    },
+    {
+      "from": "Ses",
+      "to": "Dalga"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Fizik"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Enerji"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Manyetizma"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Dalga"
+    },
+    {
+      "from": "Elektrik",
+      "to": "Atom"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Bilim"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Fizik"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Enerji"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Dalga"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Atom"
+    },
+    {
+      "from": "Manyetizma",
+      "to": "Parçacık"
+    },
+    {
+      "from": "Dalga",
+      "to": "Bilim"
+    },
+    {
+      "from": "Dalga",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Dalga",
+      "to": "Fizik"
+    },
+    {
+      "from": "Dalga",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Dalga",
+      "to": "Enerji"
+    },
+    {
+      "from": "Dalga",
+      "to": "Atom"
+    },
+    {
+      "from": "Dalga",
+      "to": "Parçacık"
+    },
+    {
+      "from": "Dalga",
+      "to": "Kuantum"
+    },
+    {
+      "from": "Atom",
+      "to": "Bilim"
+    },
+    {
+      "from": "Atom",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Atom",
+      "to": "Fizik"
+    },
+    {
+      "from": "Atom",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Atom",
+      "to": "Enerji"
+    },
+    {
+      "from": "Atom",
+      "to": "Parçacık"
+    },
+    {
+      "from": "Atom",
+      "to": "Kuantum"
+    },
+    {
+      "from": "Atom",
+      "to": "Görelilik"
+    },
+    {
+      "from": "Atom",
+      "to": "Element"
+    },
+    {
+      "from": "Atom",
+      "to": "Molekül"
+    },
+    {
+      "from": "Atom",
+      "to": "Elektron"
+    },
+    {
+      "from": "Atom",
+      "to": "Proton"
+    },
+    {
+      "from": "Atom",
+      "to": "Nötron"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Bilim"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Fizik"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Enerji"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Atom"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Kuantum"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Görelilik"
+    },
+    {
+      "from": "Parçacık",
+      "to": "Termodinamik"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Fizik"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Enerji"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Atom"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Görelilik"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Termodinamik"
+    },
+    {
+      "from": "Kuantum",
+      "to": "Nükleer Enerji"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Fizik"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Enerji"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Termodinamik"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Nükleer Enerji"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Görelilik",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Termodinamik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Termodinamik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Termodinamik",
+      "to": "Fizik"
+    },
+    {
+      "from": "Termodinamik",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Termodinamik",
+      "to": "Enerji"
+    },
+    {
+      "from": "Termodinamik",
+      "to": "Nükleer Enerji"
+    },
+    {
+      "from": "Termodinamik",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Fizik"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Enerji"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Hareket"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Nükleer Enerji",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Fizik"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Enerji"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Hareket"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Hız"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Yerçekimi"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Görelilik"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Uzay"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Yıldız"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Kozmoloji"
+    },
+    {
+      "from": "Kara Delik",
+      "to": "Stephen Hawking"
+    },
+    {
+      "from": "Uzay",
+      "to": "Bilim"
+    },
+    {
+      "from": "Uzay",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Uzay",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Uzay",
+      "to": "Evren"
+    },
+    {
+      "from": "Uzay",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Uzay",
+      "to": "Samanyolu"
+    },
+    {
+      "from": "Uzay",
+      "to": "Yıldız"
+    },
+    {
+      "from": "Uzay",
+      "to": "Gezegen"
+    },
+    {
+      "from": "Uzay",
+      "to": "Teleskop"
+    },
+    {
+      "from": "Uzay",
+      "to": "Roket"
+    },
+    {
+      "from": "Uzay",
+      "to": "Astronot"
+    },
+    {
+      "from": "Evren",
+      "to": "Bilim"
+    },
+    {
+      "from": "Evren",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Evren",
+      "to": "Uzay"
+    },
+    {
+      "from": "Evren",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Evren",
+      "to": "Samanyolu"
+    },
+    {
+      "from": "Evren",
+      "to": "Yıldız"
+    },
+    {
+      "from": "Evren",
+      "to": "Gezegen"
+    },
+    {
+      "from": "Evren",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Uzay"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Evren"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Samanyolu"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Yıldız"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Gezegen"
+    },
+    {
+      "from": "Galaksi",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Bilim"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Uzay"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Evren"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Yıldız"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Gezegen"
+    },
+    {
+      "from": "Samanyolu",
+      "to": "Uydu"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Uzay"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Evren"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Gezegen"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Uydu"
+    },
+    {
+      "from": "Yıldız",
+      "to": "Güneş"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Bilim"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Uzay"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Evren"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Uydu"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Güneş"
+    },
+    {
+      "from": "Gezegen",
+      "to": "Ay"
+    },
+    {
+      "from": "Uydu",
+      "to": "Bilim"
+    },
+    {
+      "from": "Uydu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Uydu",
+      "to": "Uzay"
+    },
+    {
+      "from": "Uydu",
+      "to": "Evren"
+    },
+    {
+      "from": "Uydu",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Uydu",
+      "to": "Güneş"
+    },
+    {
+      "from": "Uydu",
+      "to": "Ay"
+    },
+    {
+      "from": "Uydu",
+      "to": "Mars"
+    },
+    {
+      "from": "Güneş",
+      "to": "Bilim"
+    },
+    {
+      "from": "Güneş",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Güneş",
+      "to": "Uzay"
+    },
+    {
+      "from": "Güneş",
+      "to": "Evren"
+    },
+    {
+      "from": "Güneş",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Güneş",
+      "to": "Ay"
+    },
+    {
+      "from": "Güneş",
+      "to": "Mars"
+    },
+    {
+      "from": "Güneş",
+      "to": "Jüpiter"
+    },
+    {
+      "from": "Ay",
+      "to": "Bilim"
+    },
+    {
+      "from": "Ay",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Ay",
+      "to": "Uzay"
+    },
+    {
+      "from": "Ay",
+      "to": "Evren"
+    },
+    {
+      "from": "Ay",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Ay",
+      "to": "Mars"
+    },
+    {
+      "from": "Ay",
+      "to": "Jüpiter"
+    },
+    {
+      "from": "Ay",
+      "to": "Satürn"
+    },
+    {
+      "from": "Mars",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mars",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mars",
+      "to": "Uzay"
+    },
+    {
+      "from": "Mars",
+      "to": "Evren"
+    },
+    {
+      "from": "Mars",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Mars",
+      "to": "Jüpiter"
+    },
+    {
+      "from": "Mars",
+      "to": "Satürn"
+    },
+    {
+      "from": "Mars",
+      "to": "Asteroit"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Bilim"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Uzay"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Evren"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Satürn"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Asteroit"
+    },
+    {
+      "from": "Jüpiter",
+      "to": "Kuyruklu Yıldız"
+    },
+    {
+      "from": "Satürn",
+      "to": "Bilim"
+    },
+    {
+      "from": "Satürn",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Satürn",
+      "to": "Uzay"
+    },
+    {
+      "from": "Satürn",
+      "to": "Evren"
+    },
+    {
+      "from": "Satürn",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Satürn",
+      "to": "Asteroit"
+    },
+    {
+      "from": "Satürn",
+      "to": "Kuyruklu Yıldız"
+    },
+    {
+      "from": "Satürn",
+      "to": "Meteor"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Bilim"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Uzay"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Evren"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Kuyruklu Yıldız"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Meteor"
+    },
+    {
+      "from": "Asteroit",
+      "to": "Nebula"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Uzay"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Evren"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Meteor"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Nebula"
+    },
+    {
+      "from": "Kuyruklu Yıldız",
+      "to": "Teleskop"
+    },
+    {
+      "from": "Meteor",
+      "to": "Bilim"
+    },
+    {
+      "from": "Meteor",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Meteor",
+      "to": "Uzay"
+    },
+    {
+      "from": "Meteor",
+      "to": "Evren"
+    },
+    {
+      "from": "Meteor",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Meteor",
+      "to": "Nebula"
+    },
+    {
+      "from": "Meteor",
+      "to": "Teleskop"
+    },
+    {
+      "from": "Meteor",
+      "to": "Uzay Aracı"
+    },
+    {
+      "from": "Nebula",
+      "to": "Bilim"
+    },
+    {
+      "from": "Nebula",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Nebula",
+      "to": "Uzay"
+    },
+    {
+      "from": "Nebula",
+      "to": "Evren"
+    },
+    {
+      "from": "Nebula",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Nebula",
+      "to": "Teleskop"
+    },
+    {
+      "from": "Nebula",
+      "to": "Uzay Aracı"
+    },
+    {
+      "from": "Nebula",
+      "to": "Roket"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Bilim"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Uzay"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Evren"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Uzay Aracı"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Roket"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Astronot"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Teleskop",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Uzay"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Evren"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Roket"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Astronot"
+    },
+    {
+      "from": "Uzay Aracı",
+      "to": "Uzay İstasyonu"
+    },
+    {
+      "from": "Roket",
+      "to": "Bilim"
+    },
+    {
+      "from": "Roket",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Roket",
+      "to": "Uzay"
+    },
+    {
+      "from": "Roket",
+      "to": "Evren"
+    },
+    {
+      "from": "Roket",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Roket",
+      "to": "Astronot"
+    },
+    {
+      "from": "Roket",
+      "to": "Uzay İstasyonu"
+    },
+    {
+      "from": "Roket",
+      "to": "Yörünge"
+    },
+    {
+      "from": "Astronot",
+      "to": "Bilim"
+    },
+    {
+      "from": "Astronot",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Astronot",
+      "to": "Uzay"
+    },
+    {
+      "from": "Astronot",
+      "to": "Evren"
+    },
+    {
+      "from": "Astronot",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Astronot",
+      "to": "Uzay İstasyonu"
+    },
+    {
+      "from": "Astronot",
+      "to": "Yörünge"
+    },
+    {
+      "from": "Astronot",
+      "to": "Işık Yılı"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Bilim"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Uzay"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Evren"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Yörünge"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Işık Yılı"
+    },
+    {
+      "from": "Uzay İstasyonu",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Uzay"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Evren"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Işık Yılı"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Yörünge",
+      "to": "Kozmoloji"
+    },
+    {
+      "from": "Işık Yılı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Işık Yılı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Işık Yılı",
+      "to": "Uzay"
+    },
+    {
+      "from": "Işık Yılı",
+      "to": "Evren"
+    },
+    {
+      "from": "Işık Yılı",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Işık Yılı",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Işık Yılı",
+      "to": "Kozmoloji"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Bilim"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Teori"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Uzay"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Evren"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Samanyolu"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Teleskop"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Işık Yılı"
+    },
+    {
+      "from": "Büyük Patlama",
+      "to": "Kozmoloji"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Uzay"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Evren"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Galaksi"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Samanyolu"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Yıldız"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Büyük Patlama"
+    },
+    {
+      "from": "Kozmoloji",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Hücre"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "DNA"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Gen"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Kromozom"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Protein"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Evrim"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Ekosistem"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Mikrop"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Bağışıklık"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Biyoloji",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Hücre",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hücre",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hücre",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Hücre",
+      "to": "DNA"
+    },
+    {
+      "from": "Hücre",
+      "to": "Gen"
+    },
+    {
+      "from": "Hücre",
+      "to": "Kromozom"
+    },
+    {
+      "from": "Hücre",
+      "to": "Protein"
+    },
+    {
+      "from": "DNA",
+      "to": "Bilim"
+    },
+    {
+      "from": "DNA",
+      "to": "Araştırma"
+    },
+    {
+      "from": "DNA",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "DNA",
+      "to": "Hücre"
+    },
+    {
+      "from": "DNA",
+      "to": "Gen"
+    },
+    {
+      "from": "DNA",
+      "to": "Kromozom"
+    },
+    {
+      "from": "DNA",
+      "to": "Protein"
+    },
+    {
+      "from": "DNA",
+      "to": "DNA Yapısı"
+    },
+    {
+      "from": "DNA",
+      "to": "Genom Projesi"
+    },
+    {
+      "from": "DNA",
+      "to": "CRISPR"
+    },
+    {
+      "from": "DNA",
+      "to": "Rosalind Franklin"
+    },
+    {
+      "from": "DNA",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Gen",
+      "to": "Bilim"
+    },
+    {
+      "from": "Gen",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Gen",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Gen",
+      "to": "Hücre"
+    },
+    {
+      "from": "Gen",
+      "to": "DNA"
+    },
+    {
+      "from": "Gen",
+      "to": "Kromozom"
+    },
+    {
+      "from": "Gen",
+      "to": "Protein"
+    },
+    {
+      "from": "Gen",
+      "to": "Enzim"
+    },
+    {
+      "from": "Gen",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Kromozom",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kromozom",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kromozom",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Kromozom",
+      "to": "Hücre"
+    },
+    {
+      "from": "Kromozom",
+      "to": "DNA"
+    },
+    {
+      "from": "Kromozom",
+      "to": "Protein"
+    },
+    {
+      "from": "Kromozom",
+      "to": "Enzim"
+    },
+    {
+      "from": "Kromozom",
+      "to": "Evrim"
+    },
+    {
+      "from": "Protein",
+      "to": "Bilim"
+    },
+    {
+      "from": "Protein",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Protein",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Protein",
+      "to": "Hücre"
+    },
+    {
+      "from": "Protein",
+      "to": "DNA"
+    },
+    {
+      "from": "Protein",
+      "to": "Enzim"
+    },
+    {
+      "from": "Protein",
+      "to": "Evrim"
+    },
+    {
+      "from": "Protein",
+      "to": "Doğal Seçilim"
+    },
+    {
+      "from": "Enzim",
+      "to": "Bilim"
+    },
+    {
+      "from": "Enzim",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Enzim",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Enzim",
+      "to": "Hücre"
+    },
+    {
+      "from": "Enzim",
+      "to": "DNA"
+    },
+    {
+      "from": "Enzim",
+      "to": "Evrim"
+    },
+    {
+      "from": "Enzim",
+      "to": "Doğal Seçilim"
+    },
+    {
+      "from": "Enzim",
+      "to": "Tür"
+    },
+    {
+      "from": "Evrim",
+      "to": "Bilim"
+    },
+    {
+      "from": "Evrim",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Evrim",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Evrim",
+      "to": "Hücre"
+    },
+    {
+      "from": "Evrim",
+      "to": "DNA"
+    },
+    {
+      "from": "Evrim",
+      "to": "Doğal Seçilim"
+    },
+    {
+      "from": "Evrim",
+      "to": "Tür"
+    },
+    {
+      "from": "Evrim",
+      "to": "Ekosistem"
+    },
+    {
+      "from": "Evrim",
+      "to": "Habitat"
+    },
+    {
+      "from": "Evrim",
+      "to": "Charles Darwin"
+    },
+    {
+      "from": "Evrim",
+      "to": "Fosil"
+    },
+    {
+      "from": "Evrim",
+      "to": "Biyoçeşitlilik"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Bilim"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Hücre"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "DNA"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Evrim"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Tür"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Ekosistem"
+    },
+    {
+      "from": "Doğal Seçilim",
+      "to": "Habitat"
+    },
+    {
+      "from": "Tür",
+      "to": "Bilim"
+    },
+    {
+      "from": "Tür",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Tür",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Tür",
+      "to": "Hücre"
+    },
+    {
+      "from": "Tür",
+      "to": "DNA"
+    },
+    {
+      "from": "Tür",
+      "to": "Evrim"
+    },
+    {
+      "from": "Tür",
+      "to": "Ekosistem"
+    },
+    {
+      "from": "Tür",
+      "to": "Habitat"
+    },
+    {
+      "from": "Tür",
+      "to": "Fotosentez"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Bilim"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Hücre"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "DNA"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Evrim"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Habitat"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Fotosentez"
+    },
+    {
+      "from": "Ekosistem",
+      "to": "Solunum"
+    },
+    {
+      "from": "Habitat",
+      "to": "Bilim"
+    },
+    {
+      "from": "Habitat",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Habitat",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Habitat",
+      "to": "Hücre"
+    },
+    {
+      "from": "Habitat",
+      "to": "DNA"
+    },
+    {
+      "from": "Habitat",
+      "to": "Evrim"
+    },
+    {
+      "from": "Habitat",
+      "to": "Fotosentez"
+    },
+    {
+      "from": "Habitat",
+      "to": "Solunum"
+    },
+    {
+      "from": "Habitat",
+      "to": "Mikrop"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "Bilim"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "Hücre"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "DNA"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "Solunum"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "Mikrop"
+    },
+    {
+      "from": "Fotosentez",
+      "to": "Bakteri"
+    },
+    {
+      "from": "Solunum",
+      "to": "Bilim"
+    },
+    {
+      "from": "Solunum",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Solunum",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Solunum",
+      "to": "Hücre"
+    },
+    {
+      "from": "Solunum",
+      "to": "DNA"
+    },
+    {
+      "from": "Solunum",
+      "to": "Mikrop"
+    },
+    {
+      "from": "Solunum",
+      "to": "Bakteri"
+    },
+    {
+      "from": "Solunum",
+      "to": "Virüs"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Hücre"
+    },
+    {
+      "from": "Mikrop",
+      "to": "DNA"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Bakteri"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Virüs"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Mantar"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Aşı"
+    },
+    {
+      "from": "Mikrop",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Bilim"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Hücre"
+    },
+    {
+      "from": "Bakteri",
+      "to": "DNA"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Virüs"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Mantar"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Bitki"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Aşı"
+    },
+    {
+      "from": "Bakteri",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Virüs",
+      "to": "Bilim"
+    },
+    {
+      "from": "Virüs",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Virüs",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Virüs",
+      "to": "Hücre"
+    },
+    {
+      "from": "Virüs",
+      "to": "DNA"
+    },
+    {
+      "from": "Virüs",
+      "to": "Mantar"
+    },
+    {
+      "from": "Virüs",
+      "to": "Bitki"
+    },
+    {
+      "from": "Virüs",
+      "to": "Hayvan"
+    },
+    {
+      "from": "Virüs",
+      "to": "Aşı"
+    },
+    {
+      "from": "Mantar",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mantar",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mantar",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Mantar",
+      "to": "Hücre"
+    },
+    {
+      "from": "Mantar",
+      "to": "DNA"
+    },
+    {
+      "from": "Mantar",
+      "to": "Bitki"
+    },
+    {
+      "from": "Mantar",
+      "to": "Hayvan"
+    },
+    {
+      "from": "Mantar",
+      "to": "İnsan Vücudu"
+    },
+    {
+      "from": "Bitki",
+      "to": "Bilim"
+    },
+    {
+      "from": "Bitki",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Bitki",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Bitki",
+      "to": "Hücre"
+    },
+    {
+      "from": "Bitki",
+      "to": "DNA"
+    },
+    {
+      "from": "Bitki",
+      "to": "Hayvan"
+    },
+    {
+      "from": "Bitki",
+      "to": "İnsan Vücudu"
+    },
+    {
+      "from": "Bitki",
+      "to": "Beyin"
+    },
+    {
+      "from": "Hayvan",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hayvan",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hayvan",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Hayvan",
+      "to": "Hücre"
+    },
+    {
+      "from": "Hayvan",
+      "to": "DNA"
+    },
+    {
+      "from": "Hayvan",
+      "to": "İnsan Vücudu"
+    },
+    {
+      "from": "Hayvan",
+      "to": "Beyin"
+    },
+    {
+      "from": "Hayvan",
+      "to": "Kalp"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Bilim"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Hücre"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "DNA"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Beyin"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Kalp"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Bağışıklık"
+    },
+    {
+      "from": "İnsan Vücudu",
+      "to": "Aşı"
+    },
+    {
+      "from": "Beyin",
+      "to": "Bilim"
+    },
+    {
+      "from": "Beyin",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Beyin",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Beyin",
+      "to": "Hücre"
+    },
+    {
+      "from": "Beyin",
+      "to": "DNA"
+    },
+    {
+      "from": "Beyin",
+      "to": "Kalp"
+    },
+    {
+      "from": "Beyin",
+      "to": "Bağışıklık"
+    },
+    {
+      "from": "Beyin",
+      "to": "Sinir Sistemi"
+    },
+    {
+      "from": "Kalp",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kalp",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kalp",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Kalp",
+      "to": "Hücre"
+    },
+    {
+      "from": "Kalp",
+      "to": "DNA"
+    },
+    {
+      "from": "Kalp",
+      "to": "Bağışıklık"
+    },
+    {
+      "from": "Kalp",
+      "to": "Sinir Sistemi"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "Bilim"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "Hücre"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "DNA"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "Gen"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "Sinir Sistemi"
+    },
+    {
+      "from": "Bağışıklık",
+      "to": "Aşı"
+    },
+    {
+      "from": "Sinir Sistemi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sinir Sistemi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sinir Sistemi",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Sinir Sistemi",
+      "to": "Hücre"
+    },
+    {
+      "from": "Sinir Sistemi",
+      "to": "DNA"
+    },
+    {
+      "from": "Sinir Sistemi",
+      "to": "Gen"
+    },
+    {
+      "from": "Sinir Sistemi",
+      "to": "Kromozom"
+    },
+    {
+      "from": "Kimya",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kimya",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kimya",
+      "to": "Element"
+    },
+    {
+      "from": "Kimya",
+      "to": "Molekül"
+    },
+    {
+      "from": "Kimya",
+      "to": "Bileşik"
+    },
+    {
+      "from": "Kimya",
+      "to": "Karışım"
+    },
+    {
+      "from": "Kimya",
+      "to": "Atom Numarası"
+    },
+    {
+      "from": "Kimya",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Kimya",
+      "to": "Asit"
+    },
+    {
+      "from": "Kimya",
+      "to": "Baz"
+    },
+    {
+      "from": "Kimya",
+      "to": "Tepkime"
+    },
+    {
+      "from": "Kimya",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Element",
+      "to": "Bilim"
+    },
+    {
+      "from": "Element",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Element",
+      "to": "Atom"
+    },
+    {
+      "from": "Element",
+      "to": "Kimya"
+    },
+    {
+      "from": "Element",
+      "to": "Molekül"
+    },
+    {
+      "from": "Element",
+      "to": "Bileşik"
+    },
+    {
+      "from": "Element",
+      "to": "Karışım"
+    },
+    {
+      "from": "Element",
+      "to": "Atom Numarası"
+    },
+    {
+      "from": "Element",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Molekül",
+      "to": "Bilim"
+    },
+    {
+      "from": "Molekül",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Molekül",
+      "to": "Atom"
+    },
+    {
+      "from": "Molekül",
+      "to": "Kimya"
+    },
+    {
+      "from": "Molekül",
+      "to": "Element"
+    },
+    {
+      "from": "Molekül",
+      "to": "Bileşik"
+    },
+    {
+      "from": "Molekül",
+      "to": "Karışım"
+    },
+    {
+      "from": "Molekül",
+      "to": "Atom Numarası"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Kimya"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Element"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Molekül"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Karışım"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Atom Numarası"
+    },
+    {
+      "from": "Bileşik",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Karışım",
+      "to": "Bilim"
+    },
+    {
+      "from": "Karışım",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Karışım",
+      "to": "Kimya"
+    },
+    {
+      "from": "Karışım",
+      "to": "Element"
+    },
+    {
+      "from": "Karışım",
+      "to": "Molekül"
+    },
+    {
+      "from": "Karışım",
+      "to": "Atom Numarası"
+    },
+    {
+      "from": "Karışım",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Karışım",
+      "to": "Elektron"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Bilim"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Kimya"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Element"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Molekül"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Elektron"
+    },
+    {
+      "from": "Atom Numarası",
+      "to": "Proton"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Bilim"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Kimya"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Element"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Molekül"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Atom Numarası"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Elektron"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Proton"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Nötron"
+    },
+    {
+      "from": "Periyodik Tablo",
+      "to": "Dmitri Mendeleyev"
+    },
+    {
+      "from": "Elektron",
+      "to": "Bilim"
+    },
+    {
+      "from": "Elektron",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Elektron",
+      "to": "Atom"
+    },
+    {
+      "from": "Elektron",
+      "to": "Kimya"
+    },
+    {
+      "from": "Elektron",
+      "to": "Element"
+    },
+    {
+      "from": "Elektron",
+      "to": "Molekül"
+    },
+    {
+      "from": "Elektron",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Elektron",
+      "to": "Proton"
+    },
+    {
+      "from": "Elektron",
+      "to": "Nötron"
+    },
+    {
+      "from": "Elektron",
+      "to": "İyon"
+    },
+    {
+      "from": "Proton",
+      "to": "Bilim"
+    },
+    {
+      "from": "Proton",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Proton",
+      "to": "Atom"
+    },
+    {
+      "from": "Proton",
+      "to": "Kimya"
+    },
+    {
+      "from": "Proton",
+      "to": "Element"
+    },
+    {
+      "from": "Proton",
+      "to": "Molekül"
+    },
+    {
+      "from": "Proton",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Proton",
+      "to": "Nötron"
+    },
+    {
+      "from": "Proton",
+      "to": "İyon"
+    },
+    {
+      "from": "Proton",
+      "to": "Asit"
+    },
+    {
+      "from": "Nötron",
+      "to": "Bilim"
+    },
+    {
+      "from": "Nötron",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Nötron",
+      "to": "Atom"
+    },
+    {
+      "from": "Nötron",
+      "to": "Kimya"
+    },
+    {
+      "from": "Nötron",
+      "to": "Element"
+    },
+    {
+      "from": "Nötron",
+      "to": "Molekül"
+    },
+    {
+      "from": "Nötron",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Nötron",
+      "to": "İyon"
+    },
+    {
+      "from": "Nötron",
+      "to": "Asit"
+    },
+    {
+      "from": "Nötron",
+      "to": "Baz"
+    },
+    {
+      "from": "İyon",
+      "to": "Bilim"
+    },
+    {
+      "from": "İyon",
+      "to": "Araştırma"
+    },
+    {
+      "from": "İyon",
+      "to": "Kimya"
+    },
+    {
+      "from": "İyon",
+      "to": "Element"
+    },
+    {
+      "from": "İyon",
+      "to": "Molekül"
+    },
+    {
+      "from": "İyon",
+      "to": "Asit"
+    },
+    {
+      "from": "İyon",
+      "to": "Baz"
+    },
+    {
+      "from": "İyon",
+      "to": "Tuz"
+    },
+    {
+      "from": "Asit",
+      "to": "Bilim"
+    },
+    {
+      "from": "Asit",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Asit",
+      "to": "Kimya"
+    },
+    {
+      "from": "Asit",
+      "to": "Element"
+    },
+    {
+      "from": "Asit",
+      "to": "Molekül"
+    },
+    {
+      "from": "Asit",
+      "to": "Baz"
+    },
+    {
+      "from": "Asit",
+      "to": "Tuz"
+    },
+    {
+      "from": "Asit",
+      "to": "pH"
+    },
+    {
+      "from": "Baz",
+      "to": "Bilim"
+    },
+    {
+      "from": "Baz",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Baz",
+      "to": "Kimya"
+    },
+    {
+      "from": "Baz",
+      "to": "Element"
+    },
+    {
+      "from": "Baz",
+      "to": "Molekül"
+    },
+    {
+      "from": "Baz",
+      "to": "Tuz"
+    },
+    {
+      "from": "Baz",
+      "to": "pH"
+    },
+    {
+      "from": "Baz",
+      "to": "Tepkime"
+    },
+    {
+      "from": "Tuz",
+      "to": "Bilim"
+    },
+    {
+      "from": "Tuz",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Tuz",
+      "to": "Kimya"
+    },
+    {
+      "from": "Tuz",
+      "to": "Element"
+    },
+    {
+      "from": "Tuz",
+      "to": "Molekül"
+    },
+    {
+      "from": "Tuz",
+      "to": "pH"
+    },
+    {
+      "from": "Tuz",
+      "to": "Tepkime"
+    },
+    {
+      "from": "Tuz",
+      "to": "Katalizör"
+    },
+    {
+      "from": "pH",
+      "to": "Bilim"
+    },
+    {
+      "from": "pH",
+      "to": "Araştırma"
+    },
+    {
+      "from": "pH",
+      "to": "Kimya"
+    },
+    {
+      "from": "pH",
+      "to": "Element"
+    },
+    {
+      "from": "pH",
+      "to": "Molekül"
+    },
+    {
+      "from": "pH",
+      "to": "Tepkime"
+    },
+    {
+      "from": "pH",
+      "to": "Katalizör"
+    },
+    {
+      "from": "pH",
+      "to": "Çözelti"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Bilim"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Kimya"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Element"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Molekül"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Katalizör"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Çözelti"
+    },
+    {
+      "from": "Tepkime",
+      "to": "Gaz"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Bilim"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Kimya"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Element"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Molekül"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Çözelti"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Gaz"
+    },
+    {
+      "from": "Katalizör",
+      "to": "Sıvı"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Bilim"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Kimya"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Element"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Molekül"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Gaz"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Sıvı"
+    },
+    {
+      "from": "Çözelti",
+      "to": "Katı"
+    },
+    {
+      "from": "Gaz",
+      "to": "Bilim"
+    },
+    {
+      "from": "Gaz",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Gaz",
+      "to": "Kimya"
+    },
+    {
+      "from": "Gaz",
+      "to": "Element"
+    },
+    {
+      "from": "Gaz",
+      "to": "Molekül"
+    },
+    {
+      "from": "Gaz",
+      "to": "Sıvı"
+    },
+    {
+      "from": "Gaz",
+      "to": "Katı"
+    },
+    {
+      "from": "Gaz",
+      "to": "Organik Kimya"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Kimya"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Element"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Molekül"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Katı"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Organik Kimya"
+    },
+    {
+      "from": "Sıvı",
+      "to": "Polimer"
+    },
+    {
+      "from": "Katı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Katı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Katı",
+      "to": "Kimya"
+    },
+    {
+      "from": "Katı",
+      "to": "Element"
+    },
+    {
+      "from": "Katı",
+      "to": "Molekül"
+    },
+    {
+      "from": "Katı",
+      "to": "Organik Kimya"
+    },
+    {
+      "from": "Katı",
+      "to": "Polimer"
+    },
+    {
+      "from": "Katı",
+      "to": "Kristal"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Bilim"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Kimya"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Element"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Molekül"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Polimer"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Kristal"
+    },
+    {
+      "from": "Organik Kimya",
+      "to": "Yanma"
+    },
+    {
+      "from": "Polimer",
+      "to": "Bilim"
+    },
+    {
+      "from": "Polimer",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Polimer",
+      "to": "Kimya"
+    },
+    {
+      "from": "Polimer",
+      "to": "Element"
+    },
+    {
+      "from": "Polimer",
+      "to": "Molekül"
+    },
+    {
+      "from": "Polimer",
+      "to": "Kristal"
+    },
+    {
+      "from": "Polimer",
+      "to": "Yanma"
+    },
+    {
+      "from": "Kristal",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kristal",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kristal",
+      "to": "Kimya"
+    },
+    {
+      "from": "Kristal",
+      "to": "Element"
+    },
+    {
+      "from": "Kristal",
+      "to": "Molekül"
+    },
+    {
+      "from": "Kristal",
+      "to": "Bileşik"
+    },
+    {
+      "from": "Kristal",
+      "to": "Yanma"
+    },
+    {
+      "from": "Yanma",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yanma",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yanma",
+      "to": "Kimya"
+    },
+    {
+      "from": "Yanma",
+      "to": "Element"
+    },
+    {
+      "from": "Yanma",
+      "to": "Molekül"
+    },
+    {
+      "from": "Yanma",
+      "to": "Bileşik"
+    },
+    {
+      "from": "Yanma",
+      "to": "Karışım"
+    },
+    {
+      "from": "Aşı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Aşı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Aşı",
+      "to": "Keşif"
+    },
+    {
+      "from": "Aşı",
+      "to": "Buluş"
+    },
+    {
+      "from": "Aşı",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Aşı",
+      "to": "Mikrop"
+    },
+    {
+      "from": "Aşı",
+      "to": "Bakteri"
+    },
+    {
+      "from": "Aşı",
+      "to": "Virüs"
+    },
+    {
+      "from": "Aşı",
+      "to": "İnsan Vücudu"
+    },
+    {
+      "from": "Aşı",
+      "to": "Bağışıklık"
+    },
+    {
+      "from": "Aşı",
+      "to": "Antibiyotik"
+    },
+    {
+      "from": "Aşı",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Aşı",
+      "to": "Mikroskop"
+    },
+    {
+      "from": "Aşı",
+      "to": "Louis Pasteur"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Keşif"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Buluş"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Aşı"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Mikroskop"
+    },
+    {
+      "from": "Antibiyotik",
+      "to": "Elektron Mikroskobu"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Bilim"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Keşif"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Buluş"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Mikrop"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Bakteri"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Antibiyotik"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Mikroskop"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Elektron Mikroskobu"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Teleskop Keşfi"
+    },
+    {
+      "from": "Penisilin",
+      "to": "Alexander Fleming"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Keşif"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Buluş"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Elektron Mikroskobu"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Teleskop Keşfi"
+    },
+    {
+      "from": "Mikroskop",
+      "to": "Radyoaktivite"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Bilim"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Keşif"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Buluş"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Teleskop Keşfi"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Radyoaktivite"
+    },
+    {
+      "from": "Elektron Mikroskobu",
+      "to": "Röntgen Işını"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "Keşif"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "Buluş"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "Radyoaktivite"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "Röntgen Işını"
+    },
+    {
+      "from": "Teleskop Keşfi",
+      "to": "DNA Yapısı"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Bilim"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Keşif"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Buluş"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Röntgen Işını"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "DNA Yapısı"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Genom Projesi"
+    },
+    {
+      "from": "Radyoaktivite",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "Bilim"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "Keşif"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "Buluş"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "DNA Yapısı"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "Genom Projesi"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "CRISPR"
+    },
+    {
+      "from": "Röntgen Işını",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "Bilim"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "Keşif"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "Buluş"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "DNA"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "Genom Projesi"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "CRISPR"
+    },
+    {
+      "from": "DNA Yapısı",
+      "to": "Elektrik Ampulü"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "Keşif"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "Buluş"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "DNA"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "CRISPR"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "Elektrik Ampulü"
+    },
+    {
+      "from": "Genom Projesi",
+      "to": "Telefon"
+    },
+    {
+      "from": "CRISPR",
+      "to": "Bilim"
+    },
+    {
+      "from": "CRISPR",
+      "to": "Araştırma"
+    },
+    {
+      "from": "CRISPR",
+      "to": "Keşif"
+    },
+    {
+      "from": "CRISPR",
+      "to": "Buluş"
+    },
+    {
+      "from": "CRISPR",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "CRISPR",
+      "to": "DNA"
+    },
+    {
+      "from": "CRISPR",
+      "to": "Elektrik Ampulü"
+    },
+    {
+      "from": "CRISPR",
+      "to": "Telefon"
+    },
+    {
+      "from": "CRISPR",
+      "to": "İnternet"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "Bilim"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "Keşif"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "Buluş"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "Telefon"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "İnternet"
+    },
+    {
+      "from": "Elektrik Ampulü",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Telefon",
+      "to": "Bilim"
+    },
+    {
+      "from": "Telefon",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Telefon",
+      "to": "Keşif"
+    },
+    {
+      "from": "Telefon",
+      "to": "Buluş"
+    },
+    {
+      "from": "Telefon",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Telefon",
+      "to": "İnternet"
+    },
+    {
+      "from": "Telefon",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Telefon",
+      "to": "Kuantum Bilgisayar"
+    },
+    {
+      "from": "İnternet",
+      "to": "Bilim"
+    },
+    {
+      "from": "İnternet",
+      "to": "Araştırma"
+    },
+    {
+      "from": "İnternet",
+      "to": "Keşif"
+    },
+    {
+      "from": "İnternet",
+      "to": "Buluş"
+    },
+    {
+      "from": "İnternet",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "İnternet",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "İnternet",
+      "to": "Kuantum Bilgisayar"
+    },
+    {
+      "from": "İnternet",
+      "to": "Lazer"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Keşif"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Buluş"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Kuantum Bilgisayar"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Lazer"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Transistör"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Robotik"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Algoritma"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Kodlama"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Makine Öğrenmesi"
+    },
+    {
+      "from": "Yapay Zeka",
+      "to": "Yapay Sinir Ağı"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Keşif"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Buluş"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Lazer"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Transistör"
+    },
+    {
+      "from": "Kuantum Bilgisayar",
+      "to": "Mikroçip"
+    },
+    {
+      "from": "Lazer",
+      "to": "Bilim"
+    },
+    {
+      "from": "Lazer",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Lazer",
+      "to": "Keşif"
+    },
+    {
+      "from": "Lazer",
+      "to": "Buluş"
+    },
+    {
+      "from": "Lazer",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Lazer",
+      "to": "Transistör"
+    },
+    {
+      "from": "Lazer",
+      "to": "Mikroçip"
+    },
+    {
+      "from": "Lazer",
+      "to": "Buhar Makinesi"
+    },
+    {
+      "from": "Transistör",
+      "to": "Bilim"
+    },
+    {
+      "from": "Transistör",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Transistör",
+      "to": "Keşif"
+    },
+    {
+      "from": "Transistör",
+      "to": "Buluş"
+    },
+    {
+      "from": "Transistör",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Transistör",
+      "to": "Mikroçip"
+    },
+    {
+      "from": "Transistör",
+      "to": "Buhar Makinesi"
+    },
+    {
+      "from": "Transistör",
+      "to": "Matbaa"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Keşif"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Buluş"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Buhar Makinesi"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Matbaa"
+    },
+    {
+      "from": "Mikroçip",
+      "to": "Pusula"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "Keşif"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "Buluş"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "Matbaa"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "Pusula"
+    },
+    {
+      "from": "Buhar Makinesi",
+      "to": "GPS"
+    },
+    {
+      "from": "Matbaa",
+      "to": "Bilim"
+    },
+    {
+      "from": "Matbaa",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Matbaa",
+      "to": "Keşif"
+    },
+    {
+      "from": "Matbaa",
+      "to": "Buluş"
+    },
+    {
+      "from": "Matbaa",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Matbaa",
+      "to": "Pusula"
+    },
+    {
+      "from": "Matbaa",
+      "to": "GPS"
+    },
+    {
+      "from": "Matbaa",
+      "to": "Robotik"
+    },
+    {
+      "from": "Pusula",
+      "to": "Bilim"
+    },
+    {
+      "from": "Pusula",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Pusula",
+      "to": "Keşif"
+    },
+    {
+      "from": "Pusula",
+      "to": "Buluş"
+    },
+    {
+      "from": "Pusula",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Pusula",
+      "to": "GPS"
+    },
+    {
+      "from": "Pusula",
+      "to": "Robotik"
+    },
+    {
+      "from": "Pusula",
+      "to": "Nanoteknoloji"
+    },
+    {
+      "from": "GPS",
+      "to": "Bilim"
+    },
+    {
+      "from": "GPS",
+      "to": "Araştırma"
+    },
+    {
+      "from": "GPS",
+      "to": "Keşif"
+    },
+    {
+      "from": "GPS",
+      "to": "Buluş"
+    },
+    {
+      "from": "GPS",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "GPS",
+      "to": "Aşı"
+    },
+    {
+      "from": "GPS",
+      "to": "Robotik"
+    },
+    {
+      "from": "GPS",
+      "to": "Nanoteknoloji"
+    },
+    {
+      "from": "Robotik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Robotik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Robotik",
+      "to": "Keşif"
+    },
+    {
+      "from": "Robotik",
+      "to": "Buluş"
+    },
+    {
+      "from": "Robotik",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Robotik",
+      "to": "Aşı"
+    },
+    {
+      "from": "Robotik",
+      "to": "Antibiyotik"
+    },
+    {
+      "from": "Robotik",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Robotik",
+      "to": "Nanoteknoloji"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Keşif"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Buluş"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Teknoloji"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Aşı"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Antibiyotik"
+    },
+    {
+      "from": "Nanoteknoloji",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Bilim"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Teori"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Fizik"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Enerji"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Işık"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Görelilik"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Kozmoloji"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Charles Darwin"
+    },
+    {
+      "from": "Albert Einstein",
+      "to": "Galileo Galilei"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Bilim"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Teori"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Doğa Yasası"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Fizik"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Kuvvet"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Hareket"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Yerçekimi"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Teleskop"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Charles Darwin"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Galileo Galilei"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Nikola Tesla"
+    },
+    {
+      "from": "Isaac Newton",
+      "to": "Matematik"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Bilim"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Teori"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Keşif"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Fizik"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Nükleer Enerji"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Kimya"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Radyoaktivite"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Röntgen Işını"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Charles Darwin"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Galileo Galilei"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Nikola Tesla"
+    },
+    {
+      "from": "Marie Curie",
+      "to": "Ada Lovelace"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Bilim"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Teori"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Evrim"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Galileo Galilei"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Nikola Tesla"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Ada Lovelace"
+    },
+    {
+      "from": "Charles Darwin",
+      "to": "Alan Turing"
+    },
+    {
+      "from": "Galileo Galilei",
+      "to": "Bilim"
+    },
+    {
+      "from": "Galileo Galilei",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Galileo Galilei",
+      "to": "Teori"
+    },
+    {
+      "from": "Galileo Galilei",
+      "to": "Nikola Tesla"
+    },
+    {
+      "from": "Galileo Galilei",
+      "to": "Ada Lovelace"
+    },
+    {
+      "from": "Galileo Galilei",
+      "to": "Alan Turing"
+    },
+    {
+      "from": "Galileo Galilei",
+      "to": "Stephen Hawking"
+    },
+    {
+      "from": "Nikola Tesla",
+      "to": "Bilim"
+    },
+    {
+      "from": "Nikola Tesla",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Nikola Tesla",
+      "to": "Teori"
+    },
+    {
+      "from": "Nikola Tesla",
+      "to": "Ada Lovelace"
+    },
+    {
+      "from": "Nikola Tesla",
+      "to": "Alan Turing"
+    },
+    {
+      "from": "Nikola Tesla",
+      "to": "Stephen Hawking"
+    },
+    {
+      "from": "Nikola Tesla",
+      "to": "Carl Sagan"
+    },
+    {
+      "from": "Ada Lovelace",
+      "to": "Bilim"
+    },
+    {
+      "from": "Ada Lovelace",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Ada Lovelace",
+      "to": "Teori"
+    },
+    {
+      "from": "Ada Lovelace",
+      "to": "Alan Turing"
+    },
+    {
+      "from": "Ada Lovelace",
+      "to": "Stephen Hawking"
+    },
+    {
+      "from": "Ada Lovelace",
+      "to": "Carl Sagan"
+    },
+    {
+      "from": "Ada Lovelace",
+      "to": "Rosalind Franklin"
+    },
+    {
+      "from": "Alan Turing",
+      "to": "Bilim"
+    },
+    {
+      "from": "Alan Turing",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Alan Turing",
+      "to": "Teori"
+    },
+    {
+      "from": "Alan Turing",
+      "to": "Stephen Hawking"
+    },
+    {
+      "from": "Alan Turing",
+      "to": "Carl Sagan"
+    },
+    {
+      "from": "Alan Turing",
+      "to": "Rosalind Franklin"
+    },
+    {
+      "from": "Alan Turing",
+      "to": "James Watson"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "Bilim"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "Teori"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "Kara Delik"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "Carl Sagan"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "Rosalind Franklin"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "James Watson"
+    },
+    {
+      "from": "Stephen Hawking",
+      "to": "Francis Crick"
+    },
+    {
+      "from": "Carl Sagan",
+      "to": "Bilim"
+    },
+    {
+      "from": "Carl Sagan",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Carl Sagan",
+      "to": "Teori"
+    },
+    {
+      "from": "Carl Sagan",
+      "to": "Rosalind Franklin"
+    },
+    {
+      "from": "Carl Sagan",
+      "to": "James Watson"
+    },
+    {
+      "from": "Carl Sagan",
+      "to": "Francis Crick"
+    },
+    {
+      "from": "Carl Sagan",
+      "to": "Louis Pasteur"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "Bilim"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "Teori"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "DNA"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "James Watson"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "Francis Crick"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "Louis Pasteur"
+    },
+    {
+      "from": "Rosalind Franklin",
+      "to": "Alexander Fleming"
+    },
+    {
+      "from": "James Watson",
+      "to": "Bilim"
+    },
+    {
+      "from": "James Watson",
+      "to": "Araştırma"
+    },
+    {
+      "from": "James Watson",
+      "to": "Teori"
+    },
+    {
+      "from": "James Watson",
+      "to": "Francis Crick"
+    },
+    {
+      "from": "James Watson",
+      "to": "Louis Pasteur"
+    },
+    {
+      "from": "James Watson",
+      "to": "Alexander Fleming"
+    },
+    {
+      "from": "James Watson",
+      "to": "Gregor Mendel"
+    },
+    {
+      "from": "Francis Crick",
+      "to": "Bilim"
+    },
+    {
+      "from": "Francis Crick",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Francis Crick",
+      "to": "Teori"
+    },
+    {
+      "from": "Francis Crick",
+      "to": "Louis Pasteur"
+    },
+    {
+      "from": "Francis Crick",
+      "to": "Alexander Fleming"
+    },
+    {
+      "from": "Francis Crick",
+      "to": "Gregor Mendel"
+    },
+    {
+      "from": "Francis Crick",
+      "to": "Dmitri Mendeleyev"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Bilim"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Teori"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Aşı"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Alexander Fleming"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Gregor Mendel"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Dmitri Mendeleyev"
+    },
+    {
+      "from": "Louis Pasteur",
+      "to": "Richard Feynman"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Bilim"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Teori"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Penisilin"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Gregor Mendel"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Dmitri Mendeleyev"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Richard Feynman"
+    },
+    {
+      "from": "Alexander Fleming",
+      "to": "Niels Bohr"
+    },
+    {
+      "from": "Gregor Mendel",
+      "to": "Bilim"
+    },
+    {
+      "from": "Gregor Mendel",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Gregor Mendel",
+      "to": "Teori"
+    },
+    {
+      "from": "Gregor Mendel",
+      "to": "Dmitri Mendeleyev"
+    },
+    {
+      "from": "Gregor Mendel",
+      "to": "Richard Feynman"
+    },
+    {
+      "from": "Gregor Mendel",
+      "to": "Niels Bohr"
+    },
+    {
+      "from": "Gregor Mendel",
+      "to": "Max Planck"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Bilim"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Teori"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Periyodik Tablo"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Richard Feynman"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Niels Bohr"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Max Planck"
+    },
+    {
+      "from": "Dmitri Mendeleyev",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Richard Feynman",
+      "to": "Bilim"
+    },
+    {
+      "from": "Richard Feynman",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Richard Feynman",
+      "to": "Teori"
+    },
+    {
+      "from": "Richard Feynman",
+      "to": "Niels Bohr"
+    },
+    {
+      "from": "Richard Feynman",
+      "to": "Max Planck"
+    },
+    {
+      "from": "Richard Feynman",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Richard Feynman",
+      "to": "Cahit Arf"
+    },
+    {
+      "from": "Niels Bohr",
+      "to": "Bilim"
+    },
+    {
+      "from": "Niels Bohr",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Niels Bohr",
+      "to": "Teori"
+    },
+    {
+      "from": "Niels Bohr",
+      "to": "Max Planck"
+    },
+    {
+      "from": "Niels Bohr",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Niels Bohr",
+      "to": "Cahit Arf"
+    },
+    {
+      "from": "Niels Bohr",
+      "to": "Feza Gürsey"
+    },
+    {
+      "from": "Max Planck",
+      "to": "Bilim"
+    },
+    {
+      "from": "Max Planck",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Max Planck",
+      "to": "Teori"
+    },
+    {
+      "from": "Max Planck",
+      "to": "Aziz Sancar"
+    },
+    {
+      "from": "Max Planck",
+      "to": "Cahit Arf"
+    },
+    {
+      "from": "Max Planck",
+      "to": "Feza Gürsey"
+    },
+    {
+      "from": "Max Planck",
+      "to": "Canan Dağdeviren"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Bilim"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Teori"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Bilimsel Makale"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Akademi"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Biyoloji"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "DNA"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Gen"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Cahit Arf"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Feza Gürsey"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Canan Dağdeviren"
+    },
+    {
+      "from": "Aziz Sancar",
+      "to": "Uğur Şahin"
+    },
+    {
+      "from": "Cahit Arf",
+      "to": "Bilim"
+    },
+    {
+      "from": "Cahit Arf",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Cahit Arf",
+      "to": "Teori"
+    },
+    {
+      "from": "Cahit Arf",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Cahit Arf",
+      "to": "Feza Gürsey"
+    },
+    {
+      "from": "Cahit Arf",
+      "to": "Canan Dağdeviren"
+    },
+    {
+      "from": "Cahit Arf",
+      "to": "Uğur Şahin"
+    },
+    {
+      "from": "Feza Gürsey",
+      "to": "Bilim"
+    },
+    {
+      "from": "Feza Gürsey",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Feza Gürsey",
+      "to": "Teori"
+    },
+    {
+      "from": "Feza Gürsey",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Feza Gürsey",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Feza Gürsey",
+      "to": "Canan Dağdeviren"
+    },
+    {
+      "from": "Feza Gürsey",
+      "to": "Uğur Şahin"
+    },
+    {
+      "from": "Canan Dağdeviren",
+      "to": "Bilim"
+    },
+    {
+      "from": "Canan Dağdeviren",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Canan Dağdeviren",
+      "to": "Teori"
+    },
+    {
+      "from": "Canan Dağdeviren",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Canan Dağdeviren",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Canan Dağdeviren",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Canan Dağdeviren",
+      "to": "Uğur Şahin"
+    },
+    {
+      "from": "Uğur Şahin",
+      "to": "Bilim"
+    },
+    {
+      "from": "Uğur Şahin",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Uğur Şahin",
+      "to": "Teori"
+    },
+    {
+      "from": "Uğur Şahin",
+      "to": "Albert Einstein"
+    },
+    {
+      "from": "Uğur Şahin",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Uğur Şahin",
+      "to": "Marie Curie"
+    },
+    {
+      "from": "Uğur Şahin",
+      "to": "Charles Darwin"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Bilim"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Deney"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Beher"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Pipet"
+    },
+    {
+      "from": "Deney Tüpü",
+      "to": "Mikroskop Aleti"
+    },
+    {
+      "from": "Beher",
+      "to": "Bilim"
+    },
+    {
+      "from": "Beher",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Beher",
+      "to": "Deney"
+    },
+    {
+      "from": "Beher",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Beher",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Beher",
+      "to": "Pipet"
+    },
+    {
+      "from": "Beher",
+      "to": "Mikroskop Aleti"
+    },
+    {
+      "from": "Beher",
+      "to": "Santrifüj"
+    },
+    {
+      "from": "Pipet",
+      "to": "Bilim"
+    },
+    {
+      "from": "Pipet",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Pipet",
+      "to": "Deney"
+    },
+    {
+      "from": "Pipet",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Pipet",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Pipet",
+      "to": "Mikroskop Aleti"
+    },
+    {
+      "from": "Pipet",
+      "to": "Santrifüj"
+    },
+    {
+      "from": "Pipet",
+      "to": "Petri Kabı"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Deney"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Santrifüj"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Petri Kabı"
+    },
+    {
+      "from": "Mikroskop Aleti",
+      "to": "Ölçü Silindiri"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Bilim"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Deney"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Petri Kabı"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Ölçü Silindiri"
+    },
+    {
+      "from": "Santrifüj",
+      "to": "Hassas Terazi"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Deney"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Ölçü Silindiri"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Hassas Terazi"
+    },
+    {
+      "from": "Petri Kabı",
+      "to": "Termometre"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Bilim"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Deney"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Hassas Terazi"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Termometre"
+    },
+    {
+      "from": "Ölçü Silindiri",
+      "to": "Spektrometre"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Deney"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Termometre"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Spektrometre"
+    },
+    {
+      "from": "Hassas Terazi",
+      "to": "Koruyucu Gözlük"
+    },
+    {
+      "from": "Termometre",
+      "to": "Bilim"
+    },
+    {
+      "from": "Termometre",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Termometre",
+      "to": "Deney"
+    },
+    {
+      "from": "Termometre",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Termometre",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Termometre",
+      "to": "Spektrometre"
+    },
+    {
+      "from": "Termometre",
+      "to": "Koruyucu Gözlük"
+    },
+    {
+      "from": "Termometre",
+      "to": "Laboratuvar Önlüğü"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Bilim"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Deney"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Koruyucu Gözlük"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Laboratuvar Önlüğü"
+    },
+    {
+      "from": "Spektrometre",
+      "to": "Kontrol Grubu"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Bilim"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Deney"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Laboratuvar Önlüğü"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Kontrol Grubu"
+    },
+    {
+      "from": "Koruyucu Gözlük",
+      "to": "Deney Grubu"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Bilim"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Deney"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Kontrol Grubu"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Deney Grubu"
+    },
+    {
+      "from": "Laboratuvar Önlüğü",
+      "to": "Örnek"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Deney"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Deney Grubu"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Örnek"
+    },
+    {
+      "from": "Kontrol Grubu",
+      "to": "Numune"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Bilim"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Deney"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Örnek"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Numune"
+    },
+    {
+      "from": "Deney Grubu",
+      "to": "Protokol"
+    },
+    {
+      "from": "Örnek",
+      "to": "Bilim"
+    },
+    {
+      "from": "Örnek",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Örnek",
+      "to": "Deney"
+    },
+    {
+      "from": "Örnek",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Örnek",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Örnek",
+      "to": "Numune"
+    },
+    {
+      "from": "Örnek",
+      "to": "Protokol"
+    },
+    {
+      "from": "Örnek",
+      "to": "Kalibrasyon"
+    },
+    {
+      "from": "Numune",
+      "to": "Bilim"
+    },
+    {
+      "from": "Numune",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Numune",
+      "to": "Deney"
+    },
+    {
+      "from": "Numune",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Numune",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Numune",
+      "to": "Protokol"
+    },
+    {
+      "from": "Numune",
+      "to": "Kalibrasyon"
+    },
+    {
+      "from": "Numune",
+      "to": "Hata Payı"
+    },
+    {
+      "from": "Protokol",
+      "to": "Bilim"
+    },
+    {
+      "from": "Protokol",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Protokol",
+      "to": "Deney"
+    },
+    {
+      "from": "Protokol",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Protokol",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Protokol",
+      "to": "Kalibrasyon"
+    },
+    {
+      "from": "Protokol",
+      "to": "Hata Payı"
+    },
+    {
+      "from": "Protokol",
+      "to": "Tekrar Deneyi"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Deney"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Hata Payı"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Tekrar Deneyi"
+    },
+    {
+      "from": "Kalibrasyon",
+      "to": "Veri Seti"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Deney"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Tekrar Deneyi"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Veri Seti"
+    },
+    {
+      "from": "Hata Payı",
+      "to": "Grafik"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Deney"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Veri Seti"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Grafik"
+    },
+    {
+      "from": "Tekrar Deneyi",
+      "to": "Tablo"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Bilim"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Deney"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Grafik"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Tablo"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Rapor"
+    },
+    {
+      "from": "Veri Seti",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Grafik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Grafik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Grafik",
+      "to": "Deney"
+    },
+    {
+      "from": "Grafik",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Grafik",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Grafik",
+      "to": "Tablo"
+    },
+    {
+      "from": "Grafik",
+      "to": "Rapor"
+    },
+    {
+      "from": "Grafik",
+      "to": "Hakem Değerlendirmesi"
+    },
+    {
+      "from": "Grafik",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Tablo",
+      "to": "Bilim"
+    },
+    {
+      "from": "Tablo",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Tablo",
+      "to": "Deney"
+    },
+    {
+      "from": "Tablo",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Tablo",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Tablo",
+      "to": "Deney Tüpü"
+    },
+    {
+      "from": "Tablo",
+      "to": "Rapor"
+    },
+    {
+      "from": "Tablo",
+      "to": "Hakem Değerlendirmesi"
+    },
+    {
+      "from": "Tablo",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Rapor",
+      "to": "Bilim"
+    },
+    {
+      "from": "Rapor",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Rapor",
+      "to": "Deney"
+    },
+    {
+      "from": "Rapor",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Rapor",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Rapor",
+      "to": "Deney Tüpü"
+    },
+    {
+      "from": "Rapor",
+      "to": "Beher"
+    },
+    {
+      "from": "Rapor",
+      "to": "Hakem Değerlendirmesi"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Deney"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Ölçüm"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Laboratuvar"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Deney Tüpü"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Beher"
+    },
+    {
+      "from": "Hakem Değerlendirmesi",
+      "to": "Pipet"
+    },
+    {
+      "from": "Dünya",
+      "to": "Bilim"
+    },
+    {
+      "from": "Dünya",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Dünya",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Dünya",
+      "to": "Kayaç"
+    },
+    {
+      "from": "Dünya",
+      "to": "Mineral"
+    },
+    {
+      "from": "Dünya",
+      "to": "Fosil"
+    },
+    {
+      "from": "Dünya",
+      "to": "Okyanus"
+    },
+    {
+      "from": "Dünya",
+      "to": "Atmosfer"
+    },
+    {
+      "from": "Dünya",
+      "to": "İklim"
+    },
+    {
+      "from": "Dünya",
+      "to": "Su Döngüsü"
+    },
+    {
+      "from": "Dünya",
+      "to": "Biyoçeşitlilik"
+    },
+    {
+      "from": "Dünya",
+      "to": "Küresel Isınma"
+    },
+    {
+      "from": "Jeoloji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Jeoloji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Jeoloji",
+      "to": "Dünya"
+    },
+    {
+      "from": "Jeoloji",
+      "to": "Kayaç"
+    },
+    {
+      "from": "Jeoloji",
+      "to": "Mineral"
+    },
+    {
+      "from": "Jeoloji",
+      "to": "Fosil"
+    },
+    {
+      "from": "Jeoloji",
+      "to": "İklim"
+    },
+    {
+      "from": "Kayaç",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kayaç",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kayaç",
+      "to": "Dünya"
+    },
+    {
+      "from": "Kayaç",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Kayaç",
+      "to": "Mineral"
+    },
+    {
+      "from": "Kayaç",
+      "to": "Fosil"
+    },
+    {
+      "from": "Kayaç",
+      "to": "Deprem"
+    },
+    {
+      "from": "Kayaç",
+      "to": "İklim"
+    },
+    {
+      "from": "Mineral",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mineral",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mineral",
+      "to": "Dünya"
+    },
+    {
+      "from": "Mineral",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Mineral",
+      "to": "Fosil"
+    },
+    {
+      "from": "Mineral",
+      "to": "Deprem"
+    },
+    {
+      "from": "Mineral",
+      "to": "Volkan"
+    },
+    {
+      "from": "Mineral",
+      "to": "İklim"
+    },
+    {
+      "from": "Fosil",
+      "to": "Bilim"
+    },
+    {
+      "from": "Fosil",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Fosil",
+      "to": "Evrim"
+    },
+    {
+      "from": "Fosil",
+      "to": "Dünya"
+    },
+    {
+      "from": "Fosil",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Fosil",
+      "to": "Deprem"
+    },
+    {
+      "from": "Fosil",
+      "to": "Volkan"
+    },
+    {
+      "from": "Fosil",
+      "to": "Levha Tektoniği"
+    },
+    {
+      "from": "Fosil",
+      "to": "İklim"
+    },
+    {
+      "from": "Deprem",
+      "to": "Bilim"
+    },
+    {
+      "from": "Deprem",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Deprem",
+      "to": "Dünya"
+    },
+    {
+      "from": "Deprem",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Deprem",
+      "to": "Volkan"
+    },
+    {
+      "from": "Deprem",
+      "to": "Levha Tektoniği"
+    },
+    {
+      "from": "Deprem",
+      "to": "Okyanus"
+    },
+    {
+      "from": "Deprem",
+      "to": "İklim"
+    },
+    {
+      "from": "Volkan",
+      "to": "Bilim"
+    },
+    {
+      "from": "Volkan",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Volkan",
+      "to": "Dünya"
+    },
+    {
+      "from": "Volkan",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Volkan",
+      "to": "Levha Tektoniği"
+    },
+    {
+      "from": "Volkan",
+      "to": "Okyanus"
+    },
+    {
+      "from": "Volkan",
+      "to": "Atmosfer"
+    },
+    {
+      "from": "Volkan",
+      "to": "İklim"
+    },
+    {
+      "from": "Levha Tektoniği",
+      "to": "Bilim"
+    },
+    {
+      "from": "Levha Tektoniği",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Levha Tektoniği",
+      "to": "Dünya"
+    },
+    {
+      "from": "Levha Tektoniği",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Levha Tektoniği",
+      "to": "Okyanus"
+    },
+    {
+      "from": "Levha Tektoniği",
+      "to": "Atmosfer"
+    },
+    {
+      "from": "Levha Tektoniği",
+      "to": "İklim"
+    },
+    {
+      "from": "Okyanus",
+      "to": "Bilim"
+    },
+    {
+      "from": "Okyanus",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Okyanus",
+      "to": "Dünya"
+    },
+    {
+      "from": "Okyanus",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Okyanus",
+      "to": "Atmosfer"
+    },
+    {
+      "from": "Okyanus",
+      "to": "İklim"
+    },
+    {
+      "from": "Okyanus",
+      "to": "Hava Durumu"
+    },
+    {
+      "from": "Atmosfer",
+      "to": "Bilim"
+    },
+    {
+      "from": "Atmosfer",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Atmosfer",
+      "to": "Dünya"
+    },
+    {
+      "from": "Atmosfer",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Atmosfer",
+      "to": "İklim"
+    },
+    {
+      "from": "Atmosfer",
+      "to": "Hava Durumu"
+    },
+    {
+      "from": "Atmosfer",
+      "to": "Karbon Döngüsü"
+    },
+    {
+      "from": "İklim",
+      "to": "Bilim"
+    },
+    {
+      "from": "İklim",
+      "to": "Araştırma"
+    },
+    {
+      "from": "İklim",
+      "to": "Dünya"
+    },
+    {
+      "from": "İklim",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "İklim",
+      "to": "Atmosfer"
+    },
+    {
+      "from": "İklim",
+      "to": "Hava Durumu"
+    },
+    {
+      "from": "İklim",
+      "to": "Karbon Döngüsü"
+    },
+    {
+      "from": "İklim",
+      "to": "Su Döngüsü"
+    },
+    {
+      "from": "İklim",
+      "to": "Küresel Isınma"
+    },
+    {
+      "from": "İklim",
+      "to": "Sera Gazı"
+    },
+    {
+      "from": "İklim",
+      "to": "Ozon Tabakası"
+    },
+    {
+      "from": "İklim",
+      "to": "Yenilenebilir Enerji"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "Bilim"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "Dünya"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "İklim"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "Karbon Döngüsü"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "Su Döngüsü"
+    },
+    {
+      "from": "Hava Durumu",
+      "to": "Erozyon"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "Bilim"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "Dünya"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "İklim"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "Su Döngüsü"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "Erozyon"
+    },
+    {
+      "from": "Karbon Döngüsü",
+      "to": "Buzul"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "Bilim"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "Dünya"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "İklim"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "Erozyon"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "Buzul"
+    },
+    {
+      "from": "Su Döngüsü",
+      "to": "Çöl"
+    },
+    {
+      "from": "Erozyon",
+      "to": "Bilim"
+    },
+    {
+      "from": "Erozyon",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Erozyon",
+      "to": "Dünya"
+    },
+    {
+      "from": "Erozyon",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Erozyon",
+      "to": "İklim"
+    },
+    {
+      "from": "Erozyon",
+      "to": "Buzul"
+    },
+    {
+      "from": "Erozyon",
+      "to": "Çöl"
+    },
+    {
+      "from": "Erozyon",
+      "to": "Orman"
+    },
+    {
+      "from": "Buzul",
+      "to": "Bilim"
+    },
+    {
+      "from": "Buzul",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Buzul",
+      "to": "Dünya"
+    },
+    {
+      "from": "Buzul",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Buzul",
+      "to": "İklim"
+    },
+    {
+      "from": "Buzul",
+      "to": "Çöl"
+    },
+    {
+      "from": "Buzul",
+      "to": "Orman"
+    },
+    {
+      "from": "Buzul",
+      "to": "Biyoçeşitlilik"
+    },
+    {
+      "from": "Çöl",
+      "to": "Bilim"
+    },
+    {
+      "from": "Çöl",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Çöl",
+      "to": "Dünya"
+    },
+    {
+      "from": "Çöl",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Çöl",
+      "to": "İklim"
+    },
+    {
+      "from": "Çöl",
+      "to": "Orman"
+    },
+    {
+      "from": "Çöl",
+      "to": "Biyoçeşitlilik"
+    },
+    {
+      "from": "Çöl",
+      "to": "Küresel Isınma"
+    },
+    {
+      "from": "Orman",
+      "to": "Bilim"
+    },
+    {
+      "from": "Orman",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Orman",
+      "to": "Dünya"
+    },
+    {
+      "from": "Orman",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Orman",
+      "to": "İklim"
+    },
+    {
+      "from": "Orman",
+      "to": "Biyoçeşitlilik"
+    },
+    {
+      "from": "Orman",
+      "to": "Küresel Isınma"
+    },
+    {
+      "from": "Orman",
+      "to": "Sera Gazı"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Evrim"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Dünya"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "İklim"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Küresel Isınma"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Sera Gazı"
+    },
+    {
+      "from": "Biyoçeşitlilik",
+      "to": "Ozon Tabakası"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "Bilim"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "Dünya"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "İklim"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "Sera Gazı"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "Ozon Tabakası"
+    },
+    {
+      "from": "Küresel Isınma",
+      "to": "Yenilenebilir Enerji"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "Dünya"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "İklim"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "Ozon Tabakası"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "Yenilenebilir Enerji"
+    },
+    {
+      "from": "Sera Gazı",
+      "to": "Güneş Enerjisi"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "Bilim"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "Dünya"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "İklim"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "Yenilenebilir Enerji"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "Güneş Enerjisi"
+    },
+    {
+      "from": "Ozon Tabakası",
+      "to": "Rüzgar Enerjisi"
+    },
+    {
+      "from": "Yenilenebilir Enerji",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yenilenebilir Enerji",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yenilenebilir Enerji",
+      "to": "Dünya"
+    },
+    {
+      "from": "Yenilenebilir Enerji",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Yenilenebilir Enerji",
+      "to": "İklim"
+    },
+    {
+      "from": "Yenilenebilir Enerji",
+      "to": "Güneş Enerjisi"
+    },
+    {
+      "from": "Yenilenebilir Enerji",
+      "to": "Rüzgar Enerjisi"
+    },
+    {
+      "from": "Güneş Enerjisi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Güneş Enerjisi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Güneş Enerjisi",
+      "to": "Dünya"
+    },
+    {
+      "from": "Güneş Enerjisi",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Güneş Enerjisi",
+      "to": "Kayaç"
+    },
+    {
+      "from": "Güneş Enerjisi",
+      "to": "İklim"
+    },
+    {
+      "from": "Güneş Enerjisi",
+      "to": "Rüzgar Enerjisi"
+    },
+    {
+      "from": "Rüzgar Enerjisi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Rüzgar Enerjisi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Rüzgar Enerjisi",
+      "to": "Dünya"
+    },
+    {
+      "from": "Rüzgar Enerjisi",
+      "to": "Jeoloji"
+    },
+    {
+      "from": "Rüzgar Enerjisi",
+      "to": "Kayaç"
+    },
+    {
+      "from": "Rüzgar Enerjisi",
+      "to": "Mineral"
+    },
+    {
+      "from": "Rüzgar Enerjisi",
+      "to": "İklim"
+    },
+    {
+      "from": "Matematik",
+      "to": "Bilim"
+    },
+    {
+      "from": "Matematik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Matematik",
+      "to": "Isaac Newton"
+    },
+    {
+      "from": "Matematik",
+      "to": "Sayı"
+    },
+    {
+      "from": "Matematik",
+      "to": "Denklem"
+    },
+    {
+      "from": "Matematik",
+      "to": "Formül"
+    },
+    {
+      "from": "Matematik",
+      "to": "Geometri"
+    },
+    {
+      "from": "Matematik",
+      "to": "Cebir"
+    },
+    {
+      "from": "Matematik",
+      "to": "İstatistik"
+    },
+    {
+      "from": "Matematik",
+      "to": "Algoritma"
+    },
+    {
+      "from": "Sayı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sayı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sayı",
+      "to": "Matematik"
+    },
+    {
+      "from": "Sayı",
+      "to": "Denklem"
+    },
+    {
+      "from": "Sayı",
+      "to": "Formül"
+    },
+    {
+      "from": "Sayı",
+      "to": "Geometri"
+    },
+    {
+      "from": "Sayı",
+      "to": "Cebir"
+    },
+    {
+      "from": "Denklem",
+      "to": "Bilim"
+    },
+    {
+      "from": "Denklem",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Denklem",
+      "to": "Matematik"
+    },
+    {
+      "from": "Denklem",
+      "to": "Formül"
+    },
+    {
+      "from": "Denklem",
+      "to": "Geometri"
+    },
+    {
+      "from": "Denklem",
+      "to": "Cebir"
+    },
+    {
+      "from": "Denklem",
+      "to": "Fonksiyon"
+    },
+    {
+      "from": "Formül",
+      "to": "Bilim"
+    },
+    {
+      "from": "Formül",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Formül",
+      "to": "Matematik"
+    },
+    {
+      "from": "Formül",
+      "to": "Denklem"
+    },
+    {
+      "from": "Formül",
+      "to": "Geometri"
+    },
+    {
+      "from": "Formül",
+      "to": "Cebir"
+    },
+    {
+      "from": "Formül",
+      "to": "Fonksiyon"
+    },
+    {
+      "from": "Geometri",
+      "to": "Bilim"
+    },
+    {
+      "from": "Geometri",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Geometri",
+      "to": "Matematik"
+    },
+    {
+      "from": "Geometri",
+      "to": "Denklem"
+    },
+    {
+      "from": "Geometri",
+      "to": "Formül"
+    },
+    {
+      "from": "Geometri",
+      "to": "Cebir"
+    },
+    {
+      "from": "Geometri",
+      "to": "Fonksiyon"
+    },
+    {
+      "from": "Geometri",
+      "to": "Graf"
+    },
+    {
+      "from": "Cebir",
+      "to": "Bilim"
+    },
+    {
+      "from": "Cebir",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Cebir",
+      "to": "Matematik"
+    },
+    {
+      "from": "Cebir",
+      "to": "Denklem"
+    },
+    {
+      "from": "Cebir",
+      "to": "Formül"
+    },
+    {
+      "from": "Cebir",
+      "to": "Fonksiyon"
+    },
+    {
+      "from": "Cebir",
+      "to": "Graf"
+    },
+    {
+      "from": "Cebir",
+      "to": "İstatistik"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "Bilim"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "Matematik"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "Denklem"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "Formül"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "Graf"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "İstatistik"
+    },
+    {
+      "from": "Fonksiyon",
+      "to": "Olasılık"
+    },
+    {
+      "from": "Graf",
+      "to": "Bilim"
+    },
+    {
+      "from": "Graf",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Graf",
+      "to": "Matematik"
+    },
+    {
+      "from": "Graf",
+      "to": "Denklem"
+    },
+    {
+      "from": "Graf",
+      "to": "Formül"
+    },
+    {
+      "from": "Graf",
+      "to": "İstatistik"
+    },
+    {
+      "from": "Graf",
+      "to": "Olasılık"
+    },
+    {
+      "from": "Graf",
+      "to": "Algoritma"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Bilim"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Araştırma"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Matematik"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Denklem"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Formül"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Olasılık"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Algoritma"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Kodlama"
+    },
+    {
+      "from": "İstatistik",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Bilim"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Matematik"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Denklem"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Formül"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Algoritma"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Kodlama"
+    },
+    {
+      "from": "Olasılık",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Bilim"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Matematik"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Denklem"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Formül"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Kodlama"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Algoritma",
+      "to": "Makine Öğrenmesi"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Bilim"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Matematik"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Denklem"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Formül"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Makine Öğrenmesi"
+    },
+    {
+      "from": "Kodlama",
+      "to": "Yapay Sinir Ağı"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Analiz"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Veri Seti"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Grafik"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Tablo"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Matematik"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Denklem"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Formül"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "İstatistik"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Algoritma"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Makine Öğrenmesi"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Yapay Sinir Ağı"
+    },
+    {
+      "from": "Veri Bilimi",
+      "to": "Mantık"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Bilim"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Matematik"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Denklem"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Formül"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Veri Bilimi"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Yapay Sinir Ağı"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Mantık"
+    },
+    {
+      "from": "Makine Öğrenmesi",
+      "to": "Türev"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Bilim"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Yapay Zeka"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Matematik"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Denklem"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Formül"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Mantık"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "Türev"
+    },
+    {
+      "from": "Yapay Sinir Ağı",
+      "to": "İntegral"
+    },
+    {
+      "from": "Mantık",
+      "to": "Bilim"
+    },
+    {
+      "from": "Mantık",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Mantık",
+      "to": "Matematik"
+    },
+    {
+      "from": "Mantık",
+      "to": "Denklem"
+    },
+    {
+      "from": "Mantık",
+      "to": "Formül"
+    },
+    {
+      "from": "Mantık",
+      "to": "Türev"
+    },
+    {
+      "from": "Mantık",
+      "to": "İntegral"
+    },
+    {
+      "from": "Mantık",
+      "to": "Vektör"
+    },
+    {
+      "from": "Türev",
+      "to": "Bilim"
+    },
+    {
+      "from": "Türev",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Türev",
+      "to": "Matematik"
+    },
+    {
+      "from": "Türev",
+      "to": "Denklem"
+    },
+    {
+      "from": "Türev",
+      "to": "Formül"
+    },
+    {
+      "from": "Türev",
+      "to": "İntegral"
+    },
+    {
+      "from": "Türev",
+      "to": "Vektör"
+    },
+    {
+      "from": "Türev",
+      "to": "Matris"
+    },
+    {
+      "from": "İntegral",
+      "to": "Bilim"
+    },
+    {
+      "from": "İntegral",
+      "to": "Araştırma"
+    },
+    {
+      "from": "İntegral",
+      "to": "Matematik"
+    },
+    {
+      "from": "İntegral",
+      "to": "Denklem"
+    },
+    {
+      "from": "İntegral",
+      "to": "Formül"
+    },
+    {
+      "from": "İntegral",
+      "to": "Vektör"
+    },
+    {
+      "from": "İntegral",
+      "to": "Matris"
+    },
+    {
+      "from": "İntegral",
+      "to": "Fraktal"
+    },
+    {
+      "from": "Vektör",
+      "to": "Bilim"
+    },
+    {
+      "from": "Vektör",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Vektör",
+      "to": "Matematik"
+    },
+    {
+      "from": "Vektör",
+      "to": "Denklem"
+    },
+    {
+      "from": "Vektör",
+      "to": "Formül"
+    },
+    {
+      "from": "Vektör",
+      "to": "Matris"
+    },
+    {
+      "from": "Vektör",
+      "to": "Fraktal"
+    },
+    {
+      "from": "Vektör",
+      "to": "Optimizasyon"
+    },
+    {
+      "from": "Matris",
+      "to": "Bilim"
+    },
+    {
+      "from": "Matris",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Matris",
+      "to": "Matematik"
+    },
+    {
+      "from": "Matris",
+      "to": "Denklem"
+    },
+    {
+      "from": "Matris",
+      "to": "Formül"
+    },
+    {
+      "from": "Matris",
+      "to": "Fraktal"
+    },
+    {
+      "from": "Matris",
+      "to": "Optimizasyon"
+    },
+    {
+      "from": "Matris",
+      "to": "Şifreleme"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Bilim"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Matematik"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Denklem"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Formül"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Optimizasyon"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Şifreleme"
+    },
+    {
+      "from": "Fraktal",
+      "to": "Simetri"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Bilim"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Matematik"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Denklem"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Formül"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Şifreleme"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Simetri"
+    },
+    {
+      "from": "Optimizasyon",
+      "to": "Sonsuzluk"
+    },
+    {
+      "from": "Şifreleme",
+      "to": "Bilim"
+    },
+    {
+      "from": "Şifreleme",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Şifreleme",
+      "to": "Matematik"
+    },
+    {
+      "from": "Şifreleme",
+      "to": "Denklem"
+    },
+    {
+      "from": "Şifreleme",
+      "to": "Formül"
+    },
+    {
+      "from": "Şifreleme",
+      "to": "Simetri"
+    },
+    {
+      "from": "Şifreleme",
+      "to": "Sonsuzluk"
+    },
+    {
+      "from": "Simetri",
+      "to": "Bilim"
+    },
+    {
+      "from": "Simetri",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Simetri",
+      "to": "Matematik"
+    },
+    {
+      "from": "Simetri",
+      "to": "Sayı"
+    },
+    {
+      "from": "Simetri",
+      "to": "Denklem"
+    },
+    {
+      "from": "Simetri",
+      "to": "Formül"
+    },
+    {
+      "from": "Simetri",
+      "to": "Sonsuzluk"
+    },
+    {
+      "from": "Sonsuzluk",
+      "to": "Bilim"
+    },
+    {
+      "from": "Sonsuzluk",
+      "to": "Araştırma"
+    },
+    {
+      "from": "Sonsuzluk",
+      "to": "Matematik"
+    },
+    {
+      "from": "Sonsuzluk",
+      "to": "Sayı"
+    },
+    {
+      "from": "Sonsuzluk",
+      "to": "Denklem"
+    },
+    {
+      "from": "Sonsuzluk",
+      "to": "Formül"
+    },
+    {
+      "from": "Sonsuzluk",
+      "to": "Geometri"
+    }
+  ],
+  "metadata": {
+    "source": "ai-generated",
+    "symmetrized": false,
+    "nodeCount": 250,
+    "minOutgoingPerNode": 6,
+    "language": "tr-TR",
+    "generatorVersion": "lexilink-content-v1"
+  }
+}

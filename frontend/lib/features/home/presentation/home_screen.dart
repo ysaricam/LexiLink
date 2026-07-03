@@ -882,6 +882,75 @@ class _CategoryVisual {
 
 _CategoryVisual _categoryVisuals(String name, ColorScheme colorScheme) {
   final lower = name.toLowerCase();
+  if (lower.contains('spor') ||
+      lower.contains('sport') ||
+      lower.contains('deporte')) {
+    return const _CategoryVisual(
+      emoji: '⚽',
+      gradient: [
+        Color(0xff14532d),
+        Color(0xff16a34a),
+        Color(0xff0f766e),
+      ],
+    );
+  }
+  if (lower.contains('sinema') ||
+      lower.contains('cinema') ||
+      lower.contains('cine') ||
+      lower.contains('kino') ||
+      lower.contains('cinéma')) {
+    return const _CategoryVisual(
+      emoji: '🎬',
+      gradient: [
+        Color(0xff111827),
+        Color(0xff7f1d1d),
+        Color(0xfff59e0b),
+      ],
+    );
+  }
+  if (lower.contains('müzik') ||
+      lower.contains('muzik') ||
+      lower.contains('music') ||
+      lower.contains('musik') ||
+      lower.contains('música') ||
+      lower.contains('musica') ||
+      lower.contains('musique')) {
+    return const _CategoryVisual(
+      emoji: '🎵',
+      gradient: [
+        Color(0xff1e1b4b),
+        Color(0xffbe185d),
+        Color(0xff06b6d4),
+      ],
+    );
+  }
+  if (lower.contains('bilim') ||
+      lower.contains('science') ||
+      lower.contains('wissenschaft') ||
+      lower.contains('ciencia')) {
+    return const _CategoryVisual(
+      emoji: '🔬',
+      gradient: [
+        Color(0xff0f172a),
+        Color(0xff2563eb),
+        Color(0xff14b8a6),
+      ],
+    );
+  }
+  if (lower.contains('tarih') ||
+      lower.contains('history') ||
+      lower.contains('geschichte') ||
+      lower.contains('historia') ||
+      lower.contains('histoire')) {
+    return const _CategoryVisual(
+      emoji: '🏛️',
+      gradient: [
+        Color(0xff3f2a1d),
+        Color(0xffa16207),
+        Color(0xff475569),
+      ],
+    );
+  }
   if (lower.contains('hayv')) {
     return _CategoryVisual(
       emoji: '🦊',

@@ -59,6 +59,124 @@ public class GetGameOptionsIntegrationTests : TestBase
     }
 
     [Test]
+    public async Task GetGameOptions_AfterOneWayStep_PreviousLinkIsIncludedForUndo()
+    {
+        var categoryId = await CategoryHelper.CreateCategoryAsync(Sender);
+        var startId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "start");
+        var currentId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "current");
+        var targetId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "target");
+
+        await LinkHelper.LinkOneWayAsync(Sender, startId, currentId);
+        await LinkHelper.LinkOneWayAsync(Sender, currentId, targetId);
+
+        var gameId = await InsertInProgressGameAsync(
+            categoryId: categoryId,
+            startLinkId: startId,
+            currentLinkId: startId,
+            targetLinkId: targetId);
+
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, currentId));
+
+        var options = await ExecuteQueryAsync(new GetGameOptionsQuery(gameId));
+
+        options.Select(o => o.Id).Should().Contain(startId,
+            "undo must remain visible even when the content graph has no reverse edge");
+        options[0].Id.Should().Be(startId,
+            "the previous link should stay first so the frontend marks it as the undo tile");
+        options.Select(o => o.Id).Should().Contain(targetId,
+            "normal outgoing options should remain available next to the undo tile");
+    }
+
+    [Test]
+    public async Task GetGameOptions_DeadEndAfterOneWayStep_ReturnsPreviousLink()
+    {
+        var categoryId = await CategoryHelper.CreateCategoryAsync(Sender);
+        var startId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "start");
+        var deadEndId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "dead-end");
+        var targetId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "target");
+
+        await LinkHelper.LinkOneWayAsync(Sender, startId, deadEndId);
+
+        var gameId = await InsertInProgressGameAsync(
+            categoryId: categoryId,
+            startLinkId: startId,
+            currentLinkId: startId,
+            targetLinkId: targetId);
+
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, deadEndId));
+
+        var options = await ExecuteQueryAsync(new GetGameOptionsQuery(gameId));
+
+        options.Should().ContainSingle();
+        options[0].Id.Should().Be(startId,
+            "a dead-end should still expose the previous link so the player can undo");
+    }
+
+    [Test]
+    public async Task GetGameOptions_WhenPreviousIsNotOutgoing_StillHonorsSixOptionLimit()
+    {
+        var categoryId = await CategoryHelper.CreateCategoryAsync(Sender);
+        var previousId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "previous");
+        var centerId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "center");
+        var targetId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "target");
+
+        await LinkHelper.LinkOneWayAsync(Sender, previousId, centerId);
+        for (var i = 1; i <= 8; i++)
+        {
+            var optionId = await LinkHelper.CreateLinkAsync(Sender, categoryId, $"option{i}");
+            await LinkHelper.LinkOneWayAsync(Sender, centerId, optionId);
+        }
+
+        var gameId = await InsertInProgressGameAsync(
+            categoryId: categoryId,
+            startLinkId: previousId,
+            currentLinkId: previousId,
+            targetLinkId: targetId);
+
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, centerId));
+
+        var options = await ExecuteQueryAsync(new GetGameOptionsQuery(gameId));
+
+        options.Count.Should().Be(6);
+        options[0].Id.Should().Be(previousId,
+            "the previous link should be locked in even if one regular option must be dropped");
+        options.Select(o => o.Id).Should().OnlyHaveUniqueItems();
+    }
+
+    [Test]
+    public async Task GetGameOptions_WhenPreviousLinkIsInactive_StillReturnsItForUndo()
+    {
+        var categoryId = await CategoryHelper.CreateCategoryAsync(Sender);
+        var startId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "start");
+        var currentId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "current");
+        var targetId = await LinkHelper.CreateLinkAsync(Sender, categoryId, "target");
+
+        await LinkHelper.LinkOneWayAsync(Sender, startId, currentId);
+        await LinkHelper.LinkOneWayAsync(Sender, currentId, targetId);
+
+        var gameId = await InsertInProgressGameAsync(
+            categoryId: categoryId,
+            startLinkId: startId,
+            currentLinkId: startId,
+            targetLinkId: targetId);
+
+        await ExecuteCommandAsync(new MakeStepCommand(gameId, currentId));
+        await DbContext.Database.ExecuteSqlRawAsync(
+            """
+            UPDATE "games"."Links"
+            SET "IsActive" = FALSE
+            WHERE "Id" = {0};
+            """,
+            startId);
+
+        var options = await ExecuteQueryAsync(new GetGameOptionsQuery(gameId));
+
+        options[0].Id.Should().Be(startId);
+        options[0].IsActive.Should().BeFalse(
+            "the API should preserve link state while still returning the undo target");
+    }
+
+    [Test]
     public async Task GetGameOptions_AfterBacktracking_UsesSimplifiedPathParent()
     {
         var categoryId = await CategoryHelper.CreateCategoryAsync(Sender);
@@ -251,5 +369,37 @@ public class GetGameOptionsIntegrationTests : TestBase
             gameId, playerId, startLinkId, categoryId, startLinkId, targetLinkId);
 
         return (gameId, centerId, leafIds);
+    }
+
+    private async Task<Guid> InsertInProgressGameAsync(
+        Guid categoryId,
+        Guid startLinkId,
+        Guid currentLinkId,
+        Guid targetLinkId)
+    {
+        var playerId = Guid.NewGuid();
+        var gameId = Guid.NewGuid();
+
+        await DbContext.Database.ExecuteSqlRawAsync(
+            """
+            INSERT INTO "games"."Games" (
+                "Id", "PlayerId", "CurrentLinkId", "State", "CategoryId",
+                "Difficulty", "StartLinkId", "TargetLinkId",
+                "Score", "MaxSteps", "StepsTaken",
+                "HintsRemaining", "HintsUsed",
+                "UndosUsed",
+                "ResetsUsed"
+            ) VALUES (
+                {0}, {1}, {2}, 'InProgress', {3},
+                'Easy', {4}, {5},
+                NULL, 20, 0,
+                3, 0,
+                0,
+                0
+            );
+            """,
+            gameId, playerId, currentLinkId, categoryId, startLinkId, targetLinkId);
+
+        return gameId;
     }
 }

@@ -1,0 +1,10212 @@
+{
+  "$schema": "lexilink/category/v1",
+  "category": {
+    "name": "Müzik",
+    "description": "Sanatçılar, albümler, enstrümanlar, türler, konserler ve müzik kültürüyle ilgili kavram bağlantıları.",
+    "language": "tr-TR"
+  },
+  "links": [
+    {
+      "value": "Müzik",
+      "description": "Müzik, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şarkı",
+      "description": "Şarkı, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Melodi",
+      "description": "Melodi, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ritim",
+      "description": "Ritim, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Beste",
+      "description": "Beste, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Söz",
+      "description": "Söz, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nakarat",
+      "description": "Nakarat, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kıta",
+      "description": "Kıta, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Albüm",
+      "description": "Albüm, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Single",
+      "description": "Single, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sanatçı",
+      "description": "Sanatçı, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Grup",
+      "description": "Grup, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dinleyici",
+      "description": "Dinleyici, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne",
+      "description": "Sahne, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Konser",
+      "description": "Konser, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Turne",
+      "description": "Turne, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kayıt",
+      "description": "Kayıt, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Stüdyo",
+      "description": "Stüdyo, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Canlı Performans",
+      "description": "Canlı Performans, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hit Şarkı",
+      "description": "Hit Şarkı, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Liste Başı",
+      "description": "Liste Başı, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzik Videosu",
+      "description": "Müzik Videosu, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Düet",
+      "description": "Düet, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cover",
+      "description": "Cover, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Akustik",
+      "description": "Akustik, müzik dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tarkan",
+      "description": "Tarkan, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sezen Aksu",
+      "description": "Sezen Aksu, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Barış Manço",
+      "description": "Barış Manço, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cem Karaca",
+      "description": "Cem Karaca, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ajda Pekkan",
+      "description": "Ajda Pekkan, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müslüm Gürses",
+      "description": "Müslüm Gürses, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Zeki Müren",
+      "description": "Zeki Müren, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sertab Erener",
+      "description": "Sertab Erener, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kenan Doğulu",
+      "description": "Kenan Doğulu, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Teoman",
+      "description": "Teoman, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mor ve Ötesi",
+      "description": "Mor ve Ötesi, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Duman",
+      "description": "Duman, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Manga",
+      "description": "Manga, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ceza",
+      "description": "Ceza, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sagopa Kajmer",
+      "description": "Sagopa Kajmer, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mabel Matiz",
+      "description": "Mabel Matiz, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yıldız Tilbe",
+      "description": "Yıldız Tilbe, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hadise",
+      "description": "Hadise, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Edis",
+      "description": "Edis, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gülşen",
+      "description": "Gülşen, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Michael Jackson",
+      "description": "Michael Jackson, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Madonna",
+      "description": "Madonna, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Beyonce",
+      "description": "Beyonce, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Adele",
+      "description": "Adele, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "The Beatles",
+      "description": "The Beatles, müzik dünyasında tanınan bir sanatçı veya gruptur.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Karma",
+      "description": "Karma, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gülümse",
+      "description": "Gülümse, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dönence",
+      "description": "Dönence, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Islak Islak",
+      "description": "Islak Islak, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nilüfer",
+      "description": "Nilüfer, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Saklı Kayıtlar",
+      "description": "Saklı Kayıtlar, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mucize Nağmeler",
+      "description": "Mucize Nağmeler, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Everyway That I Can",
+      "description": "Everyway That I Can, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Festival Albümü",
+      "description": "Festival Albümü, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Renkli Rüyalar Oteli",
+      "description": "Renkli Rüyalar Oteli, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dünya Yalan Söylüyor",
+      "description": "Dünya Yalan Söylüyor, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Belki Alışman Lazım",
+      "description": "Belki Alışman Lazım, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bir Pesimistin Gözyaşları",
+      "description": "Bir Pesimistin Gözyaşları, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Maya",
+      "description": "Maya, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Thriller",
+      "description": "Thriller, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Like a Prayer",
+      "description": "Like a Prayer, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lemonade",
+      "description": "Lemonade, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Abbey Road",
+      "description": "Abbey Road, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dark Side",
+      "description": "Dark Side, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rumours",
+      "description": "Rumours, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nevermind",
+      "description": "Nevermind, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Back to Black",
+      "description": "Back to Black, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Random Access Memories",
+      "description": "Random Access Memories, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bohemian Rhapsody",
+      "description": "Bohemian Rhapsody, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Imagine",
+      "description": "Imagine, geniş kitlelerce bilinen veya müzik tarihinde öne çıkan bir albüm ya da şarkıdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gitar",
+      "description": "Gitar, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Piyano",
+      "description": "Piyano, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bağlama",
+      "description": "Bağlama, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Keman",
+      "description": "Keman, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Davul",
+      "description": "Davul, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bas Gitar",
+      "description": "Bas Gitar, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Elektro Gitar",
+      "description": "Elektro Gitar, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Klavye",
+      "description": "Klavye, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Saksafon",
+      "description": "Saksafon, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Trompet",
+      "description": "Trompet, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Flüt",
+      "description": "Flüt, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ney",
+      "description": "Ney, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ud",
+      "description": "Ud, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kanun",
+      "description": "Kanun, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Darbuka",
+      "description": "Darbuka, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bateri",
+      "description": "Bateri, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Viyolonsel",
+      "description": "Viyolonsel, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kontrbas",
+      "description": "Kontrbas, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Akordeon",
+      "description": "Akordeon, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mızıka",
+      "description": "Mızıka, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mikrofon",
+      "description": "Mikrofon, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Amfi",
+      "description": "Amfi, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kulaklık",
+      "description": "Kulaklık, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pena",
+      "description": "Pena, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Metronom",
+      "description": "Metronom, müzik icrasında kullanılan bir enstrüman veya ekipmandır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pop",
+      "description": "Pop, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rock",
+      "description": "Rock, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rap",
+      "description": "Rap, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Arabesk",
+      "description": "Arabesk, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Türk Sanat Müziği",
+      "description": "Türk Sanat Müziği, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Türk Halk Müziği",
+      "description": "Türk Halk Müziği, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Caz",
+      "description": "Caz, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Blues",
+      "description": "Blues, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Klasik Müzik",
+      "description": "Klasik Müzik, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Elektronik Müzik",
+      "description": "Elektronik Müzik, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Metal",
+      "description": "Metal, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Punk",
+      "description": "Punk, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Reggae",
+      "description": "Reggae, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Funk",
+      "description": "Funk, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Soul",
+      "description": "Soul, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "R&B",
+      "description": "R&B, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hip Hop",
+      "description": "Hip Hop, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Alternatif Rock",
+      "description": "Alternatif Rock, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Anadolu Rock",
+      "description": "Anadolu Rock, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fantezi Müzik",
+      "description": "Fantezi Müzik, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Indie",
+      "description": "Indie, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "House",
+      "description": "House, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Techno",
+      "description": "Techno, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Trap",
+      "description": "Trap, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lo Fi",
+      "description": "Lo Fi, müziğin tarzını veya kültürel yönünü ifade eden bir türdür.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzik Festivali",
+      "description": "Müzik Festivali, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne Işığı",
+      "description": "Sahne Işığı, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ses Sistemi",
+      "description": "Ses Sistemi, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Seyirci",
+      "description": "Seyirci, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Alkış",
+      "description": "Alkış, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bis",
+      "description": "Bis, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Setlist",
+      "description": "Setlist, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Prova",
+      "description": "Prova, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne Arkası",
+      "description": "Sahne Arkası, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Backstage",
+      "description": "Backstage, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bilet",
+      "description": "Bilet, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "VIP Alanı",
+      "description": "VIP Alanı, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Açılış Grubu",
+      "description": "Açılış Grubu, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ana Sanatçı",
+      "description": "Ana Sanatçı, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Turne Otobüsü",
+      "description": "Turne Otobüsü, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Konser Alanı",
+      "description": "Konser Alanı, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Stadyum Konseri",
+      "description": "Stadyum Konseri, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Salon Konseri",
+      "description": "Salon Konseri, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Açık Hava Konseri",
+      "description": "Açık Hava Konseri, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Canlı Yayın",
+      "description": "Canlı Yayın, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İmza Günü",
+      "description": "İmza Günü, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Meet and Greet",
+      "description": "Meet and Greet, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne Kostümü",
+      "description": "Sahne Kostümü, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dansçı",
+      "description": "Dansçı, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Koreografi",
+      "description": "Koreografi, konser, sahne performansı veya canlı müzik deneyimiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Prodüktör",
+      "description": "Prodüktör, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Aranjman",
+      "description": "Aranjman, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mix",
+      "description": "Mix, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mastering",
+      "description": "Mastering, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kayıt Mühendisi",
+      "description": "Kayıt Mühendisi, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ses Kartı",
+      "description": "Ses Kartı, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "DAW",
+      "description": "DAW, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "MIDI",
+      "description": "MIDI, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Synthesizer",
+      "description": "Synthesizer, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sampler",
+      "description": "Sampler, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Loop",
+      "description": "Loop, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Beat",
+      "description": "Beat, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Vokal Kayıt",
+      "description": "Vokal Kayıt, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Auto Tune",
+      "description": "Auto Tune, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Reverb",
+      "description": "Reverb, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Delay",
+      "description": "Delay, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Equalizer",
+      "description": "Equalizer, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kompresör",
+      "description": "Kompresör, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ses Efekti",
+      "description": "Ses Efekti, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Demo Kayıt",
+      "description": "Demo Kayıt, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "EP",
+      "description": "EP, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Plak Şirketi",
+      "description": "Plak Şirketi, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dağıtım",
+      "description": "Dağıtım, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dijital Yayın",
+      "description": "Dijital Yayın, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Streaming",
+      "description": "Streaming, müzik üretimi, kayıt süreci veya ses teknolojisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzik Eleştirmeni",
+      "description": "Müzik Eleştirmeni, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Radyo",
+      "description": "Radyo, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Playlist",
+      "description": "Playlist, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Spotify",
+      "description": "Spotify, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "YouTube Music",
+      "description": "YouTube Music, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Klip",
+      "description": "Klip, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hayran Kitlesi",
+      "description": "Hayran Kitlesi, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fan Kulübü",
+      "description": "Fan Kulübü, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzik Ödülü",
+      "description": "Müzik Ödülü, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Grammy",
+      "description": "Grammy, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Eurovision",
+      "description": "Eurovision, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Altın Plak",
+      "description": "Altın Plak, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Platin Plak",
+      "description": "Platin Plak, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzik Listesi",
+      "description": "Müzik Listesi, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Top 10",
+      "description": "Top 10, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Viral Şarkı",
+      "description": "Viral Şarkı, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "TikTok Trendi",
+      "description": "TikTok Trendi, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Karaoke",
+      "description": "Karaoke, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Plak",
+      "description": "Plak, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kaset",
+      "description": "Kaset, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "CD",
+      "description": "CD, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Vinil",
+      "description": "Vinil, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Müzik Mağazası",
+      "description": "Müzik Mağazası, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Merch",
+      "description": "Merch, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Poster",
+      "description": "Poster, müzik kültürü, dinleyici alışkanlıkları veya müzik endüstrisiyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nota",
+      "description": "Nota, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Akor",
+      "description": "Akor, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gam",
+      "description": "Gam, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ton",
+      "description": "Ton, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Majör",
+      "description": "Majör, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Minör",
+      "description": "Minör, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tempo",
+      "description": "Tempo, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ölçü",
+      "description": "Ölçü, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Armoni",
+      "description": "Armoni, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Solfej",
+      "description": "Solfej, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Doğaçlama",
+      "description": "Doğaçlama, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Modülasyon",
+      "description": "Modülasyon, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kadans",
+      "description": "Kadans, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bas Çizgisi",
+      "description": "Bas Çizgisi, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Vokal",
+      "description": "Vokal, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Koro",
+      "description": "Koro, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tenor",
+      "description": "Tenor, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Soprano",
+      "description": "Soprano, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bariton",
+      "description": "Bariton, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Falsetto",
+      "description": "Falsetto, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tını",
+      "description": "Tını, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Perde",
+      "description": "Perde, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dinamik",
+      "description": "Dinamik, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Senkop",
+      "description": "Senkop, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Polifoni",
+      "description": "Polifoni, müzik teorisi, beste veya icra yapısıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Orkestra",
+      "description": "Orkestra, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şef",
+      "description": "Şef, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Solist",
+      "description": "Solist, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Vokalist",
+      "description": "Vokalist, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gitarist",
+      "description": "Gitarist, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Piyanist",
+      "description": "Piyanist, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Davulcu",
+      "description": "Davulcu, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Basçı",
+      "description": "Basçı, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Saz Ekibi",
+      "description": "Saz Ekibi, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ritim Grubu",
+      "description": "Ritim Grubu, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne Duruşu",
+      "description": "Sahne Duruşu, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Doğaçlama Solo",
+      "description": "Doğaçlama Solo, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "İcra",
+      "description": "İcra, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yorum",
+      "description": "Yorum, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Repertuvar",
+      "description": "Repertuvar, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Akort",
+      "description": "Akort, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Entonasyon",
+      "description": "Entonasyon, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sahne Heyecanı",
+      "description": "Sahne Heyecanı, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ses Kontrolü",
+      "description": "Ses Kontrolü, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kulak Monitörü",
+      "description": "Kulak Monitörü, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Back Vokal",
+      "description": "Back Vokal, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Jam Session",
+      "description": "Jam Session, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Akustik Konser",
+      "description": "Akustik Konser, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Unplugged",
+      "description": "Unplugged, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Soundcheck",
+      "description": "Soundcheck, müzik performansı, yorumculuk veya sahne icrasıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    }
+  ],
+  "edges": [
+    {
+      "from": "Müzik",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müzik",
+      "to": "Melodi"
+    },
+    {
+      "from": "Müzik",
+      "to": "Ritim"
+    },
+    {
+      "from": "Müzik",
+      "to": "Beste"
+    },
+    {
+      "from": "Müzik",
+      "to": "Söz"
+    },
+    {
+      "from": "Müzik",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Müzik",
+      "to": "Kıta"
+    },
+    {
+      "from": "Müzik",
+      "to": "Albüm"
+    },
+    {
+      "from": "Müzik",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Müzik",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Müzik",
+      "to": "Konser"
+    },
+    {
+      "from": "Müzik",
+      "to": "Playlist"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Melodi"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Ritim"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Beste"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Söz"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Kıta"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Streaming"
+    },
+    {
+      "from": "Şarkı",
+      "to": "Vokal"
+    },
+    {
+      "from": "Melodi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Melodi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Melodi",
+      "to": "Ritim"
+    },
+    {
+      "from": "Melodi",
+      "to": "Beste"
+    },
+    {
+      "from": "Melodi",
+      "to": "Söz"
+    },
+    {
+      "from": "Melodi",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Melodi",
+      "to": "Kıta"
+    },
+    {
+      "from": "Melodi",
+      "to": "Piyano"
+    },
+    {
+      "from": "Ritim",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ritim",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ritim",
+      "to": "Melodi"
+    },
+    {
+      "from": "Ritim",
+      "to": "Beste"
+    },
+    {
+      "from": "Ritim",
+      "to": "Söz"
+    },
+    {
+      "from": "Ritim",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Ritim",
+      "to": "Kıta"
+    },
+    {
+      "from": "Ritim",
+      "to": "Davul"
+    },
+    {
+      "from": "Ritim",
+      "to": "Rap"
+    },
+    {
+      "from": "Ritim",
+      "to": "Dansçı"
+    },
+    {
+      "from": "Ritim",
+      "to": "Koreografi"
+    },
+    {
+      "from": "Ritim",
+      "to": "Beat"
+    },
+    {
+      "from": "Ritim",
+      "to": "Tempo"
+    },
+    {
+      "from": "Ritim",
+      "to": "Ölçü"
+    },
+    {
+      "from": "Ritim",
+      "to": "Senkop"
+    },
+    {
+      "from": "Beste",
+      "to": "Müzik"
+    },
+    {
+      "from": "Beste",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Beste",
+      "to": "Melodi"
+    },
+    {
+      "from": "Beste",
+      "to": "Söz"
+    },
+    {
+      "from": "Beste",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Beste",
+      "to": "Kıta"
+    },
+    {
+      "from": "Beste",
+      "to": "Albüm"
+    },
+    {
+      "from": "Beste",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Beste",
+      "to": "Gitar"
+    },
+    {
+      "from": "Beste",
+      "to": "Piyano"
+    },
+    {
+      "from": "Söz",
+      "to": "Müzik"
+    },
+    {
+      "from": "Söz",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Söz",
+      "to": "Melodi"
+    },
+    {
+      "from": "Söz",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Söz",
+      "to": "Kıta"
+    },
+    {
+      "from": "Söz",
+      "to": "Albüm"
+    },
+    {
+      "from": "Söz",
+      "to": "Single"
+    },
+    {
+      "from": "Söz",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Söz",
+      "to": "Rap"
+    },
+    {
+      "from": "Söz",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Söz",
+      "to": "Vokal"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Müzik"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Melodi"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Kıta"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Albüm"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Single"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Nakarat",
+      "to": "Vokal"
+    },
+    {
+      "from": "Kıta",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kıta",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kıta",
+      "to": "Melodi"
+    },
+    {
+      "from": "Kıta",
+      "to": "Albüm"
+    },
+    {
+      "from": "Kıta",
+      "to": "Single"
+    },
+    {
+      "from": "Kıta",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Kıta",
+      "to": "Grup"
+    },
+    {
+      "from": "Albüm",
+      "to": "Müzik"
+    },
+    {
+      "from": "Albüm",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Albüm",
+      "to": "Melodi"
+    },
+    {
+      "from": "Albüm",
+      "to": "Single"
+    },
+    {
+      "from": "Albüm",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Albüm",
+      "to": "Grup"
+    },
+    {
+      "from": "Albüm",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Albüm",
+      "to": "Liste Başı"
+    },
+    {
+      "from": "Albüm",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Albüm",
+      "to": "EP"
+    },
+    {
+      "from": "Albüm",
+      "to": "Plak Şirketi"
+    },
+    {
+      "from": "Albüm",
+      "to": "Dijital Yayın"
+    },
+    {
+      "from": "Albüm",
+      "to": "Müzik Eleştirmeni"
+    },
+    {
+      "from": "Albüm",
+      "to": "Poster"
+    },
+    {
+      "from": "Single",
+      "to": "Müzik"
+    },
+    {
+      "from": "Single",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Single",
+      "to": "Melodi"
+    },
+    {
+      "from": "Single",
+      "to": "Albüm"
+    },
+    {
+      "from": "Single",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Single",
+      "to": "Grup"
+    },
+    {
+      "from": "Single",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Single",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Melodi"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Grup"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Konser"
+    },
+    {
+      "from": "Sanatçı",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Grup",
+      "to": "Müzik"
+    },
+    {
+      "from": "Grup",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Grup",
+      "to": "Melodi"
+    },
+    {
+      "from": "Grup",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Grup",
+      "to": "Sahne"
+    },
+    {
+      "from": "Grup",
+      "to": "Konser"
+    },
+    {
+      "from": "Grup",
+      "to": "Turne"
+    },
+    {
+      "from": "Grup",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Melodi"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Sahne"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Konser"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Turne"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Dinleyici",
+      "to": "Streaming"
+    },
+    {
+      "from": "Sahne",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sahne",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sahne",
+      "to": "Melodi"
+    },
+    {
+      "from": "Sahne",
+      "to": "Konser"
+    },
+    {
+      "from": "Sahne",
+      "to": "Turne"
+    },
+    {
+      "from": "Sahne",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Sahne",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Sahne",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Konser",
+      "to": "Müzik"
+    },
+    {
+      "from": "Konser",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Konser",
+      "to": "Melodi"
+    },
+    {
+      "from": "Konser",
+      "to": "Sahne"
+    },
+    {
+      "from": "Konser",
+      "to": "Turne"
+    },
+    {
+      "from": "Konser",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Konser",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Konser",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Konser",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Konser",
+      "to": "Ses Sistemi"
+    },
+    {
+      "from": "Konser",
+      "to": "Seyirci"
+    },
+    {
+      "from": "Konser",
+      "to": "Alkış"
+    },
+    {
+      "from": "Konser",
+      "to": "Setlist"
+    },
+    {
+      "from": "Konser",
+      "to": "Prova"
+    },
+    {
+      "from": "Konser",
+      "to": "Bilet"
+    },
+    {
+      "from": "Turne",
+      "to": "Müzik"
+    },
+    {
+      "from": "Turne",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Turne",
+      "to": "Melodi"
+    },
+    {
+      "from": "Turne",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Turne",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Turne",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Turne",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Turne",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Kayıt",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kayıt",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kayıt",
+      "to": "Melodi"
+    },
+    {
+      "from": "Kayıt",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Kayıt",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Kayıt",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Kayıt",
+      "to": "Liste Başı"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Müzik"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Melodi"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Liste Başı"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Stüdyo",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Müzik"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Melodi"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Konser"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Liste Başı"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Düet"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Gitar"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Canlı Performans",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Melodi"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Liste Başı"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Düet"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Cover"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Hit Şarkı",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Melodi"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Albüm"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Düet"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Cover"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Akustik"
+    },
+    {
+      "from": "Liste Başı",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Melodi"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Ritim"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Düet"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Cover"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Akustik"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Müzik Videosu",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Düet",
+      "to": "Müzik"
+    },
+    {
+      "from": "Düet",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Düet",
+      "to": "Melodi"
+    },
+    {
+      "from": "Düet",
+      "to": "Ritim"
+    },
+    {
+      "from": "Düet",
+      "to": "Beste"
+    },
+    {
+      "from": "Düet",
+      "to": "Cover"
+    },
+    {
+      "from": "Düet",
+      "to": "Akustik"
+    },
+    {
+      "from": "Düet",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Cover",
+      "to": "Müzik"
+    },
+    {
+      "from": "Cover",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Cover",
+      "to": "Melodi"
+    },
+    {
+      "from": "Cover",
+      "to": "Ritim"
+    },
+    {
+      "from": "Cover",
+      "to": "Beste"
+    },
+    {
+      "from": "Cover",
+      "to": "Söz"
+    },
+    {
+      "from": "Cover",
+      "to": "Akustik"
+    },
+    {
+      "from": "Akustik",
+      "to": "Müzik"
+    },
+    {
+      "from": "Akustik",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Akustik",
+      "to": "Melodi"
+    },
+    {
+      "from": "Akustik",
+      "to": "Ritim"
+    },
+    {
+      "from": "Akustik",
+      "to": "Beste"
+    },
+    {
+      "from": "Akustik",
+      "to": "Söz"
+    },
+    {
+      "from": "Akustik",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Akustik",
+      "to": "Gitar"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Müzik"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Albüm"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Konser"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Liste Başı"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Cem Karaca"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Karma"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Pop"
+    },
+    {
+      "from": "Tarkan",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Beste"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Söz"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Albüm"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Düet"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Cem Karaca"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Ajda Pekkan"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Gülümse"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Pop"
+    },
+    {
+      "from": "Sezen Aksu",
+      "to": "Müzik Ödülü"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Müzik"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Albüm"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Cem Karaca"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Ajda Pekkan"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Müslüm Gürses"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Dönence"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Gitar"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Bağlama"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Anadolu Rock"
+    },
+    {
+      "from": "Barış Manço",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Cem Karaca",
+      "to": "Müzik"
+    },
+    {
+      "from": "Cem Karaca",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Cem Karaca",
+      "to": "Albüm"
+    },
+    {
+      "from": "Cem Karaca",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Cem Karaca",
+      "to": "Ajda Pekkan"
+    },
+    {
+      "from": "Cem Karaca",
+      "to": "Müslüm Gürses"
+    },
+    {
+      "from": "Cem Karaca",
+      "to": "Zeki Müren"
+    },
+    {
+      "from": "Ajda Pekkan",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ajda Pekkan",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ajda Pekkan",
+      "to": "Albüm"
+    },
+    {
+      "from": "Ajda Pekkan",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Ajda Pekkan",
+      "to": "Müslüm Gürses"
+    },
+    {
+      "from": "Ajda Pekkan",
+      "to": "Zeki Müren"
+    },
+    {
+      "from": "Ajda Pekkan",
+      "to": "Sertab Erener"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Müzik"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Albüm"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Zeki Müren"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Sertab Erener"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Kenan Doğulu"
+    },
+    {
+      "from": "Müslüm Gürses",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Müzik"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Albüm"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Sertab Erener"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Kenan Doğulu"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Teoman"
+    },
+    {
+      "from": "Zeki Müren",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Albüm"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Kenan Doğulu"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Teoman"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Mor ve Ötesi"
+    },
+    {
+      "from": "Sertab Erener",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Kenan Doğulu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kenan Doğulu",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kenan Doğulu",
+      "to": "Albüm"
+    },
+    {
+      "from": "Kenan Doğulu",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Kenan Doğulu",
+      "to": "Teoman"
+    },
+    {
+      "from": "Kenan Doğulu",
+      "to": "Mor ve Ötesi"
+    },
+    {
+      "from": "Kenan Doğulu",
+      "to": "Duman"
+    },
+    {
+      "from": "Teoman",
+      "to": "Müzik"
+    },
+    {
+      "from": "Teoman",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Teoman",
+      "to": "Albüm"
+    },
+    {
+      "from": "Teoman",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Teoman",
+      "to": "Mor ve Ötesi"
+    },
+    {
+      "from": "Teoman",
+      "to": "Duman"
+    },
+    {
+      "from": "Teoman",
+      "to": "Manga"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Albüm"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Duman"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Manga"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Ceza"
+    },
+    {
+      "from": "Mor ve Ötesi",
+      "to": "Rock"
+    },
+    {
+      "from": "Duman",
+      "to": "Müzik"
+    },
+    {
+      "from": "Duman",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Duman",
+      "to": "Albüm"
+    },
+    {
+      "from": "Duman",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Duman",
+      "to": "Manga"
+    },
+    {
+      "from": "Duman",
+      "to": "Ceza"
+    },
+    {
+      "from": "Duman",
+      "to": "Sagopa Kajmer"
+    },
+    {
+      "from": "Duman",
+      "to": "Rock"
+    },
+    {
+      "from": "Manga",
+      "to": "Müzik"
+    },
+    {
+      "from": "Manga",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Manga",
+      "to": "Albüm"
+    },
+    {
+      "from": "Manga",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Manga",
+      "to": "Ceza"
+    },
+    {
+      "from": "Manga",
+      "to": "Sagopa Kajmer"
+    },
+    {
+      "from": "Manga",
+      "to": "Mabel Matiz"
+    },
+    {
+      "from": "Ceza",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ceza",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ceza",
+      "to": "Albüm"
+    },
+    {
+      "from": "Ceza",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Ceza",
+      "to": "Sagopa Kajmer"
+    },
+    {
+      "from": "Ceza",
+      "to": "Mabel Matiz"
+    },
+    {
+      "from": "Ceza",
+      "to": "Yıldız Tilbe"
+    },
+    {
+      "from": "Ceza",
+      "to": "Rap"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Albüm"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Mabel Matiz"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Yıldız Tilbe"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Hadise"
+    },
+    {
+      "from": "Sagopa Kajmer",
+      "to": "Rap"
+    },
+    {
+      "from": "Mabel Matiz",
+      "to": "Müzik"
+    },
+    {
+      "from": "Mabel Matiz",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Mabel Matiz",
+      "to": "Albüm"
+    },
+    {
+      "from": "Mabel Matiz",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Mabel Matiz",
+      "to": "Yıldız Tilbe"
+    },
+    {
+      "from": "Mabel Matiz",
+      "to": "Hadise"
+    },
+    {
+      "from": "Mabel Matiz",
+      "to": "Edis"
+    },
+    {
+      "from": "Yıldız Tilbe",
+      "to": "Müzik"
+    },
+    {
+      "from": "Yıldız Tilbe",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Yıldız Tilbe",
+      "to": "Albüm"
+    },
+    {
+      "from": "Yıldız Tilbe",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Yıldız Tilbe",
+      "to": "Hadise"
+    },
+    {
+      "from": "Yıldız Tilbe",
+      "to": "Edis"
+    },
+    {
+      "from": "Yıldız Tilbe",
+      "to": "Gülşen"
+    },
+    {
+      "from": "Hadise",
+      "to": "Müzik"
+    },
+    {
+      "from": "Hadise",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Hadise",
+      "to": "Albüm"
+    },
+    {
+      "from": "Hadise",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Hadise",
+      "to": "Edis"
+    },
+    {
+      "from": "Hadise",
+      "to": "Gülşen"
+    },
+    {
+      "from": "Hadise",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Edis",
+      "to": "Müzik"
+    },
+    {
+      "from": "Edis",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Edis",
+      "to": "Albüm"
+    },
+    {
+      "from": "Edis",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Edis",
+      "to": "Gülşen"
+    },
+    {
+      "from": "Edis",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Edis",
+      "to": "Madonna"
+    },
+    {
+      "from": "Gülşen",
+      "to": "Müzik"
+    },
+    {
+      "from": "Gülşen",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Gülşen",
+      "to": "Albüm"
+    },
+    {
+      "from": "Gülşen",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Gülşen",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Gülşen",
+      "to": "Madonna"
+    },
+    {
+      "from": "Gülşen",
+      "to": "Beyonce"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Müzik"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Albüm"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Müzik Videosu"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Madonna"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Beyonce"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Adele"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Thriller"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Pop"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Sahne Kostümü"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Dansçı"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Koreografi"
+    },
+    {
+      "from": "Michael Jackson",
+      "to": "Grammy"
+    },
+    {
+      "from": "Madonna",
+      "to": "Müzik"
+    },
+    {
+      "from": "Madonna",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Madonna",
+      "to": "Albüm"
+    },
+    {
+      "from": "Madonna",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Madonna",
+      "to": "Beyonce"
+    },
+    {
+      "from": "Madonna",
+      "to": "Adele"
+    },
+    {
+      "from": "Madonna",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Beyonce",
+      "to": "Müzik"
+    },
+    {
+      "from": "Beyonce",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Beyonce",
+      "to": "Albüm"
+    },
+    {
+      "from": "Beyonce",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Beyonce",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Beyonce",
+      "to": "Adele"
+    },
+    {
+      "from": "Beyonce",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Beyonce",
+      "to": "Grammy"
+    },
+    {
+      "from": "Adele",
+      "to": "Müzik"
+    },
+    {
+      "from": "Adele",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Adele",
+      "to": "Albüm"
+    },
+    {
+      "from": "Adele",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Adele",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Adele",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Adele",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Adele",
+      "to": "Grammy"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Müzik"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Şarkı"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Albüm"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Grup"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Tarkan"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Abbey Road"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Gitar"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Davul"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Bas Gitar"
+    },
+    {
+      "from": "The Beatles",
+      "to": "Rock"
+    },
+    {
+      "from": "Karma",
+      "to": "Müzik"
+    },
+    {
+      "from": "Karma",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Karma",
+      "to": "Albüm"
+    },
+    {
+      "from": "Karma",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Karma",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Karma",
+      "to": "Gülümse"
+    },
+    {
+      "from": "Karma",
+      "to": "Dönence"
+    },
+    {
+      "from": "Karma",
+      "to": "Islak Islak"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Müzik"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Albüm"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Dönence"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Islak Islak"
+    },
+    {
+      "from": "Gülümse",
+      "to": "Nilüfer"
+    },
+    {
+      "from": "Dönence",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dönence",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dönence",
+      "to": "Albüm"
+    },
+    {
+      "from": "Dönence",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Dönence",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Dönence",
+      "to": "Islak Islak"
+    },
+    {
+      "from": "Dönence",
+      "to": "Nilüfer"
+    },
+    {
+      "from": "Dönence",
+      "to": "Saklı Kayıtlar"
+    },
+    {
+      "from": "Islak Islak",
+      "to": "Müzik"
+    },
+    {
+      "from": "Islak Islak",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Islak Islak",
+      "to": "Albüm"
+    },
+    {
+      "from": "Islak Islak",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Islak Islak",
+      "to": "Nilüfer"
+    },
+    {
+      "from": "Islak Islak",
+      "to": "Saklı Kayıtlar"
+    },
+    {
+      "from": "Islak Islak",
+      "to": "Mucize Nağmeler"
+    },
+    {
+      "from": "Nilüfer",
+      "to": "Müzik"
+    },
+    {
+      "from": "Nilüfer",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Nilüfer",
+      "to": "Albüm"
+    },
+    {
+      "from": "Nilüfer",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Nilüfer",
+      "to": "Saklı Kayıtlar"
+    },
+    {
+      "from": "Nilüfer",
+      "to": "Mucize Nağmeler"
+    },
+    {
+      "from": "Nilüfer",
+      "to": "Everyway That I Can"
+    },
+    {
+      "from": "Saklı Kayıtlar",
+      "to": "Müzik"
+    },
+    {
+      "from": "Saklı Kayıtlar",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Saklı Kayıtlar",
+      "to": "Albüm"
+    },
+    {
+      "from": "Saklı Kayıtlar",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Saklı Kayıtlar",
+      "to": "Mucize Nağmeler"
+    },
+    {
+      "from": "Saklı Kayıtlar",
+      "to": "Everyway That I Can"
+    },
+    {
+      "from": "Saklı Kayıtlar",
+      "to": "Festival Albümü"
+    },
+    {
+      "from": "Mucize Nağmeler",
+      "to": "Müzik"
+    },
+    {
+      "from": "Mucize Nağmeler",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Mucize Nağmeler",
+      "to": "Albüm"
+    },
+    {
+      "from": "Mucize Nağmeler",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Mucize Nağmeler",
+      "to": "Everyway That I Can"
+    },
+    {
+      "from": "Mucize Nağmeler",
+      "to": "Festival Albümü"
+    },
+    {
+      "from": "Mucize Nağmeler",
+      "to": "Renkli Rüyalar Oteli"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Müzik"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Albüm"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Festival Albümü"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Renkli Rüyalar Oteli"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Dünya Yalan Söylüyor"
+    },
+    {
+      "from": "Everyway That I Can",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Festival Albümü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Festival Albümü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Festival Albümü",
+      "to": "Albüm"
+    },
+    {
+      "from": "Festival Albümü",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Festival Albümü",
+      "to": "Renkli Rüyalar Oteli"
+    },
+    {
+      "from": "Festival Albümü",
+      "to": "Dünya Yalan Söylüyor"
+    },
+    {
+      "from": "Festival Albümü",
+      "to": "Belki Alışman Lazım"
+    },
+    {
+      "from": "Renkli Rüyalar Oteli",
+      "to": "Müzik"
+    },
+    {
+      "from": "Renkli Rüyalar Oteli",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Renkli Rüyalar Oteli",
+      "to": "Albüm"
+    },
+    {
+      "from": "Renkli Rüyalar Oteli",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Renkli Rüyalar Oteli",
+      "to": "Dünya Yalan Söylüyor"
+    },
+    {
+      "from": "Renkli Rüyalar Oteli",
+      "to": "Belki Alışman Lazım"
+    },
+    {
+      "from": "Renkli Rüyalar Oteli",
+      "to": "Bir Pesimistin Gözyaşları"
+    },
+    {
+      "from": "Dünya Yalan Söylüyor",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dünya Yalan Söylüyor",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dünya Yalan Söylüyor",
+      "to": "Albüm"
+    },
+    {
+      "from": "Dünya Yalan Söylüyor",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Dünya Yalan Söylüyor",
+      "to": "Belki Alışman Lazım"
+    },
+    {
+      "from": "Dünya Yalan Söylüyor",
+      "to": "Bir Pesimistin Gözyaşları"
+    },
+    {
+      "from": "Dünya Yalan Söylüyor",
+      "to": "Maya"
+    },
+    {
+      "from": "Belki Alışman Lazım",
+      "to": "Müzik"
+    },
+    {
+      "from": "Belki Alışman Lazım",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Belki Alışman Lazım",
+      "to": "Albüm"
+    },
+    {
+      "from": "Belki Alışman Lazım",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Belki Alışman Lazım",
+      "to": "Bir Pesimistin Gözyaşları"
+    },
+    {
+      "from": "Belki Alışman Lazım",
+      "to": "Maya"
+    },
+    {
+      "from": "Belki Alışman Lazım",
+      "to": "Thriller"
+    },
+    {
+      "from": "Bir Pesimistin Gözyaşları",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bir Pesimistin Gözyaşları",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bir Pesimistin Gözyaşları",
+      "to": "Albüm"
+    },
+    {
+      "from": "Bir Pesimistin Gözyaşları",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Bir Pesimistin Gözyaşları",
+      "to": "Maya"
+    },
+    {
+      "from": "Bir Pesimistin Gözyaşları",
+      "to": "Thriller"
+    },
+    {
+      "from": "Bir Pesimistin Gözyaşları",
+      "to": "Like a Prayer"
+    },
+    {
+      "from": "Maya",
+      "to": "Müzik"
+    },
+    {
+      "from": "Maya",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Maya",
+      "to": "Albüm"
+    },
+    {
+      "from": "Maya",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Maya",
+      "to": "Thriller"
+    },
+    {
+      "from": "Maya",
+      "to": "Like a Prayer"
+    },
+    {
+      "from": "Maya",
+      "to": "Lemonade"
+    },
+    {
+      "from": "Thriller",
+      "to": "Müzik"
+    },
+    {
+      "from": "Thriller",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Thriller",
+      "to": "Albüm"
+    },
+    {
+      "from": "Thriller",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Thriller",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Thriller",
+      "to": "Like a Prayer"
+    },
+    {
+      "from": "Thriller",
+      "to": "Lemonade"
+    },
+    {
+      "from": "Thriller",
+      "to": "Abbey Road"
+    },
+    {
+      "from": "Like a Prayer",
+      "to": "Müzik"
+    },
+    {
+      "from": "Like a Prayer",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Like a Prayer",
+      "to": "Albüm"
+    },
+    {
+      "from": "Like a Prayer",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Like a Prayer",
+      "to": "Lemonade"
+    },
+    {
+      "from": "Like a Prayer",
+      "to": "Abbey Road"
+    },
+    {
+      "from": "Like a Prayer",
+      "to": "Dark Side"
+    },
+    {
+      "from": "Lemonade",
+      "to": "Müzik"
+    },
+    {
+      "from": "Lemonade",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Lemonade",
+      "to": "Albüm"
+    },
+    {
+      "from": "Lemonade",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Lemonade",
+      "to": "Abbey Road"
+    },
+    {
+      "from": "Lemonade",
+      "to": "Dark Side"
+    },
+    {
+      "from": "Lemonade",
+      "to": "Rumours"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "Müzik"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "Albüm"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "Dark Side"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "Rumours"
+    },
+    {
+      "from": "Abbey Road",
+      "to": "Nevermind"
+    },
+    {
+      "from": "Dark Side",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dark Side",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dark Side",
+      "to": "Albüm"
+    },
+    {
+      "from": "Dark Side",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Dark Side",
+      "to": "Rumours"
+    },
+    {
+      "from": "Dark Side",
+      "to": "Nevermind"
+    },
+    {
+      "from": "Dark Side",
+      "to": "Back to Black"
+    },
+    {
+      "from": "Rumours",
+      "to": "Müzik"
+    },
+    {
+      "from": "Rumours",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Rumours",
+      "to": "Albüm"
+    },
+    {
+      "from": "Rumours",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Rumours",
+      "to": "Nevermind"
+    },
+    {
+      "from": "Rumours",
+      "to": "Back to Black"
+    },
+    {
+      "from": "Rumours",
+      "to": "Random Access Memories"
+    },
+    {
+      "from": "Nevermind",
+      "to": "Müzik"
+    },
+    {
+      "from": "Nevermind",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Nevermind",
+      "to": "Albüm"
+    },
+    {
+      "from": "Nevermind",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Nevermind",
+      "to": "Back to Black"
+    },
+    {
+      "from": "Nevermind",
+      "to": "Random Access Memories"
+    },
+    {
+      "from": "Nevermind",
+      "to": "Bohemian Rhapsody"
+    },
+    {
+      "from": "Back to Black",
+      "to": "Müzik"
+    },
+    {
+      "from": "Back to Black",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Back to Black",
+      "to": "Albüm"
+    },
+    {
+      "from": "Back to Black",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Back to Black",
+      "to": "Random Access Memories"
+    },
+    {
+      "from": "Back to Black",
+      "to": "Bohemian Rhapsody"
+    },
+    {
+      "from": "Back to Black",
+      "to": "Imagine"
+    },
+    {
+      "from": "Random Access Memories",
+      "to": "Müzik"
+    },
+    {
+      "from": "Random Access Memories",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Random Access Memories",
+      "to": "Albüm"
+    },
+    {
+      "from": "Random Access Memories",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Random Access Memories",
+      "to": "Karma"
+    },
+    {
+      "from": "Random Access Memories",
+      "to": "Bohemian Rhapsody"
+    },
+    {
+      "from": "Random Access Memories",
+      "to": "Imagine"
+    },
+    {
+      "from": "Bohemian Rhapsody",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bohemian Rhapsody",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bohemian Rhapsody",
+      "to": "Albüm"
+    },
+    {
+      "from": "Bohemian Rhapsody",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Bohemian Rhapsody",
+      "to": "Karma"
+    },
+    {
+      "from": "Bohemian Rhapsody",
+      "to": "Gülümse"
+    },
+    {
+      "from": "Bohemian Rhapsody",
+      "to": "Imagine"
+    },
+    {
+      "from": "Imagine",
+      "to": "Müzik"
+    },
+    {
+      "from": "Imagine",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Imagine",
+      "to": "Albüm"
+    },
+    {
+      "from": "Imagine",
+      "to": "Hit Şarkı"
+    },
+    {
+      "from": "Imagine",
+      "to": "Karma"
+    },
+    {
+      "from": "Imagine",
+      "to": "Gülümse"
+    },
+    {
+      "from": "Imagine",
+      "to": "Dönence"
+    },
+    {
+      "from": "Gitar",
+      "to": "Müzik"
+    },
+    {
+      "from": "Gitar",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Gitar",
+      "to": "Melodi"
+    },
+    {
+      "from": "Gitar",
+      "to": "Ritim"
+    },
+    {
+      "from": "Gitar",
+      "to": "Beste"
+    },
+    {
+      "from": "Gitar",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Gitar",
+      "to": "Akustik"
+    },
+    {
+      "from": "Gitar",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Gitar",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Gitar",
+      "to": "Piyano"
+    },
+    {
+      "from": "Gitar",
+      "to": "Bağlama"
+    },
+    {
+      "from": "Gitar",
+      "to": "Keman"
+    },
+    {
+      "from": "Gitar",
+      "to": "Elektro Gitar"
+    },
+    {
+      "from": "Gitar",
+      "to": "Amfi"
+    },
+    {
+      "from": "Gitar",
+      "to": "Pena"
+    },
+    {
+      "from": "Gitar",
+      "to": "Rock"
+    },
+    {
+      "from": "Piyano",
+      "to": "Müzik"
+    },
+    {
+      "from": "Piyano",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Piyano",
+      "to": "Melodi"
+    },
+    {
+      "from": "Piyano",
+      "to": "Ritim"
+    },
+    {
+      "from": "Piyano",
+      "to": "Beste"
+    },
+    {
+      "from": "Piyano",
+      "to": "Bağlama"
+    },
+    {
+      "from": "Piyano",
+      "to": "Keman"
+    },
+    {
+      "from": "Piyano",
+      "to": "Davul"
+    },
+    {
+      "from": "Piyano",
+      "to": "Klasik Müzik"
+    },
+    {
+      "from": "Piyano",
+      "to": "Nota"
+    },
+    {
+      "from": "Piyano",
+      "to": "Akor"
+    },
+    {
+      "from": "Piyano",
+      "to": "Armoni"
+    },
+    {
+      "from": "Piyano",
+      "to": "Doğaçlama"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Melodi"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Ritim"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Keman"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Davul"
+    },
+    {
+      "from": "Bağlama",
+      "to": "Bas Gitar"
+    },
+    {
+      "from": "Keman",
+      "to": "Müzik"
+    },
+    {
+      "from": "Keman",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Keman",
+      "to": "Melodi"
+    },
+    {
+      "from": "Keman",
+      "to": "Ritim"
+    },
+    {
+      "from": "Keman",
+      "to": "Davul"
+    },
+    {
+      "from": "Keman",
+      "to": "Bas Gitar"
+    },
+    {
+      "from": "Keman",
+      "to": "Elektro Gitar"
+    },
+    {
+      "from": "Davul",
+      "to": "Müzik"
+    },
+    {
+      "from": "Davul",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Davul",
+      "to": "Melodi"
+    },
+    {
+      "from": "Davul",
+      "to": "Ritim"
+    },
+    {
+      "from": "Davul",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Davul",
+      "to": "Bas Gitar"
+    },
+    {
+      "from": "Davul",
+      "to": "Elektro Gitar"
+    },
+    {
+      "from": "Davul",
+      "to": "Klavye"
+    },
+    {
+      "from": "Davul",
+      "to": "Rock"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Melodi"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Ritim"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Elektro Gitar"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Klavye"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Saksafon"
+    },
+    {
+      "from": "Bas Gitar",
+      "to": "Rock"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Müzik"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Melodi"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Ritim"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Gitar"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Klavye"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Saksafon"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Trompet"
+    },
+    {
+      "from": "Elektro Gitar",
+      "to": "Rock"
+    },
+    {
+      "from": "Klavye",
+      "to": "Müzik"
+    },
+    {
+      "from": "Klavye",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Klavye",
+      "to": "Melodi"
+    },
+    {
+      "from": "Klavye",
+      "to": "Ritim"
+    },
+    {
+      "from": "Klavye",
+      "to": "Saksafon"
+    },
+    {
+      "from": "Klavye",
+      "to": "Trompet"
+    },
+    {
+      "from": "Klavye",
+      "to": "Flüt"
+    },
+    {
+      "from": "Saksafon",
+      "to": "Müzik"
+    },
+    {
+      "from": "Saksafon",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Saksafon",
+      "to": "Melodi"
+    },
+    {
+      "from": "Saksafon",
+      "to": "Ritim"
+    },
+    {
+      "from": "Saksafon",
+      "to": "Trompet"
+    },
+    {
+      "from": "Saksafon",
+      "to": "Flüt"
+    },
+    {
+      "from": "Saksafon",
+      "to": "Ney"
+    },
+    {
+      "from": "Trompet",
+      "to": "Müzik"
+    },
+    {
+      "from": "Trompet",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Trompet",
+      "to": "Melodi"
+    },
+    {
+      "from": "Trompet",
+      "to": "Ritim"
+    },
+    {
+      "from": "Trompet",
+      "to": "Flüt"
+    },
+    {
+      "from": "Trompet",
+      "to": "Ney"
+    },
+    {
+      "from": "Trompet",
+      "to": "Ud"
+    },
+    {
+      "from": "Flüt",
+      "to": "Müzik"
+    },
+    {
+      "from": "Flüt",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Flüt",
+      "to": "Melodi"
+    },
+    {
+      "from": "Flüt",
+      "to": "Ritim"
+    },
+    {
+      "from": "Flüt",
+      "to": "Ney"
+    },
+    {
+      "from": "Flüt",
+      "to": "Ud"
+    },
+    {
+      "from": "Flüt",
+      "to": "Kanun"
+    },
+    {
+      "from": "Ney",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ney",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ney",
+      "to": "Melodi"
+    },
+    {
+      "from": "Ney",
+      "to": "Ritim"
+    },
+    {
+      "from": "Ney",
+      "to": "Ud"
+    },
+    {
+      "from": "Ney",
+      "to": "Kanun"
+    },
+    {
+      "from": "Ney",
+      "to": "Darbuka"
+    },
+    {
+      "from": "Ud",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ud",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ud",
+      "to": "Melodi"
+    },
+    {
+      "from": "Ud",
+      "to": "Ritim"
+    },
+    {
+      "from": "Ud",
+      "to": "Kanun"
+    },
+    {
+      "from": "Ud",
+      "to": "Darbuka"
+    },
+    {
+      "from": "Ud",
+      "to": "Bateri"
+    },
+    {
+      "from": "Ud",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Kanun",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kanun",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kanun",
+      "to": "Melodi"
+    },
+    {
+      "from": "Kanun",
+      "to": "Ritim"
+    },
+    {
+      "from": "Kanun",
+      "to": "Darbuka"
+    },
+    {
+      "from": "Kanun",
+      "to": "Bateri"
+    },
+    {
+      "from": "Kanun",
+      "to": "Viyolonsel"
+    },
+    {
+      "from": "Kanun",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Darbuka",
+      "to": "Müzik"
+    },
+    {
+      "from": "Darbuka",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Darbuka",
+      "to": "Melodi"
+    },
+    {
+      "from": "Darbuka",
+      "to": "Ritim"
+    },
+    {
+      "from": "Darbuka",
+      "to": "Bateri"
+    },
+    {
+      "from": "Darbuka",
+      "to": "Viyolonsel"
+    },
+    {
+      "from": "Darbuka",
+      "to": "Kontrbas"
+    },
+    {
+      "from": "Bateri",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bateri",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bateri",
+      "to": "Melodi"
+    },
+    {
+      "from": "Bateri",
+      "to": "Ritim"
+    },
+    {
+      "from": "Bateri",
+      "to": "Viyolonsel"
+    },
+    {
+      "from": "Bateri",
+      "to": "Kontrbas"
+    },
+    {
+      "from": "Bateri",
+      "to": "Akordeon"
+    },
+    {
+      "from": "Viyolonsel",
+      "to": "Müzik"
+    },
+    {
+      "from": "Viyolonsel",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Viyolonsel",
+      "to": "Melodi"
+    },
+    {
+      "from": "Viyolonsel",
+      "to": "Ritim"
+    },
+    {
+      "from": "Viyolonsel",
+      "to": "Kontrbas"
+    },
+    {
+      "from": "Viyolonsel",
+      "to": "Akordeon"
+    },
+    {
+      "from": "Viyolonsel",
+      "to": "Mızıka"
+    },
+    {
+      "from": "Kontrbas",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kontrbas",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kontrbas",
+      "to": "Melodi"
+    },
+    {
+      "from": "Kontrbas",
+      "to": "Ritim"
+    },
+    {
+      "from": "Kontrbas",
+      "to": "Akordeon"
+    },
+    {
+      "from": "Kontrbas",
+      "to": "Mızıka"
+    },
+    {
+      "from": "Kontrbas",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Akordeon",
+      "to": "Müzik"
+    },
+    {
+      "from": "Akordeon",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Akordeon",
+      "to": "Melodi"
+    },
+    {
+      "from": "Akordeon",
+      "to": "Ritim"
+    },
+    {
+      "from": "Akordeon",
+      "to": "Mızıka"
+    },
+    {
+      "from": "Akordeon",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Akordeon",
+      "to": "Amfi"
+    },
+    {
+      "from": "Mızıka",
+      "to": "Müzik"
+    },
+    {
+      "from": "Mızıka",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Mızıka",
+      "to": "Melodi"
+    },
+    {
+      "from": "Mızıka",
+      "to": "Ritim"
+    },
+    {
+      "from": "Mızıka",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Mızıka",
+      "to": "Amfi"
+    },
+    {
+      "from": "Mızıka",
+      "to": "Kulaklık"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Müzik"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Melodi"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Ritim"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Amfi"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Kulaklık"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Pena"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Ses Sistemi"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Kayıt Mühendisi"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Vokal Kayıt"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Karaoke"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Vokal"
+    },
+    {
+      "from": "Mikrofon",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Amfi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Amfi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Amfi",
+      "to": "Melodi"
+    },
+    {
+      "from": "Amfi",
+      "to": "Ritim"
+    },
+    {
+      "from": "Amfi",
+      "to": "Gitar"
+    },
+    {
+      "from": "Amfi",
+      "to": "Kulaklık"
+    },
+    {
+      "from": "Amfi",
+      "to": "Pena"
+    },
+    {
+      "from": "Amfi",
+      "to": "Metronom"
+    },
+    {
+      "from": "Kulaklık",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kulaklık",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kulaklık",
+      "to": "Melodi"
+    },
+    {
+      "from": "Kulaklık",
+      "to": "Ritim"
+    },
+    {
+      "from": "Kulaklık",
+      "to": "Gitar"
+    },
+    {
+      "from": "Kulaklık",
+      "to": "Pena"
+    },
+    {
+      "from": "Kulaklık",
+      "to": "Metronom"
+    },
+    {
+      "from": "Pena",
+      "to": "Müzik"
+    },
+    {
+      "from": "Pena",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Pena",
+      "to": "Melodi"
+    },
+    {
+      "from": "Pena",
+      "to": "Ritim"
+    },
+    {
+      "from": "Pena",
+      "to": "Gitar"
+    },
+    {
+      "from": "Pena",
+      "to": "Piyano"
+    },
+    {
+      "from": "Pena",
+      "to": "Metronom"
+    },
+    {
+      "from": "Metronom",
+      "to": "Müzik"
+    },
+    {
+      "from": "Metronom",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Metronom",
+      "to": "Melodi"
+    },
+    {
+      "from": "Metronom",
+      "to": "Ritim"
+    },
+    {
+      "from": "Metronom",
+      "to": "Gitar"
+    },
+    {
+      "from": "Metronom",
+      "to": "Piyano"
+    },
+    {
+      "from": "Metronom",
+      "to": "Bağlama"
+    },
+    {
+      "from": "Pop",
+      "to": "Müzik"
+    },
+    {
+      "from": "Pop",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Pop",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Pop",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Pop",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Pop",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Pop",
+      "to": "Rock"
+    },
+    {
+      "from": "Pop",
+      "to": "Rap"
+    },
+    {
+      "from": "Pop",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Pop",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Rock",
+      "to": "Müzik"
+    },
+    {
+      "from": "Rock",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Rock",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Rock",
+      "to": "Mor ve Ötesi"
+    },
+    {
+      "from": "Rock",
+      "to": "Duman"
+    },
+    {
+      "from": "Rock",
+      "to": "The Beatles"
+    },
+    {
+      "from": "Rock",
+      "to": "Gitar"
+    },
+    {
+      "from": "Rock",
+      "to": "Davul"
+    },
+    {
+      "from": "Rock",
+      "to": "Bas Gitar"
+    },
+    {
+      "from": "Rock",
+      "to": "Elektro Gitar"
+    },
+    {
+      "from": "Rock",
+      "to": "Rap"
+    },
+    {
+      "from": "Rock",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Rock",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Rock",
+      "to": "Türk Halk Müziği"
+    },
+    {
+      "from": "Rock",
+      "to": "Alternatif Rock"
+    },
+    {
+      "from": "Rock",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Rap",
+      "to": "Müzik"
+    },
+    {
+      "from": "Rap",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Rap",
+      "to": "Ritim"
+    },
+    {
+      "from": "Rap",
+      "to": "Söz"
+    },
+    {
+      "from": "Rap",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Rap",
+      "to": "Ceza"
+    },
+    {
+      "from": "Rap",
+      "to": "Sagopa Kajmer"
+    },
+    {
+      "from": "Rap",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Rap",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Rap",
+      "to": "Türk Halk Müziği"
+    },
+    {
+      "from": "Rap",
+      "to": "Caz"
+    },
+    {
+      "from": "Rap",
+      "to": "Hip Hop"
+    },
+    {
+      "from": "Rap",
+      "to": "Trap"
+    },
+    {
+      "from": "Rap",
+      "to": "Beat"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Müzik"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Söz"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Müslüm Gürses"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Türk Halk Müziği"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Caz"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Blues"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Fantezi Müzik"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Karaoke"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Kaset"
+    },
+    {
+      "from": "Arabesk",
+      "to": "Vokal"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Müzik"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Zeki Müren"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Ud"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Kanun"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Türk Halk Müziği"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Caz"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Blues"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Klasik Müzik"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Radyo"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Gam"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Vokal"
+    },
+    {
+      "from": "Türk Sanat Müziği",
+      "to": "Koro"
+    },
+    {
+      "from": "Türk Halk Müziği",
+      "to": "Müzik"
+    },
+    {
+      "from": "Türk Halk Müziği",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Türk Halk Müziği",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Türk Halk Müziği",
+      "to": "Caz"
+    },
+    {
+      "from": "Türk Halk Müziği",
+      "to": "Blues"
+    },
+    {
+      "from": "Türk Halk Müziği",
+      "to": "Klasik Müzik"
+    },
+    {
+      "from": "Türk Halk Müziği",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Caz",
+      "to": "Müzik"
+    },
+    {
+      "from": "Caz",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Caz",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Caz",
+      "to": "Blues"
+    },
+    {
+      "from": "Caz",
+      "to": "Klasik Müzik"
+    },
+    {
+      "from": "Caz",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Caz",
+      "to": "Metal"
+    },
+    {
+      "from": "Caz",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Blues",
+      "to": "Müzik"
+    },
+    {
+      "from": "Blues",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Blues",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Blues",
+      "to": "Klasik Müzik"
+    },
+    {
+      "from": "Blues",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Blues",
+      "to": "Metal"
+    },
+    {
+      "from": "Blues",
+      "to": "Punk"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Müzik"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Piyano"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Metal"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Punk"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Reggae"
+    },
+    {
+      "from": "Klasik Müzik",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Müzik"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Metal"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Punk"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Reggae"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Funk"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "House"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Techno"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "DAW"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Synthesizer"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Loop"
+    },
+    {
+      "from": "Elektronik Müzik",
+      "to": "Beat"
+    },
+    {
+      "from": "Metal",
+      "to": "Müzik"
+    },
+    {
+      "from": "Metal",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Metal",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Metal",
+      "to": "Punk"
+    },
+    {
+      "from": "Metal",
+      "to": "Reggae"
+    },
+    {
+      "from": "Metal",
+      "to": "Funk"
+    },
+    {
+      "from": "Metal",
+      "to": "Soul"
+    },
+    {
+      "from": "Punk",
+      "to": "Müzik"
+    },
+    {
+      "from": "Punk",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Punk",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Punk",
+      "to": "Reggae"
+    },
+    {
+      "from": "Punk",
+      "to": "Funk"
+    },
+    {
+      "from": "Punk",
+      "to": "Soul"
+    },
+    {
+      "from": "Punk",
+      "to": "R&B"
+    },
+    {
+      "from": "Reggae",
+      "to": "Müzik"
+    },
+    {
+      "from": "Reggae",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Reggae",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Reggae",
+      "to": "Funk"
+    },
+    {
+      "from": "Reggae",
+      "to": "Soul"
+    },
+    {
+      "from": "Reggae",
+      "to": "R&B"
+    },
+    {
+      "from": "Reggae",
+      "to": "Hip Hop"
+    },
+    {
+      "from": "Funk",
+      "to": "Müzik"
+    },
+    {
+      "from": "Funk",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Funk",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Funk",
+      "to": "Soul"
+    },
+    {
+      "from": "Funk",
+      "to": "R&B"
+    },
+    {
+      "from": "Funk",
+      "to": "Hip Hop"
+    },
+    {
+      "from": "Funk",
+      "to": "Alternatif Rock"
+    },
+    {
+      "from": "Soul",
+      "to": "Müzik"
+    },
+    {
+      "from": "Soul",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Soul",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Soul",
+      "to": "R&B"
+    },
+    {
+      "from": "Soul",
+      "to": "Hip Hop"
+    },
+    {
+      "from": "Soul",
+      "to": "Alternatif Rock"
+    },
+    {
+      "from": "Soul",
+      "to": "Anadolu Rock"
+    },
+    {
+      "from": "R&B",
+      "to": "Müzik"
+    },
+    {
+      "from": "R&B",
+      "to": "Şarkı"
+    },
+    {
+      "from": "R&B",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "R&B",
+      "to": "Hip Hop"
+    },
+    {
+      "from": "R&B",
+      "to": "Alternatif Rock"
+    },
+    {
+      "from": "R&B",
+      "to": "Anadolu Rock"
+    },
+    {
+      "from": "R&B",
+      "to": "Fantezi Müzik"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Müzik"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Rap"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Alternatif Rock"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Anadolu Rock"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Fantezi Müzik"
+    },
+    {
+      "from": "Hip Hop",
+      "to": "Indie"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "Müzik"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "Rock"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "Anadolu Rock"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "Fantezi Müzik"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "Indie"
+    },
+    {
+      "from": "Alternatif Rock",
+      "to": "House"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "Müzik"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "Fantezi Müzik"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "Indie"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "House"
+    },
+    {
+      "from": "Anadolu Rock",
+      "to": "Techno"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "Müzik"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "Indie"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "House"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "Techno"
+    },
+    {
+      "from": "Fantezi Müzik",
+      "to": "Trap"
+    },
+    {
+      "from": "Indie",
+      "to": "Müzik"
+    },
+    {
+      "from": "Indie",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Indie",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Indie",
+      "to": "House"
+    },
+    {
+      "from": "Indie",
+      "to": "Techno"
+    },
+    {
+      "from": "Indie",
+      "to": "Trap"
+    },
+    {
+      "from": "Indie",
+      "to": "Lo Fi"
+    },
+    {
+      "from": "House",
+      "to": "Müzik"
+    },
+    {
+      "from": "House",
+      "to": "Şarkı"
+    },
+    {
+      "from": "House",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "House",
+      "to": "Pop"
+    },
+    {
+      "from": "House",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "House",
+      "to": "Techno"
+    },
+    {
+      "from": "House",
+      "to": "Trap"
+    },
+    {
+      "from": "House",
+      "to": "Lo Fi"
+    },
+    {
+      "from": "Techno",
+      "to": "Müzik"
+    },
+    {
+      "from": "Techno",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Techno",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Techno",
+      "to": "Pop"
+    },
+    {
+      "from": "Techno",
+      "to": "Rock"
+    },
+    {
+      "from": "Techno",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Techno",
+      "to": "Trap"
+    },
+    {
+      "from": "Techno",
+      "to": "Lo Fi"
+    },
+    {
+      "from": "Trap",
+      "to": "Müzik"
+    },
+    {
+      "from": "Trap",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Trap",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Trap",
+      "to": "Pop"
+    },
+    {
+      "from": "Trap",
+      "to": "Rock"
+    },
+    {
+      "from": "Trap",
+      "to": "Rap"
+    },
+    {
+      "from": "Trap",
+      "to": "Lo Fi"
+    },
+    {
+      "from": "Lo Fi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Lo Fi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Lo Fi",
+      "to": "Sanatçı"
+    },
+    {
+      "from": "Lo Fi",
+      "to": "Pop"
+    },
+    {
+      "from": "Lo Fi",
+      "to": "Rock"
+    },
+    {
+      "from": "Lo Fi",
+      "to": "Rap"
+    },
+    {
+      "from": "Lo Fi",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Müzik"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Sahne"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Konser"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Turne"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Rock"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Sahne Işığı"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Ses Sistemi"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Seyirci"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "VIP Alanı"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Açılış Grubu"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Ana Sanatçı"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Konser Alanı"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Açık Hava Konseri"
+    },
+    {
+      "from": "Müzik Festivali",
+      "to": "Canlı Yayın"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Konser"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Ses Sistemi"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Seyirci"
+    },
+    {
+      "from": "Sahne Işığı",
+      "to": "Alkış"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Sahne"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Konser"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Seyirci"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Alkış"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Bis"
+    },
+    {
+      "from": "Ses Sistemi",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Müzik"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Sahne"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Konser"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Alkış"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Bis"
+    },
+    {
+      "from": "Seyirci",
+      "to": "Setlist"
+    },
+    {
+      "from": "Alkış",
+      "to": "Müzik"
+    },
+    {
+      "from": "Alkış",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Alkış",
+      "to": "Sahne"
+    },
+    {
+      "from": "Alkış",
+      "to": "Konser"
+    },
+    {
+      "from": "Alkış",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Alkış",
+      "to": "Bis"
+    },
+    {
+      "from": "Alkış",
+      "to": "Setlist"
+    },
+    {
+      "from": "Alkış",
+      "to": "Prova"
+    },
+    {
+      "from": "Bis",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bis",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bis",
+      "to": "Sahne"
+    },
+    {
+      "from": "Bis",
+      "to": "Konser"
+    },
+    {
+      "from": "Bis",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Bis",
+      "to": "Setlist"
+    },
+    {
+      "from": "Bis",
+      "to": "Prova"
+    },
+    {
+      "from": "Bis",
+      "to": "Sahne Arkası"
+    },
+    {
+      "from": "Setlist",
+      "to": "Müzik"
+    },
+    {
+      "from": "Setlist",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Setlist",
+      "to": "Sahne"
+    },
+    {
+      "from": "Setlist",
+      "to": "Konser"
+    },
+    {
+      "from": "Setlist",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Setlist",
+      "to": "Prova"
+    },
+    {
+      "from": "Setlist",
+      "to": "Sahne Arkası"
+    },
+    {
+      "from": "Setlist",
+      "to": "Backstage"
+    },
+    {
+      "from": "Prova",
+      "to": "Müzik"
+    },
+    {
+      "from": "Prova",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Prova",
+      "to": "Sahne"
+    },
+    {
+      "from": "Prova",
+      "to": "Konser"
+    },
+    {
+      "from": "Prova",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Prova",
+      "to": "Sahne Arkası"
+    },
+    {
+      "from": "Prova",
+      "to": "Backstage"
+    },
+    {
+      "from": "Prova",
+      "to": "Bilet"
+    },
+    {
+      "from": "Prova",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Konser"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Backstage"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "Bilet"
+    },
+    {
+      "from": "Sahne Arkası",
+      "to": "VIP Alanı"
+    },
+    {
+      "from": "Backstage",
+      "to": "Müzik"
+    },
+    {
+      "from": "Backstage",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Backstage",
+      "to": "Sahne"
+    },
+    {
+      "from": "Backstage",
+      "to": "Konser"
+    },
+    {
+      "from": "Backstage",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Backstage",
+      "to": "Bilet"
+    },
+    {
+      "from": "Backstage",
+      "to": "VIP Alanı"
+    },
+    {
+      "from": "Backstage",
+      "to": "Açılış Grubu"
+    },
+    {
+      "from": "Bilet",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bilet",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bilet",
+      "to": "Sahne"
+    },
+    {
+      "from": "Bilet",
+      "to": "Konser"
+    },
+    {
+      "from": "Bilet",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Bilet",
+      "to": "VIP Alanı"
+    },
+    {
+      "from": "Bilet",
+      "to": "Açılış Grubu"
+    },
+    {
+      "from": "Bilet",
+      "to": "Ana Sanatçı"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Müzik"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Sahne"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Konser"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Açılış Grubu"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Ana Sanatçı"
+    },
+    {
+      "from": "VIP Alanı",
+      "to": "Turne Otobüsü"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Sahne"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Konser"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Ana Sanatçı"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Turne Otobüsü"
+    },
+    {
+      "from": "Açılış Grubu",
+      "to": "Konser Alanı"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Sahne"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Konser"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Turne Otobüsü"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Konser Alanı"
+    },
+    {
+      "from": "Ana Sanatçı",
+      "to": "Stadyum Konseri"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Sahne"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Konser"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Konser Alanı"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Stadyum Konseri"
+    },
+    {
+      "from": "Turne Otobüsü",
+      "to": "Salon Konseri"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Sahne"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Konser"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Stadyum Konseri"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Salon Konseri"
+    },
+    {
+      "from": "Konser Alanı",
+      "to": "Açık Hava Konseri"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Müzik"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Sahne"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Konser"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Salon Konseri"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Açık Hava Konseri"
+    },
+    {
+      "from": "Stadyum Konseri",
+      "to": "Canlı Yayın"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "Müzik"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "Sahne"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "Konser"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "Açık Hava Konseri"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "Canlı Yayın"
+    },
+    {
+      "from": "Salon Konseri",
+      "to": "İmza Günü"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Müzik"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Sahne"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Konser"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Canlı Yayın"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "İmza Günü"
+    },
+    {
+      "from": "Açık Hava Konseri",
+      "to": "Meet and Greet"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Müzik"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Sahne"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Konser"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "İmza Günü"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Meet and Greet"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Sahne Kostümü"
+    },
+    {
+      "from": "Canlı Yayın",
+      "to": "Eurovision"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Müzik"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Sahne"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Konser"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Meet and Greet"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Sahne Kostümü"
+    },
+    {
+      "from": "İmza Günü",
+      "to": "Dansçı"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Müzik"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Sahne"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Konser"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Sahne Kostümü"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Dansçı"
+    },
+    {
+      "from": "Meet and Greet",
+      "to": "Koreografi"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Konser"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Dansçı"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Koreografi"
+    },
+    {
+      "from": "Sahne Kostümü",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Ritim"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Sahne"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Konser"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Sahne Işığı"
+    },
+    {
+      "from": "Dansçı",
+      "to": "Koreografi"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Ritim"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Sahne"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Konser"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Müzik Festivali"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Sahne Işığı"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Ses Sistemi"
+    },
+    {
+      "from": "Koreografi",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Müzik"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Aranjman"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Mix"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Mastering"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Kayıt Mühendisi"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "DAW"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Demo Kayıt"
+    },
+    {
+      "from": "Prodüktör",
+      "to": "Plak Şirketi"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Müzik"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Mix"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Mastering"
+    },
+    {
+      "from": "Aranjman",
+      "to": "Kayıt Mühendisi"
+    },
+    {
+      "from": "Mix",
+      "to": "Müzik"
+    },
+    {
+      "from": "Mix",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Mix",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Mix",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Mix",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Mix",
+      "to": "Mastering"
+    },
+    {
+      "from": "Mix",
+      "to": "Kayıt Mühendisi"
+    },
+    {
+      "from": "Mix",
+      "to": "Ses Kartı"
+    },
+    {
+      "from": "Mastering",
+      "to": "Müzik"
+    },
+    {
+      "from": "Mastering",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Mastering",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Mastering",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Mastering",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Mastering",
+      "to": "Kayıt Mühendisi"
+    },
+    {
+      "from": "Mastering",
+      "to": "Ses Kartı"
+    },
+    {
+      "from": "Mastering",
+      "to": "DAW"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "Ses Kartı"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "DAW"
+    },
+    {
+      "from": "Kayıt Mühendisi",
+      "to": "MIDI"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "DAW"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "MIDI"
+    },
+    {
+      "from": "Ses Kartı",
+      "to": "Synthesizer"
+    },
+    {
+      "from": "DAW",
+      "to": "Müzik"
+    },
+    {
+      "from": "DAW",
+      "to": "Şarkı"
+    },
+    {
+      "from": "DAW",
+      "to": "Kayıt"
+    },
+    {
+      "from": "DAW",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "DAW",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "DAW",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "DAW",
+      "to": "MIDI"
+    },
+    {
+      "from": "DAW",
+      "to": "Synthesizer"
+    },
+    {
+      "from": "DAW",
+      "to": "Sampler"
+    },
+    {
+      "from": "MIDI",
+      "to": "Müzik"
+    },
+    {
+      "from": "MIDI",
+      "to": "Şarkı"
+    },
+    {
+      "from": "MIDI",
+      "to": "Kayıt"
+    },
+    {
+      "from": "MIDI",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "MIDI",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "MIDI",
+      "to": "Synthesizer"
+    },
+    {
+      "from": "MIDI",
+      "to": "Sampler"
+    },
+    {
+      "from": "MIDI",
+      "to": "Loop"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Müzik"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Sampler"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Loop"
+    },
+    {
+      "from": "Synthesizer",
+      "to": "Beat"
+    },
+    {
+      "from": "Sampler",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sampler",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sampler",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Sampler",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Sampler",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Sampler",
+      "to": "Loop"
+    },
+    {
+      "from": "Sampler",
+      "to": "Beat"
+    },
+    {
+      "from": "Sampler",
+      "to": "Vokal Kayıt"
+    },
+    {
+      "from": "Loop",
+      "to": "Müzik"
+    },
+    {
+      "from": "Loop",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Loop",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Loop",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Loop",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Loop",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Loop",
+      "to": "Beat"
+    },
+    {
+      "from": "Loop",
+      "to": "Vokal Kayıt"
+    },
+    {
+      "from": "Loop",
+      "to": "Auto Tune"
+    },
+    {
+      "from": "Beat",
+      "to": "Müzik"
+    },
+    {
+      "from": "Beat",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Beat",
+      "to": "Ritim"
+    },
+    {
+      "from": "Beat",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Beat",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Beat",
+      "to": "Rap"
+    },
+    {
+      "from": "Beat",
+      "to": "Elektronik Müzik"
+    },
+    {
+      "from": "Beat",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Beat",
+      "to": "Vokal Kayıt"
+    },
+    {
+      "from": "Beat",
+      "to": "Auto Tune"
+    },
+    {
+      "from": "Beat",
+      "to": "Reverb"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Müzik"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Auto Tune"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Reverb"
+    },
+    {
+      "from": "Vokal Kayıt",
+      "to": "Delay"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Müzik"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Reverb"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Delay"
+    },
+    {
+      "from": "Auto Tune",
+      "to": "Equalizer"
+    },
+    {
+      "from": "Reverb",
+      "to": "Müzik"
+    },
+    {
+      "from": "Reverb",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Reverb",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Reverb",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Reverb",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Reverb",
+      "to": "Delay"
+    },
+    {
+      "from": "Reverb",
+      "to": "Equalizer"
+    },
+    {
+      "from": "Reverb",
+      "to": "Kompresör"
+    },
+    {
+      "from": "Delay",
+      "to": "Müzik"
+    },
+    {
+      "from": "Delay",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Delay",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Delay",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Delay",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Delay",
+      "to": "Equalizer"
+    },
+    {
+      "from": "Delay",
+      "to": "Kompresör"
+    },
+    {
+      "from": "Delay",
+      "to": "Ses Efekti"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Müzik"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Kompresör"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Ses Efekti"
+    },
+    {
+      "from": "Equalizer",
+      "to": "Demo Kayıt"
+    },
+    {
+      "from": "Kompresör",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kompresör",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kompresör",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Kompresör",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Kompresör",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Kompresör",
+      "to": "Ses Efekti"
+    },
+    {
+      "from": "Kompresör",
+      "to": "Demo Kayıt"
+    },
+    {
+      "from": "Kompresör",
+      "to": "EP"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "Demo Kayıt"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "EP"
+    },
+    {
+      "from": "Ses Efekti",
+      "to": "Plak Şirketi"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "Müzik"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "EP"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "Plak Şirketi"
+    },
+    {
+      "from": "Demo Kayıt",
+      "to": "Dağıtım"
+    },
+    {
+      "from": "EP",
+      "to": "Müzik"
+    },
+    {
+      "from": "EP",
+      "to": "Şarkı"
+    },
+    {
+      "from": "EP",
+      "to": "Albüm"
+    },
+    {
+      "from": "EP",
+      "to": "Kayıt"
+    },
+    {
+      "from": "EP",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "EP",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "EP",
+      "to": "Plak Şirketi"
+    },
+    {
+      "from": "EP",
+      "to": "Dağıtım"
+    },
+    {
+      "from": "EP",
+      "to": "Dijital Yayın"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Albüm"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Dağıtım"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Dijital Yayın"
+    },
+    {
+      "from": "Plak Şirketi",
+      "to": "Streaming"
+    },
+    {
+      "from": "Dağıtım",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dağıtım",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dağıtım",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Dağıtım",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Dağıtım",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Dağıtım",
+      "to": "Dijital Yayın"
+    },
+    {
+      "from": "Dağıtım",
+      "to": "Streaming"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Albüm"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Aranjman"
+    },
+    {
+      "from": "Dijital Yayın",
+      "to": "Streaming"
+    },
+    {
+      "from": "Streaming",
+      "to": "Müzik"
+    },
+    {
+      "from": "Streaming",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Streaming",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Streaming",
+      "to": "Kayıt"
+    },
+    {
+      "from": "Streaming",
+      "to": "Stüdyo"
+    },
+    {
+      "from": "Streaming",
+      "to": "Prodüktör"
+    },
+    {
+      "from": "Streaming",
+      "to": "Aranjman"
+    },
+    {
+      "from": "Streaming",
+      "to": "Mix"
+    },
+    {
+      "from": "Streaming",
+      "to": "Dijital Yayın"
+    },
+    {
+      "from": "Streaming",
+      "to": "Playlist"
+    },
+    {
+      "from": "Streaming",
+      "to": "Spotify"
+    },
+    {
+      "from": "Streaming",
+      "to": "YouTube Music"
+    },
+    {
+      "from": "Streaming",
+      "to": "Top 10"
+    },
+    {
+      "from": "Streaming",
+      "to": "Viral Şarkı"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "Müzik"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "Albüm"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "Radyo"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "Playlist"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "Spotify"
+    },
+    {
+      "from": "Müzik Eleştirmeni",
+      "to": "YouTube Music"
+    },
+    {
+      "from": "Radyo",
+      "to": "Müzik"
+    },
+    {
+      "from": "Radyo",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Radyo",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Radyo",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Radyo",
+      "to": "Playlist"
+    },
+    {
+      "from": "Radyo",
+      "to": "Spotify"
+    },
+    {
+      "from": "Radyo",
+      "to": "YouTube Music"
+    },
+    {
+      "from": "Radyo",
+      "to": "Klip"
+    },
+    {
+      "from": "Playlist",
+      "to": "Müzik"
+    },
+    {
+      "from": "Playlist",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Playlist",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Playlist",
+      "to": "Streaming"
+    },
+    {
+      "from": "Playlist",
+      "to": "Spotify"
+    },
+    {
+      "from": "Playlist",
+      "to": "YouTube Music"
+    },
+    {
+      "from": "Playlist",
+      "to": "Klip"
+    },
+    {
+      "from": "Playlist",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Spotify",
+      "to": "Müzik"
+    },
+    {
+      "from": "Spotify",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Spotify",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Spotify",
+      "to": "Streaming"
+    },
+    {
+      "from": "Spotify",
+      "to": "Playlist"
+    },
+    {
+      "from": "Spotify",
+      "to": "YouTube Music"
+    },
+    {
+      "from": "Spotify",
+      "to": "Klip"
+    },
+    {
+      "from": "Spotify",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Müzik"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Şarkı"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Streaming"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Playlist"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Klip"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "YouTube Music",
+      "to": "Fan Kulübü"
+    },
+    {
+      "from": "Klip",
+      "to": "Müzik"
+    },
+    {
+      "from": "Klip",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Klip",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Klip",
+      "to": "Playlist"
+    },
+    {
+      "from": "Klip",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Klip",
+      "to": "Fan Kulübü"
+    },
+    {
+      "from": "Klip",
+      "to": "Müzik Ödülü"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Tarkan"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Barış Manço"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Playlist"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Fan Kulübü"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Müzik Ödülü"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Grammy"
+    },
+    {
+      "from": "Hayran Kitlesi",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Fan Kulübü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Fan Kulübü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Fan Kulübü",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Fan Kulübü",
+      "to": "Playlist"
+    },
+    {
+      "from": "Fan Kulübü",
+      "to": "Müzik Ödülü"
+    },
+    {
+      "from": "Fan Kulübü",
+      "to": "Grammy"
+    },
+    {
+      "from": "Fan Kulübü",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Sezen Aksu"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Playlist"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Grammy"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Müzik Ödülü",
+      "to": "Altın Plak"
+    },
+    {
+      "from": "Grammy",
+      "to": "Müzik"
+    },
+    {
+      "from": "Grammy",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Grammy",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Grammy",
+      "to": "Michael Jackson"
+    },
+    {
+      "from": "Grammy",
+      "to": "Beyonce"
+    },
+    {
+      "from": "Grammy",
+      "to": "Adele"
+    },
+    {
+      "from": "Grammy",
+      "to": "Playlist"
+    },
+    {
+      "from": "Grammy",
+      "to": "Müzik Ödülü"
+    },
+    {
+      "from": "Grammy",
+      "to": "Eurovision"
+    },
+    {
+      "from": "Grammy",
+      "to": "Altın Plak"
+    },
+    {
+      "from": "Grammy",
+      "to": "Platin Plak"
+    },
+    {
+      "from": "Grammy",
+      "to": "Müzik Listesi"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Müzik"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Sertab Erener"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Everyway That I Can"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Canlı Yayın"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Sahne Kostümü"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Koreografi"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Playlist"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Hayran Kitlesi"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Müzik Ödülü"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Altın Plak"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Platin Plak"
+    },
+    {
+      "from": "Eurovision",
+      "to": "Müzik Listesi"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Müzik"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Playlist"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Grammy"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Platin Plak"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Müzik Listesi"
+    },
+    {
+      "from": "Altın Plak",
+      "to": "Top 10"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Müzik"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Playlist"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Grammy"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Müzik Listesi"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Top 10"
+    },
+    {
+      "from": "Platin Plak",
+      "to": "Viral Şarkı"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "Playlist"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "Grammy"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "Top 10"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "Viral Şarkı"
+    },
+    {
+      "from": "Müzik Listesi",
+      "to": "TikTok Trendi"
+    },
+    {
+      "from": "Top 10",
+      "to": "Müzik"
+    },
+    {
+      "from": "Top 10",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Top 10",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Top 10",
+      "to": "Streaming"
+    },
+    {
+      "from": "Top 10",
+      "to": "Playlist"
+    },
+    {
+      "from": "Top 10",
+      "to": "Viral Şarkı"
+    },
+    {
+      "from": "Top 10",
+      "to": "TikTok Trendi"
+    },
+    {
+      "from": "Top 10",
+      "to": "Karaoke"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "Streaming"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "Playlist"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "TikTok Trendi"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "Karaoke"
+    },
+    {
+      "from": "Viral Şarkı",
+      "to": "Plak"
+    },
+    {
+      "from": "TikTok Trendi",
+      "to": "Müzik"
+    },
+    {
+      "from": "TikTok Trendi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "TikTok Trendi",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "TikTok Trendi",
+      "to": "Playlist"
+    },
+    {
+      "from": "TikTok Trendi",
+      "to": "Karaoke"
+    },
+    {
+      "from": "TikTok Trendi",
+      "to": "Plak"
+    },
+    {
+      "from": "TikTok Trendi",
+      "to": "Kaset"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Müzik"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Playlist"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Plak"
+    },
+    {
+      "from": "Karaoke",
+      "to": "Kaset"
+    },
+    {
+      "from": "Karaoke",
+      "to": "CD"
+    },
+    {
+      "from": "Plak",
+      "to": "Müzik"
+    },
+    {
+      "from": "Plak",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Plak",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Plak",
+      "to": "Playlist"
+    },
+    {
+      "from": "Plak",
+      "to": "Kaset"
+    },
+    {
+      "from": "Plak",
+      "to": "CD"
+    },
+    {
+      "from": "Plak",
+      "to": "Vinil"
+    },
+    {
+      "from": "Kaset",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kaset",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kaset",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Kaset",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Kaset",
+      "to": "Playlist"
+    },
+    {
+      "from": "Kaset",
+      "to": "CD"
+    },
+    {
+      "from": "Kaset",
+      "to": "Vinil"
+    },
+    {
+      "from": "Kaset",
+      "to": "Müzik Mağazası"
+    },
+    {
+      "from": "CD",
+      "to": "Müzik"
+    },
+    {
+      "from": "CD",
+      "to": "Şarkı"
+    },
+    {
+      "from": "CD",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "CD",
+      "to": "Playlist"
+    },
+    {
+      "from": "CD",
+      "to": "Vinil"
+    },
+    {
+      "from": "CD",
+      "to": "Müzik Mağazası"
+    },
+    {
+      "from": "CD",
+      "to": "Merch"
+    },
+    {
+      "from": "Vinil",
+      "to": "Müzik"
+    },
+    {
+      "from": "Vinil",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Vinil",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Vinil",
+      "to": "Playlist"
+    },
+    {
+      "from": "Vinil",
+      "to": "Müzik Mağazası"
+    },
+    {
+      "from": "Vinil",
+      "to": "Merch"
+    },
+    {
+      "from": "Vinil",
+      "to": "Poster"
+    },
+    {
+      "from": "Müzik Mağazası",
+      "to": "Müzik"
+    },
+    {
+      "from": "Müzik Mağazası",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Müzik Mağazası",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Müzik Mağazası",
+      "to": "Müzik Eleştirmeni"
+    },
+    {
+      "from": "Müzik Mağazası",
+      "to": "Playlist"
+    },
+    {
+      "from": "Müzik Mağazası",
+      "to": "Merch"
+    },
+    {
+      "from": "Müzik Mağazası",
+      "to": "Poster"
+    },
+    {
+      "from": "Merch",
+      "to": "Müzik"
+    },
+    {
+      "from": "Merch",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Merch",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Merch",
+      "to": "Müzik Eleştirmeni"
+    },
+    {
+      "from": "Merch",
+      "to": "Radyo"
+    },
+    {
+      "from": "Merch",
+      "to": "Playlist"
+    },
+    {
+      "from": "Merch",
+      "to": "Poster"
+    },
+    {
+      "from": "Poster",
+      "to": "Müzik"
+    },
+    {
+      "from": "Poster",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Poster",
+      "to": "Albüm"
+    },
+    {
+      "from": "Poster",
+      "to": "Dinleyici"
+    },
+    {
+      "from": "Poster",
+      "to": "Müzik Eleştirmeni"
+    },
+    {
+      "from": "Poster",
+      "to": "Radyo"
+    },
+    {
+      "from": "Poster",
+      "to": "Playlist"
+    },
+    {
+      "from": "Poster",
+      "to": "Spotify"
+    },
+    {
+      "from": "Nota",
+      "to": "Müzik"
+    },
+    {
+      "from": "Nota",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Nota",
+      "to": "Melodi"
+    },
+    {
+      "from": "Nota",
+      "to": "Ritim"
+    },
+    {
+      "from": "Nota",
+      "to": "Beste"
+    },
+    {
+      "from": "Nota",
+      "to": "Piyano"
+    },
+    {
+      "from": "Nota",
+      "to": "Akor"
+    },
+    {
+      "from": "Nota",
+      "to": "Gam"
+    },
+    {
+      "from": "Nota",
+      "to": "Ton"
+    },
+    {
+      "from": "Nota",
+      "to": "Majör"
+    },
+    {
+      "from": "Nota",
+      "to": "Minör"
+    },
+    {
+      "from": "Nota",
+      "to": "Armoni"
+    },
+    {
+      "from": "Nota",
+      "to": "Solfej"
+    },
+    {
+      "from": "Akor",
+      "to": "Müzik"
+    },
+    {
+      "from": "Akor",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Akor",
+      "to": "Melodi"
+    },
+    {
+      "from": "Akor",
+      "to": "Ritim"
+    },
+    {
+      "from": "Akor",
+      "to": "Beste"
+    },
+    {
+      "from": "Akor",
+      "to": "Piyano"
+    },
+    {
+      "from": "Akor",
+      "to": "Nota"
+    },
+    {
+      "from": "Akor",
+      "to": "Gam"
+    },
+    {
+      "from": "Akor",
+      "to": "Ton"
+    },
+    {
+      "from": "Akor",
+      "to": "Majör"
+    },
+    {
+      "from": "Gam",
+      "to": "Müzik"
+    },
+    {
+      "from": "Gam",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Gam",
+      "to": "Melodi"
+    },
+    {
+      "from": "Gam",
+      "to": "Ritim"
+    },
+    {
+      "from": "Gam",
+      "to": "Beste"
+    },
+    {
+      "from": "Gam",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Gam",
+      "to": "Nota"
+    },
+    {
+      "from": "Gam",
+      "to": "Ton"
+    },
+    {
+      "from": "Gam",
+      "to": "Majör"
+    },
+    {
+      "from": "Gam",
+      "to": "Minör"
+    },
+    {
+      "from": "Ton",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ton",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ton",
+      "to": "Melodi"
+    },
+    {
+      "from": "Ton",
+      "to": "Ritim"
+    },
+    {
+      "from": "Ton",
+      "to": "Beste"
+    },
+    {
+      "from": "Ton",
+      "to": "Nota"
+    },
+    {
+      "from": "Ton",
+      "to": "Majör"
+    },
+    {
+      "from": "Ton",
+      "to": "Minör"
+    },
+    {
+      "from": "Ton",
+      "to": "Tempo"
+    },
+    {
+      "from": "Majör",
+      "to": "Müzik"
+    },
+    {
+      "from": "Majör",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Majör",
+      "to": "Melodi"
+    },
+    {
+      "from": "Majör",
+      "to": "Ritim"
+    },
+    {
+      "from": "Majör",
+      "to": "Beste"
+    },
+    {
+      "from": "Majör",
+      "to": "Nota"
+    },
+    {
+      "from": "Majör",
+      "to": "Minör"
+    },
+    {
+      "from": "Majör",
+      "to": "Tempo"
+    },
+    {
+      "from": "Majör",
+      "to": "Ölçü"
+    },
+    {
+      "from": "Minör",
+      "to": "Müzik"
+    },
+    {
+      "from": "Minör",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Minör",
+      "to": "Melodi"
+    },
+    {
+      "from": "Minör",
+      "to": "Ritim"
+    },
+    {
+      "from": "Minör",
+      "to": "Beste"
+    },
+    {
+      "from": "Minör",
+      "to": "Nota"
+    },
+    {
+      "from": "Minör",
+      "to": "Tempo"
+    },
+    {
+      "from": "Minör",
+      "to": "Ölçü"
+    },
+    {
+      "from": "Minör",
+      "to": "Armoni"
+    },
+    {
+      "from": "Tempo",
+      "to": "Müzik"
+    },
+    {
+      "from": "Tempo",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Tempo",
+      "to": "Melodi"
+    },
+    {
+      "from": "Tempo",
+      "to": "Ritim"
+    },
+    {
+      "from": "Tempo",
+      "to": "Beste"
+    },
+    {
+      "from": "Tempo",
+      "to": "Ölçü"
+    },
+    {
+      "from": "Tempo",
+      "to": "Armoni"
+    },
+    {
+      "from": "Tempo",
+      "to": "Solfej"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Melodi"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Ritim"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Beste"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Armoni"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Solfej"
+    },
+    {
+      "from": "Ölçü",
+      "to": "Doğaçlama"
+    },
+    {
+      "from": "Armoni",
+      "to": "Müzik"
+    },
+    {
+      "from": "Armoni",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Armoni",
+      "to": "Melodi"
+    },
+    {
+      "from": "Armoni",
+      "to": "Ritim"
+    },
+    {
+      "from": "Armoni",
+      "to": "Beste"
+    },
+    {
+      "from": "Armoni",
+      "to": "Piyano"
+    },
+    {
+      "from": "Armoni",
+      "to": "Nota"
+    },
+    {
+      "from": "Armoni",
+      "to": "Solfej"
+    },
+    {
+      "from": "Armoni",
+      "to": "Doğaçlama"
+    },
+    {
+      "from": "Armoni",
+      "to": "Modülasyon"
+    },
+    {
+      "from": "Solfej",
+      "to": "Müzik"
+    },
+    {
+      "from": "Solfej",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Solfej",
+      "to": "Melodi"
+    },
+    {
+      "from": "Solfej",
+      "to": "Ritim"
+    },
+    {
+      "from": "Solfej",
+      "to": "Beste"
+    },
+    {
+      "from": "Solfej",
+      "to": "Nota"
+    },
+    {
+      "from": "Solfej",
+      "to": "Doğaçlama"
+    },
+    {
+      "from": "Solfej",
+      "to": "Modülasyon"
+    },
+    {
+      "from": "Solfej",
+      "to": "Kadans"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Müzik"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Melodi"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Ritim"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Beste"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Piyano"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Modülasyon"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Kadans"
+    },
+    {
+      "from": "Doğaçlama",
+      "to": "Bas Çizgisi"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Müzik"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Melodi"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Ritim"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Beste"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Kadans"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Bas Çizgisi"
+    },
+    {
+      "from": "Modülasyon",
+      "to": "Vokal"
+    },
+    {
+      "from": "Kadans",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kadans",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kadans",
+      "to": "Melodi"
+    },
+    {
+      "from": "Kadans",
+      "to": "Ritim"
+    },
+    {
+      "from": "Kadans",
+      "to": "Beste"
+    },
+    {
+      "from": "Kadans",
+      "to": "Bas Çizgisi"
+    },
+    {
+      "from": "Kadans",
+      "to": "Vokal"
+    },
+    {
+      "from": "Kadans",
+      "to": "Koro"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Melodi"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Ritim"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Beste"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Vokal"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Koro"
+    },
+    {
+      "from": "Bas Çizgisi",
+      "to": "Tenor"
+    },
+    {
+      "from": "Vokal",
+      "to": "Müzik"
+    },
+    {
+      "from": "Vokal",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Vokal",
+      "to": "Melodi"
+    },
+    {
+      "from": "Vokal",
+      "to": "Ritim"
+    },
+    {
+      "from": "Vokal",
+      "to": "Beste"
+    },
+    {
+      "from": "Vokal",
+      "to": "Söz"
+    },
+    {
+      "from": "Vokal",
+      "to": "Nakarat"
+    },
+    {
+      "from": "Vokal",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Vokal",
+      "to": "Arabesk"
+    },
+    {
+      "from": "Vokal",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Vokal",
+      "to": "Koro"
+    },
+    {
+      "from": "Vokal",
+      "to": "Tenor"
+    },
+    {
+      "from": "Vokal",
+      "to": "Soprano"
+    },
+    {
+      "from": "Vokal",
+      "to": "Falsetto"
+    },
+    {
+      "from": "Koro",
+      "to": "Müzik"
+    },
+    {
+      "from": "Koro",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Koro",
+      "to": "Melodi"
+    },
+    {
+      "from": "Koro",
+      "to": "Ritim"
+    },
+    {
+      "from": "Koro",
+      "to": "Beste"
+    },
+    {
+      "from": "Koro",
+      "to": "Türk Sanat Müziği"
+    },
+    {
+      "from": "Koro",
+      "to": "Vokal"
+    },
+    {
+      "from": "Koro",
+      "to": "Tenor"
+    },
+    {
+      "from": "Koro",
+      "to": "Soprano"
+    },
+    {
+      "from": "Koro",
+      "to": "Bariton"
+    },
+    {
+      "from": "Tenor",
+      "to": "Müzik"
+    },
+    {
+      "from": "Tenor",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Tenor",
+      "to": "Melodi"
+    },
+    {
+      "from": "Tenor",
+      "to": "Ritim"
+    },
+    {
+      "from": "Tenor",
+      "to": "Beste"
+    },
+    {
+      "from": "Tenor",
+      "to": "Vokal"
+    },
+    {
+      "from": "Tenor",
+      "to": "Soprano"
+    },
+    {
+      "from": "Tenor",
+      "to": "Bariton"
+    },
+    {
+      "from": "Tenor",
+      "to": "Falsetto"
+    },
+    {
+      "from": "Soprano",
+      "to": "Müzik"
+    },
+    {
+      "from": "Soprano",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Soprano",
+      "to": "Melodi"
+    },
+    {
+      "from": "Soprano",
+      "to": "Ritim"
+    },
+    {
+      "from": "Soprano",
+      "to": "Beste"
+    },
+    {
+      "from": "Soprano",
+      "to": "Vokal"
+    },
+    {
+      "from": "Soprano",
+      "to": "Bariton"
+    },
+    {
+      "from": "Soprano",
+      "to": "Falsetto"
+    },
+    {
+      "from": "Soprano",
+      "to": "Tını"
+    },
+    {
+      "from": "Bariton",
+      "to": "Müzik"
+    },
+    {
+      "from": "Bariton",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Bariton",
+      "to": "Melodi"
+    },
+    {
+      "from": "Bariton",
+      "to": "Ritim"
+    },
+    {
+      "from": "Bariton",
+      "to": "Beste"
+    },
+    {
+      "from": "Bariton",
+      "to": "Falsetto"
+    },
+    {
+      "from": "Bariton",
+      "to": "Tını"
+    },
+    {
+      "from": "Bariton",
+      "to": "Perde"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Müzik"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Melodi"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Ritim"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Beste"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Vokal"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Tını"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Perde"
+    },
+    {
+      "from": "Falsetto",
+      "to": "Dinamik"
+    },
+    {
+      "from": "Tını",
+      "to": "Müzik"
+    },
+    {
+      "from": "Tını",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Tını",
+      "to": "Melodi"
+    },
+    {
+      "from": "Tını",
+      "to": "Ritim"
+    },
+    {
+      "from": "Tını",
+      "to": "Beste"
+    },
+    {
+      "from": "Tını",
+      "to": "Perde"
+    },
+    {
+      "from": "Tını",
+      "to": "Dinamik"
+    },
+    {
+      "from": "Tını",
+      "to": "Senkop"
+    },
+    {
+      "from": "Perde",
+      "to": "Müzik"
+    },
+    {
+      "from": "Perde",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Perde",
+      "to": "Melodi"
+    },
+    {
+      "from": "Perde",
+      "to": "Ritim"
+    },
+    {
+      "from": "Perde",
+      "to": "Beste"
+    },
+    {
+      "from": "Perde",
+      "to": "Dinamik"
+    },
+    {
+      "from": "Perde",
+      "to": "Senkop"
+    },
+    {
+      "from": "Perde",
+      "to": "Polifoni"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Müzik"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Melodi"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Ritim"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Beste"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Nota"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Senkop"
+    },
+    {
+      "from": "Dinamik",
+      "to": "Polifoni"
+    },
+    {
+      "from": "Senkop",
+      "to": "Müzik"
+    },
+    {
+      "from": "Senkop",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Senkop",
+      "to": "Melodi"
+    },
+    {
+      "from": "Senkop",
+      "to": "Ritim"
+    },
+    {
+      "from": "Senkop",
+      "to": "Beste"
+    },
+    {
+      "from": "Senkop",
+      "to": "Nota"
+    },
+    {
+      "from": "Senkop",
+      "to": "Akor"
+    },
+    {
+      "from": "Senkop",
+      "to": "Polifoni"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Müzik"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Melodi"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Ritim"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Beste"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Nota"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Akor"
+    },
+    {
+      "from": "Polifoni",
+      "to": "Gam"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Müzik"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Sahne"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Konser"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Klasik Müzik"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Şef"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Solist"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Vokalist"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Repertuvar"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Akort"
+    },
+    {
+      "from": "Orkestra",
+      "to": "Entonasyon"
+    },
+    {
+      "from": "Şef",
+      "to": "Müzik"
+    },
+    {
+      "from": "Şef",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Şef",
+      "to": "Sahne"
+    },
+    {
+      "from": "Şef",
+      "to": "Konser"
+    },
+    {
+      "from": "Şef",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Şef",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Şef",
+      "to": "Solist"
+    },
+    {
+      "from": "Şef",
+      "to": "Vokalist"
+    },
+    {
+      "from": "Şef",
+      "to": "Gitarist"
+    },
+    {
+      "from": "Solist",
+      "to": "Müzik"
+    },
+    {
+      "from": "Solist",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Solist",
+      "to": "Sahne"
+    },
+    {
+      "from": "Solist",
+      "to": "Konser"
+    },
+    {
+      "from": "Solist",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Solist",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Solist",
+      "to": "Vokalist"
+    },
+    {
+      "from": "Solist",
+      "to": "Gitarist"
+    },
+    {
+      "from": "Solist",
+      "to": "Piyanist"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Müzik"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Sahne"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Konser"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Gitarist"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Piyanist"
+    },
+    {
+      "from": "Vokalist",
+      "to": "Davulcu"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Müzik"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Sahne"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Konser"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Piyanist"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Davulcu"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Basçı"
+    },
+    {
+      "from": "Gitarist",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Müzik"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Sahne"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Konser"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Davulcu"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Basçı"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Saz Ekibi"
+    },
+    {
+      "from": "Piyanist",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Sahne"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Konser"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Basçı"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Saz Ekibi"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Ritim Grubu"
+    },
+    {
+      "from": "Davulcu",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Basçı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Basçı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Basçı",
+      "to": "Sahne"
+    },
+    {
+      "from": "Basçı",
+      "to": "Konser"
+    },
+    {
+      "from": "Basçı",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Basçı",
+      "to": "Saz Ekibi"
+    },
+    {
+      "from": "Basçı",
+      "to": "Ritim Grubu"
+    },
+    {
+      "from": "Basçı",
+      "to": "Sahne Duruşu"
+    },
+    {
+      "from": "Basçı",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Müzik"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Sahne"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Konser"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Ritim Grubu"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Sahne Duruşu"
+    },
+    {
+      "from": "Saz Ekibi",
+      "to": "Doğaçlama Solo"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "Sahne"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "Konser"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "Sahne Duruşu"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "Doğaçlama Solo"
+    },
+    {
+      "from": "Ritim Grubu",
+      "to": "İcra"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "Konser"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "Doğaçlama Solo"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "İcra"
+    },
+    {
+      "from": "Sahne Duruşu",
+      "to": "Yorum"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Müzik"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Sahne"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Konser"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "İcra"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Yorum"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Repertuvar"
+    },
+    {
+      "from": "Doğaçlama Solo",
+      "to": "Jam Session"
+    },
+    {
+      "from": "İcra",
+      "to": "Müzik"
+    },
+    {
+      "from": "İcra",
+      "to": "Şarkı"
+    },
+    {
+      "from": "İcra",
+      "to": "Sahne"
+    },
+    {
+      "from": "İcra",
+      "to": "Konser"
+    },
+    {
+      "from": "İcra",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "İcra",
+      "to": "Yorum"
+    },
+    {
+      "from": "İcra",
+      "to": "Repertuvar"
+    },
+    {
+      "from": "İcra",
+      "to": "Akort"
+    },
+    {
+      "from": "İcra",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Yorum",
+      "to": "Müzik"
+    },
+    {
+      "from": "Yorum",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Yorum",
+      "to": "Sahne"
+    },
+    {
+      "from": "Yorum",
+      "to": "Konser"
+    },
+    {
+      "from": "Yorum",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Yorum",
+      "to": "Repertuvar"
+    },
+    {
+      "from": "Yorum",
+      "to": "Akort"
+    },
+    {
+      "from": "Yorum",
+      "to": "Entonasyon"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Müzik"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Sahne"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Konser"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Akort"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Entonasyon"
+    },
+    {
+      "from": "Repertuvar",
+      "to": "Sahne Heyecanı"
+    },
+    {
+      "from": "Akort",
+      "to": "Müzik"
+    },
+    {
+      "from": "Akort",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Akort",
+      "to": "Sahne"
+    },
+    {
+      "from": "Akort",
+      "to": "Konser"
+    },
+    {
+      "from": "Akort",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Akort",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Akort",
+      "to": "Entonasyon"
+    },
+    {
+      "from": "Akort",
+      "to": "Sahne Heyecanı"
+    },
+    {
+      "from": "Akort",
+      "to": "Ses Kontrolü"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Müzik"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Sahne"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Konser"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Sahne Heyecanı"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Ses Kontrolü"
+    },
+    {
+      "from": "Entonasyon",
+      "to": "Kulak Monitörü"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Müzik"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Sahne"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Konser"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Ses Kontrolü"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Kulak Monitörü"
+    },
+    {
+      "from": "Sahne Heyecanı",
+      "to": "Back Vokal"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Sahne"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Konser"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Kulak Monitörü"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Back Vokal"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Ses Kontrolü",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Müzik"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Sahne"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Konser"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Back Vokal"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Akustik Konser"
+    },
+    {
+      "from": "Kulak Monitörü",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Müzik"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Sahne"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Konser"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Jam Session"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Akustik Konser"
+    },
+    {
+      "from": "Back Vokal",
+      "to": "Unplugged"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Müzik"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Sahne"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Konser"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Caz"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Gitarist"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Piyanist"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Davulcu"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Basçı"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Doğaçlama Solo"
+    },
+    {
+      "from": "Jam Session",
+      "to": "İcra"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Akustik Konser"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Unplugged"
+    },
+    {
+      "from": "Jam Session",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Müzik"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Sahne"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Konser"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Unplugged"
+    },
+    {
+      "from": "Akustik Konser",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Müzik"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Sahne"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Konser"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Şef"
+    },
+    {
+      "from": "Unplugged",
+      "to": "Soundcheck"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Müzik"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Şarkı"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Sahne"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Konser"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Canlı Performans"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Mikrofon"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Ses Sistemi"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Prova"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Orkestra"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Şef"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Solist"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Ses Kontrolü"
+    },
+    {
+      "from": "Soundcheck",
+      "to": "Kulak Monitörü"
+    }
+  ],
+  "metadata": {
+    "source": "ai-generated",
+    "symmetrized": false,
+    "nodeCount": 250,
+    "minOutgoingPerNode": 6,
+    "language": "tr-TR",
+    "generatorVersion": "lexilink-content-v1"
+  }
+}

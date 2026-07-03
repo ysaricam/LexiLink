@@ -1,0 +1,9204 @@
+{
+  "$schema": "lexilink/category/v1",
+  "category": {
+    "name": "Spor",
+    "description": "Spor dalları, sporcular, turnuvalar, kurallar, ekipmanlar ve spor kültürüyle ilgili kavram bağlantıları.",
+    "language": "tr-TR"
+  },
+  "links": [
+    {
+      "value": "Spor",
+      "description": "Spor, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Antrenman",
+      "description": "Antrenman, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Maç",
+      "description": "Maç, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Takım",
+      "description": "Takım, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rakip",
+      "description": "Rakip, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Galibiyet",
+      "description": "Galibiyet, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mağlubiyet",
+      "description": "Mağlubiyet, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Beraberlik",
+      "description": "Beraberlik, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Puan",
+      "description": "Puan, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Skor",
+      "description": "Skor, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Performans",
+      "description": "Performans, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dayanıklılık",
+      "description": "Dayanıklılık, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hız",
+      "description": "Hız, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Güç",
+      "description": "Güç, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Esneklik",
+      "description": "Esneklik, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Koordinasyon",
+      "description": "Koordinasyon, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kondisyon",
+      "description": "Kondisyon, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Taktik",
+      "description": "Taktik, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Strateji",
+      "description": "Strateji, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Isınma",
+      "description": "Isınma, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Soğuma",
+      "description": "Soğuma, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sakatlık",
+      "description": "Sakatlık, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rekor",
+      "description": "Rekor, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Fair Play",
+      "description": "Fair Play, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Milli Takım",
+      "description": "Milli Takım, spor dünyasında sık kullanılan genel bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Futbol",
+      "description": "Futbol, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gol",
+      "description": "Gol, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kaleci",
+      "description": "Kaleci, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Defans",
+      "description": "Defans, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Orta Saha",
+      "description": "Orta Saha, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Forvet",
+      "description": "Forvet, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Penaltı",
+      "description": "Penaltı, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Korner",
+      "description": "Korner, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Serbest Vuruş",
+      "description": "Serbest Vuruş, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ofsayt",
+      "description": "Ofsayt, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sarı Kart",
+      "description": "Sarı Kart, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kırmızı Kart",
+      "description": "Kırmızı Kart, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "VAR",
+      "description": "VAR, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Derbi",
+      "description": "Derbi, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Stadyum",
+      "description": "Stadyum, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tribün",
+      "description": "Tribün, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Teknik Direktör",
+      "description": "Teknik Direktör, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pas",
+      "description": "Pas, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şut",
+      "description": "Şut, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dripling",
+      "description": "Dripling, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Taç",
+      "description": "Taç, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kaptan",
+      "description": "Kaptan, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lig",
+      "description": "Lig, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şampiyonluk",
+      "description": "Şampiyonluk, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Futbol Topu",
+      "description": "Futbol Topu, futbol oyunu, takımları veya futbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Basketbol",
+      "description": "Basketbol, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Potaya Atış",
+      "description": "Potaya Atış, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Üçlük",
+      "description": "Üçlük, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Smaç",
+      "description": "Smaç, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ribaunt",
+      "description": "Ribaunt, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Asist",
+      "description": "Asist, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Blok",
+      "description": "Blok, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Top Çalma",
+      "description": "Top Çalma, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hızlı Hücum",
+      "description": "Hızlı Hücum, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Perdeleme",
+      "description": "Perdeleme, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Faul",
+      "description": "Faul, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Serbest Atış",
+      "description": "Serbest Atış, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Oyun Kurucu",
+      "description": "Oyun Kurucu, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pivot",
+      "description": "Pivot, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kısa Forvet",
+      "description": "Kısa Forvet, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uzun Forvet",
+      "description": "Uzun Forvet, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şutör Gard",
+      "description": "Şutör Gard, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pota",
+      "description": "Pota, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Parke",
+      "description": "Parke, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "NBA",
+      "description": "NBA, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "EuroLeague",
+      "description": "EuroLeague, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çeyrek",
+      "description": "Çeyrek, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mola",
+      "description": "Mola, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hava Atışı",
+      "description": "Hava Atışı, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Turnike",
+      "description": "Turnike, basketbol oyunu, kuralları veya basketbol kültürüyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tenis",
+      "description": "Tenis, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Servis",
+      "description": "Servis, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Forehand",
+      "description": "Forehand, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Backhand",
+      "description": "Backhand, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Vole",
+      "description": "Vole, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ace",
+      "description": "Ace, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Set",
+      "description": "Set, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tie Break",
+      "description": "Tie Break, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Grand Slam",
+      "description": "Grand Slam, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Wimbledon",
+      "description": "Wimbledon, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Roland Garros",
+      "description": "Roland Garros, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "US Open",
+      "description": "US Open, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Avustralya Açık",
+      "description": "Avustralya Açık, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kort",
+      "description": "Kort, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Raket",
+      "description": "Raket, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "File",
+      "description": "File, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çim Kort",
+      "description": "Çim Kort, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Toprak Kort",
+      "description": "Toprak Kort, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sert Kort",
+      "description": "Sert Kort, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çiftler",
+      "description": "Çiftler, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tekler",
+      "description": "Tekler, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Maç Sayısı",
+      "description": "Maç Sayısı, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Oyun Sayısı",
+      "description": "Oyun Sayısı, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Break Point",
+      "description": "Break Point, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tenis Topu",
+      "description": "Tenis Topu, tenis maçları, teknikleri veya turnuvalarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Voleybol",
+      "description": "Voleybol, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Servis Karşılama",
+      "description": "Servis Karşılama, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Smaçör",
+      "description": "Smaçör, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pasör",
+      "description": "Pasör, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Libero",
+      "description": "Libero, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Orta Oyuncu",
+      "description": "Orta Oyuncu, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Blokçu",
+      "description": "Blokçu, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Manşet",
+      "description": "Manşet, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Plase",
+      "description": "Plase, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Set Sayısı",
+      "description": "Set Sayısı, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Voleybol Filesi",
+      "description": "Voleybol Filesi, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Voleybol Topu",
+      "description": "Voleybol Topu, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hücum Hattı",
+      "description": "Hücum Hattı, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Arka Alan",
+      "description": "Arka Alan, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rotasyon",
+      "description": "Rotasyon, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sayılık Blok",
+      "description": "Sayılık Blok, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pasör Çaprazı",
+      "description": "Pasör Çaprazı, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Servis Hatası",
+      "description": "Servis Hatası, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ralli",
+      "description": "Ralli, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Voleybol Sahası",
+      "description": "Voleybol Sahası, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Challenge",
+      "description": "Challenge, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Milletler Ligi",
+      "description": "Milletler Ligi, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Efeler Ligi",
+      "description": "Efeler Ligi, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sultanlar Ligi",
+      "description": "Sultanlar Ligi, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Altın Set",
+      "description": "Altın Set, voleybol oyunu, pozisyonları veya kurallarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Formula 1",
+      "description": "Formula 1, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pilot",
+      "description": "Pilot, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yarış Arabası",
+      "description": "Yarış Arabası, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pit Stop",
+      "description": "Pit Stop, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pole Pozisyonu",
+      "description": "Pole Pozisyonu, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sıralama Turu",
+      "description": "Sıralama Turu, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Grand Prix",
+      "description": "Grand Prix, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "DRS",
+      "description": "DRS, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lastik Stratejisi",
+      "description": "Lastik Stratejisi, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Güvenlik Aracı",
+      "description": "Güvenlik Aracı, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Podyum",
+      "description": "Podyum, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Monako GP",
+      "description": "Monako GP, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Silverstone",
+      "description": "Silverstone, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Spa Pisti",
+      "description": "Spa Pisti, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ferrari",
+      "description": "Ferrari, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mercedes",
+      "description": "Mercedes, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Red Bull",
+      "description": "Red Bull, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "McLaren",
+      "description": "McLaren, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Viraj",
+      "description": "Viraj, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Düzlük",
+      "description": "Düzlük, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Şikan",
+      "description": "Şikan, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kask",
+      "description": "Kask, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kokpit",
+      "description": "Kokpit, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Telsiz",
+      "description": "Telsiz, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yarış Mühendisi",
+      "description": "Yarış Mühendisi, Formula 1 ve motor sporları dünyasında bilinen bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Olimpiyatlar",
+      "description": "Olimpiyatlar, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Olimpiyat Halkaları",
+      "description": "Olimpiyat Halkaları, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Altın Madalya",
+      "description": "Altın Madalya, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gümüş Madalya",
+      "description": "Gümüş Madalya, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bronz Madalya",
+      "description": "Bronz Madalya, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Açılış Töreni",
+      "description": "Açılış Töreni, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Olimpiyat Köyü",
+      "description": "Olimpiyat Köyü, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Meşale",
+      "description": "Meşale, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Paralimpik Oyunlar",
+      "description": "Paralimpik Oyunlar, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kış Olimpiyatları",
+      "description": "Kış Olimpiyatları, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yaz Olimpiyatları",
+      "description": "Yaz Olimpiyatları, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Jimnastik",
+      "description": "Jimnastik, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yüzme",
+      "description": "Yüzme, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Güreş",
+      "description": "Güreş, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Halter",
+      "description": "Halter, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Okçuluk",
+      "description": "Okçuluk, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Boks",
+      "description": "Boks, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Judo",
+      "description": "Judo, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tekvando",
+      "description": "Tekvando, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bisiklet",
+      "description": "Bisiklet, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kürek",
+      "description": "Kürek, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yelken",
+      "description": "Yelken, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Triatlon",
+      "description": "Triatlon, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Madalyon Tablosu",
+      "description": "Madalyon Tablosu, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Doping Kontrolü",
+      "description": "Doping Kontrolü, olimpiyatlar ve uluslararası spor organizasyonlarıyla ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Atletizm",
+      "description": "Atletizm, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Koşu",
+      "description": "Koşu, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sprint",
+      "description": "Sprint, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Maraton",
+      "description": "Maraton, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Engelli Koşu",
+      "description": "Engelli Koşu, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Bayrak Yarışı",
+      "description": "Bayrak Yarışı, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uzun Atlama",
+      "description": "Uzun Atlama, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yüksek Atlama",
+      "description": "Yüksek Atlama, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Sırıkla Atlama",
+      "description": "Sırıkla Atlama, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Üç Adım Atlama",
+      "description": "Üç Adım Atlama, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Gülle Atma",
+      "description": "Gülle Atma, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Disk Atma",
+      "description": "Disk Atma, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cirit Atma",
+      "description": "Cirit Atma, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çekiç Atma",
+      "description": "Çekiç Atma, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Dekatlon",
+      "description": "Dekatlon, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Heptatlon",
+      "description": "Heptatlon, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Pist",
+      "description": "Pist, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kulvar",
+      "description": "Kulvar, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Start Takozu",
+      "description": "Start Takozu, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Finiş Çizgisi",
+      "description": "Finiş Çizgisi, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kronometre",
+      "description": "Kronometre, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kros",
+      "description": "Kros, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Tempo",
+      "description": "Tempo, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Nefes Kontrolü",
+      "description": "Nefes Kontrolü, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Atletizm Ayakkabısı",
+      "description": "Atletizm Ayakkabısı, atletizm branşları, yarışları veya performans terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lionel Messi",
+      "description": "Lionel Messi, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Cristiano Ronaldo",
+      "description": "Cristiano Ronaldo, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Arda Güler",
+      "description": "Arda Güler, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hakan Çalhanoğlu",
+      "description": "Hakan Çalhanoğlu, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Michael Jordan",
+      "description": "Michael Jordan, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "LeBron James",
+      "description": "LeBron James, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Stephen Curry",
+      "description": "Stephen Curry, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Alperen Şengün",
+      "description": "Alperen Şengün, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Roger Federer",
+      "description": "Roger Federer, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rafael Nadal",
+      "description": "Rafael Nadal, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Novak Djokovic",
+      "description": "Novak Djokovic, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Serena Williams",
+      "description": "Serena Williams, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Eda Erdem",
+      "description": "Eda Erdem, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Melissa Vargas",
+      "description": "Melissa Vargas, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Lewis Hamilton",
+      "description": "Lewis Hamilton, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Max Verstappen",
+      "description": "Max Verstappen, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Michael Schumacher",
+      "description": "Michael Schumacher, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Usain Bolt",
+      "description": "Usain Bolt, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Eliud Kipchoge",
+      "description": "Eliud Kipchoge, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Naim Süleymanoğlu",
+      "description": "Naim Süleymanoğlu, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Rıza Kayaalp",
+      "description": "Rıza Kayaalp, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Mete Gazoz",
+      "description": "Mete Gazoz, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Filenin Sultanları",
+      "description": "Filenin Sultanları, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "A Milli Futbol",
+      "description": "A Milli Futbol, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "A Milli Basketbol",
+      "description": "A Milli Basketbol, spor tarihinde veya güncel spor kültüründe tanınan bir isimdir.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Hakem",
+      "description": "Hakem, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Düdük",
+      "description": "Düdük, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Avantaj",
+      "description": "Avantaj, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Ceza Alanı",
+      "description": "Ceza Alanı, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Oyun Dışı",
+      "description": "Oyun Dışı, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Faul Çizgisi",
+      "description": "Faul Çizgisi, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Shot Clock",
+      "description": "Shot Clock, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Steps",
+      "description": "Steps, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Double Dribble",
+      "description": "Double Dribble, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Servis Sırası",
+      "description": "Servis Sırası, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Net Hatası",
+      "description": "Net Hatası, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çizgi Hakemi",
+      "description": "Çizgi Hakemi, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Foto Finiş",
+      "description": "Foto Finiş, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Diskalifiye",
+      "description": "Diskalifiye, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Doping",
+      "description": "Doping, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Transfer",
+      "description": "Transfer, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Kura Çekimi",
+      "description": "Kura Çekimi, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Playoff",
+      "description": "Playoff, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Uzatma",
+      "description": "Uzatma, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Eleme Turu",
+      "description": "Eleme Turu, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Grup Aşaması",
+      "description": "Grup Aşaması, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Final",
+      "description": "Final, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Yarı Final",
+      "description": "Yarı Final, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Çeyrek Final",
+      "description": "Çeyrek Final, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    },
+    {
+      "value": "Klasman",
+      "description": "Klasman, spor kuralları, hakem kararları veya oyun terimleriyle ilgili bir kavramdır.",
+      "wikipediaUrl": "",
+      "depthFromAnchor": -1
+    }
+  ],
+  "edges": [
+    {
+      "from": "Spor",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Spor",
+      "to": "Maç"
+    },
+    {
+      "from": "Spor",
+      "to": "Takım"
+    },
+    {
+      "from": "Spor",
+      "to": "Rakip"
+    },
+    {
+      "from": "Spor",
+      "to": "Galibiyet"
+    },
+    {
+      "from": "Spor",
+      "to": "Mağlubiyet"
+    },
+    {
+      "from": "Spor",
+      "to": "Beraberlik"
+    },
+    {
+      "from": "Antrenman",
+      "to": "Spor"
+    },
+    {
+      "from": "Antrenman",
+      "to": "Maç"
+    },
+    {
+      "from": "Antrenman",
+      "to": "Takım"
+    },
+    {
+      "from": "Antrenman",
+      "to": "Rakip"
+    },
+    {
+      "from": "Antrenman",
+      "to": "Galibiyet"
+    },
+    {
+      "from": "Antrenman",
+      "to": "Mağlubiyet"
+    },
+    {
+      "from": "Antrenman",
+      "to": "Beraberlik"
+    },
+    {
+      "from": "Maç",
+      "to": "Spor"
+    },
+    {
+      "from": "Maç",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Maç",
+      "to": "Takım"
+    },
+    {
+      "from": "Maç",
+      "to": "Rakip"
+    },
+    {
+      "from": "Maç",
+      "to": "Galibiyet"
+    },
+    {
+      "from": "Maç",
+      "to": "Mağlubiyet"
+    },
+    {
+      "from": "Maç",
+      "to": "Beraberlik"
+    },
+    {
+      "from": "Takım",
+      "to": "Spor"
+    },
+    {
+      "from": "Takım",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Takım",
+      "to": "Maç"
+    },
+    {
+      "from": "Takım",
+      "to": "Rakip"
+    },
+    {
+      "from": "Takım",
+      "to": "Galibiyet"
+    },
+    {
+      "from": "Takım",
+      "to": "Mağlubiyet"
+    },
+    {
+      "from": "Takım",
+      "to": "Beraberlik"
+    },
+    {
+      "from": "Rakip",
+      "to": "Spor"
+    },
+    {
+      "from": "Rakip",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Rakip",
+      "to": "Maç"
+    },
+    {
+      "from": "Rakip",
+      "to": "Galibiyet"
+    },
+    {
+      "from": "Rakip",
+      "to": "Mağlubiyet"
+    },
+    {
+      "from": "Rakip",
+      "to": "Beraberlik"
+    },
+    {
+      "from": "Rakip",
+      "to": "Puan"
+    },
+    {
+      "from": "Galibiyet",
+      "to": "Spor"
+    },
+    {
+      "from": "Galibiyet",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Galibiyet",
+      "to": "Maç"
+    },
+    {
+      "from": "Galibiyet",
+      "to": "Mağlubiyet"
+    },
+    {
+      "from": "Galibiyet",
+      "to": "Beraberlik"
+    },
+    {
+      "from": "Galibiyet",
+      "to": "Puan"
+    },
+    {
+      "from": "Galibiyet",
+      "to": "Skor"
+    },
+    {
+      "from": "Mağlubiyet",
+      "to": "Spor"
+    },
+    {
+      "from": "Mağlubiyet",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Mağlubiyet",
+      "to": "Maç"
+    },
+    {
+      "from": "Mağlubiyet",
+      "to": "Beraberlik"
+    },
+    {
+      "from": "Mağlubiyet",
+      "to": "Puan"
+    },
+    {
+      "from": "Mağlubiyet",
+      "to": "Skor"
+    },
+    {
+      "from": "Mağlubiyet",
+      "to": "Performans"
+    },
+    {
+      "from": "Beraberlik",
+      "to": "Spor"
+    },
+    {
+      "from": "Beraberlik",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Beraberlik",
+      "to": "Maç"
+    },
+    {
+      "from": "Beraberlik",
+      "to": "Puan"
+    },
+    {
+      "from": "Beraberlik",
+      "to": "Skor"
+    },
+    {
+      "from": "Beraberlik",
+      "to": "Performans"
+    },
+    {
+      "from": "Beraberlik",
+      "to": "Dayanıklılık"
+    },
+    {
+      "from": "Puan",
+      "to": "Spor"
+    },
+    {
+      "from": "Puan",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Puan",
+      "to": "Maç"
+    },
+    {
+      "from": "Puan",
+      "to": "Skor"
+    },
+    {
+      "from": "Puan",
+      "to": "Performans"
+    },
+    {
+      "from": "Puan",
+      "to": "Dayanıklılık"
+    },
+    {
+      "from": "Puan",
+      "to": "Hız"
+    },
+    {
+      "from": "Skor",
+      "to": "Spor"
+    },
+    {
+      "from": "Skor",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Skor",
+      "to": "Maç"
+    },
+    {
+      "from": "Skor",
+      "to": "Performans"
+    },
+    {
+      "from": "Skor",
+      "to": "Dayanıklılık"
+    },
+    {
+      "from": "Skor",
+      "to": "Hız"
+    },
+    {
+      "from": "Skor",
+      "to": "Güç"
+    },
+    {
+      "from": "Performans",
+      "to": "Spor"
+    },
+    {
+      "from": "Performans",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Performans",
+      "to": "Maç"
+    },
+    {
+      "from": "Performans",
+      "to": "Dayanıklılık"
+    },
+    {
+      "from": "Performans",
+      "to": "Hız"
+    },
+    {
+      "from": "Performans",
+      "to": "Güç"
+    },
+    {
+      "from": "Performans",
+      "to": "Esneklik"
+    },
+    {
+      "from": "Dayanıklılık",
+      "to": "Spor"
+    },
+    {
+      "from": "Dayanıklılık",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Dayanıklılık",
+      "to": "Maç"
+    },
+    {
+      "from": "Dayanıklılık",
+      "to": "Hız"
+    },
+    {
+      "from": "Dayanıklılık",
+      "to": "Güç"
+    },
+    {
+      "from": "Dayanıklılık",
+      "to": "Esneklik"
+    },
+    {
+      "from": "Dayanıklılık",
+      "to": "Koordinasyon"
+    },
+    {
+      "from": "Hız",
+      "to": "Spor"
+    },
+    {
+      "from": "Hız",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Hız",
+      "to": "Maç"
+    },
+    {
+      "from": "Hız",
+      "to": "Güç"
+    },
+    {
+      "from": "Hız",
+      "to": "Esneklik"
+    },
+    {
+      "from": "Hız",
+      "to": "Koordinasyon"
+    },
+    {
+      "from": "Hız",
+      "to": "Kondisyon"
+    },
+    {
+      "from": "Güç",
+      "to": "Spor"
+    },
+    {
+      "from": "Güç",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Güç",
+      "to": "Maç"
+    },
+    {
+      "from": "Güç",
+      "to": "Esneklik"
+    },
+    {
+      "from": "Güç",
+      "to": "Koordinasyon"
+    },
+    {
+      "from": "Güç",
+      "to": "Kondisyon"
+    },
+    {
+      "from": "Güç",
+      "to": "Taktik"
+    },
+    {
+      "from": "Esneklik",
+      "to": "Spor"
+    },
+    {
+      "from": "Esneklik",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Esneklik",
+      "to": "Maç"
+    },
+    {
+      "from": "Esneklik",
+      "to": "Koordinasyon"
+    },
+    {
+      "from": "Esneklik",
+      "to": "Kondisyon"
+    },
+    {
+      "from": "Esneklik",
+      "to": "Taktik"
+    },
+    {
+      "from": "Esneklik",
+      "to": "Strateji"
+    },
+    {
+      "from": "Koordinasyon",
+      "to": "Spor"
+    },
+    {
+      "from": "Koordinasyon",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Koordinasyon",
+      "to": "Maç"
+    },
+    {
+      "from": "Koordinasyon",
+      "to": "Kondisyon"
+    },
+    {
+      "from": "Koordinasyon",
+      "to": "Taktik"
+    },
+    {
+      "from": "Koordinasyon",
+      "to": "Strateji"
+    },
+    {
+      "from": "Koordinasyon",
+      "to": "Isınma"
+    },
+    {
+      "from": "Kondisyon",
+      "to": "Spor"
+    },
+    {
+      "from": "Kondisyon",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Kondisyon",
+      "to": "Maç"
+    },
+    {
+      "from": "Kondisyon",
+      "to": "Taktik"
+    },
+    {
+      "from": "Kondisyon",
+      "to": "Strateji"
+    },
+    {
+      "from": "Kondisyon",
+      "to": "Isınma"
+    },
+    {
+      "from": "Kondisyon",
+      "to": "Soğuma"
+    },
+    {
+      "from": "Taktik",
+      "to": "Spor"
+    },
+    {
+      "from": "Taktik",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Taktik",
+      "to": "Maç"
+    },
+    {
+      "from": "Taktik",
+      "to": "Strateji"
+    },
+    {
+      "from": "Taktik",
+      "to": "Isınma"
+    },
+    {
+      "from": "Taktik",
+      "to": "Soğuma"
+    },
+    {
+      "from": "Taktik",
+      "to": "Sakatlık"
+    },
+    {
+      "from": "Strateji",
+      "to": "Spor"
+    },
+    {
+      "from": "Strateji",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Strateji",
+      "to": "Maç"
+    },
+    {
+      "from": "Strateji",
+      "to": "Isınma"
+    },
+    {
+      "from": "Strateji",
+      "to": "Soğuma"
+    },
+    {
+      "from": "Strateji",
+      "to": "Sakatlık"
+    },
+    {
+      "from": "Strateji",
+      "to": "Rekor"
+    },
+    {
+      "from": "Isınma",
+      "to": "Spor"
+    },
+    {
+      "from": "Isınma",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Isınma",
+      "to": "Maç"
+    },
+    {
+      "from": "Isınma",
+      "to": "Soğuma"
+    },
+    {
+      "from": "Isınma",
+      "to": "Sakatlık"
+    },
+    {
+      "from": "Isınma",
+      "to": "Rekor"
+    },
+    {
+      "from": "Isınma",
+      "to": "Fair Play"
+    },
+    {
+      "from": "Soğuma",
+      "to": "Spor"
+    },
+    {
+      "from": "Soğuma",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Soğuma",
+      "to": "Maç"
+    },
+    {
+      "from": "Soğuma",
+      "to": "Sakatlık"
+    },
+    {
+      "from": "Soğuma",
+      "to": "Rekor"
+    },
+    {
+      "from": "Soğuma",
+      "to": "Fair Play"
+    },
+    {
+      "from": "Soğuma",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Sakatlık",
+      "to": "Spor"
+    },
+    {
+      "from": "Sakatlık",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Sakatlık",
+      "to": "Maç"
+    },
+    {
+      "from": "Sakatlık",
+      "to": "Takım"
+    },
+    {
+      "from": "Sakatlık",
+      "to": "Rekor"
+    },
+    {
+      "from": "Sakatlık",
+      "to": "Fair Play"
+    },
+    {
+      "from": "Sakatlık",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Rekor",
+      "to": "Spor"
+    },
+    {
+      "from": "Rekor",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Rekor",
+      "to": "Maç"
+    },
+    {
+      "from": "Rekor",
+      "to": "Takım"
+    },
+    {
+      "from": "Rekor",
+      "to": "Rakip"
+    },
+    {
+      "from": "Rekor",
+      "to": "Fair Play"
+    },
+    {
+      "from": "Rekor",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Fair Play",
+      "to": "Spor"
+    },
+    {
+      "from": "Fair Play",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Fair Play",
+      "to": "Maç"
+    },
+    {
+      "from": "Fair Play",
+      "to": "Takım"
+    },
+    {
+      "from": "Fair Play",
+      "to": "Rakip"
+    },
+    {
+      "from": "Fair Play",
+      "to": "Galibiyet"
+    },
+    {
+      "from": "Fair Play",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Milli Takım",
+      "to": "Spor"
+    },
+    {
+      "from": "Milli Takım",
+      "to": "Antrenman"
+    },
+    {
+      "from": "Milli Takım",
+      "to": "Maç"
+    },
+    {
+      "from": "Milli Takım",
+      "to": "Takım"
+    },
+    {
+      "from": "Milli Takım",
+      "to": "Rakip"
+    },
+    {
+      "from": "Milli Takım",
+      "to": "Galibiyet"
+    },
+    {
+      "from": "Milli Takım",
+      "to": "Mağlubiyet"
+    },
+    {
+      "from": "Futbol",
+      "to": "Spor"
+    },
+    {
+      "from": "Futbol",
+      "to": "Maç"
+    },
+    {
+      "from": "Futbol",
+      "to": "Gol"
+    },
+    {
+      "from": "Futbol",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Futbol",
+      "to": "Defans"
+    },
+    {
+      "from": "Futbol",
+      "to": "Orta Saha"
+    },
+    {
+      "from": "Futbol",
+      "to": "Forvet"
+    },
+    {
+      "from": "Futbol",
+      "to": "Stadyum"
+    },
+    {
+      "from": "Futbol",
+      "to": "Hakem"
+    },
+    {
+      "from": "Gol",
+      "to": "Spor"
+    },
+    {
+      "from": "Gol",
+      "to": "Maç"
+    },
+    {
+      "from": "Gol",
+      "to": "Futbol"
+    },
+    {
+      "from": "Gol",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Gol",
+      "to": "Defans"
+    },
+    {
+      "from": "Gol",
+      "to": "Orta Saha"
+    },
+    {
+      "from": "Gol",
+      "to": "Forvet"
+    },
+    {
+      "from": "Kaleci",
+      "to": "Spor"
+    },
+    {
+      "from": "Kaleci",
+      "to": "Maç"
+    },
+    {
+      "from": "Kaleci",
+      "to": "Futbol"
+    },
+    {
+      "from": "Kaleci",
+      "to": "Gol"
+    },
+    {
+      "from": "Kaleci",
+      "to": "Defans"
+    },
+    {
+      "from": "Kaleci",
+      "to": "Orta Saha"
+    },
+    {
+      "from": "Kaleci",
+      "to": "Forvet"
+    },
+    {
+      "from": "Defans",
+      "to": "Spor"
+    },
+    {
+      "from": "Defans",
+      "to": "Maç"
+    },
+    {
+      "from": "Defans",
+      "to": "Futbol"
+    },
+    {
+      "from": "Defans",
+      "to": "Gol"
+    },
+    {
+      "from": "Defans",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Defans",
+      "to": "Orta Saha"
+    },
+    {
+      "from": "Defans",
+      "to": "Forvet"
+    },
+    {
+      "from": "Defans",
+      "to": "Penaltı"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Spor"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Maç"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Futbol"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Gol"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Forvet"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Penaltı"
+    },
+    {
+      "from": "Orta Saha",
+      "to": "Korner"
+    },
+    {
+      "from": "Forvet",
+      "to": "Spor"
+    },
+    {
+      "from": "Forvet",
+      "to": "Maç"
+    },
+    {
+      "from": "Forvet",
+      "to": "Futbol"
+    },
+    {
+      "from": "Forvet",
+      "to": "Gol"
+    },
+    {
+      "from": "Forvet",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Forvet",
+      "to": "Penaltı"
+    },
+    {
+      "from": "Forvet",
+      "to": "Korner"
+    },
+    {
+      "from": "Forvet",
+      "to": "Serbest Vuruş"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Spor"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Maç"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Futbol"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Gol"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Korner"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Serbest Vuruş"
+    },
+    {
+      "from": "Penaltı",
+      "to": "Ofsayt"
+    },
+    {
+      "from": "Korner",
+      "to": "Spor"
+    },
+    {
+      "from": "Korner",
+      "to": "Maç"
+    },
+    {
+      "from": "Korner",
+      "to": "Futbol"
+    },
+    {
+      "from": "Korner",
+      "to": "Gol"
+    },
+    {
+      "from": "Korner",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Korner",
+      "to": "Serbest Vuruş"
+    },
+    {
+      "from": "Korner",
+      "to": "Ofsayt"
+    },
+    {
+      "from": "Korner",
+      "to": "Sarı Kart"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Spor"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Maç"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Futbol"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Gol"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Ofsayt"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Sarı Kart"
+    },
+    {
+      "from": "Serbest Vuruş",
+      "to": "Kırmızı Kart"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "Spor"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "Maç"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "Futbol"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "Gol"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "Sarı Kart"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "Kırmızı Kart"
+    },
+    {
+      "from": "Ofsayt",
+      "to": "VAR"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "Spor"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "Maç"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "Futbol"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "Gol"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "Kırmızı Kart"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "VAR"
+    },
+    {
+      "from": "Sarı Kart",
+      "to": "Derbi"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "Spor"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "Maç"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "Futbol"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "Gol"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "VAR"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "Derbi"
+    },
+    {
+      "from": "Kırmızı Kart",
+      "to": "Stadyum"
+    },
+    {
+      "from": "VAR",
+      "to": "Spor"
+    },
+    {
+      "from": "VAR",
+      "to": "Maç"
+    },
+    {
+      "from": "VAR",
+      "to": "Futbol"
+    },
+    {
+      "from": "VAR",
+      "to": "Gol"
+    },
+    {
+      "from": "VAR",
+      "to": "Kaleci"
+    },
+    {
+      "from": "VAR",
+      "to": "Derbi"
+    },
+    {
+      "from": "VAR",
+      "to": "Stadyum"
+    },
+    {
+      "from": "VAR",
+      "to": "Tribün"
+    },
+    {
+      "from": "Derbi",
+      "to": "Spor"
+    },
+    {
+      "from": "Derbi",
+      "to": "Maç"
+    },
+    {
+      "from": "Derbi",
+      "to": "Futbol"
+    },
+    {
+      "from": "Derbi",
+      "to": "Gol"
+    },
+    {
+      "from": "Derbi",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Derbi",
+      "to": "Stadyum"
+    },
+    {
+      "from": "Derbi",
+      "to": "Tribün"
+    },
+    {
+      "from": "Derbi",
+      "to": "Teknik Direktör"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Spor"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Maç"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Futbol"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Gol"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Tribün"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Teknik Direktör"
+    },
+    {
+      "from": "Stadyum",
+      "to": "Pas"
+    },
+    {
+      "from": "Tribün",
+      "to": "Spor"
+    },
+    {
+      "from": "Tribün",
+      "to": "Maç"
+    },
+    {
+      "from": "Tribün",
+      "to": "Futbol"
+    },
+    {
+      "from": "Tribün",
+      "to": "Gol"
+    },
+    {
+      "from": "Tribün",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Tribün",
+      "to": "Teknik Direktör"
+    },
+    {
+      "from": "Tribün",
+      "to": "Pas"
+    },
+    {
+      "from": "Tribün",
+      "to": "Şut"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Spor"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Maç"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Futbol"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Gol"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Pas"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Şut"
+    },
+    {
+      "from": "Teknik Direktör",
+      "to": "Dripling"
+    },
+    {
+      "from": "Pas",
+      "to": "Spor"
+    },
+    {
+      "from": "Pas",
+      "to": "Maç"
+    },
+    {
+      "from": "Pas",
+      "to": "Futbol"
+    },
+    {
+      "from": "Pas",
+      "to": "Gol"
+    },
+    {
+      "from": "Pas",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Pas",
+      "to": "Şut"
+    },
+    {
+      "from": "Pas",
+      "to": "Dripling"
+    },
+    {
+      "from": "Pas",
+      "to": "Taç"
+    },
+    {
+      "from": "Şut",
+      "to": "Spor"
+    },
+    {
+      "from": "Şut",
+      "to": "Maç"
+    },
+    {
+      "from": "Şut",
+      "to": "Futbol"
+    },
+    {
+      "from": "Şut",
+      "to": "Gol"
+    },
+    {
+      "from": "Şut",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Şut",
+      "to": "Dripling"
+    },
+    {
+      "from": "Şut",
+      "to": "Taç"
+    },
+    {
+      "from": "Şut",
+      "to": "Kaptan"
+    },
+    {
+      "from": "Dripling",
+      "to": "Spor"
+    },
+    {
+      "from": "Dripling",
+      "to": "Maç"
+    },
+    {
+      "from": "Dripling",
+      "to": "Futbol"
+    },
+    {
+      "from": "Dripling",
+      "to": "Gol"
+    },
+    {
+      "from": "Dripling",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Dripling",
+      "to": "Taç"
+    },
+    {
+      "from": "Dripling",
+      "to": "Kaptan"
+    },
+    {
+      "from": "Dripling",
+      "to": "Lig"
+    },
+    {
+      "from": "Taç",
+      "to": "Spor"
+    },
+    {
+      "from": "Taç",
+      "to": "Maç"
+    },
+    {
+      "from": "Taç",
+      "to": "Futbol"
+    },
+    {
+      "from": "Taç",
+      "to": "Gol"
+    },
+    {
+      "from": "Taç",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Taç",
+      "to": "Kaptan"
+    },
+    {
+      "from": "Taç",
+      "to": "Lig"
+    },
+    {
+      "from": "Taç",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Spor"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Maç"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Futbol"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Gol"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Lig"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Kaptan",
+      "to": "Futbol Topu"
+    },
+    {
+      "from": "Lig",
+      "to": "Spor"
+    },
+    {
+      "from": "Lig",
+      "to": "Maç"
+    },
+    {
+      "from": "Lig",
+      "to": "Futbol"
+    },
+    {
+      "from": "Lig",
+      "to": "Gol"
+    },
+    {
+      "from": "Lig",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Lig",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Lig",
+      "to": "Futbol Topu"
+    },
+    {
+      "from": "Şampiyonluk",
+      "to": "Spor"
+    },
+    {
+      "from": "Şampiyonluk",
+      "to": "Maç"
+    },
+    {
+      "from": "Şampiyonluk",
+      "to": "Futbol"
+    },
+    {
+      "from": "Şampiyonluk",
+      "to": "Gol"
+    },
+    {
+      "from": "Şampiyonluk",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Şampiyonluk",
+      "to": "Defans"
+    },
+    {
+      "from": "Şampiyonluk",
+      "to": "Futbol Topu"
+    },
+    {
+      "from": "Futbol Topu",
+      "to": "Spor"
+    },
+    {
+      "from": "Futbol Topu",
+      "to": "Maç"
+    },
+    {
+      "from": "Futbol Topu",
+      "to": "Futbol"
+    },
+    {
+      "from": "Futbol Topu",
+      "to": "Gol"
+    },
+    {
+      "from": "Futbol Topu",
+      "to": "Kaleci"
+    },
+    {
+      "from": "Futbol Topu",
+      "to": "Defans"
+    },
+    {
+      "from": "Futbol Topu",
+      "to": "Orta Saha"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Spor"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Maç"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Potaya Atış"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Smaç"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Ribaunt"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Asist"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Pota"
+    },
+    {
+      "from": "Basketbol",
+      "to": "NBA"
+    },
+    {
+      "from": "Basketbol",
+      "to": "EuroLeague"
+    },
+    {
+      "from": "Basketbol",
+      "to": "Hakem"
+    },
+    {
+      "from": "Potaya Atış",
+      "to": "Spor"
+    },
+    {
+      "from": "Potaya Atış",
+      "to": "Maç"
+    },
+    {
+      "from": "Potaya Atış",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Potaya Atış",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Potaya Atış",
+      "to": "Smaç"
+    },
+    {
+      "from": "Potaya Atış",
+      "to": "Ribaunt"
+    },
+    {
+      "from": "Potaya Atış",
+      "to": "Asist"
+    },
+    {
+      "from": "Üçlük",
+      "to": "Spor"
+    },
+    {
+      "from": "Üçlük",
+      "to": "Maç"
+    },
+    {
+      "from": "Üçlük",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Üçlük",
+      "to": "Smaç"
+    },
+    {
+      "from": "Üçlük",
+      "to": "Ribaunt"
+    },
+    {
+      "from": "Üçlük",
+      "to": "Asist"
+    },
+    {
+      "from": "Üçlük",
+      "to": "Blok"
+    },
+    {
+      "from": "Smaç",
+      "to": "Spor"
+    },
+    {
+      "from": "Smaç",
+      "to": "Maç"
+    },
+    {
+      "from": "Smaç",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Smaç",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Smaç",
+      "to": "Ribaunt"
+    },
+    {
+      "from": "Smaç",
+      "to": "Asist"
+    },
+    {
+      "from": "Smaç",
+      "to": "Blok"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Spor"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Maç"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Smaç"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Asist"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Blok"
+    },
+    {
+      "from": "Ribaunt",
+      "to": "Top Çalma"
+    },
+    {
+      "from": "Asist",
+      "to": "Spor"
+    },
+    {
+      "from": "Asist",
+      "to": "Maç"
+    },
+    {
+      "from": "Asist",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Asist",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Asist",
+      "to": "Smaç"
+    },
+    {
+      "from": "Asist",
+      "to": "Blok"
+    },
+    {
+      "from": "Asist",
+      "to": "Top Çalma"
+    },
+    {
+      "from": "Asist",
+      "to": "Hızlı Hücum"
+    },
+    {
+      "from": "Blok",
+      "to": "Spor"
+    },
+    {
+      "from": "Blok",
+      "to": "Maç"
+    },
+    {
+      "from": "Blok",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Blok",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Blok",
+      "to": "Smaç"
+    },
+    {
+      "from": "Blok",
+      "to": "Top Çalma"
+    },
+    {
+      "from": "Blok",
+      "to": "Hızlı Hücum"
+    },
+    {
+      "from": "Blok",
+      "to": "Perdeleme"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Spor"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Maç"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Smaç"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Hızlı Hücum"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Perdeleme"
+    },
+    {
+      "from": "Top Çalma",
+      "to": "Faul"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Spor"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Maç"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Smaç"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Perdeleme"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Faul"
+    },
+    {
+      "from": "Hızlı Hücum",
+      "to": "Serbest Atış"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Spor"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Maç"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Smaç"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Faul"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Serbest Atış"
+    },
+    {
+      "from": "Perdeleme",
+      "to": "Oyun Kurucu"
+    },
+    {
+      "from": "Faul",
+      "to": "Spor"
+    },
+    {
+      "from": "Faul",
+      "to": "Maç"
+    },
+    {
+      "from": "Faul",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Faul",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Faul",
+      "to": "Smaç"
+    },
+    {
+      "from": "Faul",
+      "to": "Serbest Atış"
+    },
+    {
+      "from": "Faul",
+      "to": "Oyun Kurucu"
+    },
+    {
+      "from": "Faul",
+      "to": "Pivot"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Spor"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Maç"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Smaç"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Oyun Kurucu"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Pivot"
+    },
+    {
+      "from": "Serbest Atış",
+      "to": "Kısa Forvet"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Spor"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Maç"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Smaç"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Pivot"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Kısa Forvet"
+    },
+    {
+      "from": "Oyun Kurucu",
+      "to": "Uzun Forvet"
+    },
+    {
+      "from": "Pivot",
+      "to": "Spor"
+    },
+    {
+      "from": "Pivot",
+      "to": "Maç"
+    },
+    {
+      "from": "Pivot",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Pivot",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Pivot",
+      "to": "Smaç"
+    },
+    {
+      "from": "Pivot",
+      "to": "Kısa Forvet"
+    },
+    {
+      "from": "Pivot",
+      "to": "Uzun Forvet"
+    },
+    {
+      "from": "Pivot",
+      "to": "Şutör Gard"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Spor"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Maç"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Smaç"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Uzun Forvet"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Şutör Gard"
+    },
+    {
+      "from": "Kısa Forvet",
+      "to": "Pota"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Spor"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Maç"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Smaç"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Şutör Gard"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Pota"
+    },
+    {
+      "from": "Uzun Forvet",
+      "to": "Parke"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "Spor"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "Maç"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "Smaç"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "Pota"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "Parke"
+    },
+    {
+      "from": "Şutör Gard",
+      "to": "NBA"
+    },
+    {
+      "from": "Pota",
+      "to": "Spor"
+    },
+    {
+      "from": "Pota",
+      "to": "Maç"
+    },
+    {
+      "from": "Pota",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Pota",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Pota",
+      "to": "Smaç"
+    },
+    {
+      "from": "Pota",
+      "to": "Parke"
+    },
+    {
+      "from": "Pota",
+      "to": "NBA"
+    },
+    {
+      "from": "Pota",
+      "to": "EuroLeague"
+    },
+    {
+      "from": "Parke",
+      "to": "Spor"
+    },
+    {
+      "from": "Parke",
+      "to": "Maç"
+    },
+    {
+      "from": "Parke",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Parke",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Parke",
+      "to": "Smaç"
+    },
+    {
+      "from": "Parke",
+      "to": "NBA"
+    },
+    {
+      "from": "Parke",
+      "to": "EuroLeague"
+    },
+    {
+      "from": "Parke",
+      "to": "Çeyrek"
+    },
+    {
+      "from": "NBA",
+      "to": "Spor"
+    },
+    {
+      "from": "NBA",
+      "to": "Maç"
+    },
+    {
+      "from": "NBA",
+      "to": "Basketbol"
+    },
+    {
+      "from": "NBA",
+      "to": "Üçlük"
+    },
+    {
+      "from": "NBA",
+      "to": "Smaç"
+    },
+    {
+      "from": "NBA",
+      "to": "EuroLeague"
+    },
+    {
+      "from": "NBA",
+      "to": "Çeyrek"
+    },
+    {
+      "from": "NBA",
+      "to": "Mola"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Spor"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Maç"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Basketbol"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Üçlük"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Smaç"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Çeyrek"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Mola"
+    },
+    {
+      "from": "EuroLeague",
+      "to": "Hava Atışı"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Spor"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Maç"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Smaç"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Mola"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Hava Atışı"
+    },
+    {
+      "from": "Çeyrek",
+      "to": "Turnike"
+    },
+    {
+      "from": "Mola",
+      "to": "Spor"
+    },
+    {
+      "from": "Mola",
+      "to": "Maç"
+    },
+    {
+      "from": "Mola",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Mola",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Mola",
+      "to": "Smaç"
+    },
+    {
+      "from": "Mola",
+      "to": "Hava Atışı"
+    },
+    {
+      "from": "Mola",
+      "to": "Turnike"
+    },
+    {
+      "from": "Hava Atışı",
+      "to": "Spor"
+    },
+    {
+      "from": "Hava Atışı",
+      "to": "Maç"
+    },
+    {
+      "from": "Hava Atışı",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Hava Atışı",
+      "to": "Potaya Atış"
+    },
+    {
+      "from": "Hava Atışı",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Hava Atışı",
+      "to": "Smaç"
+    },
+    {
+      "from": "Hava Atışı",
+      "to": "Turnike"
+    },
+    {
+      "from": "Turnike",
+      "to": "Spor"
+    },
+    {
+      "from": "Turnike",
+      "to": "Maç"
+    },
+    {
+      "from": "Turnike",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Turnike",
+      "to": "Potaya Atış"
+    },
+    {
+      "from": "Turnike",
+      "to": "Üçlük"
+    },
+    {
+      "from": "Turnike",
+      "to": "Smaç"
+    },
+    {
+      "from": "Turnike",
+      "to": "Ribaunt"
+    },
+    {
+      "from": "Tenis",
+      "to": "Spor"
+    },
+    {
+      "from": "Tenis",
+      "to": "Maç"
+    },
+    {
+      "from": "Tenis",
+      "to": "Servis"
+    },
+    {
+      "from": "Tenis",
+      "to": "Forehand"
+    },
+    {
+      "from": "Tenis",
+      "to": "Backhand"
+    },
+    {
+      "from": "Tenis",
+      "to": "Vole"
+    },
+    {
+      "from": "Tenis",
+      "to": "Grand Slam"
+    },
+    {
+      "from": "Tenis",
+      "to": "Wimbledon"
+    },
+    {
+      "from": "Tenis",
+      "to": "Kort"
+    },
+    {
+      "from": "Tenis",
+      "to": "Raket"
+    },
+    {
+      "from": "Servis",
+      "to": "Spor"
+    },
+    {
+      "from": "Servis",
+      "to": "Maç"
+    },
+    {
+      "from": "Servis",
+      "to": "Tenis"
+    },
+    {
+      "from": "Servis",
+      "to": "Forehand"
+    },
+    {
+      "from": "Servis",
+      "to": "Backhand"
+    },
+    {
+      "from": "Servis",
+      "to": "Vole"
+    },
+    {
+      "from": "Servis",
+      "to": "Raket"
+    },
+    {
+      "from": "Forehand",
+      "to": "Spor"
+    },
+    {
+      "from": "Forehand",
+      "to": "Maç"
+    },
+    {
+      "from": "Forehand",
+      "to": "Tenis"
+    },
+    {
+      "from": "Forehand",
+      "to": "Servis"
+    },
+    {
+      "from": "Forehand",
+      "to": "Backhand"
+    },
+    {
+      "from": "Forehand",
+      "to": "Vole"
+    },
+    {
+      "from": "Forehand",
+      "to": "Ace"
+    },
+    {
+      "from": "Forehand",
+      "to": "Raket"
+    },
+    {
+      "from": "Backhand",
+      "to": "Spor"
+    },
+    {
+      "from": "Backhand",
+      "to": "Maç"
+    },
+    {
+      "from": "Backhand",
+      "to": "Tenis"
+    },
+    {
+      "from": "Backhand",
+      "to": "Servis"
+    },
+    {
+      "from": "Backhand",
+      "to": "Vole"
+    },
+    {
+      "from": "Backhand",
+      "to": "Ace"
+    },
+    {
+      "from": "Backhand",
+      "to": "Set"
+    },
+    {
+      "from": "Backhand",
+      "to": "Raket"
+    },
+    {
+      "from": "Vole",
+      "to": "Spor"
+    },
+    {
+      "from": "Vole",
+      "to": "Maç"
+    },
+    {
+      "from": "Vole",
+      "to": "Tenis"
+    },
+    {
+      "from": "Vole",
+      "to": "Servis"
+    },
+    {
+      "from": "Vole",
+      "to": "Ace"
+    },
+    {
+      "from": "Vole",
+      "to": "Set"
+    },
+    {
+      "from": "Vole",
+      "to": "Tie Break"
+    },
+    {
+      "from": "Vole",
+      "to": "Raket"
+    },
+    {
+      "from": "Ace",
+      "to": "Spor"
+    },
+    {
+      "from": "Ace",
+      "to": "Maç"
+    },
+    {
+      "from": "Ace",
+      "to": "Tenis"
+    },
+    {
+      "from": "Ace",
+      "to": "Servis"
+    },
+    {
+      "from": "Ace",
+      "to": "Set"
+    },
+    {
+      "from": "Ace",
+      "to": "Tie Break"
+    },
+    {
+      "from": "Ace",
+      "to": "Grand Slam"
+    },
+    {
+      "from": "Ace",
+      "to": "Raket"
+    },
+    {
+      "from": "Set",
+      "to": "Spor"
+    },
+    {
+      "from": "Set",
+      "to": "Maç"
+    },
+    {
+      "from": "Set",
+      "to": "Tenis"
+    },
+    {
+      "from": "Set",
+      "to": "Servis"
+    },
+    {
+      "from": "Set",
+      "to": "Tie Break"
+    },
+    {
+      "from": "Set",
+      "to": "Grand Slam"
+    },
+    {
+      "from": "Set",
+      "to": "Wimbledon"
+    },
+    {
+      "from": "Set",
+      "to": "Raket"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Spor"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Maç"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Tenis"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Servis"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Grand Slam"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Wimbledon"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Roland Garros"
+    },
+    {
+      "from": "Tie Break",
+      "to": "Raket"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "Spor"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "Maç"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "Tenis"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "Servis"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "Wimbledon"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "Roland Garros"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "US Open"
+    },
+    {
+      "from": "Grand Slam",
+      "to": "Raket"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "Spor"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "Maç"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "Tenis"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "Servis"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "Roland Garros"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "US Open"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "Avustralya Açık"
+    },
+    {
+      "from": "Wimbledon",
+      "to": "Raket"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "Spor"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "Maç"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "Tenis"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "Servis"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "US Open"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "Avustralya Açık"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "Kort"
+    },
+    {
+      "from": "Roland Garros",
+      "to": "Raket"
+    },
+    {
+      "from": "US Open",
+      "to": "Spor"
+    },
+    {
+      "from": "US Open",
+      "to": "Maç"
+    },
+    {
+      "from": "US Open",
+      "to": "Tenis"
+    },
+    {
+      "from": "US Open",
+      "to": "Servis"
+    },
+    {
+      "from": "US Open",
+      "to": "Avustralya Açık"
+    },
+    {
+      "from": "US Open",
+      "to": "Kort"
+    },
+    {
+      "from": "US Open",
+      "to": "Raket"
+    },
+    {
+      "from": "Avustralya Açık",
+      "to": "Spor"
+    },
+    {
+      "from": "Avustralya Açık",
+      "to": "Maç"
+    },
+    {
+      "from": "Avustralya Açık",
+      "to": "Tenis"
+    },
+    {
+      "from": "Avustralya Açık",
+      "to": "Servis"
+    },
+    {
+      "from": "Avustralya Açık",
+      "to": "Kort"
+    },
+    {
+      "from": "Avustralya Açık",
+      "to": "Raket"
+    },
+    {
+      "from": "Avustralya Açık",
+      "to": "File"
+    },
+    {
+      "from": "Kort",
+      "to": "Spor"
+    },
+    {
+      "from": "Kort",
+      "to": "Maç"
+    },
+    {
+      "from": "Kort",
+      "to": "Tenis"
+    },
+    {
+      "from": "Kort",
+      "to": "Servis"
+    },
+    {
+      "from": "Kort",
+      "to": "Raket"
+    },
+    {
+      "from": "Kort",
+      "to": "File"
+    },
+    {
+      "from": "Kort",
+      "to": "Çim Kort"
+    },
+    {
+      "from": "Raket",
+      "to": "Spor"
+    },
+    {
+      "from": "Raket",
+      "to": "Maç"
+    },
+    {
+      "from": "Raket",
+      "to": "Tenis"
+    },
+    {
+      "from": "Raket",
+      "to": "Servis"
+    },
+    {
+      "from": "Raket",
+      "to": "File"
+    },
+    {
+      "from": "Raket",
+      "to": "Çim Kort"
+    },
+    {
+      "from": "Raket",
+      "to": "Toprak Kort"
+    },
+    {
+      "from": "File",
+      "to": "Spor"
+    },
+    {
+      "from": "File",
+      "to": "Maç"
+    },
+    {
+      "from": "File",
+      "to": "Tenis"
+    },
+    {
+      "from": "File",
+      "to": "Servis"
+    },
+    {
+      "from": "File",
+      "to": "Raket"
+    },
+    {
+      "from": "File",
+      "to": "Çim Kort"
+    },
+    {
+      "from": "File",
+      "to": "Toprak Kort"
+    },
+    {
+      "from": "File",
+      "to": "Sert Kort"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Spor"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Maç"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Tenis"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Servis"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Raket"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Toprak Kort"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Sert Kort"
+    },
+    {
+      "from": "Çim Kort",
+      "to": "Çiftler"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Spor"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Maç"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Tenis"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Servis"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Raket"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Sert Kort"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Çiftler"
+    },
+    {
+      "from": "Toprak Kort",
+      "to": "Tekler"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Spor"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Maç"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Tenis"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Servis"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Raket"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Çiftler"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Tekler"
+    },
+    {
+      "from": "Sert Kort",
+      "to": "Maç Sayısı"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Spor"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Maç"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Tenis"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Servis"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Raket"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Tekler"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Maç Sayısı"
+    },
+    {
+      "from": "Çiftler",
+      "to": "Oyun Sayısı"
+    },
+    {
+      "from": "Tekler",
+      "to": "Spor"
+    },
+    {
+      "from": "Tekler",
+      "to": "Maç"
+    },
+    {
+      "from": "Tekler",
+      "to": "Tenis"
+    },
+    {
+      "from": "Tekler",
+      "to": "Servis"
+    },
+    {
+      "from": "Tekler",
+      "to": "Raket"
+    },
+    {
+      "from": "Tekler",
+      "to": "Maç Sayısı"
+    },
+    {
+      "from": "Tekler",
+      "to": "Oyun Sayısı"
+    },
+    {
+      "from": "Tekler",
+      "to": "Break Point"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Spor"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Maç"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Tenis"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Servis"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Raket"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Oyun Sayısı"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Break Point"
+    },
+    {
+      "from": "Maç Sayısı",
+      "to": "Tenis Topu"
+    },
+    {
+      "from": "Oyun Sayısı",
+      "to": "Spor"
+    },
+    {
+      "from": "Oyun Sayısı",
+      "to": "Maç"
+    },
+    {
+      "from": "Oyun Sayısı",
+      "to": "Tenis"
+    },
+    {
+      "from": "Oyun Sayısı",
+      "to": "Servis"
+    },
+    {
+      "from": "Oyun Sayısı",
+      "to": "Raket"
+    },
+    {
+      "from": "Oyun Sayısı",
+      "to": "Break Point"
+    },
+    {
+      "from": "Oyun Sayısı",
+      "to": "Tenis Topu"
+    },
+    {
+      "from": "Break Point",
+      "to": "Spor"
+    },
+    {
+      "from": "Break Point",
+      "to": "Maç"
+    },
+    {
+      "from": "Break Point",
+      "to": "Tenis"
+    },
+    {
+      "from": "Break Point",
+      "to": "Servis"
+    },
+    {
+      "from": "Break Point",
+      "to": "Forehand"
+    },
+    {
+      "from": "Break Point",
+      "to": "Raket"
+    },
+    {
+      "from": "Break Point",
+      "to": "Tenis Topu"
+    },
+    {
+      "from": "Tenis Topu",
+      "to": "Spor"
+    },
+    {
+      "from": "Tenis Topu",
+      "to": "Maç"
+    },
+    {
+      "from": "Tenis Topu",
+      "to": "Tenis"
+    },
+    {
+      "from": "Tenis Topu",
+      "to": "Servis"
+    },
+    {
+      "from": "Tenis Topu",
+      "to": "Forehand"
+    },
+    {
+      "from": "Tenis Topu",
+      "to": "Backhand"
+    },
+    {
+      "from": "Tenis Topu",
+      "to": "Raket"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Spor"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Maç"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Servis Karşılama"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Pasör"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Libero"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Orta Oyuncu"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Voleybol Filesi"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Voleybol Sahası"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Challenge"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Milletler Ligi"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Sultanlar Ligi"
+    },
+    {
+      "from": "Voleybol",
+      "to": "Filenin Sultanları"
+    },
+    {
+      "from": "Servis Karşılama",
+      "to": "Spor"
+    },
+    {
+      "from": "Servis Karşılama",
+      "to": "Maç"
+    },
+    {
+      "from": "Servis Karşılama",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Servis Karşılama",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Servis Karşılama",
+      "to": "Pasör"
+    },
+    {
+      "from": "Servis Karşılama",
+      "to": "Libero"
+    },
+    {
+      "from": "Servis Karşılama",
+      "to": "Orta Oyuncu"
+    },
+    {
+      "from": "Smaçör",
+      "to": "Spor"
+    },
+    {
+      "from": "Smaçör",
+      "to": "Maç"
+    },
+    {
+      "from": "Smaçör",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Smaçör",
+      "to": "Pasör"
+    },
+    {
+      "from": "Smaçör",
+      "to": "Libero"
+    },
+    {
+      "from": "Smaçör",
+      "to": "Orta Oyuncu"
+    },
+    {
+      "from": "Smaçör",
+      "to": "Blokçu"
+    },
+    {
+      "from": "Pasör",
+      "to": "Spor"
+    },
+    {
+      "from": "Pasör",
+      "to": "Maç"
+    },
+    {
+      "from": "Pasör",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Pasör",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Pasör",
+      "to": "Libero"
+    },
+    {
+      "from": "Pasör",
+      "to": "Orta Oyuncu"
+    },
+    {
+      "from": "Pasör",
+      "to": "Blokçu"
+    },
+    {
+      "from": "Libero",
+      "to": "Spor"
+    },
+    {
+      "from": "Libero",
+      "to": "Maç"
+    },
+    {
+      "from": "Libero",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Libero",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Libero",
+      "to": "Pasör"
+    },
+    {
+      "from": "Libero",
+      "to": "Orta Oyuncu"
+    },
+    {
+      "from": "Libero",
+      "to": "Blokçu"
+    },
+    {
+      "from": "Libero",
+      "to": "Manşet"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Spor"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Maç"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Pasör"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Blokçu"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Manşet"
+    },
+    {
+      "from": "Orta Oyuncu",
+      "to": "Plase"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Spor"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Maç"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Pasör"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Manşet"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Plase"
+    },
+    {
+      "from": "Blokçu",
+      "to": "Set Sayısı"
+    },
+    {
+      "from": "Manşet",
+      "to": "Spor"
+    },
+    {
+      "from": "Manşet",
+      "to": "Maç"
+    },
+    {
+      "from": "Manşet",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Manşet",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Manşet",
+      "to": "Pasör"
+    },
+    {
+      "from": "Manşet",
+      "to": "Plase"
+    },
+    {
+      "from": "Manşet",
+      "to": "Set Sayısı"
+    },
+    {
+      "from": "Manşet",
+      "to": "Voleybol Filesi"
+    },
+    {
+      "from": "Plase",
+      "to": "Spor"
+    },
+    {
+      "from": "Plase",
+      "to": "Maç"
+    },
+    {
+      "from": "Plase",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Plase",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Plase",
+      "to": "Pasör"
+    },
+    {
+      "from": "Plase",
+      "to": "Set Sayısı"
+    },
+    {
+      "from": "Plase",
+      "to": "Voleybol Filesi"
+    },
+    {
+      "from": "Plase",
+      "to": "Voleybol Topu"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Spor"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Maç"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Pasör"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Voleybol Filesi"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Voleybol Topu"
+    },
+    {
+      "from": "Set Sayısı",
+      "to": "Hücum Hattı"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Spor"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Maç"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Pasör"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Voleybol Topu"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Hücum Hattı"
+    },
+    {
+      "from": "Voleybol Filesi",
+      "to": "Arka Alan"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Spor"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Maç"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Pasör"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Hücum Hattı"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Arka Alan"
+    },
+    {
+      "from": "Voleybol Topu",
+      "to": "Rotasyon"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Spor"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Maç"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Pasör"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Arka Alan"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Rotasyon"
+    },
+    {
+      "from": "Hücum Hattı",
+      "to": "Sayılık Blok"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Spor"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Maç"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Pasör"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Rotasyon"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Sayılık Blok"
+    },
+    {
+      "from": "Arka Alan",
+      "to": "Pasör Çaprazı"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Spor"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Maç"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Pasör"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Sayılık Blok"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Pasör Çaprazı"
+    },
+    {
+      "from": "Rotasyon",
+      "to": "Servis Hatası"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Spor"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Maç"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Pasör"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Pasör Çaprazı"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Servis Hatası"
+    },
+    {
+      "from": "Sayılık Blok",
+      "to": "Ralli"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Spor"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Maç"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Pasör"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Servis Hatası"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Ralli"
+    },
+    {
+      "from": "Pasör Çaprazı",
+      "to": "Voleybol Sahası"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Spor"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Maç"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Pasör"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Ralli"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Voleybol Sahası"
+    },
+    {
+      "from": "Servis Hatası",
+      "to": "Challenge"
+    },
+    {
+      "from": "Ralli",
+      "to": "Spor"
+    },
+    {
+      "from": "Ralli",
+      "to": "Maç"
+    },
+    {
+      "from": "Ralli",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Ralli",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Ralli",
+      "to": "Pasör"
+    },
+    {
+      "from": "Ralli",
+      "to": "Voleybol Sahası"
+    },
+    {
+      "from": "Ralli",
+      "to": "Challenge"
+    },
+    {
+      "from": "Ralli",
+      "to": "Milletler Ligi"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Spor"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Maç"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Pasör"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Challenge"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Milletler Ligi"
+    },
+    {
+      "from": "Voleybol Sahası",
+      "to": "Efeler Ligi"
+    },
+    {
+      "from": "Challenge",
+      "to": "Spor"
+    },
+    {
+      "from": "Challenge",
+      "to": "Maç"
+    },
+    {
+      "from": "Challenge",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Challenge",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Challenge",
+      "to": "Pasör"
+    },
+    {
+      "from": "Challenge",
+      "to": "Milletler Ligi"
+    },
+    {
+      "from": "Challenge",
+      "to": "Efeler Ligi"
+    },
+    {
+      "from": "Challenge",
+      "to": "Sultanlar Ligi"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Spor"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Maç"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Pasör"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Efeler Ligi"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Sultanlar Ligi"
+    },
+    {
+      "from": "Milletler Ligi",
+      "to": "Altın Set"
+    },
+    {
+      "from": "Efeler Ligi",
+      "to": "Spor"
+    },
+    {
+      "from": "Efeler Ligi",
+      "to": "Maç"
+    },
+    {
+      "from": "Efeler Ligi",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Efeler Ligi",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Efeler Ligi",
+      "to": "Pasör"
+    },
+    {
+      "from": "Efeler Ligi",
+      "to": "Sultanlar Ligi"
+    },
+    {
+      "from": "Efeler Ligi",
+      "to": "Altın Set"
+    },
+    {
+      "from": "Sultanlar Ligi",
+      "to": "Spor"
+    },
+    {
+      "from": "Sultanlar Ligi",
+      "to": "Maç"
+    },
+    {
+      "from": "Sultanlar Ligi",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Sultanlar Ligi",
+      "to": "Servis Karşılama"
+    },
+    {
+      "from": "Sultanlar Ligi",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Sultanlar Ligi",
+      "to": "Pasör"
+    },
+    {
+      "from": "Sultanlar Ligi",
+      "to": "Altın Set"
+    },
+    {
+      "from": "Altın Set",
+      "to": "Spor"
+    },
+    {
+      "from": "Altın Set",
+      "to": "Maç"
+    },
+    {
+      "from": "Altın Set",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Altın Set",
+      "to": "Servis Karşılama"
+    },
+    {
+      "from": "Altın Set",
+      "to": "Smaçör"
+    },
+    {
+      "from": "Altın Set",
+      "to": "Pasör"
+    },
+    {
+      "from": "Altın Set",
+      "to": "Libero"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Spor"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Maç"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Pilot"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Yarış Arabası"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Pole Pozisyonu"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Sıralama Turu"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Grand Prix"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Podyum"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Kask"
+    },
+    {
+      "from": "Formula 1",
+      "to": "Yarış Mühendisi"
+    },
+    {
+      "from": "Pilot",
+      "to": "Spor"
+    },
+    {
+      "from": "Pilot",
+      "to": "Maç"
+    },
+    {
+      "from": "Pilot",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Pilot",
+      "to": "Yarış Arabası"
+    },
+    {
+      "from": "Pilot",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Pilot",
+      "to": "Pole Pozisyonu"
+    },
+    {
+      "from": "Pilot",
+      "to": "Sıralama Turu"
+    },
+    {
+      "from": "Yarış Arabası",
+      "to": "Spor"
+    },
+    {
+      "from": "Yarış Arabası",
+      "to": "Maç"
+    },
+    {
+      "from": "Yarış Arabası",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Yarış Arabası",
+      "to": "Pilot"
+    },
+    {
+      "from": "Yarış Arabası",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Yarış Arabası",
+      "to": "Pole Pozisyonu"
+    },
+    {
+      "from": "Yarış Arabası",
+      "to": "Sıralama Turu"
+    },
+    {
+      "from": "Pit Stop",
+      "to": "Spor"
+    },
+    {
+      "from": "Pit Stop",
+      "to": "Maç"
+    },
+    {
+      "from": "Pit Stop",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Pit Stop",
+      "to": "Pilot"
+    },
+    {
+      "from": "Pit Stop",
+      "to": "Pole Pozisyonu"
+    },
+    {
+      "from": "Pit Stop",
+      "to": "Sıralama Turu"
+    },
+    {
+      "from": "Pit Stop",
+      "to": "Grand Prix"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "Spor"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "Maç"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "Pilot"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "Sıralama Turu"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "Grand Prix"
+    },
+    {
+      "from": "Pole Pozisyonu",
+      "to": "DRS"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "Spor"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "Maç"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "Pilot"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "Grand Prix"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "DRS"
+    },
+    {
+      "from": "Sıralama Turu",
+      "to": "Lastik Stratejisi"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "Spor"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "Maç"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "Pilot"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "DRS"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "Lastik Stratejisi"
+    },
+    {
+      "from": "Grand Prix",
+      "to": "Güvenlik Aracı"
+    },
+    {
+      "from": "DRS",
+      "to": "Spor"
+    },
+    {
+      "from": "DRS",
+      "to": "Maç"
+    },
+    {
+      "from": "DRS",
+      "to": "Formula 1"
+    },
+    {
+      "from": "DRS",
+      "to": "Pilot"
+    },
+    {
+      "from": "DRS",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "DRS",
+      "to": "Lastik Stratejisi"
+    },
+    {
+      "from": "DRS",
+      "to": "Güvenlik Aracı"
+    },
+    {
+      "from": "DRS",
+      "to": "Podyum"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Spor"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Maç"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Pilot"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Güvenlik Aracı"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Podyum"
+    },
+    {
+      "from": "Lastik Stratejisi",
+      "to": "Monako GP"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Spor"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Maç"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Pilot"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Podyum"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Monako GP"
+    },
+    {
+      "from": "Güvenlik Aracı",
+      "to": "Silverstone"
+    },
+    {
+      "from": "Podyum",
+      "to": "Spor"
+    },
+    {
+      "from": "Podyum",
+      "to": "Maç"
+    },
+    {
+      "from": "Podyum",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Podyum",
+      "to": "Pilot"
+    },
+    {
+      "from": "Podyum",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Podyum",
+      "to": "Monako GP"
+    },
+    {
+      "from": "Podyum",
+      "to": "Silverstone"
+    },
+    {
+      "from": "Podyum",
+      "to": "Spa Pisti"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Spor"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Maç"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Pilot"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Silverstone"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Spa Pisti"
+    },
+    {
+      "from": "Monako GP",
+      "to": "Ferrari"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Spor"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Maç"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Pilot"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Spa Pisti"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Ferrari"
+    },
+    {
+      "from": "Silverstone",
+      "to": "Mercedes"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Spor"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Maç"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Pilot"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Ferrari"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Mercedes"
+    },
+    {
+      "from": "Spa Pisti",
+      "to": "Red Bull"
+    },
+    {
+      "from": "Ferrari",
+      "to": "Spor"
+    },
+    {
+      "from": "Ferrari",
+      "to": "Maç"
+    },
+    {
+      "from": "Ferrari",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Ferrari",
+      "to": "Pilot"
+    },
+    {
+      "from": "Ferrari",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Ferrari",
+      "to": "Mercedes"
+    },
+    {
+      "from": "Ferrari",
+      "to": "Red Bull"
+    },
+    {
+      "from": "Ferrari",
+      "to": "McLaren"
+    },
+    {
+      "from": "Mercedes",
+      "to": "Spor"
+    },
+    {
+      "from": "Mercedes",
+      "to": "Maç"
+    },
+    {
+      "from": "Mercedes",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Mercedes",
+      "to": "Pilot"
+    },
+    {
+      "from": "Mercedes",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Mercedes",
+      "to": "Red Bull"
+    },
+    {
+      "from": "Mercedes",
+      "to": "McLaren"
+    },
+    {
+      "from": "Mercedes",
+      "to": "Viraj"
+    },
+    {
+      "from": "Red Bull",
+      "to": "Spor"
+    },
+    {
+      "from": "Red Bull",
+      "to": "Maç"
+    },
+    {
+      "from": "Red Bull",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Red Bull",
+      "to": "Pilot"
+    },
+    {
+      "from": "Red Bull",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Red Bull",
+      "to": "McLaren"
+    },
+    {
+      "from": "Red Bull",
+      "to": "Viraj"
+    },
+    {
+      "from": "Red Bull",
+      "to": "Düzlük"
+    },
+    {
+      "from": "McLaren",
+      "to": "Spor"
+    },
+    {
+      "from": "McLaren",
+      "to": "Maç"
+    },
+    {
+      "from": "McLaren",
+      "to": "Formula 1"
+    },
+    {
+      "from": "McLaren",
+      "to": "Pilot"
+    },
+    {
+      "from": "McLaren",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "McLaren",
+      "to": "Viraj"
+    },
+    {
+      "from": "McLaren",
+      "to": "Düzlük"
+    },
+    {
+      "from": "McLaren",
+      "to": "Şikan"
+    },
+    {
+      "from": "Viraj",
+      "to": "Spor"
+    },
+    {
+      "from": "Viraj",
+      "to": "Maç"
+    },
+    {
+      "from": "Viraj",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Viraj",
+      "to": "Pilot"
+    },
+    {
+      "from": "Viraj",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Viraj",
+      "to": "Düzlük"
+    },
+    {
+      "from": "Viraj",
+      "to": "Şikan"
+    },
+    {
+      "from": "Viraj",
+      "to": "Kask"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Spor"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Maç"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Pilot"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Şikan"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Kask"
+    },
+    {
+      "from": "Düzlük",
+      "to": "Kokpit"
+    },
+    {
+      "from": "Şikan",
+      "to": "Spor"
+    },
+    {
+      "from": "Şikan",
+      "to": "Maç"
+    },
+    {
+      "from": "Şikan",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Şikan",
+      "to": "Pilot"
+    },
+    {
+      "from": "Şikan",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Şikan",
+      "to": "Kask"
+    },
+    {
+      "from": "Şikan",
+      "to": "Kokpit"
+    },
+    {
+      "from": "Şikan",
+      "to": "Telsiz"
+    },
+    {
+      "from": "Kask",
+      "to": "Spor"
+    },
+    {
+      "from": "Kask",
+      "to": "Maç"
+    },
+    {
+      "from": "Kask",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Kask",
+      "to": "Pilot"
+    },
+    {
+      "from": "Kask",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Kask",
+      "to": "Kokpit"
+    },
+    {
+      "from": "Kask",
+      "to": "Telsiz"
+    },
+    {
+      "from": "Kask",
+      "to": "Yarış Mühendisi"
+    },
+    {
+      "from": "Kokpit",
+      "to": "Spor"
+    },
+    {
+      "from": "Kokpit",
+      "to": "Maç"
+    },
+    {
+      "from": "Kokpit",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Kokpit",
+      "to": "Pilot"
+    },
+    {
+      "from": "Kokpit",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Kokpit",
+      "to": "Telsiz"
+    },
+    {
+      "from": "Kokpit",
+      "to": "Yarış Mühendisi"
+    },
+    {
+      "from": "Telsiz",
+      "to": "Spor"
+    },
+    {
+      "from": "Telsiz",
+      "to": "Maç"
+    },
+    {
+      "from": "Telsiz",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Telsiz",
+      "to": "Pilot"
+    },
+    {
+      "from": "Telsiz",
+      "to": "Yarış Arabası"
+    },
+    {
+      "from": "Telsiz",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Telsiz",
+      "to": "Yarış Mühendisi"
+    },
+    {
+      "from": "Yarış Mühendisi",
+      "to": "Spor"
+    },
+    {
+      "from": "Yarış Mühendisi",
+      "to": "Maç"
+    },
+    {
+      "from": "Yarış Mühendisi",
+      "to": "Formula 1"
+    },
+    {
+      "from": "Yarış Mühendisi",
+      "to": "Pilot"
+    },
+    {
+      "from": "Yarış Mühendisi",
+      "to": "Yarış Arabası"
+    },
+    {
+      "from": "Yarış Mühendisi",
+      "to": "Pit Stop"
+    },
+    {
+      "from": "Yarış Mühendisi",
+      "to": "Pole Pozisyonu"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Spor"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Maç"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Olimpiyat Halkaları"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Gümüş Madalya"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Bronz Madalya"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Olimpiyat Köyü"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Meşale"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Paralimpik Oyunlar"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Kış Olimpiyatları"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Olimpiyatlar",
+      "to": "Doping Kontrolü"
+    },
+    {
+      "from": "Olimpiyat Halkaları",
+      "to": "Spor"
+    },
+    {
+      "from": "Olimpiyat Halkaları",
+      "to": "Maç"
+    },
+    {
+      "from": "Olimpiyat Halkaları",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Olimpiyat Halkaları",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Olimpiyat Halkaları",
+      "to": "Gümüş Madalya"
+    },
+    {
+      "from": "Olimpiyat Halkaları",
+      "to": "Bronz Madalya"
+    },
+    {
+      "from": "Olimpiyat Halkaları",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Altın Madalya",
+      "to": "Spor"
+    },
+    {
+      "from": "Altın Madalya",
+      "to": "Maç"
+    },
+    {
+      "from": "Altın Madalya",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Altın Madalya",
+      "to": "Gümüş Madalya"
+    },
+    {
+      "from": "Altın Madalya",
+      "to": "Bronz Madalya"
+    },
+    {
+      "from": "Altın Madalya",
+      "to": "Açılış Töreni"
+    },
+    {
+      "from": "Altın Madalya",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Spor"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Maç"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Bronz Madalya"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Açılış Töreni"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Olimpiyat Köyü"
+    },
+    {
+      "from": "Gümüş Madalya",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Spor"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Maç"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Açılış Töreni"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Olimpiyat Köyü"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Meşale"
+    },
+    {
+      "from": "Bronz Madalya",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Spor"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Maç"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Olimpiyat Köyü"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Meşale"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Paralimpik Oyunlar"
+    },
+    {
+      "from": "Açılış Töreni",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Spor"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Maç"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Meşale"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Paralimpik Oyunlar"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Kış Olimpiyatları"
+    },
+    {
+      "from": "Olimpiyat Köyü",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Meşale",
+      "to": "Spor"
+    },
+    {
+      "from": "Meşale",
+      "to": "Maç"
+    },
+    {
+      "from": "Meşale",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Meşale",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Meşale",
+      "to": "Paralimpik Oyunlar"
+    },
+    {
+      "from": "Meşale",
+      "to": "Kış Olimpiyatları"
+    },
+    {
+      "from": "Meşale",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Paralimpik Oyunlar",
+      "to": "Spor"
+    },
+    {
+      "from": "Paralimpik Oyunlar",
+      "to": "Maç"
+    },
+    {
+      "from": "Paralimpik Oyunlar",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Paralimpik Oyunlar",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Paralimpik Oyunlar",
+      "to": "Kış Olimpiyatları"
+    },
+    {
+      "from": "Paralimpik Oyunlar",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Paralimpik Oyunlar",
+      "to": "Jimnastik"
+    },
+    {
+      "from": "Kış Olimpiyatları",
+      "to": "Spor"
+    },
+    {
+      "from": "Kış Olimpiyatları",
+      "to": "Maç"
+    },
+    {
+      "from": "Kış Olimpiyatları",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Kış Olimpiyatları",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Kış Olimpiyatları",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Kış Olimpiyatları",
+      "to": "Jimnastik"
+    },
+    {
+      "from": "Kış Olimpiyatları",
+      "to": "Yüzme"
+    },
+    {
+      "from": "Yaz Olimpiyatları",
+      "to": "Spor"
+    },
+    {
+      "from": "Yaz Olimpiyatları",
+      "to": "Maç"
+    },
+    {
+      "from": "Yaz Olimpiyatları",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Yaz Olimpiyatları",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Yaz Olimpiyatları",
+      "to": "Jimnastik"
+    },
+    {
+      "from": "Yaz Olimpiyatları",
+      "to": "Yüzme"
+    },
+    {
+      "from": "Yaz Olimpiyatları",
+      "to": "Güreş"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Spor"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Maç"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Yüzme"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Güreş"
+    },
+    {
+      "from": "Jimnastik",
+      "to": "Halter"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Spor"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Maç"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Güreş"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Halter"
+    },
+    {
+      "from": "Yüzme",
+      "to": "Okçuluk"
+    },
+    {
+      "from": "Güreş",
+      "to": "Spor"
+    },
+    {
+      "from": "Güreş",
+      "to": "Maç"
+    },
+    {
+      "from": "Güreş",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Güreş",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Güreş",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Güreş",
+      "to": "Halter"
+    },
+    {
+      "from": "Güreş",
+      "to": "Okçuluk"
+    },
+    {
+      "from": "Güreş",
+      "to": "Boks"
+    },
+    {
+      "from": "Halter",
+      "to": "Spor"
+    },
+    {
+      "from": "Halter",
+      "to": "Maç"
+    },
+    {
+      "from": "Halter",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Halter",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Halter",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Halter",
+      "to": "Okçuluk"
+    },
+    {
+      "from": "Halter",
+      "to": "Boks"
+    },
+    {
+      "from": "Halter",
+      "to": "Judo"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Spor"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Maç"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Boks"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Judo"
+    },
+    {
+      "from": "Okçuluk",
+      "to": "Tekvando"
+    },
+    {
+      "from": "Boks",
+      "to": "Spor"
+    },
+    {
+      "from": "Boks",
+      "to": "Maç"
+    },
+    {
+      "from": "Boks",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Boks",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Boks",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Boks",
+      "to": "Judo"
+    },
+    {
+      "from": "Boks",
+      "to": "Tekvando"
+    },
+    {
+      "from": "Boks",
+      "to": "Bisiklet"
+    },
+    {
+      "from": "Judo",
+      "to": "Spor"
+    },
+    {
+      "from": "Judo",
+      "to": "Maç"
+    },
+    {
+      "from": "Judo",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Judo",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Judo",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Judo",
+      "to": "Tekvando"
+    },
+    {
+      "from": "Judo",
+      "to": "Bisiklet"
+    },
+    {
+      "from": "Judo",
+      "to": "Kürek"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Spor"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Maç"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Bisiklet"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Kürek"
+    },
+    {
+      "from": "Tekvando",
+      "to": "Yelken"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Spor"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Maç"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Kürek"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Yelken"
+    },
+    {
+      "from": "Bisiklet",
+      "to": "Triatlon"
+    },
+    {
+      "from": "Kürek",
+      "to": "Spor"
+    },
+    {
+      "from": "Kürek",
+      "to": "Maç"
+    },
+    {
+      "from": "Kürek",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Kürek",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Kürek",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Kürek",
+      "to": "Yelken"
+    },
+    {
+      "from": "Kürek",
+      "to": "Triatlon"
+    },
+    {
+      "from": "Kürek",
+      "to": "Madalyon Tablosu"
+    },
+    {
+      "from": "Yelken",
+      "to": "Spor"
+    },
+    {
+      "from": "Yelken",
+      "to": "Maç"
+    },
+    {
+      "from": "Yelken",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Yelken",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Yelken",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Yelken",
+      "to": "Triatlon"
+    },
+    {
+      "from": "Yelken",
+      "to": "Madalyon Tablosu"
+    },
+    {
+      "from": "Yelken",
+      "to": "Doping Kontrolü"
+    },
+    {
+      "from": "Triatlon",
+      "to": "Spor"
+    },
+    {
+      "from": "Triatlon",
+      "to": "Maç"
+    },
+    {
+      "from": "Triatlon",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Triatlon",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Triatlon",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Triatlon",
+      "to": "Madalyon Tablosu"
+    },
+    {
+      "from": "Triatlon",
+      "to": "Doping Kontrolü"
+    },
+    {
+      "from": "Madalyon Tablosu",
+      "to": "Spor"
+    },
+    {
+      "from": "Madalyon Tablosu",
+      "to": "Maç"
+    },
+    {
+      "from": "Madalyon Tablosu",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Madalyon Tablosu",
+      "to": "Olimpiyat Halkaları"
+    },
+    {
+      "from": "Madalyon Tablosu",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Madalyon Tablosu",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Madalyon Tablosu",
+      "to": "Doping Kontrolü"
+    },
+    {
+      "from": "Doping Kontrolü",
+      "to": "Spor"
+    },
+    {
+      "from": "Doping Kontrolü",
+      "to": "Maç"
+    },
+    {
+      "from": "Doping Kontrolü",
+      "to": "Olimpiyatlar"
+    },
+    {
+      "from": "Doping Kontrolü",
+      "to": "Olimpiyat Halkaları"
+    },
+    {
+      "from": "Doping Kontrolü",
+      "to": "Altın Madalya"
+    },
+    {
+      "from": "Doping Kontrolü",
+      "to": "Gümüş Madalya"
+    },
+    {
+      "from": "Doping Kontrolü",
+      "to": "Yaz Olimpiyatları"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Spor"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Maç"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Koşu"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Sprint"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Maraton"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Engelli Koşu"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Bayrak Yarışı"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Pist"
+    },
+    {
+      "from": "Atletizm",
+      "to": "Kulvar"
+    },
+    {
+      "from": "Koşu",
+      "to": "Spor"
+    },
+    {
+      "from": "Koşu",
+      "to": "Maç"
+    },
+    {
+      "from": "Koşu",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Koşu",
+      "to": "Sprint"
+    },
+    {
+      "from": "Koşu",
+      "to": "Maraton"
+    },
+    {
+      "from": "Koşu",
+      "to": "Engelli Koşu"
+    },
+    {
+      "from": "Koşu",
+      "to": "Bayrak Yarışı"
+    },
+    {
+      "from": "Sprint",
+      "to": "Spor"
+    },
+    {
+      "from": "Sprint",
+      "to": "Maç"
+    },
+    {
+      "from": "Sprint",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Sprint",
+      "to": "Koşu"
+    },
+    {
+      "from": "Sprint",
+      "to": "Maraton"
+    },
+    {
+      "from": "Sprint",
+      "to": "Engelli Koşu"
+    },
+    {
+      "from": "Sprint",
+      "to": "Bayrak Yarışı"
+    },
+    {
+      "from": "Maraton",
+      "to": "Spor"
+    },
+    {
+      "from": "Maraton",
+      "to": "Maç"
+    },
+    {
+      "from": "Maraton",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Maraton",
+      "to": "Koşu"
+    },
+    {
+      "from": "Maraton",
+      "to": "Engelli Koşu"
+    },
+    {
+      "from": "Maraton",
+      "to": "Bayrak Yarışı"
+    },
+    {
+      "from": "Maraton",
+      "to": "Uzun Atlama"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Spor"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Maç"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Koşu"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Maraton"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Bayrak Yarışı"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Uzun Atlama"
+    },
+    {
+      "from": "Engelli Koşu",
+      "to": "Yüksek Atlama"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Spor"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Maç"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Koşu"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Maraton"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Uzun Atlama"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Yüksek Atlama"
+    },
+    {
+      "from": "Bayrak Yarışı",
+      "to": "Sırıkla Atlama"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Spor"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Maç"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Koşu"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Maraton"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Yüksek Atlama"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Sırıkla Atlama"
+    },
+    {
+      "from": "Uzun Atlama",
+      "to": "Üç Adım Atlama"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Spor"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Maç"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Koşu"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Maraton"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Sırıkla Atlama"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Üç Adım Atlama"
+    },
+    {
+      "from": "Yüksek Atlama",
+      "to": "Gülle Atma"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Spor"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Maç"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Koşu"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Maraton"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Üç Adım Atlama"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Gülle Atma"
+    },
+    {
+      "from": "Sırıkla Atlama",
+      "to": "Disk Atma"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Spor"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Maç"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Koşu"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Maraton"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Gülle Atma"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Disk Atma"
+    },
+    {
+      "from": "Üç Adım Atlama",
+      "to": "Cirit Atma"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Spor"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Maç"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Koşu"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Maraton"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Disk Atma"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Cirit Atma"
+    },
+    {
+      "from": "Gülle Atma",
+      "to": "Çekiç Atma"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Spor"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Maç"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Koşu"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Maraton"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Cirit Atma"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Çekiç Atma"
+    },
+    {
+      "from": "Disk Atma",
+      "to": "Dekatlon"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Spor"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Maç"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Koşu"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Maraton"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Çekiç Atma"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Dekatlon"
+    },
+    {
+      "from": "Cirit Atma",
+      "to": "Heptatlon"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Spor"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Maç"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Koşu"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Maraton"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Dekatlon"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Heptatlon"
+    },
+    {
+      "from": "Çekiç Atma",
+      "to": "Pist"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Spor"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Maç"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Koşu"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Maraton"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Heptatlon"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Pist"
+    },
+    {
+      "from": "Dekatlon",
+      "to": "Kulvar"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Spor"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Maç"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Koşu"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Maraton"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Pist"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Kulvar"
+    },
+    {
+      "from": "Heptatlon",
+      "to": "Start Takozu"
+    },
+    {
+      "from": "Pist",
+      "to": "Spor"
+    },
+    {
+      "from": "Pist",
+      "to": "Maç"
+    },
+    {
+      "from": "Pist",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Pist",
+      "to": "Koşu"
+    },
+    {
+      "from": "Pist",
+      "to": "Maraton"
+    },
+    {
+      "from": "Pist",
+      "to": "Kulvar"
+    },
+    {
+      "from": "Pist",
+      "to": "Start Takozu"
+    },
+    {
+      "from": "Pist",
+      "to": "Finiş Çizgisi"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Spor"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Maç"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Koşu"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Maraton"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Start Takozu"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Finiş Çizgisi"
+    },
+    {
+      "from": "Kulvar",
+      "to": "Kronometre"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Spor"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Maç"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Koşu"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Maraton"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Finiş Çizgisi"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Kronometre"
+    },
+    {
+      "from": "Start Takozu",
+      "to": "Kros"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Spor"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Maç"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Koşu"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Maraton"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Kronometre"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Kros"
+    },
+    {
+      "from": "Finiş Çizgisi",
+      "to": "Tempo"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Spor"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Maç"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Koşu"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Maraton"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Kros"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Tempo"
+    },
+    {
+      "from": "Kronometre",
+      "to": "Nefes Kontrolü"
+    },
+    {
+      "from": "Kros",
+      "to": "Spor"
+    },
+    {
+      "from": "Kros",
+      "to": "Maç"
+    },
+    {
+      "from": "Kros",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Kros",
+      "to": "Koşu"
+    },
+    {
+      "from": "Kros",
+      "to": "Maraton"
+    },
+    {
+      "from": "Kros",
+      "to": "Tempo"
+    },
+    {
+      "from": "Kros",
+      "to": "Nefes Kontrolü"
+    },
+    {
+      "from": "Kros",
+      "to": "Atletizm Ayakkabısı"
+    },
+    {
+      "from": "Tempo",
+      "to": "Spor"
+    },
+    {
+      "from": "Tempo",
+      "to": "Maç"
+    },
+    {
+      "from": "Tempo",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Tempo",
+      "to": "Koşu"
+    },
+    {
+      "from": "Tempo",
+      "to": "Maraton"
+    },
+    {
+      "from": "Tempo",
+      "to": "Nefes Kontrolü"
+    },
+    {
+      "from": "Tempo",
+      "to": "Atletizm Ayakkabısı"
+    },
+    {
+      "from": "Nefes Kontrolü",
+      "to": "Spor"
+    },
+    {
+      "from": "Nefes Kontrolü",
+      "to": "Maç"
+    },
+    {
+      "from": "Nefes Kontrolü",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Nefes Kontrolü",
+      "to": "Koşu"
+    },
+    {
+      "from": "Nefes Kontrolü",
+      "to": "Sprint"
+    },
+    {
+      "from": "Nefes Kontrolü",
+      "to": "Maraton"
+    },
+    {
+      "from": "Nefes Kontrolü",
+      "to": "Atletizm Ayakkabısı"
+    },
+    {
+      "from": "Atletizm Ayakkabısı",
+      "to": "Spor"
+    },
+    {
+      "from": "Atletizm Ayakkabısı",
+      "to": "Maç"
+    },
+    {
+      "from": "Atletizm Ayakkabısı",
+      "to": "Atletizm"
+    },
+    {
+      "from": "Atletizm Ayakkabısı",
+      "to": "Koşu"
+    },
+    {
+      "from": "Atletizm Ayakkabısı",
+      "to": "Sprint"
+    },
+    {
+      "from": "Atletizm Ayakkabısı",
+      "to": "Maraton"
+    },
+    {
+      "from": "Atletizm Ayakkabısı",
+      "to": "Engelli Koşu"
+    },
+    {
+      "from": "Lionel Messi",
+      "to": "Spor"
+    },
+    {
+      "from": "Lionel Messi",
+      "to": "Maç"
+    },
+    {
+      "from": "Lionel Messi",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Lionel Messi",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Lionel Messi",
+      "to": "Cristiano Ronaldo"
+    },
+    {
+      "from": "Lionel Messi",
+      "to": "Arda Güler"
+    },
+    {
+      "from": "Lionel Messi",
+      "to": "Hakan Çalhanoğlu"
+    },
+    {
+      "from": "Cristiano Ronaldo",
+      "to": "Spor"
+    },
+    {
+      "from": "Cristiano Ronaldo",
+      "to": "Maç"
+    },
+    {
+      "from": "Cristiano Ronaldo",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Cristiano Ronaldo",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Cristiano Ronaldo",
+      "to": "Arda Güler"
+    },
+    {
+      "from": "Cristiano Ronaldo",
+      "to": "Hakan Çalhanoğlu"
+    },
+    {
+      "from": "Cristiano Ronaldo",
+      "to": "Michael Jordan"
+    },
+    {
+      "from": "Arda Güler",
+      "to": "Spor"
+    },
+    {
+      "from": "Arda Güler",
+      "to": "Maç"
+    },
+    {
+      "from": "Arda Güler",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Arda Güler",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Arda Güler",
+      "to": "Hakan Çalhanoğlu"
+    },
+    {
+      "from": "Arda Güler",
+      "to": "Michael Jordan"
+    },
+    {
+      "from": "Arda Güler",
+      "to": "LeBron James"
+    },
+    {
+      "from": "Hakan Çalhanoğlu",
+      "to": "Spor"
+    },
+    {
+      "from": "Hakan Çalhanoğlu",
+      "to": "Maç"
+    },
+    {
+      "from": "Hakan Çalhanoğlu",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Hakan Çalhanoğlu",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Hakan Çalhanoğlu",
+      "to": "Michael Jordan"
+    },
+    {
+      "from": "Hakan Çalhanoğlu",
+      "to": "LeBron James"
+    },
+    {
+      "from": "Hakan Çalhanoğlu",
+      "to": "Stephen Curry"
+    },
+    {
+      "from": "Michael Jordan",
+      "to": "Spor"
+    },
+    {
+      "from": "Michael Jordan",
+      "to": "Maç"
+    },
+    {
+      "from": "Michael Jordan",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Michael Jordan",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Michael Jordan",
+      "to": "LeBron James"
+    },
+    {
+      "from": "Michael Jordan",
+      "to": "Stephen Curry"
+    },
+    {
+      "from": "Michael Jordan",
+      "to": "Alperen Şengün"
+    },
+    {
+      "from": "LeBron James",
+      "to": "Spor"
+    },
+    {
+      "from": "LeBron James",
+      "to": "Maç"
+    },
+    {
+      "from": "LeBron James",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "LeBron James",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "LeBron James",
+      "to": "Stephen Curry"
+    },
+    {
+      "from": "LeBron James",
+      "to": "Alperen Şengün"
+    },
+    {
+      "from": "LeBron James",
+      "to": "Roger Federer"
+    },
+    {
+      "from": "Stephen Curry",
+      "to": "Spor"
+    },
+    {
+      "from": "Stephen Curry",
+      "to": "Maç"
+    },
+    {
+      "from": "Stephen Curry",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Stephen Curry",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Stephen Curry",
+      "to": "Alperen Şengün"
+    },
+    {
+      "from": "Stephen Curry",
+      "to": "Roger Federer"
+    },
+    {
+      "from": "Stephen Curry",
+      "to": "Rafael Nadal"
+    },
+    {
+      "from": "Alperen Şengün",
+      "to": "Spor"
+    },
+    {
+      "from": "Alperen Şengün",
+      "to": "Maç"
+    },
+    {
+      "from": "Alperen Şengün",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Alperen Şengün",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Alperen Şengün",
+      "to": "Roger Federer"
+    },
+    {
+      "from": "Alperen Şengün",
+      "to": "Rafael Nadal"
+    },
+    {
+      "from": "Alperen Şengün",
+      "to": "Novak Djokovic"
+    },
+    {
+      "from": "Roger Federer",
+      "to": "Spor"
+    },
+    {
+      "from": "Roger Federer",
+      "to": "Maç"
+    },
+    {
+      "from": "Roger Federer",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Roger Federer",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Roger Federer",
+      "to": "Rafael Nadal"
+    },
+    {
+      "from": "Roger Federer",
+      "to": "Novak Djokovic"
+    },
+    {
+      "from": "Roger Federer",
+      "to": "Serena Williams"
+    },
+    {
+      "from": "Rafael Nadal",
+      "to": "Spor"
+    },
+    {
+      "from": "Rafael Nadal",
+      "to": "Maç"
+    },
+    {
+      "from": "Rafael Nadal",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Rafael Nadal",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Rafael Nadal",
+      "to": "Novak Djokovic"
+    },
+    {
+      "from": "Rafael Nadal",
+      "to": "Serena Williams"
+    },
+    {
+      "from": "Rafael Nadal",
+      "to": "Eda Erdem"
+    },
+    {
+      "from": "Novak Djokovic",
+      "to": "Spor"
+    },
+    {
+      "from": "Novak Djokovic",
+      "to": "Maç"
+    },
+    {
+      "from": "Novak Djokovic",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Novak Djokovic",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Novak Djokovic",
+      "to": "Serena Williams"
+    },
+    {
+      "from": "Novak Djokovic",
+      "to": "Eda Erdem"
+    },
+    {
+      "from": "Novak Djokovic",
+      "to": "Melissa Vargas"
+    },
+    {
+      "from": "Serena Williams",
+      "to": "Spor"
+    },
+    {
+      "from": "Serena Williams",
+      "to": "Maç"
+    },
+    {
+      "from": "Serena Williams",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Serena Williams",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Serena Williams",
+      "to": "Eda Erdem"
+    },
+    {
+      "from": "Serena Williams",
+      "to": "Melissa Vargas"
+    },
+    {
+      "from": "Serena Williams",
+      "to": "Lewis Hamilton"
+    },
+    {
+      "from": "Eda Erdem",
+      "to": "Spor"
+    },
+    {
+      "from": "Eda Erdem",
+      "to": "Maç"
+    },
+    {
+      "from": "Eda Erdem",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Eda Erdem",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Eda Erdem",
+      "to": "Melissa Vargas"
+    },
+    {
+      "from": "Eda Erdem",
+      "to": "Lewis Hamilton"
+    },
+    {
+      "from": "Eda Erdem",
+      "to": "Max Verstappen"
+    },
+    {
+      "from": "Melissa Vargas",
+      "to": "Spor"
+    },
+    {
+      "from": "Melissa Vargas",
+      "to": "Maç"
+    },
+    {
+      "from": "Melissa Vargas",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Melissa Vargas",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Melissa Vargas",
+      "to": "Lewis Hamilton"
+    },
+    {
+      "from": "Melissa Vargas",
+      "to": "Max Verstappen"
+    },
+    {
+      "from": "Melissa Vargas",
+      "to": "Michael Schumacher"
+    },
+    {
+      "from": "Lewis Hamilton",
+      "to": "Spor"
+    },
+    {
+      "from": "Lewis Hamilton",
+      "to": "Maç"
+    },
+    {
+      "from": "Lewis Hamilton",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Lewis Hamilton",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Lewis Hamilton",
+      "to": "Max Verstappen"
+    },
+    {
+      "from": "Lewis Hamilton",
+      "to": "Michael Schumacher"
+    },
+    {
+      "from": "Lewis Hamilton",
+      "to": "Usain Bolt"
+    },
+    {
+      "from": "Max Verstappen",
+      "to": "Spor"
+    },
+    {
+      "from": "Max Verstappen",
+      "to": "Maç"
+    },
+    {
+      "from": "Max Verstappen",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Max Verstappen",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Max Verstappen",
+      "to": "Michael Schumacher"
+    },
+    {
+      "from": "Max Verstappen",
+      "to": "Usain Bolt"
+    },
+    {
+      "from": "Max Verstappen",
+      "to": "Eliud Kipchoge"
+    },
+    {
+      "from": "Michael Schumacher",
+      "to": "Spor"
+    },
+    {
+      "from": "Michael Schumacher",
+      "to": "Maç"
+    },
+    {
+      "from": "Michael Schumacher",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Michael Schumacher",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Michael Schumacher",
+      "to": "Usain Bolt"
+    },
+    {
+      "from": "Michael Schumacher",
+      "to": "Eliud Kipchoge"
+    },
+    {
+      "from": "Michael Schumacher",
+      "to": "Naim Süleymanoğlu"
+    },
+    {
+      "from": "Usain Bolt",
+      "to": "Spor"
+    },
+    {
+      "from": "Usain Bolt",
+      "to": "Maç"
+    },
+    {
+      "from": "Usain Bolt",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Usain Bolt",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Usain Bolt",
+      "to": "Eliud Kipchoge"
+    },
+    {
+      "from": "Usain Bolt",
+      "to": "Naim Süleymanoğlu"
+    },
+    {
+      "from": "Usain Bolt",
+      "to": "Rıza Kayaalp"
+    },
+    {
+      "from": "Eliud Kipchoge",
+      "to": "Spor"
+    },
+    {
+      "from": "Eliud Kipchoge",
+      "to": "Maç"
+    },
+    {
+      "from": "Eliud Kipchoge",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Eliud Kipchoge",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Eliud Kipchoge",
+      "to": "Naim Süleymanoğlu"
+    },
+    {
+      "from": "Eliud Kipchoge",
+      "to": "Rıza Kayaalp"
+    },
+    {
+      "from": "Eliud Kipchoge",
+      "to": "Mete Gazoz"
+    },
+    {
+      "from": "Naim Süleymanoğlu",
+      "to": "Spor"
+    },
+    {
+      "from": "Naim Süleymanoğlu",
+      "to": "Maç"
+    },
+    {
+      "from": "Naim Süleymanoğlu",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Naim Süleymanoğlu",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Naim Süleymanoğlu",
+      "to": "Rıza Kayaalp"
+    },
+    {
+      "from": "Naim Süleymanoğlu",
+      "to": "Mete Gazoz"
+    },
+    {
+      "from": "Naim Süleymanoğlu",
+      "to": "Filenin Sultanları"
+    },
+    {
+      "from": "Rıza Kayaalp",
+      "to": "Spor"
+    },
+    {
+      "from": "Rıza Kayaalp",
+      "to": "Maç"
+    },
+    {
+      "from": "Rıza Kayaalp",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Rıza Kayaalp",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Rıza Kayaalp",
+      "to": "Mete Gazoz"
+    },
+    {
+      "from": "Rıza Kayaalp",
+      "to": "Filenin Sultanları"
+    },
+    {
+      "from": "Rıza Kayaalp",
+      "to": "A Milli Futbol"
+    },
+    {
+      "from": "Mete Gazoz",
+      "to": "Spor"
+    },
+    {
+      "from": "Mete Gazoz",
+      "to": "Maç"
+    },
+    {
+      "from": "Mete Gazoz",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Mete Gazoz",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Mete Gazoz",
+      "to": "Filenin Sultanları"
+    },
+    {
+      "from": "Mete Gazoz",
+      "to": "A Milli Futbol"
+    },
+    {
+      "from": "Mete Gazoz",
+      "to": "A Milli Basketbol"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "Spor"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "Maç"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "Voleybol"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "Lionel Messi"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "A Milli Futbol"
+    },
+    {
+      "from": "Filenin Sultanları",
+      "to": "A Milli Basketbol"
+    },
+    {
+      "from": "A Milli Futbol",
+      "to": "Spor"
+    },
+    {
+      "from": "A Milli Futbol",
+      "to": "Maç"
+    },
+    {
+      "from": "A Milli Futbol",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "A Milli Futbol",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "A Milli Futbol",
+      "to": "Lionel Messi"
+    },
+    {
+      "from": "A Milli Futbol",
+      "to": "Cristiano Ronaldo"
+    },
+    {
+      "from": "A Milli Futbol",
+      "to": "A Milli Basketbol"
+    },
+    {
+      "from": "A Milli Basketbol",
+      "to": "Spor"
+    },
+    {
+      "from": "A Milli Basketbol",
+      "to": "Maç"
+    },
+    {
+      "from": "A Milli Basketbol",
+      "to": "Milli Takım"
+    },
+    {
+      "from": "A Milli Basketbol",
+      "to": "Şampiyonluk"
+    },
+    {
+      "from": "A Milli Basketbol",
+      "to": "Lionel Messi"
+    },
+    {
+      "from": "A Milli Basketbol",
+      "to": "Cristiano Ronaldo"
+    },
+    {
+      "from": "A Milli Basketbol",
+      "to": "Arda Güler"
+    },
+    {
+      "from": "Hakem",
+      "to": "Spor"
+    },
+    {
+      "from": "Hakem",
+      "to": "Maç"
+    },
+    {
+      "from": "Hakem",
+      "to": "Futbol"
+    },
+    {
+      "from": "Hakem",
+      "to": "Basketbol"
+    },
+    {
+      "from": "Hakem",
+      "to": "Faul"
+    },
+    {
+      "from": "Hakem",
+      "to": "Düdük"
+    },
+    {
+      "from": "Hakem",
+      "to": "Avantaj"
+    },
+    {
+      "from": "Hakem",
+      "to": "Ceza Alanı"
+    },
+    {
+      "from": "Hakem",
+      "to": "Oyun Dışı"
+    },
+    {
+      "from": "Düdük",
+      "to": "Spor"
+    },
+    {
+      "from": "Düdük",
+      "to": "Maç"
+    },
+    {
+      "from": "Düdük",
+      "to": "Faul"
+    },
+    {
+      "from": "Düdük",
+      "to": "Hakem"
+    },
+    {
+      "from": "Düdük",
+      "to": "Avantaj"
+    },
+    {
+      "from": "Düdük",
+      "to": "Ceza Alanı"
+    },
+    {
+      "from": "Düdük",
+      "to": "Oyun Dışı"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Spor"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Maç"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Faul"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Hakem"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Düdük"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Ceza Alanı"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Oyun Dışı"
+    },
+    {
+      "from": "Avantaj",
+      "to": "Faul Çizgisi"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Spor"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Maç"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Faul"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Hakem"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Düdük"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Oyun Dışı"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Faul Çizgisi"
+    },
+    {
+      "from": "Ceza Alanı",
+      "to": "Shot Clock"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Spor"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Maç"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Faul"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Hakem"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Düdük"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Faul Çizgisi"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Shot Clock"
+    },
+    {
+      "from": "Oyun Dışı",
+      "to": "Steps"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Spor"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Maç"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Faul"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Hakem"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Düdük"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Shot Clock"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Steps"
+    },
+    {
+      "from": "Faul Çizgisi",
+      "to": "Double Dribble"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Spor"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Maç"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Faul"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Hakem"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Düdük"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Steps"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Double Dribble"
+    },
+    {
+      "from": "Shot Clock",
+      "to": "Servis Sırası"
+    },
+    {
+      "from": "Steps",
+      "to": "Spor"
+    },
+    {
+      "from": "Steps",
+      "to": "Maç"
+    },
+    {
+      "from": "Steps",
+      "to": "Faul"
+    },
+    {
+      "from": "Steps",
+      "to": "Hakem"
+    },
+    {
+      "from": "Steps",
+      "to": "Düdük"
+    },
+    {
+      "from": "Steps",
+      "to": "Double Dribble"
+    },
+    {
+      "from": "Steps",
+      "to": "Servis Sırası"
+    },
+    {
+      "from": "Steps",
+      "to": "Net Hatası"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Spor"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Maç"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Faul"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Hakem"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Düdük"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Servis Sırası"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Net Hatası"
+    },
+    {
+      "from": "Double Dribble",
+      "to": "Çizgi Hakemi"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Spor"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Maç"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Faul"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Hakem"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Düdük"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Net Hatası"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Çizgi Hakemi"
+    },
+    {
+      "from": "Servis Sırası",
+      "to": "Foto Finiş"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Spor"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Maç"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Faul"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Hakem"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Düdük"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Çizgi Hakemi"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Foto Finiş"
+    },
+    {
+      "from": "Net Hatası",
+      "to": "Diskalifiye"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Spor"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Maç"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Faul"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Hakem"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Düdük"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Foto Finiş"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Diskalifiye"
+    },
+    {
+      "from": "Çizgi Hakemi",
+      "to": "Doping"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Spor"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Maç"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Faul"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Hakem"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Düdük"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Diskalifiye"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Doping"
+    },
+    {
+      "from": "Foto Finiş",
+      "to": "Transfer"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Spor"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Maç"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Faul"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Hakem"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Düdük"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Doping"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Transfer"
+    },
+    {
+      "from": "Diskalifiye",
+      "to": "Kura Çekimi"
+    },
+    {
+      "from": "Doping",
+      "to": "Spor"
+    },
+    {
+      "from": "Doping",
+      "to": "Maç"
+    },
+    {
+      "from": "Doping",
+      "to": "Faul"
+    },
+    {
+      "from": "Doping",
+      "to": "Hakem"
+    },
+    {
+      "from": "Doping",
+      "to": "Düdük"
+    },
+    {
+      "from": "Doping",
+      "to": "Transfer"
+    },
+    {
+      "from": "Doping",
+      "to": "Kura Çekimi"
+    },
+    {
+      "from": "Doping",
+      "to": "Playoff"
+    },
+    {
+      "from": "Transfer",
+      "to": "Spor"
+    },
+    {
+      "from": "Transfer",
+      "to": "Maç"
+    },
+    {
+      "from": "Transfer",
+      "to": "Faul"
+    },
+    {
+      "from": "Transfer",
+      "to": "Hakem"
+    },
+    {
+      "from": "Transfer",
+      "to": "Düdük"
+    },
+    {
+      "from": "Transfer",
+      "to": "Kura Çekimi"
+    },
+    {
+      "from": "Transfer",
+      "to": "Playoff"
+    },
+    {
+      "from": "Transfer",
+      "to": "Uzatma"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Spor"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Maç"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Faul"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Hakem"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Düdük"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Playoff"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Uzatma"
+    },
+    {
+      "from": "Kura Çekimi",
+      "to": "Eleme Turu"
+    },
+    {
+      "from": "Playoff",
+      "to": "Spor"
+    },
+    {
+      "from": "Playoff",
+      "to": "Maç"
+    },
+    {
+      "from": "Playoff",
+      "to": "Faul"
+    },
+    {
+      "from": "Playoff",
+      "to": "Hakem"
+    },
+    {
+      "from": "Playoff",
+      "to": "Düdük"
+    },
+    {
+      "from": "Playoff",
+      "to": "Uzatma"
+    },
+    {
+      "from": "Playoff",
+      "to": "Eleme Turu"
+    },
+    {
+      "from": "Playoff",
+      "to": "Grup Aşaması"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Spor"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Maç"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Faul"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Hakem"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Düdük"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Eleme Turu"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Grup Aşaması"
+    },
+    {
+      "from": "Uzatma",
+      "to": "Final"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Spor"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Maç"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Faul"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Hakem"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Düdük"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Grup Aşaması"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Final"
+    },
+    {
+      "from": "Eleme Turu",
+      "to": "Yarı Final"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Spor"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Maç"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Faul"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Hakem"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Düdük"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Final"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Yarı Final"
+    },
+    {
+      "from": "Grup Aşaması",
+      "to": "Çeyrek Final"
+    },
+    {
+      "from": "Final",
+      "to": "Spor"
+    },
+    {
+      "from": "Final",
+      "to": "Maç"
+    },
+    {
+      "from": "Final",
+      "to": "Faul"
+    },
+    {
+      "from": "Final",
+      "to": "Hakem"
+    },
+    {
+      "from": "Final",
+      "to": "Düdük"
+    },
+    {
+      "from": "Final",
+      "to": "Yarı Final"
+    },
+    {
+      "from": "Final",
+      "to": "Çeyrek Final"
+    },
+    {
+      "from": "Final",
+      "to": "Klasman"
+    },
+    {
+      "from": "Yarı Final",
+      "to": "Spor"
+    },
+    {
+      "from": "Yarı Final",
+      "to": "Maç"
+    },
+    {
+      "from": "Yarı Final",
+      "to": "Faul"
+    },
+    {
+      "from": "Yarı Final",
+      "to": "Hakem"
+    },
+    {
+      "from": "Yarı Final",
+      "to": "Düdük"
+    },
+    {
+      "from": "Yarı Final",
+      "to": "Çeyrek Final"
+    },
+    {
+      "from": "Yarı Final",
+      "to": "Klasman"
+    },
+    {
+      "from": "Çeyrek Final",
+      "to": "Spor"
+    },
+    {
+      "from": "Çeyrek Final",
+      "to": "Maç"
+    },
+    {
+      "from": "Çeyrek Final",
+      "to": "Faul"
+    },
+    {
+      "from": "Çeyrek Final",
+      "to": "Hakem"
+    },
+    {
+      "from": "Çeyrek Final",
+      "to": "Düdük"
+    },
+    {
+      "from": "Çeyrek Final",
+      "to": "Avantaj"
+    },
+    {
+      "from": "Çeyrek Final",
+      "to": "Klasman"
+    },
+    {
+      "from": "Klasman",
+      "to": "Spor"
+    },
+    {
+      "from": "Klasman",
+      "to": "Maç"
+    },
+    {
+      "from": "Klasman",
+      "to": "Faul"
+    },
+    {
+      "from": "Klasman",
+      "to": "Hakem"
+    },
+    {
+      "from": "Klasman",
+      "to": "Düdük"
+    },
+    {
+      "from": "Klasman",
+      "to": "Avantaj"
+    },
+    {
+      "from": "Klasman",
+      "to": "Ceza Alanı"
+    }
+  ],
+  "metadata": {
+    "source": "ai-generated",
+    "symmetrized": false,
+    "nodeCount": 250,
+    "minOutgoingPerNode": 6,
+    "language": "tr-TR",
+    "generatorVersion": "lexilink-content-v1"
+  }
+}
