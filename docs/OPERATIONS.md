@@ -143,9 +143,13 @@ Browser admin console:
 ```bash
 cd frontend
 flutter build web --release \
-  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com
+  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
+  --dart-define=LEXILINK_ENABLE_ADMIN=true
 ```
 
+- Caddy serves public support/legal pages from `PUBLIC_WEB_ROOT` at
+  `https://<LEXILINK_DOMAIN>`. The repo default is `./public-site`, including
+  `/support/` and `/privacy/`.
 - Caddy serves the files mounted from `ADMIN_WEB_ROOT` at
   `https://admin.<LEXILINK_DOMAIN>`. The directory must contain
   `index.html`; by default it is `./frontend/build/web`.

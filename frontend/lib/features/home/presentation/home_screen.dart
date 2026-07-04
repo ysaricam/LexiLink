@@ -30,6 +30,7 @@ import 'package:lexilink_app/shared/ads/ads_service.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/config/feature_flags.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_button.dart';
@@ -408,12 +409,14 @@ class _HomeTopBar extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _TopIconButton(
-                    icon: Icons.ondemand_video_outlined,
-                    tooltip: context.l10n.navEarnDiamonds,
-                    onPressed: () => context.go('/earn-diamonds'),
-                  ),
-                  const SizedBox(width: 8),
+                  if (FeatureFlags.rewardedAdsEnabled) ...[
+                    _TopIconButton(
+                      icon: Icons.ondemand_video_outlined,
+                      tooltip: context.l10n.navEarnDiamonds,
+                      onPressed: () => context.go('/earn-diamonds'),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
                   const DiamondBadge(),
                   const SizedBox(width: 8),
                   const EnergyBadge(compact: true),

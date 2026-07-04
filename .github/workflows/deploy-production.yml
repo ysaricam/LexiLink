@@ -71,7 +71,8 @@ jobs:
         run: |
           flutter pub get
           flutter build web --release \
-            --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com
+            --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
+            --dart-define=LEXILINK_ENABLE_ADMIN=true
 
       - name: Archive admin web bundle
         run: tar -czf admin-web.tar.gz -C frontend/build/web .
@@ -169,6 +170,8 @@ jobs:
 
           LEXILINK_IMAGE="$IMAGE" ./scripts/deploy.sh
           curl -fsS https://api.wordlope.com/health/ready
+          curl -fsS https://wordlope.com/support/ >/dev/null
+          curl -fsS https://wordlope.com/privacy/ >/dev/null
           curl -fsS https://admin.wordlope.com/admin/login >/dev/null
           curl -fsS https://admin.wordlope.com/main.dart.js | grep -q '/admin/players/by-handle'
           REMOTE

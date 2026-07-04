@@ -176,6 +176,23 @@ void main() {
       expect(platform.showInterstitialCallCount, 0);
     });
 
+    test(
+      'keeps review-build interstitials disabled without initialization',
+      () async {
+        final platform = _FakeAdsPlatform(isSupported: true);
+        final service = AdsService(
+          platform: platform,
+          random: _ScriptedRandom([0.0]),
+        );
+
+        await service.maybeShowInterstitial(1);
+
+        expect(service.isInitialized, isFalse);
+        expect(platform.initializeCallCount, 0);
+        expect(platform.showInterstitialCallCount, 0);
+      },
+    );
+
     test('no-ops on an unsupported platform', () async {
       final platform = _FakeAdsPlatform(isSupported: false);
       final service = AdsService(

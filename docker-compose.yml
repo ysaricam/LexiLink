@@ -94,6 +94,7 @@ services:
       LEXILINK_ACME_EMAIL: ${LEXILINK_ACME_EMAIL}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ${PUBLIC_WEB_ROOT:-./public-site}:/srv/public:ro
       - ${ADMIN_WEB_ROOT:-./frontend/build/web}:/srv/admin:ro
       - caddy_data:/data
       - caddy_config:/config

@@ -116,7 +116,15 @@ production API:
 ```bash
 cd frontend
 flutter build web --release \
-  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com
+  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
+  --dart-define=LEXILINK_ENABLE_ADMIN=true
+```
+
+Public support/legal pages are served from `PUBLIC_WEB_ROOT` at
+`https://wordlope.com`. The default repo-owned root is:
+
+```bash
+PUBLIC_WEB_ROOT=./public-site
 ```
 
 On the server, `ADMIN_WEB_ROOT` in `.env` must point to the directory that

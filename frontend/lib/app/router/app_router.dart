@@ -20,6 +20,7 @@ import 'package:lexilink_app/features/quests/presentation/quests_screen.dart';
 import 'package:lexilink_app/features/rewarded_ads/presentation/earn_diamonds_screen.dart';
 import 'package:lexilink_app/features/settings/presentation/settings_screen.dart';
 import 'package:lexilink_app/features/splash/presentation/splash_screen.dart';
+import 'package:lexilink_app/shared/config/feature_flags.dart';
 
 const bool _adminRoutesEnabled = bool.fromEnvironment(
   'LEXILINK_ENABLE_ADMIN',
@@ -70,10 +71,11 @@ final appRouter = GoRouter(
       path: '/payments',
       builder: (context, state) => const PaymentScreen(),
     ),
-    GoRoute(
-      path: '/earn-diamonds',
-      builder: (context, state) => const EarnDiamondsScreen(),
-    ),
+    if (FeatureFlags.rewardedAdsEnabled)
+      GoRoute(
+        path: '/earn-diamonds',
+        builder: (context, state) => const EarnDiamondsScreen(),
+      ),
     GoRoute(
       path: '/settings',
       builder: (context, state) => const SettingsScreen(),

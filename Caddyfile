@@ -12,6 +12,18 @@ api.{$LEXILINK_DOMAIN} {
 	reverse_proxy api:8080
 }
 
+{$LEXILINK_DOMAIN} {
+	encode zstd gzip
+	root * /srv/public
+
+	header /index.html Cache-Control "no-cache"
+	header /support/index.html Cache-Control "no-cache"
+	header /privacy/index.html Cache-Control "no-cache"
+
+	try_files {path} {path}/index.html /index.html
+	file_server
+}
+
 admin.{$LEXILINK_DOMAIN} {
 	encode zstd gzip
 	root * /srv/admin

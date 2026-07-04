@@ -174,7 +174,14 @@ Build it before the first deploy:
 cd /opt/lexilink/app/frontend
 flutter pub get
 flutter build web --release \
-  --dart-define=LEXILINK_API_BASE_URL=https://api.<domain>
+  --dart-define=LEXILINK_API_BASE_URL=https://api.<domain> \
+  --dart-define=LEXILINK_ENABLE_ADMIN=true
+```
+
+The default `PUBLIC_WEB_ROOT` is:
+
+```text
+./public-site
 ```
 
 The default `ADMIN_WEB_ROOT` is:
@@ -199,6 +206,7 @@ Minimum production values:
 ```bash
 LEXILINK_DOMAIN=<domain>
 LEXILINK_ACME_EMAIL=<email>
+PUBLIC_WEB_ROOT=./public-site
 ADMIN_WEB_ROOT=./frontend/build/web
 
 POSTGRES_DB=lexilink
@@ -350,7 +358,8 @@ Build the Flutter web admin bundle:
 ```bash
 cd /opt/lexilink/app/frontend
 flutter build web --release \
-  --dart-define=LEXILINK_API_BASE_URL=https://api.<domain>
+  --dart-define=LEXILINK_API_BASE_URL=https://api.<domain> \
+  --dart-define=LEXILINK_ENABLE_ADMIN=true
 ```
 
 Then confirm:
@@ -442,4 +451,3 @@ Then complete the production hardening tasks from `DEPLOYMENT.md`:
 - Restore drill.
 - Firewall: only SSH, HTTP, HTTPS.
 - SSH key-only login, then disable root/password login.
-

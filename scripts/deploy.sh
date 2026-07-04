@@ -34,10 +34,24 @@ if [[ "$admin_web_root" != /* ]]; then
   admin_web_root="$ROOT_DIR/${admin_web_root#./}"
 fi
 
+public_web_root="$(grep -E '^PUBLIC_WEB_ROOT=' .env | cut -d= -f2- | tr -d '\r' || true)"
+public_web_root="${public_web_root:-./public-site}"
+if [[ "$public_web_root" != /* ]]; then
+  public_web_root="$ROOT_DIR/${public_web_root#./}"
+fi
+
+for required_public_file in index.html support/index.html privacy/index.html; do
+  if [[ ! -f "$public_web_root/$required_public_file" ]]; then
+    echo "ERROR: public site file not found at $public_web_root/$required_public_file" >&2
+    echo "  PUBLIC_WEB_ROOT must point to the directory served at https://wordlope.com." >&2
+    exit 1
+  fi
+done
+
 if [[ ! -f "$admin_web_root/index.html" ]]; then
   echo "ERROR: admin web build not found at $admin_web_root/index.html" >&2
   echo "  Build and copy the Flutter web admin output before deploy:" >&2
-  echo "    cd frontend && flutter build web --release --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com" >&2
+  echo "    cd frontend && flutter build web --release --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com --dart-define=LEXILINK_ENABLE_ADMIN=true" >&2
   echo "  Then set ADMIN_WEB_ROOT in .env to the directory that contains index.html." >&2
   exit 1
 fi
@@ -67,6 +81,7 @@ if [[ -n "$ok" ]]; then
   domain="$(grep -E '^LEXILINK_DOMAIN=' .env | cut -d= -f2- | tr -d '\r')"
   echo "==> API is healthy."
   echo "    Public check: curl https://api.${domain}/health/ready"
+  echo "    Public site: https://${domain}/support and https://${domain}/privacy"
   echo "    Admin console: https://admin.${domain}/admin/login"
   echo "    Next: seed content -> scripts/seed-content.sh docs/category-spor.json"
 else
