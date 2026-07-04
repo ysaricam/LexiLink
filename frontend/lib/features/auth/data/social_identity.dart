@@ -1,6 +1,5 @@
 enum SocialAuthProvider {
-  apple('Apple'),
-  google('Google');
+  apple('Apple');
 
   const SocialAuthProvider(this.apiValue);
 

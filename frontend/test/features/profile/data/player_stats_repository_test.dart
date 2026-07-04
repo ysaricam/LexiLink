@@ -100,32 +100,42 @@ void main() {
     expect(entries.single.totalScore, 500);
   });
 
-  test('links auth provider', () async {
+  test('continues with Apple and parses returned session', () async {
     final repository = AccountLinkRepository(
       apiClient: ApiClient(
         config: const ApiConfig(baseUrl: 'http://localhost:5000'),
         tokenStore: InMemoryTokenStore(),
         httpClient: MockClient((request) async {
-          expect(request.url.path, '/players/player-1/auth-providers');
+          expect(request.url.path, '/auth/apple/continue');
           expect(request.method, 'POST');
-          expect(request.body, contains('"provider":"Google"'));
-          expect(request.body, contains('"externalId":"google-sub"'));
+          expect(request.body, contains('"externalId":"apple-sub"'));
           expect(request.body, contains('"externalToken":"id-token"'));
           expect(request.body, contains('"email":"yasin@example.com"'));
 
-          return http.Response('', 204);
+          return http.Response(
+            '{'
+            '"accessToken":"jwt-apple",'
+            '"expiresAt":"2026-05-23T12:00:00Z",'
+            '"playerId":"apple-player-1",'
+            '"mode":"SwitchedToExistingApplePlayer"'
+            '}',
+            200,
+          );
         }),
       ),
     );
 
-    await repository.linkProvider(
-      playerId: 'player-1',
+    final session = await repository.continueWithApple(
       identity: const SocialIdentity(
-        provider: SocialAuthProvider.google,
-        externalId: 'google-sub',
+        provider: SocialAuthProvider.apple,
+        externalId: 'apple-sub',
         externalToken: 'id-token',
         email: 'yasin@example.com',
       ),
     );
+
+    expect(session.accessToken, 'jwt-apple');
+    expect(session.playerId, 'apple-player-1');
+    expect(session.mode, AppleContinueMode.switchedToExistingApplePlayer);
   });
 }

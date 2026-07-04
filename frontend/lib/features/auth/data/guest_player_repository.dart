@@ -1,3 +1,4 @@
+import 'package:lexilink_app/features/auth/data/social_identity.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 
 class GuestSession {
@@ -50,6 +51,28 @@ class GuestPlayerRepository {
     final accessToken = tokenResponse['accessToken'];
     if (accessToken is! String || accessToken.isEmpty) {
       throw StateError('Token exchange did not return an access token.');
+    }
+
+    return GuestSession(playerId: playerId, accessToken: accessToken);
+  }
+
+  Future<GuestSession> exchangeSocialIdentity(SocialIdentity identity) async {
+    final tokenResponse = await _apiClient.postJson(
+      '/auth/token',
+      body: {
+        'provider': identity.provider.apiValue,
+        'externalId': identity.externalId,
+        'externalToken': identity.externalToken,
+      },
+    );
+
+    final accessToken = tokenResponse['accessToken'];
+    final playerId = tokenResponse['playerId'];
+    if (accessToken is! String || accessToken.isEmpty) {
+      throw StateError('Token exchange did not return an access token.');
+    }
+    if (playerId is! String || playerId.isEmpty) {
+      throw StateError('Token exchange did not return a player id.');
     }
 
     return GuestSession(playerId: playerId, accessToken: accessToken);

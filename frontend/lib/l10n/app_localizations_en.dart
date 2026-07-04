@@ -63,6 +63,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get preparingSession => 'Preparing session...';
 
   @override
+  String get authEntryTitle => 'Start playing';
+
+  @override
+  String get authEntryMessage =>
+      'Use Apple to keep your progress across installs, or continue as a guest.';
+
+  @override
+  String get continueWithApple => 'Continue with Apple';
+
+  @override
+  String get signingInWithApple => 'Signing in with Apple...';
+
+  @override
+  String get continueAsGuest => 'Continue as guest';
+
+  @override
   String get splashStageSession => 'Checking session';
 
   @override
@@ -529,9 +545,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get linkAccount => 'Link account';
 
   @override
-  String get linkGoogle => 'Link Google';
-
-  @override
   String get linkApple => 'Link Apple';
 
   @override
@@ -539,6 +552,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountLinked => 'Account linked.';
+
+  @override
+  String get appleAccountActivated => 'Apple account activated.';
+
+  @override
+  String get guestSessionActivated => 'Guest session activated.';
+
+  @override
+  String get returnToGuest => 'Return to guest';
+
+  @override
+  String get returningToGuest => 'Returning...';
 
   @override
   String get statGamesCompleted => 'Games completed';

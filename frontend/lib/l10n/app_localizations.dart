@@ -212,6 +212,36 @@ abstract class AppLocalizations {
   /// **'Preparing session...'**
   String get preparingSession;
 
+  /// No description provided for @authEntryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start playing'**
+  String get authEntryTitle;
+
+  /// No description provided for @authEntryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Apple to keep your progress across installs, or continue as a guest.'**
+  String get authEntryMessage;
+
+  /// No description provided for @continueWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Apple'**
+  String get continueWithApple;
+
+  /// No description provided for @signingInWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in with Apple...'**
+  String get signingInWithApple;
+
+  /// No description provided for @continueAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as guest'**
+  String get continueAsGuest;
+
   /// No description provided for @splashStageSession.
   ///
   /// In en, this message translates to:
@@ -1028,12 +1058,6 @@ abstract class AppLocalizations {
   /// **'Link account'**
   String get linkAccount;
 
-  /// No description provided for @linkGoogle.
-  ///
-  /// In en, this message translates to:
-  /// **'Link Google'**
-  String get linkGoogle;
-
   /// No description provided for @linkApple.
   ///
   /// In en, this message translates to:
@@ -1051,6 +1075,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account linked.'**
   String get accountLinked;
+
+  /// No description provided for @appleAccountActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Apple account activated.'**
+  String get appleAccountActivated;
+
+  /// No description provided for @guestSessionActivated.
+  ///
+  /// In en, this message translates to:
+  /// **'Guest session activated.'**
+  String get guestSessionActivated;
+
+  /// No description provided for @returnToGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to guest'**
+  String get returnToGuest;
+
+  /// No description provided for @returningToGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Returning...'**
+  String get returningToGuest;
 
   /// No description provided for @statGamesCompleted.
   ///

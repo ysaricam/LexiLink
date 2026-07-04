@@ -1,9 +1,13 @@
+using LexiLink.API.CrossModule;
 using LexiLink.API.Configuration.Authentication;
 using LexiLink.API.Configuration.ExceptionHandling;
 using LexiLink.Common.Application;
 using LexiLink.Modules.Players.Application.Contracts;
 using LexiLink.Modules.Players.Application.Players.GetPlayerByAuthProvider;
+using LexiLink.Modules.Players.Application.Players.LinkAuthProvider;
 using LexiLink.Modules.Players.Domain.Players;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace LexiLink.API.Modules.Auth;
 
@@ -60,6 +64,135 @@ public static class AuthEndpoints
             .Produces<TokenExchangeResponse>()
             .ProducesProblem(StatusCodes.Status401Unauthorized)
             .ProducesProblem(StatusCodes.Status404NotFound);
+
+        group.MapPost(
+            "/apple/continue",
+            async (
+                AppleContinueRequest body,
+                IExecutionContextAccessor executionContextAccessor,
+                IExternalIdentityVerifier externalIdentityVerifier,
+                IPlayersModule playersModule,
+                IJwtTokenIssuer tokenIssuer,
+                IPlayerStatusLookup playerStatusLookup,
+                HttpContext httpContext,
+                CancellationToken ct) =>
+            {
+                var verified = await externalIdentityVerifier.VerifyAsync(
+                    AuthProvider.Apple,
+                    body.ExternalId,
+                    body.ExternalToken,
+                    ct);
+
+                if (!verified)
+                {
+                    return Results.Unauthorized();
+                }
+
+                var currentPlayerId = executionContextAccessor.UserId;
+                var existingApplePlayer = await playersModule.ExecuteQueryAsync(
+                    new GetPlayerByAuthProviderQuery(AuthProvider.Apple, body.ExternalId),
+                    ct);
+
+                if (existingApplePlayer is not null)
+                {
+                    return await IssueAppleContinueTokenAsync(
+                        existingApplePlayer.Id,
+                        currentPlayerId,
+                        tokenIssuer,
+                        playerStatusLookup,
+                        httpContext,
+                        ct);
+                }
+
+                try
+                {
+                    await playersModule.ExecuteCommandAsync(
+                        new LinkAuthProviderCommand(
+                            currentPlayerId,
+                            AuthProvider.Apple,
+                            body.ExternalId,
+                            body.Email),
+                        ct);
+                }
+                catch (DbUpdateException ex) when (IsAuthProviderUniqueViolation(ex))
+                {
+                    existingApplePlayer = await playersModule.ExecuteQueryAsync(
+                        new GetPlayerByAuthProviderQuery(AuthProvider.Apple, body.ExternalId),
+                        ct);
+
+                    if (existingApplePlayer is null)
+                    {
+                        throw;
+                    }
+
+                    return await IssueAppleContinueTokenAsync(
+                        existingApplePlayer.Id,
+                        currentPlayerId,
+                        tokenIssuer,
+                        playerStatusLookup,
+                        httpContext,
+                        ct);
+                }
+
+                var token = tokenIssuer.Issue(currentPlayerId);
+
+                return Results.Ok(new AppleContinueResponse(
+                    token.AccessToken,
+                    token.ExpiresAt,
+                    currentPlayerId,
+                    AppleContinueMode.LinkedCurrentGuest));
+            })
+            .RequireAuthorization(AuthConstants.AuthenticatedPlayerPolicy)
+            .Produces<AppleContinueResponse>()
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .ProducesProblem(StatusCodes.Status403Forbidden);
+    }
+
+    private static async Task<IResult> IssueAppleContinueTokenAsync(
+        Guid applePlayerId,
+        Guid currentPlayerId,
+        IJwtTokenIssuer tokenIssuer,
+        IPlayerStatusLookup playerStatusLookup,
+        HttpContext httpContext,
+        CancellationToken ct)
+    {
+        if (await playerStatusLookup.IsPlayerBannedAsync(applePlayerId, ct))
+        {
+            return Results.Problem(
+                statusCode: StatusCodes.Status403Forbidden,
+                title: "Player is banned.",
+                instance: httpContext.Request.Path);
+        }
+
+        var token = tokenIssuer.Issue(applePlayerId);
+        var mode = applePlayerId == currentPlayerId
+            ? AppleContinueMode.LinkedCurrentGuest
+            : AppleContinueMode.SwitchedToExistingApplePlayer;
+
+        return Results.Ok(new AppleContinueResponse(
+            token.AccessToken,
+            token.ExpiresAt,
+            applePlayerId,
+            mode));
+    }
+
+    private static bool IsAuthProviderUniqueViolation(DbUpdateException exception)
+    {
+        var current = exception.InnerException;
+        while (current is not null)
+        {
+            if (current is PostgresException postgresException &&
+                postgresException.SqlState == PostgresErrorCodes.UniqueViolation &&
+                postgresException.ConstraintName == "UX_PlayerAuthIdentities_Provider_ExternalId")
+            {
+                return true;
+            }
+
+            current = current.InnerException;
+        }
+
+        return false;
     }
 }
 
@@ -72,3 +205,20 @@ public sealed record TokenExchangeResponse(
     string AccessToken,
     DateTime ExpiresAt,
     Guid PlayerId);
+
+public sealed record AppleContinueRequest(
+    string ExternalId,
+    string ExternalToken,
+    string? Email);
+
+public sealed record AppleContinueResponse(
+    string AccessToken,
+    DateTime ExpiresAt,
+    Guid PlayerId,
+    AppleContinueMode Mode);
+
+public enum AppleContinueMode
+{
+    LinkedCurrentGuest,
+    SwitchedToExistingApplePlayer
+}

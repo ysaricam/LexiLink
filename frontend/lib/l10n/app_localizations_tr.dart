@@ -64,6 +64,22 @@ class AppLocalizationsTr extends AppLocalizations {
   String get preparingSession => 'Oturum hazırlanıyor...';
 
   @override
+  String get authEntryTitle => 'Oynamaya başla';
+
+  @override
+  String get authEntryMessage =>
+      'İlerlemeni kurulumlar arasında korumak için Apple kullan veya misafir olarak devam et.';
+
+  @override
+  String get continueWithApple => 'Apple ile devam et';
+
+  @override
+  String get signingInWithApple => 'Apple ile giriş yapılıyor...';
+
+  @override
+  String get continueAsGuest => 'Misafir olarak devam et';
+
+  @override
   String get splashStageSession => 'Oturum kontrol ediliyor';
 
   @override
@@ -531,9 +547,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get linkAccount => 'Hesap bağla';
 
   @override
-  String get linkGoogle => 'Google bağla';
-
-  @override
   String get linkApple => 'Apple bağla';
 
   @override
@@ -541,6 +554,18 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get accountLinked => 'Hesap bağlandı.';
+
+  @override
+  String get appleAccountActivated => 'Apple hesabı açıldı.';
+
+  @override
+  String get guestSessionActivated => 'Misafir oturumu açıldı.';
+
+  @override
+  String get returnToGuest => 'Misafire dön';
+
+  @override
+  String get returningToGuest => 'Dönülüyor...';
 
   @override
   String get statGamesCompleted => 'Tamamlanan oyun';

@@ -4,8 +4,6 @@
 <dict>
 	<key>GADApplicationIdentifier</key>
 	<string>$(ADMOB_APP_ID)</string>
-	<key>GIDClientID</key>
-	<string>380265795394-519gdb1qmjqnp76bgsoqh6enouvei3id.apps.googleusercontent.com</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Your data is used to show you more relevant ads.</string>
 	<key>SKAdNetworkItems</key>
@@ -231,15 +229,6 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.380265795394-519gdb1qmjqnp76bgsoqh6enouvei3id</string>
-			</array>
-		</dict>
-	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>

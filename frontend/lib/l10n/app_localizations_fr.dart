@@ -64,6 +64,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get preparingSession => 'Préparation de la session...';
 
   @override
+  String get authEntryTitle => 'Commencer à jouer';
+
+  @override
+  String get authEntryMessage =>
+      'Utilisez Apple pour conserver votre progression entre les installations, ou continuez en invité.';
+
+  @override
+  String get continueWithApple => 'Continuer avec Apple';
+
+  @override
+  String get signingInWithApple => 'Connexion avec Apple...';
+
+  @override
+  String get continueAsGuest => 'Continuer en invité';
+
+  @override
   String get splashStageSession => 'Vérification de la session';
 
   @override
@@ -533,9 +549,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get linkAccount => 'Lier un compte';
 
   @override
-  String get linkGoogle => 'Lier Google';
-
-  @override
   String get linkApple => 'Lier Apple';
 
   @override
@@ -543,6 +556,18 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get accountLinked => 'Compte lié.';
+
+  @override
+  String get appleAccountActivated => 'Compte Apple activé.';
+
+  @override
+  String get guestSessionActivated => 'Session invité activée.';
+
+  @override
+  String get returnToGuest => 'Revenir en invité';
+
+  @override
+  String get returningToGuest => 'Retour...';
 
   @override
   String get statGamesCompleted => 'Parties terminées';

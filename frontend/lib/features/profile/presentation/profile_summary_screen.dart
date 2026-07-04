@@ -5,12 +5,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'package:lexilink_app/app/theme/app_layout.dart';
+import 'package:lexilink_app/features/auth/data/guest_device_id_store.dart';
+import 'package:lexilink_app/features/auth/data/guest_player_repository.dart';
 import 'package:lexilink_app/features/auth/data/social_sign_in_service.dart';
 import 'package:lexilink_app/features/profile/application/account_link_cubit.dart';
 import 'package:lexilink_app/features/profile/application/profile_summary_cubit.dart';
 import 'package:lexilink_app/features/profile/data/account_link_repository.dart';
 import 'package:lexilink_app/features/profile/data/player_stats.dart';
 import 'package:lexilink_app/features/profile/data/player_stats_repository.dart';
+import 'package:lexilink_app/features/settings/application/locale_cubit.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
@@ -29,18 +32,28 @@ class ProfileSummaryScreen extends StatefulWidget {
 }
 
 class _ProfileSummaryScreenState extends State<ProfileSummaryScreen> {
-  late final Future<SharedPreferencesTokenStore> _tokenStoreFuture;
+  late final Future<_ProfileBootstrap> _bootstrapFuture;
 
   @override
   void initState() {
     super.initState();
-    _tokenStoreFuture = SharedPreferencesTokenStore.create();
+    _bootstrapFuture = _createBootstrap();
+  }
+
+  Future<_ProfileBootstrap> _createBootstrap() async {
+    final tokenStore = await SharedPreferencesTokenStore.create();
+    final guestDeviceId = await GuestDeviceIdStore().readOrCreate();
+
+    return _ProfileBootstrap(
+      tokenStore: tokenStore,
+      guestDeviceId: guestDeviceId,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<TokenStore>(
-      future: _tokenStoreFuture,
+    return FutureBuilder<_ProfileBootstrap>(
+      future: _bootstrapFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return AppScreen(
@@ -51,23 +64,33 @@ class _ProfileSummaryScreenState extends State<ProfileSummaryScreen> {
           );
         }
 
-        final tokenStore = snapshot.data;
-        if (tokenStore == null) {
+        final bootstrap = snapshot.data;
+        if (bootstrap == null) {
           return AppScreen(
             child: AppLoadingState(message: context.l10n.preparingSession),
           );
         }
 
-        return _ProfileSummaryProviders(tokenStore: tokenStore);
+        return _ProfileSummaryProviders(bootstrap: bootstrap);
       },
     );
   }
 }
 
-class _ProfileSummaryProviders extends StatefulWidget {
-  const _ProfileSummaryProviders({required this.tokenStore});
+class _ProfileBootstrap {
+  const _ProfileBootstrap({
+    required this.tokenStore,
+    required this.guestDeviceId,
+  });
 
   final TokenStore tokenStore;
+  final String guestDeviceId;
+}
+
+class _ProfileSummaryProviders extends StatefulWidget {
+  const _ProfileSummaryProviders({required this.bootstrap});
+
+  final _ProfileBootstrap bootstrap;
 
   @override
   State<_ProfileSummaryProviders> createState() =>
@@ -86,16 +109,17 @@ class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
     final apiClient = ApiClient(
       config: ApiConfig.local(),
       httpClient: _httpClient,
-      tokenStore: widget.tokenStore,
+      tokenStore: widget.bootstrap.tokenStore,
     );
     _profileSummaryCubit = ProfileSummaryCubit(
       playerStatsRepository: PlayerStatsRepository(apiClient: apiClient),
-      tokenStore: widget.tokenStore,
+      tokenStore: widget.bootstrap.tokenStore,
     );
     _accountLinkCubit = AccountLinkCubit(
       accountLinkRepository: AccountLinkRepository(apiClient: apiClient),
-      socialSignInService: SocialSignInService(),
-      tokenStore: widget.tokenStore,
+      guestPlayerRepository: GuestPlayerRepository(apiClient: apiClient),
+      socialSignInService: const SocialSignInService(),
+      tokenStore: widget.bootstrap.tokenStore,
     );
     unawaited(_profileSummaryCubit.loadSummary());
   }
@@ -115,21 +139,30 @@ class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
         BlocProvider.value(value: _profileSummaryCubit),
         BlocProvider.value(value: _accountLinkCubit),
       ],
-      child: const _ProfileSummaryView(),
+      child: _ProfileSummaryView(guestDeviceId: widget.bootstrap.guestDeviceId),
     );
   }
 }
 
 class _ProfileSummaryView extends StatelessWidget {
-  const _ProfileSummaryView();
+  const _ProfileSummaryView({required this.guestDeviceId});
+
+  final String guestDeviceId;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AccountLinkCubit, AccountLinkState>(
       listener: (context, state) {
         if (state.status == AccountLinkStatus.success) {
+          final message = switch (state.success) {
+            AccountLinkSuccess.switchedToExistingApplePlayer =>
+              context.l10n.appleAccountActivated,
+            AccountLinkSuccess.returnedToGuest =>
+              context.l10n.guestSessionActivated,
+            _ => context.l10n.accountLinked,
+          };
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(context.l10n.accountLinked)),
+            SnackBar(content: Text(message)),
           );
           context.read<ProfileSummaryCubit>().loadSummary();
         } else if (state.status == AccountLinkStatus.failure) {
@@ -158,7 +191,10 @@ class _ProfileSummaryView extends StatelessWidget {
                   )
                 else if (state.status == ProfileSummaryStatus.success &&
                     state.stats != null)
-                  _ProfileSummaryCard(stats: state.stats!)
+                  _ProfileSummaryCard(
+                    stats: state.stats!,
+                    guestDeviceId: guestDeviceId,
+                  )
                 else
                   AppEmptyState(
                     title: context.l10n.noProfileTitle,
@@ -180,9 +216,13 @@ class _ProfileSummaryView extends StatelessWidget {
 }
 
 class _ProfileSummaryCard extends StatelessWidget {
-  const _ProfileSummaryCard({required this.stats});
+  const _ProfileSummaryCard({
+    required this.stats,
+    required this.guestDeviceId,
+  });
 
   final PlayerStats stats;
+  final String guestDeviceId;
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +248,7 @@ class _ProfileSummaryCard extends StatelessWidget {
           providerLabel: providerLabel,
           localeLabel: localeLabel,
           authProvidersLinked: stats.authProvidersLinked,
+          guestDeviceId: guestDeviceId,
         ),
         const SizedBox(height: 4),
       ],
@@ -507,11 +548,13 @@ class _ProfileAccountPanel extends StatelessWidget {
     required this.providerLabel,
     required this.localeLabel,
     required this.authProvidersLinked,
+    required this.guestDeviceId,
   });
 
   final String providerLabel;
   final String localeLabel;
   final int authProvidersLinked;
+  final String guestDeviceId;
 
   @override
   Widget build(BuildContext context) {
@@ -546,7 +589,10 @@ class _ProfileAccountPanel extends StatelessWidget {
               label: '${context.l10n.languageLabel}: $localeLabel',
             ),
             const SizedBox(height: 14),
-            _AccountLinkActions(authProvidersLinked: authProvidersLinked),
+            _AccountLinkActions(
+              authProvidersLinked: authProvidersLinked,
+              guestDeviceId: guestDeviceId,
+            ),
           ],
         ),
       ),
@@ -555,15 +601,20 @@ class _ProfileAccountPanel extends StatelessWidget {
 }
 
 class _AccountLinkActions extends StatelessWidget {
-  const _AccountLinkActions({required this.authProvidersLinked});
+  const _AccountLinkActions({
+    required this.authProvidersLinked,
+    required this.guestDeviceId,
+  });
 
   final int authProvidersLinked;
+  final String guestDeviceId;
 
   @override
   Widget build(BuildContext context) {
     final linkState = context.watch<AccountLinkCubit>().state;
     final isBusy = linkState.isBusy;
-    final canLinkMore = authProvidersLinked < 2;
+    final canLinkApple = authProvidersLinked == 0;
+    final canReturnToGuest = authProvidersLinked > 0;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -581,27 +632,32 @@ class _AccountLinkActions extends StatelessWidget {
           runSpacing: 10,
           children: [
             OutlinedButton.icon(
-              icon: const Icon(Icons.g_mobiledata_rounded),
-              label: Text(
-                linkState.status == AccountLinkStatus.linkingGoogle
-                    ? context.l10n.linkingAccount
-                    : context.l10n.linkGoogle,
-              ),
-              onPressed: isBusy || !canLinkMore
-                  ? null
-                  : () => context.read<AccountLinkCubit>().linkGoogle(),
-            ),
-            OutlinedButton.icon(
               icon: const Icon(Icons.apple),
               label: Text(
                 linkState.status == AccountLinkStatus.linkingApple
                     ? context.l10n.linkingAccount
                     : context.l10n.linkApple,
               ),
-              onPressed: isBusy || !canLinkMore
+              onPressed: isBusy || !canLinkApple
                   ? null
                   : () => context.read<AccountLinkCubit>().linkApple(),
             ),
+            if (canReturnToGuest)
+              OutlinedButton.icon(
+                icon: const Icon(Icons.logout_outlined),
+                label: Text(
+                  linkState.status == AccountLinkStatus.returningToGuest
+                      ? context.l10n.returningToGuest
+                      : context.l10n.returnToGuest,
+                ),
+                onPressed: isBusy
+                    ? null
+                    : () => context.read<AccountLinkCubit>().returnToGuest(
+                        deviceId: guestDeviceId,
+                        displayName: context.l10n.guestPlayer,
+                        locale: context.read<LocaleCubit>().state.backendLocale,
+                      ),
+              ),
           ],
         ),
       ],

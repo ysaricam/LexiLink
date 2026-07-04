@@ -261,18 +261,20 @@ class _HomeView extends StatelessWidget {
         BlocListener<SessionCubit, SessionState>(
           listenWhen: (previous, current) => previous.status != current.status,
           listener: (context, state) {
-            if (state.status == SessionStatus.unauthenticated) {
-              context.read<GuestEntryCubit>().continueAsGuest(
-                deviceId: guestDeviceId,
-                displayName: _guestDisplayName,
-                locale: context.read<LocaleCubit>().state.backendLocale,
-              );
-            } else if (state.status == SessionStatus.authenticated) {
+            if (state.status == SessionStatus.authenticated) {
               context.read<CategoryListCubit>().loadCategories(
                 locale: context.read<LocaleCubit>().state.backendLocale,
               );
               context.read<EnergyCubit>().loadEnergy();
               context.read<DiamondCubit>().loadDiamond();
+            } else if (state.status == SessionStatus.unauthenticated) {
+              unawaited(
+                context.read<GuestEntryCubit>().continueAsGuest(
+                  deviceId: guestDeviceId,
+                  displayName: _HomeView._guestDisplayName,
+                  locale: context.read<LocaleCubit>().state.backendLocale,
+                ),
+              );
             }
           },
         ),
@@ -294,13 +296,15 @@ class _HomeView extends StatelessWidget {
           },
         ),
       ],
-      child: const _HomeScaffold(),
+      child: _HomeScaffold(guestDeviceId: guestDeviceId),
     );
   }
 }
 
 class _HomeScaffold extends StatelessWidget {
-  const _HomeScaffold();
+  const _HomeScaffold({required this.guestDeviceId});
+
+  final String guestDeviceId;
 
   @override
   Widget build(BuildContext context) {
@@ -308,8 +312,8 @@ class _HomeScaffold extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
-      body: const DecoratedBox(
-        decoration: BoxDecoration(
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
           gradient: RadialGradient(
             center: Alignment(0, -0.36),
             radius: 1.12,
@@ -321,18 +325,63 @@ class _HomeScaffold extends StatelessWidget {
         ),
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsets.fromLTRB(16, 12, 16, 18),
-            child: Column(
-              children: [
-                _HomeTopBar(),
-                Expanded(child: _HomeContent()),
-                SizedBox(height: 14),
-                _HomeActionDock(),
-              ],
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 18),
+            child: BlocBuilder<SessionCubit, SessionState>(
+              builder: (context, sessionState) {
+                if (sessionState.status == SessionStatus.checking) {
+                  return Center(
+                    child: AppLoadingState(
+                      message: context.l10n.preparingSession,
+                    ),
+                  );
+                }
+
+                if (sessionState.status == SessionStatus.unauthenticated) {
+                  return _GuestSessionFallback(guestDeviceId: guestDeviceId);
+                }
+
+                return const Column(
+                  children: [
+                    _HomeTopBar(),
+                    Expanded(child: _HomeContent()),
+                    SizedBox(height: 14),
+                    _HomeActionDock(),
+                  ],
+                );
+              },
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _GuestSessionFallback extends StatelessWidget {
+  const _GuestSessionFallback({required this.guestDeviceId});
+
+  final String guestDeviceId;
+
+  @override
+  Widget build(BuildContext context) {
+    final entryState = context.watch<GuestEntryCubit>().state;
+    if (entryState.status == GuestEntryStatus.failure &&
+        entryState.message != null) {
+      return Center(
+        child: AppErrorState(
+          title: context.l10n.actionFailed,
+          message: entryState.message!,
+          onRetry: () => context.read<GuestEntryCubit>().continueAsGuest(
+            deviceId: guestDeviceId,
+            displayName: _HomeView._guestDisplayName,
+            locale: context.read<LocaleCubit>().state.backendLocale,
+          ),
+        ),
+      );
+    }
+
+    return Center(
+      child: AppLoadingState(message: context.l10n.preparingSession),
     );
   }
 }
