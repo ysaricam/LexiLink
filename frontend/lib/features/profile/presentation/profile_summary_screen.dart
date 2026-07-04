@@ -193,6 +193,7 @@ class _ProfileSummaryView extends StatelessWidget {
                     state.stats != null)
                   _ProfileSummaryCard(
                     stats: state.stats!,
+                    sessionMode: state.sessionMode,
                     guestDeviceId: guestDeviceId,
                   )
                 else
@@ -218,10 +219,12 @@ class _ProfileSummaryView extends StatelessWidget {
 class _ProfileSummaryCard extends StatelessWidget {
   const _ProfileSummaryCard({
     required this.stats,
+    required this.sessionMode,
     required this.guestDeviceId,
   });
 
   final PlayerStats stats;
+  final AuthSessionMode? sessionMode;
   final String guestDeviceId;
 
   @override
@@ -245,9 +248,11 @@ class _ProfileSummaryCard extends StatelessWidget {
         _ProfileMetricGrid(stats: stats),
         const SizedBox(height: 16),
         _ProfileAccountPanel(
+          stats: stats,
           providerLabel: providerLabel,
           localeLabel: localeLabel,
           authProvidersLinked: stats.authProvidersLinked,
+          sessionMode: sessionMode,
           guestDeviceId: guestDeviceId,
         ),
         const SizedBox(height: 4),
@@ -545,15 +550,19 @@ class _ProfileMetricTile extends StatelessWidget {
 
 class _ProfileAccountPanel extends StatelessWidget {
   const _ProfileAccountPanel({
+    required this.stats,
     required this.providerLabel,
     required this.localeLabel,
     required this.authProvidersLinked,
+    required this.sessionMode,
     required this.guestDeviceId,
   });
 
+  final PlayerStats stats;
   final String providerLabel;
   final String localeLabel;
   final int authProvidersLinked;
+  final AuthSessionMode? sessionMode;
   final String guestDeviceId;
 
   @override
@@ -590,7 +599,9 @@ class _ProfileAccountPanel extends StatelessWidget {
             ),
             const SizedBox(height: 14),
             _AccountLinkActions(
+              stats: stats,
               authProvidersLinked: authProvidersLinked,
+              sessionMode: sessionMode,
               guestDeviceId: guestDeviceId,
             ),
           ],
@@ -602,19 +613,25 @@ class _ProfileAccountPanel extends StatelessWidget {
 
 class _AccountLinkActions extends StatelessWidget {
   const _AccountLinkActions({
+    required this.stats,
     required this.authProvidersLinked,
+    required this.sessionMode,
     required this.guestDeviceId,
   });
 
+  final PlayerStats stats;
   final int authProvidersLinked;
+  final AuthSessionMode? sessionMode;
   final String guestDeviceId;
 
   @override
   Widget build(BuildContext context) {
     final linkState = context.watch<AccountLinkCubit>().state;
     final isBusy = linkState.isBusy;
-    final canLinkApple = authProvidersLinked == 0;
-    final canReturnToGuest = authProvidersLinked > 0;
+    final availability = accountLinkActionAvailability(
+      authProvidersLinked: authProvidersLinked,
+      sessionMode: sessionMode,
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -638,11 +655,19 @@ class _AccountLinkActions extends StatelessWidget {
                     ? context.l10n.linkingAccount
                     : context.l10n.linkApple,
               ),
-              onPressed: isBusy || !canLinkApple
+              onPressed: isBusy || !availability.canLinkApple
                   ? null
                   : () => context.read<AccountLinkCubit>().linkApple(),
             ),
-            if (canReturnToGuest)
+            if (sessionMode == AuthSessionMode.apple)
+              OutlinedButton.icon(
+                icon: const Icon(Icons.edit_outlined),
+                label: Text(context.l10n.editUsername),
+                onPressed: isBusy
+                    ? null
+                    : () => _showEditUsernameDialog(context, stats),
+              ),
+            if (availability.canReturnToGuest)
               OutlinedButton.icon(
                 icon: const Icon(Icons.logout_outlined),
                 label: Text(
@@ -663,6 +688,188 @@ class _AccountLinkActions extends StatelessWidget {
       ],
     );
   }
+
+  Future<void> _showEditUsernameDialog(
+    BuildContext context,
+    PlayerStats stats,
+  ) async {
+    final messenger = ScaffoldMessenger.of(context);
+    final result = await showDialog<_UsernameEditResult>(
+      context: context,
+      builder: (_) => _EditUsernameDialog(
+        initialDisplayName: stats.displayName ?? '',
+        initialDiscriminator: stats.discriminator,
+      ),
+    );
+
+    if (result == null || !context.mounted) {
+      return;
+    }
+
+    final error = await context.read<ProfileSummaryCubit>().updateHandle(
+      displayName: result.displayName,
+      discriminator: result.discriminator,
+    );
+    if (!context.mounted) {
+      return;
+    }
+
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(error ?? context.l10n.usernameUpdated),
+      ),
+    );
+  }
+}
+
+class _EditUsernameDialog extends StatefulWidget {
+  const _EditUsernameDialog({
+    required this.initialDisplayName,
+    required this.initialDiscriminator,
+  });
+
+  final String initialDisplayName;
+  final int? initialDiscriminator;
+
+  @override
+  State<_EditUsernameDialog> createState() => _EditUsernameDialogState();
+}
+
+class _EditUsernameDialogState extends State<_EditUsernameDialog> {
+  late final TextEditingController _displayNameController;
+  late final TextEditingController _discriminatorController;
+  String? _displayNameError;
+  String? _discriminatorError;
+
+  @override
+  void initState() {
+    super.initState();
+    _displayNameController = TextEditingController(
+      text: widget.initialDisplayName,
+    );
+    _discriminatorController = TextEditingController(
+      text: widget.initialDiscriminator?.toString() ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    _displayNameController.dispose();
+    _discriminatorController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(context.l10n.editUsername),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextField(
+            controller: _displayNameController,
+            autofocus: true,
+            maxLength: 32,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: context.l10n.usernameLabel,
+              errorText: _displayNameError,
+            ),
+          ),
+          const SizedBox(height: 12),
+          TextField(
+            controller: _discriminatorController,
+            keyboardType: TextInputType.number,
+            maxLength: 4,
+            decoration: InputDecoration(
+              labelText: context.l10n.usernameCodeLabel,
+              errorText: _discriminatorError,
+            ),
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: Text(context.l10n.commonCancel),
+        ),
+        FilledButton(
+          onPressed: _submit,
+          child: Text(context.l10n.commonSave),
+        ),
+      ],
+    );
+  }
+
+  void _submit() {
+    final displayName = _displayNameController.text.trim();
+    final discriminatorText = _discriminatorController.text.trim();
+    final discriminator = int.tryParse(discriminatorText);
+
+    setState(() {
+      _displayNameError =
+          displayName.length < 2 ||
+              displayName.length > 32 ||
+              displayName.contains('#')
+          ? context.l10n.usernameInvalidName
+          : null;
+      _discriminatorError =
+          discriminator == null || discriminator < 1 || discriminator > 9999
+          ? context.l10n.usernameInvalidCode
+          : null;
+    });
+
+    if (_displayNameError != null || _discriminatorError != null) {
+      return;
+    }
+
+    Navigator.of(context).pop(
+      _UsernameEditResult(
+        displayName: displayName,
+        discriminator: discriminator!,
+      ),
+    );
+  }
+}
+
+class _UsernameEditResult {
+  const _UsernameEditResult({
+    required this.displayName,
+    required this.discriminator,
+  });
+
+  final String displayName;
+  final int discriminator;
+}
+
+AccountLinkActionAvailability accountLinkActionAvailability({
+  required int authProvidersLinked,
+  required AuthSessionMode? sessionMode,
+}) {
+  return switch (sessionMode) {
+    AuthSessionMode.guest => const AccountLinkActionAvailability(
+      canLinkApple: true,
+      canReturnToGuest: false,
+    ),
+    AuthSessionMode.apple => const AccountLinkActionAvailability(
+      canLinkApple: false,
+      canReturnToGuest: true,
+    ),
+    null => AccountLinkActionAvailability(
+      canLinkApple: authProvidersLinked == 0,
+      canReturnToGuest: authProvidersLinked > 0,
+    ),
+  };
+}
+
+class AccountLinkActionAvailability {
+  const AccountLinkActionAvailability({
+    required this.canLinkApple,
+    required this.canReturnToGuest,
+  });
+
+  final bool canLinkApple;
+  final bool canReturnToGuest;
 }
 
 class _ProfileInfoRow extends StatelessWidget {

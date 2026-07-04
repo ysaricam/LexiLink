@@ -1,8 +1,10 @@
+using LexiLink.Common.Application;
+
 namespace LexiLink.API.Configuration.Authentication;
 
 public interface IJwtTokenIssuer
 {
-    IssuedToken Issue(Guid playerId);
+    IssuedToken Issue(Guid playerId, PlayerAuthSessionMode sessionMode = PlayerAuthSessionMode.Guest);
 
     /// <summary>
     /// Issues a JWT for an authenticated admin principal. The subject is

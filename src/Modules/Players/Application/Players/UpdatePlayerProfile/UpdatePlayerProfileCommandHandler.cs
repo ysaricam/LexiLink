@@ -18,6 +18,16 @@ internal class UpdatePlayerProfileCommandHandler : ICommandHandler<UpdatePlayerP
         var player = await _playerRepository.GetByIdAsync(new PlayerId(request.PlayerId), cancellationToken)
             ?? throw new NotFoundException(nameof(Player), request.PlayerId);
 
+        if (request.DisplayName is not null && request.Discriminator is not null)
+        {
+            player.UpdateProfileAndHandle(
+                request.DisplayName,
+                Discriminator.Of(request.Discriminator.Value),
+                request.AvatarUrl,
+                request.Locale);
+            return;
+        }
+
         player.UpdateProfile(avatarUrl: request.AvatarUrl, locale: request.Locale);
     }
 }

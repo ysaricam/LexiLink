@@ -1100,6 +1100,42 @@ abstract class AppLocalizations {
   /// **'Returning...'**
   String get returningToGuest;
 
+  /// No description provided for @editUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit username'**
+  String get editUsername;
+
+  /// No description provided for @usernameLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get usernameLabel;
+
+  /// No description provided for @usernameCodeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Code'**
+  String get usernameCodeLabel;
+
+  /// No description provided for @usernameUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Username updated.'**
+  String get usernameUpdated;
+
+  /// No description provided for @usernameInvalidName.
+  ///
+  /// In en, this message translates to:
+  /// **'Use 2-32 characters and do not include #.'**
+  String get usernameInvalidName;
+
+  /// No description provided for @usernameInvalidCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Use a number from 1 to 9999.'**
+  String get usernameInvalidCode;
+
   /// No description provided for @statGamesCompleted.
   ///
   /// In en, this message translates to:

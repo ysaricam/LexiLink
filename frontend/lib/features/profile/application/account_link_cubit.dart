@@ -56,7 +56,11 @@ class AccountLinkCubit extends Cubit<AccountLinkState> {
       final session = await _accountLinkRepository.continueWithApple(
         identity: identity,
       );
-      await _saveSession(session.accessToken, session.playerId);
+      await _saveSession(
+        session.accessToken,
+        session.playerId,
+        AuthSessionMode.apple,
+      );
       emit(
         AccountLinkState.success(
           success: switch (session.mode) {
@@ -93,7 +97,11 @@ class AccountLinkCubit extends Cubit<AccountLinkState> {
         displayName: displayName,
         locale: locale,
       );
-      await _saveSession(session.accessToken, session.playerId);
+      await _saveSession(
+        session.accessToken,
+        session.playerId,
+        AuthSessionMode.guest,
+      );
       emit(
         const AccountLinkState.success(
           success: AccountLinkSuccess.returnedToGuest,
@@ -110,9 +118,14 @@ class AccountLinkCubit extends Cubit<AccountLinkState> {
     }
   }
 
-  Future<void> _saveSession(String accessToken, String playerId) async {
+  Future<void> _saveSession(
+    String accessToken,
+    String playerId,
+    AuthSessionMode mode,
+  ) async {
     await _tokenStore.saveAccessToken(accessToken);
     await _tokenStore.savePlayerId(playerId);
+    await _tokenStore.saveSessionMode(mode);
   }
 }
 

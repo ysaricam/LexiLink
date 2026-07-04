@@ -56,6 +56,12 @@ class SharedPreferencesAdminTokenStore implements TokenStore {
   Future<void> savePlayerId(String playerId) async {}
 
   @override
+  Future<AuthSessionMode?> readSessionMode() async => null;
+
+  @override
+  Future<void> saveSessionMode(AuthSessionMode mode) async {}
+
+  @override
   Future<void> clear() async {
     await _preferences.remove(_adminAccessTokenKey);
     _accessToken = null;

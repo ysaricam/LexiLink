@@ -38,10 +38,14 @@ class SessionCubit extends Cubit<SessionState> {
   Future<void> setAuthenticated(
     String accessToken, {
     String? playerId,
+    AuthSessionMode? sessionMode,
   }) async {
     await _tokenStore.saveAccessToken(accessToken);
     if (playerId != null && playerId.isNotEmpty) {
       await _tokenStore.savePlayerId(playerId);
+    }
+    if (sessionMode != null) {
+      await _tokenStore.saveSessionMode(sessionMode);
     }
     emit(SessionState.authenticated(accessToken: accessToken));
   }

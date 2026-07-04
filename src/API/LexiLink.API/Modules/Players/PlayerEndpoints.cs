@@ -8,6 +8,8 @@ using LexiLink.Modules.Players.Application.Players.RegisterGuestPlayer;
 using LexiLink.Modules.Players.Application.Players.UpdatePlayerProfile;
 using LexiLink.Modules.Players.Application.Contracts;
 using LexiLink.Modules.Players.Domain.Players;
+using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 namespace LexiLink.API.Modules.Players;
 
@@ -60,12 +62,48 @@ public static class PlayerEndpoints
         });
 
         group.MapPatch("/{id:guid}/profile",
-            async (Guid id, UpdatePlayerProfileRequest body, IPlayersModule playersModule, CancellationToken ct) =>
+            async (
+                Guid id,
+                UpdatePlayerProfileRequest body,
+                IExecutionContextAccessor executionContextAccessor,
+                IPlayersModule playersModule,
+                HttpContext httpContext,
+                CancellationToken ct) =>
         {
-            await playersModule.ExecuteCommandAsync(
-                new UpdatePlayerProfileCommand(id, body.AvatarUrl, body.Locale), ct);
+            if (executionContextAccessor.UserId != id)
+            {
+                return Results.Forbid();
+            }
+
+            var updatesHandle = body.DisplayName is not null || body.Discriminator is not null;
+            if (updatesHandle && executionContextAccessor.PlayerAuthSessionMode != PlayerAuthSessionMode.Apple)
+            {
+                return Results.Forbid();
+            }
+
+            try
+            {
+                await playersModule.ExecuteCommandAsync(
+                    new UpdatePlayerProfileCommand(
+                        id,
+                        body.AvatarUrl,
+                        body.Locale,
+                        body.DisplayName,
+                        body.Discriminator),
+                    ct);
+            }
+            catch (DbUpdateException exception) when (IsPlayerHandleUniqueViolation(exception))
+            {
+                return Results.Problem(
+                    statusCode: StatusCodes.Status409Conflict,
+                    title: "Username is already taken.",
+                    instance: httpContext.Request.Path);
+            }
+
             return Results.NoContent();
-        });
+        })
+        .ProducesProblem(StatusCodes.Status403Forbidden)
+        .ProducesProblem(StatusCodes.Status409Conflict);
 
         group.MapGet("/{id:guid}", async (Guid id, IPlayersModule playersModule, CancellationToken ct) =>
             Results.Ok(await playersModule.ExecuteQueryAsync(new GetPlayerByIdQuery(id), ct)));
@@ -86,8 +124,30 @@ public static class PlayerEndpoints
                 : Results.Ok(dto);
         }).AllowAnonymous();
     }
+
+    private static bool IsPlayerHandleUniqueViolation(DbUpdateException exception)
+    {
+        var current = exception.InnerException;
+        while (current is not null)
+        {
+            if (current is PostgresException postgresException &&
+                postgresException.SqlState == PostgresErrorCodes.UniqueViolation &&
+                postgresException.ConstraintName == "UX_Players_DisplayName_DiscriminatorValue")
+            {
+                return true;
+            }
+
+            current = current.InnerException;
+        }
+
+        return false;
+    }
 }
 
 public record RegisterGuestPlayerRequest(string DeviceId, string DisplayName, string Locale);
 public record LinkAuthProviderRequest(AuthProvider Provider, string ExternalId, string ExternalToken, string? Email);
-public record UpdatePlayerProfileRequest(string? AvatarUrl, string Locale);
+public record UpdatePlayerProfileRequest(
+    string? AvatarUrl,
+    string Locale,
+    string? DisplayName,
+    int? Discriminator);

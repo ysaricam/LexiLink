@@ -14,6 +14,8 @@ public interface IExecutionContextAccessor
     /// </summary>
     bool IsAdmin { get; }
 
+    PlayerAuthSessionMode? PlayerAuthSessionMode { get; }
+
     /// <summary>
     /// AdminUserId of the authenticated admin principal, or null for
     /// player/anonymous requests. Resolved from the admin claim populated

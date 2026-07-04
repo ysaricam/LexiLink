@@ -566,6 +566,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get returningToGuest => 'Returning...';
 
   @override
+  String get editUsername => 'Edit username';
+
+  @override
+  String get usernameLabel => 'Name';
+
+  @override
+  String get usernameCodeLabel => 'Code';
+
+  @override
+  String get usernameUpdated => 'Username updated.';
+
+  @override
+  String get usernameInvalidName => 'Use 2-32 characters and do not include #.';
+
+  @override
+  String get usernameInvalidCode => 'Use a number from 1 to 9999.';
+
+  @override
   String get statGamesCompleted => 'Games completed';
 
   @override

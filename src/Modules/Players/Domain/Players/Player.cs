@@ -91,13 +91,62 @@ public class Player : Entity, IAggregateRoot
 
     public void UpdateProfile(string? avatarUrl, string locale)
     {
+        ApplyProfile(avatarUrl, locale);
+        AddDomainEvent(new PlayerProfileUpdatedDomainEvent(
+            Id,
+            _displayName,
+            _discriminator,
+            _avatarUrl,
+            _locale));
+    }
+
+    public void UpdateHandle(string displayName, Discriminator discriminator)
+    {
+        ApplyHandle(displayName, discriminator);
+        AddDomainEvent(new PlayerProfileUpdatedDomainEvent(
+            Id,
+            _displayName,
+            _discriminator,
+            _avatarUrl,
+            _locale));
+    }
+
+    public void UpdateProfileAndHandle(
+        string displayName,
+        Discriminator discriminator,
+        string? avatarUrl,
+        string locale)
+    {
+        ApplyHandle(displayName, discriminator);
+        ApplyProfile(avatarUrl, locale);
+        AddDomainEvent(new PlayerProfileUpdatedDomainEvent(
+            Id,
+            _displayName,
+            _discriminator,
+            _avatarUrl,
+            _locale));
+    }
+
+    private void ApplyProfile(string? avatarUrl, string locale)
+    {
         CheckRule(new AvatarUrlMustBeValidIfProvidedRule(avatarUrl));
         CheckRule(new LocaleMustBeValidFormatRule(locale));
 
         _avatarUrl = string.IsNullOrEmpty(avatarUrl) ? null : avatarUrl;
         _locale = locale;
+    }
 
-        AddDomainEvent(new PlayerProfileUpdatedDomainEvent(Id, _avatarUrl, _locale));
+    private void ApplyHandle(string displayName, Discriminator discriminator)
+    {
+        var normalizedDisplayName = displayName.Trim();
+
+        CheckRule(new DisplayNameMustNotBeEmptyRule(normalizedDisplayName));
+        CheckRule(new DisplayNameMustMeetMinimumLengthRule(normalizedDisplayName));
+        CheckRule(new DisplayNameMustNotExceedMaxLengthRule(normalizedDisplayName));
+        CheckRule(new DisplayNameMustNotContainHandleSeparatorRule(normalizedDisplayName));
+
+        _displayName = normalizedDisplayName;
+        _discriminator = discriminator;
     }
 
     /// <summary>

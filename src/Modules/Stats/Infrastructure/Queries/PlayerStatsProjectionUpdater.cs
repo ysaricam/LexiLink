@@ -66,13 +66,15 @@ internal class PlayerStatsProjectionUpdater : IPlayerStatsProjectionUpdater
             await connection.ExecuteAsync(
                     """
                     INSERT INTO "stats"."PlayerStats"
-                        ("PlayerId", "AvatarUrl", "Locale", "IsGuest", "AuthProvidersLinked",
+                        ("PlayerId", "DisplayName", "Discriminator", "AvatarUrl", "Locale", "IsGuest", "AuthProvidersLinked",
                          "GamesCompleted", "BestScore", "TotalScore", "CreatedAt", "UpdatedAt")
                     VALUES
-                        (@PlayerId, @AvatarUrl, @Locale, true, 0,
+                        (@PlayerId, @DisplayName, @Discriminator, @AvatarUrl, @Locale, true, 0,
                          0, NULL, 0, @OccurredOn, @OccurredOn)
                     ON CONFLICT ("PlayerId") DO UPDATE
-                    SET "AvatarUrl" = EXCLUDED."AvatarUrl",
+                    SET "DisplayName" = COALESCE(EXCLUDED."DisplayName", "stats"."PlayerStats"."DisplayName"),
+                        "Discriminator" = COALESCE(EXCLUDED."Discriminator", "stats"."PlayerStats"."Discriminator"),
+                        "AvatarUrl" = EXCLUDED."AvatarUrl",
                         "Locale" = EXCLUDED."Locale",
                         "UpdatedAt" = EXCLUDED."UpdatedAt"
                     """,

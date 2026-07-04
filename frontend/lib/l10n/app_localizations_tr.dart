@@ -568,6 +568,24 @@ class AppLocalizationsTr extends AppLocalizations {
   String get returningToGuest => 'Dönülüyor...';
 
   @override
+  String get editUsername => 'Kullanıcı adını düzenle';
+
+  @override
+  String get usernameLabel => 'İsim';
+
+  @override
+  String get usernameCodeLabel => 'Kod';
+
+  @override
+  String get usernameUpdated => 'Kullanıcı adı güncellendi.';
+
+  @override
+  String get usernameInvalidName => '2-32 karakter kullanın ve # eklemeyin.';
+
+  @override
+  String get usernameInvalidCode => '1 ile 9999 arasında bir sayı kullanın.';
+
+  @override
   String get statGamesCompleted => 'Tamamlanan oyun';
 
   @override

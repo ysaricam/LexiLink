@@ -7,6 +7,8 @@ import 'package:lexilink_app/shared/storage/token_store.dart';
 
 void main() {
   group('SessionCubit', () {
+    late InMemoryTokenStore tokenStore;
+
     blocTest<SessionCubit, SessionState>(
       'emits unauthenticated when no token exists',
       build: () => SessionCubit(tokenStore: InMemoryTokenStore()),
@@ -48,6 +50,7 @@ void main() {
         ),
       );
       await tokenStore.savePlayerId('player-1');
+      await tokenStore.saveSessionMode(AuthSessionMode.apple);
       final cubit = SessionCubit(tokenStore: tokenStore);
 
       await cubit.checkSession();
@@ -55,15 +58,25 @@ void main() {
       expect(cubit.state, const SessionState.unauthenticated());
       expect(await tokenStore.readAccessToken(), isNull);
       expect(await tokenStore.readPlayerId(), isNull);
+      expect(await tokenStore.readSessionMode(), isNull);
     });
 
     blocTest<SessionCubit, SessionState>(
       'stores token and emits authenticated',
-      build: () => SessionCubit(tokenStore: InMemoryTokenStore()),
-      act: (cubit) => cubit.setAuthenticated('token-1'),
+      build: () {
+        tokenStore = InMemoryTokenStore();
+        return SessionCubit(tokenStore: tokenStore);
+      },
+      act: (cubit) => cubit.setAuthenticated(
+        'token-1',
+        sessionMode: AuthSessionMode.guest,
+      ),
       expect: () => [
         const SessionState.authenticated(accessToken: 'token-1'),
       ],
+      verify: (_) async {
+        expect(await tokenStore.readSessionMode(), AuthSessionMode.guest);
+      },
     );
 
     blocTest<SessionCubit, SessionState>(

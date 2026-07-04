@@ -2,6 +2,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text;
 using LexiLink.API.CrossModule;
+using LexiLink.Common.Application;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -80,7 +81,10 @@ public sealed class LexiLinkBearerAuthenticationHandler : AuthenticationHandler<
         // we attach the admin role claim so AuthenticatedAdmin endpoints
         // authorize the same token.
         var adminClaims = admin is null
-            ? []
+            ? (IEnumerable<Claim>)
+            [
+                new Claim(AuthConstants.PlayerAuthSessionModeClaimType, PlayerAuthSessionMode.Guest.ToString())
+            ]
             : (IEnumerable<Claim>)
             [
                 new Claim(AuthConstants.RoleClaimType, AuthConstants.AdminRoleValue),

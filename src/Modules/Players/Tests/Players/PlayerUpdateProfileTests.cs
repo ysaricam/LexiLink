@@ -1,5 +1,6 @@
 using LexiLink.Modules.Players.Domain.Players.Events;
 using LexiLink.Modules.Players.Domain.Players.Rules;
+using LexiLink.Modules.Players.Domain.Players;
 
 namespace LexiLink.Modules.Players.Tests.Players;
 
@@ -57,5 +58,27 @@ public class PlayerUpdateProfileTests : PlayerTestsBase
         var player = RegisterGuest();
         AssertBrokenRule<LocaleMustBeValidFormatRule>(() =>
             player.UpdateProfile(null, "english"));
+    }
+
+    [Test]
+    public void UpdateHandle_WithValidValues_RaisesPlayerProfileUpdatedDomainEvent()
+    {
+        var player = RegisterGuest();
+
+        player.UpdateHandle("NewName", Discriminator.Of(4321));
+
+        var domainEvent = AssertPublishedDomainEvent<PlayerProfileUpdatedDomainEvent>(player);
+        domainEvent.PlayerId.Should().Be(player.Id);
+        domainEvent.DisplayName.Should().Be("NewName");
+        domainEvent.Discriminator.Value.Should().Be(4321);
+    }
+
+    [Test]
+    public void UpdateHandle_WhenDisplayNameContainsSeparator_BreaksDisplayNameMustNotContainHandleSeparatorRule()
+    {
+        var player = RegisterGuest();
+
+        AssertBrokenRule<DisplayNameMustNotContainHandleSeparatorRule>(() =>
+            player.UpdateHandle("Bad#Name", Discriminator.Of(4321)));
     }
 }

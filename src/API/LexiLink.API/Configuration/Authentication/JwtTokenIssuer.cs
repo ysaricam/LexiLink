@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text;
+using LexiLink.Common.Application;
 using LexiLink.Common.Application.Time;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -17,8 +18,13 @@ public sealed class JwtTokenIssuer : IJwtTokenIssuer
         _clock = clock;
     }
 
-    public IssuedToken Issue(Guid playerId) =>
-        CreateToken(subject: playerId, extraClaims: []);
+    public IssuedToken Issue(Guid playerId, PlayerAuthSessionMode sessionMode = PlayerAuthSessionMode.Guest) =>
+        CreateToken(
+            subject: playerId,
+            extraClaims:
+            [
+                new Claim(AuthConstants.PlayerAuthSessionModeClaimType, sessionMode.ToString())
+            ]);
 
     public IssuedToken IssueAdmin(Guid adminUserId) =>
         CreateToken(

@@ -54,6 +54,19 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
             .Any(c => c.Type == AuthConstants.RoleClaimType && c.Value == AuthConstants.AdminRoleValue)
         ?? false;
 
+    public PlayerAuthSessionMode? PlayerAuthSessionMode
+    {
+        get
+        {
+            var raw = _httpContextAccessor.HttpContext?.User?.Claims
+                .SingleOrDefault(c => c.Type == AuthConstants.PlayerAuthSessionModeClaimType)?.Value;
+
+            return Enum.TryParse<PlayerAuthSessionMode>(raw, ignoreCase: true, out var mode)
+                ? mode
+                : null;
+        }
+    }
+
     public Guid? AdminUserId
     {
         get

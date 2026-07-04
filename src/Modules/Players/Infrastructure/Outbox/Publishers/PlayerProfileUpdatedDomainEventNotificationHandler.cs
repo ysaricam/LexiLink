@@ -24,6 +24,8 @@ internal class PlayerProfileUpdatedDomainEventNotificationHandler :
                 notification.Id,
                 notification.OccurredOn,
                 notification.PlayerId,
+                notification.DisplayName,
+                notification.Discriminator,
                 notification.AvatarUrl,
                 notification.Locale),
             cancellationToken);

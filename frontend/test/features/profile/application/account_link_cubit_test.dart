@@ -48,6 +48,7 @@ void main() {
       verify: (_) async {
         expect(await tokenStore.readAccessToken(), 'jwt-guest-apple');
         expect(await tokenStore.readPlayerId(), 'guest-player-1');
+        expect(await tokenStore.readSessionMode(), AuthSessionMode.apple);
       },
     );
 
@@ -80,6 +81,7 @@ void main() {
       verify: (_) async {
         expect(await tokenStore.readAccessToken(), 'jwt-apple-player');
         expect(await tokenStore.readPlayerId(), 'apple-player-1');
+        expect(await tokenStore.readSessionMode(), AuthSessionMode.apple);
       },
     );
 
@@ -106,6 +108,7 @@ void main() {
       verify: (_) async {
         expect(await tokenStore.readAccessToken(), isNull);
         expect(await tokenStore.readPlayerId(), isNull);
+        expect(await tokenStore.readSessionMode(), isNull);
       },
     );
 
@@ -139,13 +142,15 @@ void main() {
       verify: (_) async {
         expect(await tokenStore.readAccessToken(), 'jwt-guest');
         expect(await tokenStore.readPlayerId(), 'guest-player-1');
+        expect(await tokenStore.readSessionMode(), AuthSessionMode.guest);
       },
     );
 
     blocTest<AccountLinkCubit, AccountLinkState>(
       'does not overwrite session when Apple continue fails',
-      setUp: () {
+      setUp: () async {
         tokenStore = InMemoryTokenStore();
+        await tokenStore.saveSessionMode(AuthSessionMode.guest);
       },
       build: () {
         return AccountLinkCubit(
@@ -168,6 +173,7 @@ void main() {
       verify: (_) async {
         expect(await tokenStore.readAccessToken(), isNull);
         expect(await tokenStore.readPlayerId(), isNull);
+        expect(await tokenStore.readSessionMode(), AuthSessionMode.guest);
       },
     );
   });

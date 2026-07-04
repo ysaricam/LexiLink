@@ -99,6 +99,7 @@ void main() {
       );
 
       expect(tokenStore.accessToken, 'jwt-player-1');
+      expect(await tokenStore.readSessionMode(), AuthSessionMode.guest);
       expect(sessionCubit.state.status, SessionStatus.authenticated);
     });
   });

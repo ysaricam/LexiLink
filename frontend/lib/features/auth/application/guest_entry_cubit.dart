@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:lexilink_app/features/auth/data/guest_player_repository.dart';
 import 'package:lexilink_app/features/session/application/session_cubit.dart';
 import 'package:lexilink_app/shared/api/api_error.dart';
+import 'package:lexilink_app/shared/storage/token_store.dart';
 
 enum GuestEntryStatus {
   idle,
@@ -42,6 +43,7 @@ class GuestEntryCubit extends Cubit<GuestEntryState> {
       await _sessionCubit.setAuthenticated(
         session.accessToken,
         playerId: session.playerId,
+        sessionMode: AuthSessionMode.guest,
       );
       emit(GuestEntryState.success(playerId: session.playerId));
     } on ApiException catch (error) {

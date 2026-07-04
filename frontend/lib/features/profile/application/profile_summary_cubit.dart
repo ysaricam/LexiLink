@@ -38,7 +38,8 @@ class ProfileSummaryCubit extends Cubit<ProfileSummaryState> {
       }
 
       final stats = await _playerStatsRepository.getPlayerStats(playerId);
-      emit(ProfileSummaryState.success(stats: stats));
+      final sessionMode = await _tokenStore.readSessionMode();
+      emit(ProfileSummaryState.success(stats: stats, sessionMode: sessionMode));
     } on ApiException catch (error) {
       emit(ProfileSummaryState.failure(message: error.message));
     } on Exception {
@@ -49,12 +50,44 @@ class ProfileSummaryCubit extends Cubit<ProfileSummaryState> {
       );
     }
   }
+
+  Future<String?> updateHandle({
+    required String displayName,
+    required int discriminator,
+  }) async {
+    final currentStats = state.stats;
+    if (currentStats == null) {
+      return 'Profile is not loaded.';
+    }
+
+    try {
+      final playerId = await _tokenStore.readPlayerId();
+      if (playerId == null || playerId.isEmpty) {
+        return 'Guest session is missing.';
+      }
+
+      await _playerStatsRepository.updatePlayerProfile(
+        playerId: playerId,
+        avatarUrl: currentStats.avatarUrl,
+        locale: currentStats.locale ?? 'en-US',
+        displayName: displayName,
+        discriminator: discriminator,
+      );
+      await loadSummary();
+      return null;
+    } on ApiException catch (error) {
+      return error.message;
+    } on Exception {
+      return 'We could not update your username. Try again.';
+    }
+  }
 }
 
 class ProfileSummaryState extends Equatable {
   const ProfileSummaryState({
     required this.status,
     this.stats,
+    this.sessionMode,
     this.message,
   });
 
@@ -64,18 +97,25 @@ class ProfileSummaryState extends Equatable {
   const ProfileSummaryState.loading()
     : this(status: ProfileSummaryStatus.loading);
 
-  const ProfileSummaryState.success({required PlayerStats stats})
-    : this(status: ProfileSummaryStatus.success, stats: stats);
+  const ProfileSummaryState.success({
+    required PlayerStats stats,
+    AuthSessionMode? sessionMode,
+  }) : this(
+         status: ProfileSummaryStatus.success,
+         stats: stats,
+         sessionMode: sessionMode,
+       );
 
   const ProfileSummaryState.failure({required String message})
     : this(status: ProfileSummaryStatus.failure, message: message);
 
   final ProfileSummaryStatus status;
   final PlayerStats? stats;
+  final AuthSessionMode? sessionMode;
   final String? message;
 
   bool get isLoading => status == ProfileSummaryStatus.loading;
 
   @override
-  List<Object?> get props => [status, stats, message];
+  List<Object?> get props => [status, stats, sessionMode, message];
 }

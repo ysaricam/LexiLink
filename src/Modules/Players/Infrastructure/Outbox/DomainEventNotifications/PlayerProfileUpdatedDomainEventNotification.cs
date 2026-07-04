@@ -12,6 +12,8 @@ public class PlayerProfileUpdatedDomainEventNotification : IDomainEventNotificat
     public Guid Id { get; private set; }
     public DateTime OccurredOn { get; private set; }
     public Guid PlayerId { get; private set; }
+    public string? DisplayName { get; private set; }
+    public int? Discriminator { get; private set; }
     public string? AvatarUrl { get; private set; }
     public string Locale { get; private set; } = null!;
 
@@ -21,6 +23,8 @@ public class PlayerProfileUpdatedDomainEventNotification : IDomainEventNotificat
         Id = id;
         OccurredOn = domainEvent.OccurredOn;
         PlayerId = domainEvent.PlayerId.Value;
+        DisplayName = domainEvent.DisplayName;
+        Discriminator = domainEvent.Discriminator.Value;
         AvatarUrl = domainEvent.AvatarUrl;
         Locale = domainEvent.Locale;
     }

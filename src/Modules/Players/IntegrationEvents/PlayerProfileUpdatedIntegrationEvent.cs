@@ -6,5 +6,7 @@ public sealed record PlayerProfileUpdatedIntegrationEvent(
     Guid Id,
     DateTime OccurredOn,
     Guid PlayerId,
+    string? DisplayName,
+    int? Discriminator,
     string? AvatarUrl,
     string Locale) : IIntegrationEvent;

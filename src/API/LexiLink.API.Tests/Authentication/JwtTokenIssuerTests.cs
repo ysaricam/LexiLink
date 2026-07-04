@@ -1,4 +1,5 @@
 using LexiLink.API.Configuration.Authentication;
+using LexiLink.Common.Application;
 using LexiLink.Common.Application.Time;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -32,7 +33,7 @@ public sealed class JwtTokenIssuerTests
             },
             new FixedClock(FixedNow));
 
-        var token = issuer.Issue(playerId);
+        var token = issuer.Issue(playerId, PlayerAuthSessionMode.Apple);
 
         token.ExpiresAt.Should().Be(FixedNow.AddMinutes(30));
         var result = await new JsonWebTokenHandler().ValidateTokenAsync(
@@ -51,6 +52,8 @@ public sealed class JwtTokenIssuerTests
         result.IsValid.Should().BeTrue();
         result.ClaimsIdentity.Claims.Single(claim => claim.Type == JwtRegisteredClaimNames.Sub)
             .Value.Should().Be(playerId.ToString());
+        result.ClaimsIdentity.Claims.Single(claim => claim.Type == AuthConstants.PlayerAuthSessionModeClaimType)
+            .Value.Should().Be(PlayerAuthSessionMode.Apple.ToString());
     }
 
     private sealed class FixedClock : IClock

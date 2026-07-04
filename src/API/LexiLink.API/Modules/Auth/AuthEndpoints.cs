@@ -56,7 +56,10 @@ public static class AuthEndpoints
                         $"Player with auth provider '{body.Provider}' and external id '{body.ExternalId}' was not found.");
                 }
 
-                var token = tokenIssuer.Issue(player.Id);
+                var sessionMode = body.Provider == AuthProvider.Apple
+                    ? PlayerAuthSessionMode.Apple
+                    : PlayerAuthSessionMode.Guest;
+                var token = tokenIssuer.Issue(player.Id, sessionMode);
 
                 return Results.Ok(new TokenExchangeResponse(token.AccessToken, token.ExpiresAt, player.Id));
             })
@@ -134,7 +137,7 @@ public static class AuthEndpoints
                         ct);
                 }
 
-                var token = tokenIssuer.Issue(currentPlayerId);
+                var token = tokenIssuer.Issue(currentPlayerId, PlayerAuthSessionMode.Apple);
 
                 return Results.Ok(new AppleContinueResponse(
                     token.AccessToken,
@@ -165,7 +168,7 @@ public static class AuthEndpoints
                 instance: httpContext.Request.Path);
         }
 
-        var token = tokenIssuer.Issue(applePlayerId);
+        var token = tokenIssuer.Issue(applePlayerId, PlayerAuthSessionMode.Apple);
         var mode = applePlayerId == currentPlayerId
             ? AppleContinueMode.LinkedCurrentGuest
             : AppleContinueMode.SwitchedToExistingApplePlayer;

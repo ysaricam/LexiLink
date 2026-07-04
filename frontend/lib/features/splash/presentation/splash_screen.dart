@@ -107,6 +107,7 @@ class _SplashScreenState extends State<SplashScreen>
         );
         await tokenStore.saveAccessToken(session.accessToken);
         await tokenStore.savePlayerId(session.playerId);
+        await tokenStore.saveSessionMode(AuthSessionMode.guest);
         resolvedAccessToken = session.accessToken;
       }
 

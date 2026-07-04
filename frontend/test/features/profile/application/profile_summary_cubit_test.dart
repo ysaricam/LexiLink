@@ -50,7 +50,8 @@ void main() {
       build: () {
         final tokenStore = InMemoryTokenStore()
           ..saveAccessToken('jwt-player-1')
-          ..savePlayerId('player-1');
+          ..savePlayerId('player-1')
+          ..saveSessionMode(AuthSessionMode.guest);
 
         return _buildCubit(
           tokenStore: tokenStore,
@@ -67,6 +68,7 @@ void main() {
         expect(cubit.state.stats?.handle, 'Yasin#1234');
         expect(cubit.state.stats?.gamesCompleted, 2);
         expect(cubit.state.stats?.bestScore, 300);
+        expect(cubit.state.sessionMode, AuthSessionMode.guest);
       },
     );
 
@@ -100,6 +102,92 @@ void main() {
         ProfileSummaryState.loading(),
         ProfileSummaryState.failure(message: 'Authentication is required.'),
       ],
+    );
+
+    blocTest<ProfileSummaryCubit, ProfileSummaryState>(
+      'updates handle and reloads profile',
+      build: () {
+        final tokenStore = InMemoryTokenStore()
+          ..saveAccessToken('jwt-player-1')
+          ..savePlayerId('player-1')
+          ..saveSessionMode(AuthSessionMode.apple);
+        var getCount = 0;
+
+        return _buildCubit(
+          tokenStore: tokenStore,
+          handler: (request) async {
+            if (request.method == 'GET') {
+              getCount += 1;
+              expect(request.url.path, '/stats/players/player-1');
+              return http.Response(
+                getCount == 1
+                    ? _playerStatsBody
+                    : _playerStatsBody
+                          .replaceFirst('"Yasin"', '"YeniAd"')
+                          .replaceFirst('"Yasin#1234"', '"YeniAd#4321"')
+                          .replaceFirst(
+                            '"discriminator": 1234',
+                            '"discriminator": 4321',
+                          ),
+                200,
+              );
+            }
+
+            expect(request.method, 'PATCH');
+            expect(request.url.path, '/players/player-1/profile');
+            expect(request.body, contains('"displayName":"YeniAd"'));
+            expect(request.body, contains('"discriminator":4321'));
+            expect(request.body, contains('"locale":"tr-TR"'));
+            return http.Response('', 204);
+          },
+        );
+      },
+      act: (cubit) async {
+        await cubit.loadSummary();
+        final error = await cubit.updateHandle(
+          displayName: 'YeniAd',
+          discriminator: 4321,
+        );
+        expect(error, isNull);
+      },
+      verify: (cubit) {
+        expect(cubit.state.status, ProfileSummaryStatus.success);
+        expect(cubit.state.stats?.handle, 'YeniAd#4321');
+        expect(cubit.state.sessionMode, AuthSessionMode.apple);
+      },
+    );
+
+    blocTest<ProfileSummaryCubit, ProfileSummaryState>(
+      'returns API error message when handle update fails',
+      build: () {
+        final tokenStore = InMemoryTokenStore()
+          ..saveAccessToken('jwt-player-1')
+          ..savePlayerId('player-1')
+          ..saveSessionMode(AuthSessionMode.apple);
+
+        return _buildCubit(
+          tokenStore: tokenStore,
+          handler: (request) async {
+            if (request.method == 'GET') {
+              return http.Response(_playerStatsBody, 200);
+            }
+
+            return http.Response(
+              '{"title":"Username is already taken."}',
+              409,
+              headers: {'content-type': 'application/problem+json'},
+            );
+          },
+        );
+      },
+      act: (cubit) async {
+        await cubit.loadSummary();
+        final error = await cubit.updateHandle(
+          displayName: 'Taken',
+          discriminator: 1234,
+        );
+        expect(error, 'Username is already taken.');
+      },
     );
   });
 }

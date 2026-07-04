@@ -15,6 +15,24 @@ class PlayerStatsRepository {
     return PlayerStats.fromJson(response);
   }
 
+  Future<void> updatePlayerProfile({
+    required String playerId,
+    required String? avatarUrl,
+    required String locale,
+    required String displayName,
+    required int discriminator,
+  }) async {
+    await _apiClient.patchJson(
+      '/players/$playerId/profile',
+      body: {
+        'avatarUrl': avatarUrl,
+        'locale': locale,
+        'displayName': displayName,
+        'discriminator': discriminator,
+      },
+    );
+  }
+
   Future<List<LeaderboardEntry>> getLeaderboard({
     LeaderboardQuery query = const LeaderboardQuery(),
   }) async {

@@ -9,6 +9,7 @@ public static class AuthConstants
 
     public const string RoleClaimType = "role";
     public const string AdminRoleValue = "Admin";
+    public const string PlayerAuthSessionModeClaimType = "auth_mode";
 
     /// <summary>
     /// Claim carrying the AdminUserId for an authenticated admin principal.

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
@@ -98,6 +100,35 @@ void main() {
     expect(entries, hasLength(1));
     expect(entries.single.playerId, 'player-1');
     expect(entries.single.totalScore, 500);
+  });
+
+  test('updates player profile handle', () async {
+    final repository = PlayerStatsRepository(
+      apiClient: ApiClient(
+        config: const ApiConfig(baseUrl: 'http://localhost:5000'),
+        tokenStore: InMemoryTokenStore(),
+        httpClient: MockClient((request) async {
+          expect(request.method, 'PATCH');
+          expect(request.url.path, '/players/player-1/profile');
+
+          final body = jsonDecode(request.body) as Map<String, dynamic>;
+          expect(body['avatarUrl'], isNull);
+          expect(body['locale'], 'tr-TR');
+          expect(body['displayName'], 'YeniAd');
+          expect(body['discriminator'], 4321);
+
+          return http.Response('', 204);
+        }),
+      ),
+    );
+
+    await repository.updatePlayerProfile(
+      playerId: 'player-1',
+      avatarUrl: null,
+      locale: 'tr-TR',
+      displayName: 'YeniAd',
+      discriminator: 4321,
+    );
   });
 
   test('continues with Apple and parses returned session', () async {

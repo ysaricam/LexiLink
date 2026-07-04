@@ -570,6 +570,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String get returningToGuest => 'Retour...';
 
   @override
+  String get editUsername => 'Modifier le nom d\'utilisateur';
+
+  @override
+  String get usernameLabel => 'Nom';
+
+  @override
+  String get usernameCodeLabel => 'Code';
+
+  @override
+  String get usernameUpdated => 'Nom d\'utilisateur mis à jour.';
+
+  @override
+  String get usernameInvalidName => 'Utilisez 2 à 32 caractères sans #.';
+
+  @override
+  String get usernameInvalidCode => 'Utilisez un nombre de 1 à 9999.';
+
+  @override
   String get statGamesCompleted => 'Parties terminées';
 
   @override
