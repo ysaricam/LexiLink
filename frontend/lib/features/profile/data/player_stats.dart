@@ -87,6 +87,38 @@ class PlayerStats extends Equatable {
   final DateTime createdAt;
   final DateTime updatedAt;
 
+  PlayerStats copyWith({
+    String? displayName,
+    int? discriminator,
+    String? handle,
+    String? avatarUrl,
+    String? locale,
+    bool? isGuest,
+    int? authProvidersLinked,
+    int? gamesCompleted,
+    int? bestScore,
+    int? totalScore,
+    DateTime? lastGameCompletedOn,
+    DateTime? updatedAt,
+  }) {
+    return PlayerStats(
+      playerId: playerId,
+      displayName: displayName ?? this.displayName,
+      discriminator: discriminator ?? this.discriminator,
+      handle: handle ?? this.handle,
+      avatarUrl: avatarUrl ?? this.avatarUrl,
+      locale: locale ?? this.locale,
+      isGuest: isGuest ?? this.isGuest,
+      authProvidersLinked: authProvidersLinked ?? this.authProvidersLinked,
+      gamesCompleted: gamesCompleted ?? this.gamesCompleted,
+      bestScore: bestScore ?? this.bestScore,
+      totalScore: totalScore ?? this.totalScore,
+      lastGameCompletedOn: lastGameCompletedOn ?? this.lastGameCompletedOn,
+      createdAt: createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+    );
+  }
+
   @override
   List<Object?> get props => [
     playerId,

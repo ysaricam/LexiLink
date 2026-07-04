@@ -45,6 +45,8 @@ ProfileSummaryCubit _buildCubit({
 
 void main() {
   group('ProfileSummaryCubit', () {
+    late int handleUpdateStatsReloadCount;
+
     blocTest<ProfileSummaryCubit, ProfileSummaryState>(
       'loads player stats from session player id',
       build: () {
@@ -105,32 +107,26 @@ void main() {
     );
 
     blocTest<ProfileSummaryCubit, ProfileSummaryState>(
-      'updates handle and reloads profile',
+      'updates handle optimistically without waiting for stats projection',
       build: () {
         final tokenStore = InMemoryTokenStore()
           ..saveAccessToken('jwt-player-1')
           ..savePlayerId('player-1')
           ..saveSessionMode(AuthSessionMode.apple);
-        var getCount = 0;
+        handleUpdateStatsReloadCount = 0;
 
         return _buildCubit(
           tokenStore: tokenStore,
           handler: (request) async {
             if (request.method == 'GET') {
-              getCount += 1;
-              expect(request.url.path, '/stats/players/player-1');
-              return http.Response(
-                getCount == 1
-                    ? _playerStatsBody
-                    : _playerStatsBody
-                          .replaceFirst('"Yasin"', '"YeniAd"')
-                          .replaceFirst('"Yasin#1234"', '"YeniAd#4321"')
-                          .replaceFirst(
-                            '"discriminator": 1234',
-                            '"discriminator": 4321',
-                          ),
-                200,
+              handleUpdateStatsReloadCount += 1;
+              expect(
+                handleUpdateStatsReloadCount,
+                1,
+                reason: 'Handle update should not reload stale stats.',
               );
+              expect(request.url.path, '/stats/players/player-1');
+              return http.Response(_playerStatsBody, 200);
             }
 
             expect(request.method, 'PATCH');
@@ -153,7 +149,10 @@ void main() {
       verify: (cubit) {
         expect(cubit.state.status, ProfileSummaryStatus.success);
         expect(cubit.state.stats?.handle, 'YeniAd#4321');
+        expect(cubit.state.stats?.displayName, 'YeniAd');
+        expect(cubit.state.stats?.discriminator, 4321);
         expect(cubit.state.sessionMode, AuthSessionMode.apple);
+        expect(handleUpdateStatsReloadCount, 1);
       },
     );
 

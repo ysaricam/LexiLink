@@ -73,7 +73,18 @@ class ProfileSummaryCubit extends Cubit<ProfileSummaryState> {
         displayName: displayName,
         discriminator: discriminator,
       );
-      await loadSummary();
+
+      emit(
+        ProfileSummaryState.success(
+          stats: currentStats.copyWith(
+            displayName: displayName,
+            discriminator: discriminator,
+            handle: '$displayName#${discriminator.toString().padLeft(4, '0')}',
+            updatedAt: DateTime.now().toUtc(),
+          ),
+          sessionMode: state.sessionMode ?? await _tokenStore.readSessionMode(),
+        ),
+      );
       return null;
     } on ApiException catch (error) {
       return error.message;

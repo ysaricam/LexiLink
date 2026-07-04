@@ -243,12 +243,12 @@ class _ProfileSummaryCard extends StatelessWidget {
           handle: handle,
           providerLabel: providerLabel,
           localeLabel: localeLabel,
+          sessionMode: sessionMode,
         ),
         const SizedBox(height: 16),
         _ProfileMetricGrid(stats: stats),
         const SizedBox(height: 16),
         _ProfileAccountPanel(
-          stats: stats,
           providerLabel: providerLabel,
           localeLabel: localeLabel,
           authProvidersLinked: stats.authProvidersLinked,
@@ -267,17 +267,89 @@ class _ProfileHero extends StatelessWidget {
     required this.handle,
     required this.providerLabel,
     required this.localeLabel,
+    required this.sessionMode,
   });
 
   final PlayerStats stats;
   final String handle;
   final String providerLabel;
   final String localeLabel;
+  final AuthSessionMode? sessionMode;
+
+  @override
+  Widget build(BuildContext context) {
+    return _EditableProfileHero(
+      stats: stats,
+      handle: handle,
+      providerLabel: providerLabel,
+      localeLabel: localeLabel,
+      canEditHandle: sessionMode == AuthSessionMode.apple,
+    );
+  }
+}
+
+class _EditableProfileHero extends StatefulWidget {
+  const _EditableProfileHero({
+    required this.stats,
+    required this.handle,
+    required this.providerLabel,
+    required this.localeLabel,
+    required this.canEditHandle,
+  });
+
+  final PlayerStats stats;
+  final String handle;
+  final String providerLabel;
+  final String localeLabel;
+  final bool canEditHandle;
+
+  @override
+  State<_EditableProfileHero> createState() => _EditableProfileHeroState();
+}
+
+class _EditableProfileHeroState extends State<_EditableProfileHero> {
+  late final TextEditingController _displayNameController;
+  late final TextEditingController _discriminatorController;
+  bool _isEditing = false;
+  bool _isSaving = false;
+  String? _displayNameError;
+  String? _discriminatorError;
+
+  @override
+  void initState() {
+    super.initState();
+    _displayNameController = TextEditingController(
+      text: widget.stats.displayName ?? '',
+    );
+    _discriminatorController = TextEditingController(
+      text: widget.stats.discriminator?.toString() ?? '',
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant _EditableProfileHero oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_isEditing &&
+        (oldWidget.stats.displayName != widget.stats.displayName ||
+            oldWidget.stats.discriminator != widget.stats.discriminator)) {
+      _displayNameController.text = widget.stats.displayName ?? '';
+      _discriminatorController.text =
+          widget.stats.discriminator?.toString() ?? '';
+    }
+  }
+
+  @override
+  void dispose() {
+    _displayNameController.dispose();
+    _discriminatorController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
+    final handle = widget.handle;
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -300,25 +372,36 @@ class _ProfileHero extends StatelessWidget {
           children: [
             _ProfileAvatar(
               initial: handle.isEmpty ? '?' : handle[0],
-              avatarUrl: stats.avatarUrl,
+              avatarUrl: widget.stats.avatarUrl,
             ),
             const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    handle,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: textTheme.titleLarge?.copyWith(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 180),
+                    child: _isEditing
+                        ? _InlineHandleEditor(
+                            key: const ValueKey('handle-editor'),
+                            displayNameController: _displayNameController,
+                            discriminatorController: _discriminatorController,
+                            displayNameError: _displayNameError,
+                            discriminatorError: _discriminatorError,
+                            isSaving: _isSaving,
+                            onSave: _saveHandle,
+                            onCancel: _cancelEdit,
+                          )
+                        : _HandleTitleRow(
+                            key: const ValueKey('handle-title'),
+                            handle: handle,
+                            canEdit: widget.canEditHandle,
+                            onEdit: _startEdit,
+                          ),
                   ),
                   const SizedBox(height: 6),
                   Text(
-                    '$providerLabel · $localeLabel',
+                    '${widget.providerLabel} · ${widget.localeLabel}',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: textTheme.bodyMedium?.copyWith(
@@ -334,12 +417,12 @@ class _ProfileHero extends StatelessWidget {
                         icon: Icons.sports_esports_outlined,
                         label:
                             '${context.l10n.statGamesCompleted}: '
-                            '${stats.gamesCompleted}',
+                            '${widget.stats.gamesCompleted}',
                       ),
                       _ProfileChip(
                         icon: Icons.emoji_events_outlined,
                         label:
-                            stats.bestScore?.toString() ??
+                            widget.stats.bestScore?.toString() ??
                             context.l10n.commonUnknown,
                       ),
                     ],
@@ -349,6 +432,285 @@ class _ProfileHero extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _startEdit() {
+    setState(() {
+      _isEditing = true;
+      _displayNameError = null;
+      _discriminatorError = null;
+      _displayNameController.text = widget.stats.displayName ?? '';
+      _discriminatorController.text =
+          widget.stats.discriminator?.toString() ?? '';
+    });
+  }
+
+  void _cancelEdit() {
+    if (_isSaving) {
+      return;
+    }
+
+    setState(() {
+      _isEditing = false;
+      _displayNameError = null;
+      _discriminatorError = null;
+      _displayNameController.text = widget.stats.displayName ?? '';
+      _discriminatorController.text =
+          widget.stats.discriminator?.toString() ?? '';
+    });
+  }
+
+  Future<void> _saveHandle() async {
+    final displayName = _displayNameController.text.trim();
+    final discriminatorText = _discriminatorController.text.trim();
+    final discriminator = int.tryParse(discriminatorText);
+
+    setState(() {
+      _displayNameError =
+          displayName.length < 2 ||
+              displayName.length > 32 ||
+              displayName.contains('#')
+          ? context.l10n.usernameInvalidName
+          : null;
+      _discriminatorError =
+          discriminator == null || discriminator < 1 || discriminator > 9999
+          ? context.l10n.usernameInvalidCode
+          : null;
+    });
+
+    if (_displayNameError != null || _discriminatorError != null) {
+      return;
+    }
+
+    setState(() => _isSaving = true);
+    final messenger = ScaffoldMessenger.of(context);
+    final error = await context.read<ProfileSummaryCubit>().updateHandle(
+      displayName: displayName,
+      discriminator: discriminator!,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _isSaving = false;
+      _isEditing = error != null;
+    });
+
+    messenger.showSnackBar(
+      SnackBar(content: Text(error ?? context.l10n.usernameUpdated)),
+    );
+  }
+}
+
+class _HandleTitleRow extends StatelessWidget {
+  const _HandleTitleRow({
+    required this.handle,
+    required this.canEdit,
+    required this.onEdit,
+    super.key,
+  });
+
+  final String handle;
+  final bool canEdit;
+  final VoidCallback onEdit;
+
+  @override
+  Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return Row(
+      children: [
+        Flexible(
+          child: Text(
+            handle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: textTheme.titleLarge?.copyWith(
+              color: colorScheme.onSurface,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ),
+        if (canEdit) ...[
+          const SizedBox(width: 6),
+          Tooltip(
+            message: context.l10n.editUsername,
+            child: IconButton(
+              visualDensity: VisualDensity.compact,
+              iconSize: 19,
+              constraints: const BoxConstraints.tightFor(
+                width: 34,
+                height: 34,
+              ),
+              style: IconButton.styleFrom(
+                backgroundColor: colorScheme.primary.withValues(alpha: 0.08),
+                foregroundColor: colorScheme.primary,
+              ),
+              onPressed: onEdit,
+              icon: const Icon(Icons.edit_outlined),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _InlineHandleEditor extends StatelessWidget {
+  const _InlineHandleEditor({
+    required this.displayNameController,
+    required this.discriminatorController,
+    required this.displayNameError,
+    required this.discriminatorError,
+    required this.isSaving,
+    required this.onSave,
+    required this.onCancel,
+    super.key,
+  });
+
+  final TextEditingController displayNameController;
+  final TextEditingController discriminatorController;
+  final String? displayNameError;
+  final String? discriminatorError;
+  final bool isSaving;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final actionButtons = Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _InlineHandleIconButton(
+              icon: isSaving ? Icons.hourglass_top_outlined : Icons.check,
+              onPressed: isSaving ? null : onSave,
+              foregroundColor: colorScheme.onPrimary,
+              backgroundColor: colorScheme.primary,
+              tooltip: context.l10n.commonSave,
+            ),
+            const SizedBox(width: 4),
+            _InlineHandleIconButton(
+              icon: Icons.close,
+              onPressed: isSaving ? null : onCancel,
+              foregroundColor: colorScheme.onSurfaceVariant,
+              backgroundColor: colorScheme.surfaceContainerHighest,
+              tooltip: context.l10n.commonCancel,
+            ),
+          ],
+        );
+        final inputs = Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: TextField(
+                controller: displayNameController,
+                enabled: !isSaving,
+                maxLength: 32,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  isDense: true,
+                  counterText: '',
+                  labelText: context.l10n.usernameLabel,
+                  errorText: displayNameError,
+                  filled: true,
+                  fillColor: colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.45,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            SizedBox(
+              width: 80,
+              child: TextField(
+                controller: discriminatorController,
+                enabled: !isSaving,
+                maxLength: 4,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  isDense: true,
+                  counterText: '',
+                  prefixText: '#',
+                  labelText: context.l10n.usernameCodeLabel,
+                  errorText: discriminatorError,
+                  filled: true,
+                  fillColor: colorScheme.surfaceContainerHighest.withValues(
+                    alpha: 0.45,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+
+        if (constraints.maxWidth < 300) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              inputs,
+              const SizedBox(height: 8),
+              Align(alignment: Alignment.centerRight, child: actionButtons),
+            ],
+          );
+        }
+
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(child: inputs),
+            const SizedBox(width: 6),
+            actionButtons,
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _InlineHandleIconButton extends StatelessWidget {
+  const _InlineHandleIconButton({
+    required this.icon,
+    required this.onPressed,
+    required this.foregroundColor,
+    required this.backgroundColor,
+    required this.tooltip,
+  });
+
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final Color foregroundColor;
+  final Color backgroundColor;
+  final String tooltip;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: IconButton(
+        iconSize: 18,
+        constraints: const BoxConstraints.tightFor(width: 34, height: 34),
+        style: IconButton.styleFrom(
+          foregroundColor: foregroundColor,
+          backgroundColor: backgroundColor,
+          disabledBackgroundColor: backgroundColor.withValues(alpha: 0.45),
+        ),
+        onPressed: onPressed,
+        icon: Icon(icon),
       ),
     );
   }
@@ -550,7 +912,6 @@ class _ProfileMetricTile extends StatelessWidget {
 
 class _ProfileAccountPanel extends StatelessWidget {
   const _ProfileAccountPanel({
-    required this.stats,
     required this.providerLabel,
     required this.localeLabel,
     required this.authProvidersLinked,
@@ -558,7 +919,6 @@ class _ProfileAccountPanel extends StatelessWidget {
     required this.guestDeviceId,
   });
 
-  final PlayerStats stats;
   final String providerLabel;
   final String localeLabel;
   final int authProvidersLinked;
@@ -599,7 +959,6 @@ class _ProfileAccountPanel extends StatelessWidget {
             ),
             const SizedBox(height: 14),
             _AccountLinkActions(
-              stats: stats,
               authProvidersLinked: authProvidersLinked,
               sessionMode: sessionMode,
               guestDeviceId: guestDeviceId,
@@ -613,13 +972,11 @@ class _ProfileAccountPanel extends StatelessWidget {
 
 class _AccountLinkActions extends StatelessWidget {
   const _AccountLinkActions({
-    required this.stats,
     required this.authProvidersLinked,
     required this.sessionMode,
     required this.guestDeviceId,
   });
 
-  final PlayerStats stats;
   final int authProvidersLinked;
   final AuthSessionMode? sessionMode;
   final String guestDeviceId;
@@ -659,14 +1016,6 @@ class _AccountLinkActions extends StatelessWidget {
                   ? null
                   : () => context.read<AccountLinkCubit>().linkApple(),
             ),
-            if (sessionMode == AuthSessionMode.apple)
-              OutlinedButton.icon(
-                icon: const Icon(Icons.edit_outlined),
-                label: Text(context.l10n.editUsername),
-                onPressed: isBusy
-                    ? null
-                    : () => _showEditUsernameDialog(context, stats),
-              ),
             if (availability.canReturnToGuest)
               OutlinedButton.icon(
                 icon: const Icon(Icons.logout_outlined),
@@ -688,158 +1037,6 @@ class _AccountLinkActions extends StatelessWidget {
       ],
     );
   }
-
-  Future<void> _showEditUsernameDialog(
-    BuildContext context,
-    PlayerStats stats,
-  ) async {
-    final messenger = ScaffoldMessenger.of(context);
-    final result = await showDialog<_UsernameEditResult>(
-      context: context,
-      builder: (_) => _EditUsernameDialog(
-        initialDisplayName: stats.displayName ?? '',
-        initialDiscriminator: stats.discriminator,
-      ),
-    );
-
-    if (result == null || !context.mounted) {
-      return;
-    }
-
-    final error = await context.read<ProfileSummaryCubit>().updateHandle(
-      displayName: result.displayName,
-      discriminator: result.discriminator,
-    );
-    if (!context.mounted) {
-      return;
-    }
-
-    messenger.showSnackBar(
-      SnackBar(
-        content: Text(error ?? context.l10n.usernameUpdated),
-      ),
-    );
-  }
-}
-
-class _EditUsernameDialog extends StatefulWidget {
-  const _EditUsernameDialog({
-    required this.initialDisplayName,
-    required this.initialDiscriminator,
-  });
-
-  final String initialDisplayName;
-  final int? initialDiscriminator;
-
-  @override
-  State<_EditUsernameDialog> createState() => _EditUsernameDialogState();
-}
-
-class _EditUsernameDialogState extends State<_EditUsernameDialog> {
-  late final TextEditingController _displayNameController;
-  late final TextEditingController _discriminatorController;
-  String? _displayNameError;
-  String? _discriminatorError;
-
-  @override
-  void initState() {
-    super.initState();
-    _displayNameController = TextEditingController(
-      text: widget.initialDisplayName,
-    );
-    _discriminatorController = TextEditingController(
-      text: widget.initialDiscriminator?.toString() ?? '',
-    );
-  }
-
-  @override
-  void dispose() {
-    _displayNameController.dispose();
-    _discriminatorController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(context.l10n.editUsername),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _displayNameController,
-            autofocus: true,
-            maxLength: 32,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: context.l10n.usernameLabel,
-              errorText: _displayNameError,
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            controller: _discriminatorController,
-            keyboardType: TextInputType.number,
-            maxLength: 4,
-            decoration: InputDecoration(
-              labelText: context.l10n.usernameCodeLabel,
-              errorText: _discriminatorError,
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(context.l10n.commonCancel),
-        ),
-        FilledButton(
-          onPressed: _submit,
-          child: Text(context.l10n.commonSave),
-        ),
-      ],
-    );
-  }
-
-  void _submit() {
-    final displayName = _displayNameController.text.trim();
-    final discriminatorText = _discriminatorController.text.trim();
-    final discriminator = int.tryParse(discriminatorText);
-
-    setState(() {
-      _displayNameError =
-          displayName.length < 2 ||
-              displayName.length > 32 ||
-              displayName.contains('#')
-          ? context.l10n.usernameInvalidName
-          : null;
-      _discriminatorError =
-          discriminator == null || discriminator < 1 || discriminator > 9999
-          ? context.l10n.usernameInvalidCode
-          : null;
-    });
-
-    if (_displayNameError != null || _discriminatorError != null) {
-      return;
-    }
-
-    Navigator.of(context).pop(
-      _UsernameEditResult(
-        displayName: displayName,
-        discriminator: discriminator!,
-      ),
-    );
-  }
-}
-
-class _UsernameEditResult {
-  const _UsernameEditResult({
-    required this.displayName,
-    required this.discriminator,
-  });
-
-  final String displayName;
-  final int discriminator;
 }
 
 AccountLinkActionAvailability accountLinkActionAvailability({
