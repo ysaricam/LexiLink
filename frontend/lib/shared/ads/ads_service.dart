@@ -24,7 +24,7 @@ class AdsService {
   /// Whether the ad SDK has finished initializing.
   bool get isInitialized => _initialized;
 
-  /// Gathers consent (iOS ATT + AdMob UMP) and then initializes the ad SDK,
+  /// Gathers AdMob UMP consent and then initializes the ad SDK,
   /// once, on supported platforms; no-op otherwise. Consent is gathered
   /// **before** the SDK is initialized so it precedes any ad request.
   /// Swallows failures so app start never depends on the ad network.

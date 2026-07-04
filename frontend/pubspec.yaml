@@ -2,13 +2,12 @@ name: lexilink_app
 description: LexiLink cross-platform Flutter client.
 publish_to: none
 
-version: 1.0.0+1
+version: 1.0.0+7
 
 environment:
   sdk: ^3.9.0
 
 dependencies:
-  app_tracking_transparency: ^2.0.6
   audioplayers: ^6.1.0
   bloc: ^9.0.0
   cupertino_icons: ^1.0.8

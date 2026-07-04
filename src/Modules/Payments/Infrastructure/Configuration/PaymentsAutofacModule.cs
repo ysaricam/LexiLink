@@ -164,7 +164,7 @@ public class PaymentsAutofacModule : Autofac.Module
         builder.RegisterAssemblyTypes(typeof(PaymentsAutofacModule).Assembly)
             .AsClosedTypesOf(typeof(IDomainEventNotification<>))
             .AsImplementedInterfaces()
-            .InstancePerLifetimeScope()
+            .InstancePerDependency()
             .FindConstructorsWith(allCtors);
 
         builder.RegisterGenericDecorator(

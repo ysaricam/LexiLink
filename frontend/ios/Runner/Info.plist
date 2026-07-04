@@ -4,8 +4,6 @@
 <dict>
 	<key>GADApplicationIdentifier</key>
 	<string>$(ADMOB_APP_ID)</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>Your data is used to show you more relevant ads.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

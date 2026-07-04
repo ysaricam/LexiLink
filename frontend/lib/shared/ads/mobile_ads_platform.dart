@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lexilink_app/shared/ads/ads_platform.dart';
@@ -20,20 +19,6 @@ class MobileAdsPlatform implements AdsPlatform {
 
   @override
   Future<void> gatherConsent() async {
-    // iOS App Tracking Transparency: prompt only when the user hasn't decided
-    // yet. Best-effort; declining is fine — ads still serve (non-personalized).
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      try {
-        final status =
-            await AppTrackingTransparency.trackingAuthorizationStatus;
-        if (status == TrackingStatus.notDetermined) {
-          await AppTrackingTransparency.requestTrackingAuthorization();
-        }
-      } on Object catch (_) {
-        // Best-effort: never block ads/app start on the ATT prompt.
-      }
-    }
-
     // AdMob UMP consent: refresh consent info, then show the form if required.
     try {
       await _requestUmpConsent();

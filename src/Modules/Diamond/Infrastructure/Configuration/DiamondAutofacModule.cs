@@ -121,7 +121,7 @@ public class DiamondAutofacModule : Autofac.Module
         builder.RegisterAssemblyTypes(typeof(DiamondAutofacModule).Assembly)
             .AsClosedTypesOf(typeof(IDomainEventNotification<>))
             .AsImplementedInterfaces()
-            .InstancePerLifetimeScope()
+            .InstancePerDependency()
             .FindConstructorsWith(allCtors);
 
         // AdminAuditing must be innermost so UnitOfWork commits the

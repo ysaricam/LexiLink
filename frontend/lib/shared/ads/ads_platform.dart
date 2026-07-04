@@ -6,10 +6,9 @@ abstract class AdsPlatform {
   /// `true` only on Android/iOS.
   bool get isSupported;
 
-  /// Gathers user consent before any ad request: the iOS App Tracking
-  /// Transparency prompt (iOS only) followed by the AdMob UMP consent flow.
-  /// Best-effort — a failure or a user declining must never block ads or app
-  /// start. Called by `AdsService.initialize` before [initialize].
+  /// Gathers AdMob UMP consent before any ad request. Best-effort — a failure
+  /// or a user declining must never block ads or app start. Called by
+  /// `AdsService.initialize` before [initialize].
   Future<void> gatherConsent();
 
   /// Initializes the underlying ad SDK. Called once at app start.
