@@ -6,8 +6,6 @@ using LexiLink.Modules.Players.Application.Contracts;
 using LexiLink.Modules.Players.Application.Players.GetPlayerByAuthProvider;
 using LexiLink.Modules.Players.Application.Players.LinkAuthProvider;
 using LexiLink.Modules.Players.Domain.Players;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace LexiLink.API.Modules.Auth;
 
@@ -117,7 +115,7 @@ public static class AuthEndpoints
                             body.Email),
                         ct);
                 }
-                catch (DbUpdateException ex) when (IsAuthProviderUniqueViolation(ex))
+                catch (Exception ex) when (IsAuthProviderUniqueViolation(ex))
                 {
                     existingApplePlayer = await playersModule.ExecuteQueryAsync(
                         new GetPlayerByAuthProviderQuery(AuthProvider.Apple, body.ExternalId),
@@ -180,23 +178,10 @@ public static class AuthEndpoints
             mode));
     }
 
-    private static bool IsAuthProviderUniqueViolation(DbUpdateException exception)
-    {
-        var current = exception.InnerException;
-        while (current is not null)
-        {
-            if (current is PostgresException postgresException &&
-                postgresException.SqlState == PostgresErrorCodes.UniqueViolation &&
-                postgresException.ConstraintName == "UX_PlayerAuthIdentities_Provider_ExternalId")
-            {
-                return true;
-            }
-
-            current = current.InnerException;
-        }
-
-        return false;
-    }
+    private static bool IsAuthProviderUniqueViolation(Exception exception) =>
+        DatabaseExceptionClassifier.IsPostgresUniqueViolation(
+            exception,
+            "UX_PlayerAuthIdentities_Provider_ExternalId");
 }
 
 public sealed record TokenExchangeRequest(

@@ -226,6 +226,14 @@ builder.Services.AddSingleton<IExternalAdminIdentityVerifier>(
     });
 var adsSsvOptions = builder.Configuration.GetSection(AdsSsvOptions.SectionName).Get<AdsSsvOptions>()
     ?? new AdsSsvOptions();
+if (!builder.Environment.IsDevelopment() &&
+    adsSsvOptions.Mode == AdsSsvVerificationMode.DevelopmentFailOpen)
+{
+    throw new InvalidOperationException(
+        "Ads:Ssv:Mode=DevelopmentFailOpen is not allowed outside Development. " +
+        "Use Production for AdMob SSV verification.");
+}
+
 builder.Services.AddSingleton<IAdMobSsvVerifier>(
     adsSsvOptions.Mode == AdsSsvVerificationMode.DevelopmentFailOpen
         ? new DevelopmentAdMobSsvVerifier()

@@ -8,8 +8,6 @@ using LexiLink.Modules.Players.Application.Players.RegisterGuestPlayer;
 using LexiLink.Modules.Players.Application.Players.UpdatePlayerProfile;
 using LexiLink.Modules.Players.Application.Contracts;
 using LexiLink.Modules.Players.Domain.Players;
-using Microsoft.EntityFrameworkCore;
-using Npgsql;
 
 namespace LexiLink.API.Modules.Players;
 
@@ -92,7 +90,7 @@ public static class PlayerEndpoints
                         body.Discriminator),
                     ct);
             }
-            catch (DbUpdateException exception) when (IsPlayerHandleUniqueViolation(exception))
+            catch (Exception exception) when (IsPlayerHandleUniqueViolation(exception))
             {
                 return Results.Problem(
                     statusCode: StatusCodes.Status409Conflict,
@@ -125,23 +123,10 @@ public static class PlayerEndpoints
         }).AllowAnonymous();
     }
 
-    private static bool IsPlayerHandleUniqueViolation(DbUpdateException exception)
-    {
-        var current = exception.InnerException;
-        while (current is not null)
-        {
-            if (current is PostgresException postgresException &&
-                postgresException.SqlState == PostgresErrorCodes.UniqueViolation &&
-                postgresException.ConstraintName == "UX_Players_DisplayName_DiscriminatorValue")
-            {
-                return true;
-            }
-
-            current = current.InnerException;
-        }
-
-        return false;
-    }
+    private static bool IsPlayerHandleUniqueViolation(Exception exception) =>
+        DatabaseExceptionClassifier.IsPostgresUniqueViolation(
+            exception,
+            "UX_Players_DisplayName_DiscriminatorValue");
 }
 
 public record RegisterGuestPlayerRequest(string DeviceId, string DisplayName, string Locale);
