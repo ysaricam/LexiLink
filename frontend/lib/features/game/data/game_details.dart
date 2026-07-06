@@ -160,6 +160,37 @@ class GameDetails extends Equatable {
   bool get isFinished =>
       state == 'Completed' || state == 'Failed' || state == 'Abandoned';
 
+  GameDetails withWordDescriptions({
+    String? currentDescription,
+    String? targetDescription,
+  }) {
+    return GameDetails(
+      id: id,
+      playerId: playerId,
+      categoryId: categoryId,
+      difficulty: difficulty,
+      startLinkId: startLinkId,
+      startWord: startWord,
+      targetLinkId: targetLinkId,
+      targetWord: targetWord,
+      targetDescription: targetDescription ?? this.targetDescription,
+      currentLinkId: currentLinkId,
+      currentWord: currentWord,
+      currentDescription: currentDescription ?? this.currentDescription,
+      state: state,
+      score: score,
+      maxSteps: maxSteps,
+      stepsTaken: stepsTaken,
+      hintsTotal: hintsTotal,
+      hintsUsed: hintsUsed,
+      undosTotal: undosTotal,
+      undosUsed: undosUsed,
+      resetsTotal: resetsTotal,
+      resetsUsed: resetsUsed,
+      history: history,
+    );
+  }
+
   @override
   List<Object?> get props => [
     id,

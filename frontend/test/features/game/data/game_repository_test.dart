@@ -63,6 +63,28 @@ void main() {
     expect(options.single.isActive, isTrue);
   });
 
+  test('gets link description', () async {
+    final repository = GameRepository(
+      apiClient: ApiClient(
+        config: const ApiConfig(baseUrl: 'http://localhost:5000'),
+        tokenStore: InMemoryTokenStore(),
+        httpClient: MockClient((request) async {
+          expect(request.url.path, '/links/link-1');
+
+          return http.Response(
+            '{"id":"link-1","categoryId":"category-1","value":"Spor",'
+            '"description":"Bedeni gelistiren etkinlik.","isActive":true}',
+            200,
+          );
+        }),
+      ),
+    );
+
+    final description = await repository.getLinkDescription('link-1');
+
+    expect(description, 'Bedeni gelistiren etkinlik.');
+  });
+
   test('makes step', () async {
     final repository = GameRepository(
       apiClient: ApiClient(

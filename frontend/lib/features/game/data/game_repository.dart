@@ -41,6 +41,15 @@ class GameRepository {
     return GameDetails.fromJson(response);
   }
 
+  Future<String?> getLinkDescription(String linkId) async {
+    final response = await _apiClient.getJson('/links/$linkId');
+    final description = response['description'];
+    if (description is! String) return null;
+
+    final trimmed = description.trim();
+    return trimmed.isEmpty ? null : trimmed;
+  }
+
   Future<List<OutgoingLink>> getOptions(String gameId) async {
     final response = await _apiClient.getJsonList('/games/$gameId/options');
 

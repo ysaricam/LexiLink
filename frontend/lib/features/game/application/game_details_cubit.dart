@@ -32,7 +32,7 @@ class GameDetailsCubit extends Cubit<GameDetailsState> {
     emit(const GameDetailsState.loading());
 
     try {
-      final game = await _gameRepository.getGame(gameId);
+      final game = await _getGameWithFallbackDescriptions(gameId);
       final outgoingLinks = await _gameRepository.getOptions(game.id);
       emit(GameDetailsState.success(game: game, outgoingLinks: outgoingLinks));
     } on ApiException catch (error) {
@@ -165,7 +165,7 @@ class GameDetailsCubit extends Cubit<GameDetailsState> {
     String gameId, {
     String? recommendedLinkId,
   }) async {
-    final updatedGame = await _gameRepository.getGame(gameId);
+    final updatedGame = await _getGameWithFallbackDescriptions(gameId);
     final outgoingLinks = await _gameRepository.getOptions(updatedGame.id);
     emit(
       GameDetailsState.success(
@@ -174,6 +174,37 @@ class GameDetailsCubit extends Cubit<GameDetailsState> {
         recommendedLinkId: recommendedLinkId,
       ),
     );
+  }
+
+  Future<GameDetails> _getGameWithFallbackDescriptions(String gameId) async {
+    final game = await _gameRepository.getGame(gameId);
+    if (game.currentDescription != null && game.targetDescription != null) {
+      return game;
+    }
+
+    final descriptions = await Future.wait<String?>([
+      if (game.currentDescription == null)
+        _getLinkDescriptionOrNull(game.currentLinkId)
+      else
+        Future.value(game.currentDescription),
+      if (game.targetDescription == null)
+        _getLinkDescriptionOrNull(game.targetLinkId)
+      else
+        Future.value(game.targetDescription),
+    ]);
+
+    return game.withWordDescriptions(
+      currentDescription: descriptions[0],
+      targetDescription: descriptions[1],
+    );
+  }
+
+  Future<String?> _getLinkDescriptionOrNull(String linkId) async {
+    try {
+      return await _gameRepository.getLinkDescription(linkId);
+    } on Exception {
+      return null;
+    }
   }
 }
 
