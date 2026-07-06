@@ -6,8 +6,13 @@ namespace LexiLink.Modules.Games.IntegrationTests.Links;
 
 internal static class LinkHelper
 {
-    public static Task<Guid> CreateLinkAsync(ISender sender, Guid categoryId, string value, bool isActive = true)
-        => sender.Send(new CreateLinkCommand(categoryId, value, "", isActive));
+    public static Task<Guid> CreateLinkAsync(
+        ISender sender,
+        Guid categoryId,
+        string value,
+        string? description = null,
+        bool isActive = true)
+        => sender.Send(new CreateLinkCommand(categoryId, value, description ?? $"{value} description", isActive));
 
     public static async Task<List<Guid>> CreateLinksAsync(ISender sender, Guid categoryId, params string[] values)
     {

@@ -10,8 +10,10 @@ class GameDetails extends Equatable {
     required this.startWord,
     required this.targetLinkId,
     required this.targetWord,
+    required this.targetDescription,
     required this.currentLinkId,
     required this.currentWord,
+    required this.currentDescription,
     required this.state,
     required this.score,
     required this.maxSteps,
@@ -34,8 +36,10 @@ class GameDetails extends Equatable {
     final startWord = json['startWord'];
     final targetLinkId = json['targetLinkId'];
     final targetWord = json['targetWord'];
+    final targetDescription = _optionalString(json['targetDescription']);
     final currentLinkId = json['currentLinkId'];
     final currentWord = json['currentWord'];
+    final currentDescription = _optionalString(json['currentDescription']);
     final state = json['state'];
     final score = json['score'];
     final maxSteps = json['maxSteps'];
@@ -81,8 +85,10 @@ class GameDetails extends Equatable {
       startWord: startWord,
       targetLinkId: targetLinkId,
       targetWord: targetWord,
+      targetDescription: targetDescription,
       currentLinkId: currentLinkId,
       currentWord: currentWord,
+      currentDescription: currentDescription,
       state: state,
       score: score as int?,
       maxSteps: maxSteps,
@@ -113,8 +119,10 @@ class GameDetails extends Equatable {
   final String startWord;
   final String targetLinkId;
   final String targetWord;
+  final String? targetDescription;
   final String currentLinkId;
   final String currentWord;
+  final String? currentDescription;
   final String state;
   final int? score;
   final int maxSteps;
@@ -162,8 +170,10 @@ class GameDetails extends Equatable {
     startWord,
     targetLinkId,
     targetWord,
+    targetDescription,
     currentLinkId,
     currentWord,
+    currentDescription,
     state,
     score,
     maxSteps,
@@ -176,6 +186,16 @@ class GameDetails extends Equatable {
     resetsUsed,
     history,
   ];
+}
+
+String? _optionalString(Object? value) {
+  if (value == null) return null;
+  if (value is! String) {
+    throw StateError('Game response contains an invalid optional string.');
+  }
+
+  final trimmed = value.trim();
+  return trimmed.isEmpty ? null : trimmed;
 }
 
 class GameHistoryStep extends Equatable {

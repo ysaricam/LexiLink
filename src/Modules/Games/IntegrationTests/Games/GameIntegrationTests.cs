@@ -166,6 +166,8 @@ public class GameIntegrationTests : TestBase
 
         details.StartWord.Should().NotBeNullOrEmpty();
         details.TargetWord.Should().NotBeNullOrEmpty();
+        details.TargetDescription.Should().Be($"{details.TargetWord} description");
         details.CurrentWord.Should().Be(details.StartWord);
+        details.CurrentDescription.Should().Be($"{details.CurrentWord} description");
     }
 }

@@ -16,6 +16,7 @@ import 'package:lexilink_app/features/game/data/game_tutorial_store.dart';
 import 'package:lexilink_app/features/game/data/outgoing_link.dart';
 import 'package:lexilink_app/features/game/presentation/game_option_tile_state.dart';
 import 'package:lexilink_app/features/game/presentation/game_tutorial_sheet.dart';
+import 'package:lexilink_app/features/game/presentation/word_definition_popover.dart';
 import 'package:lexilink_app/features/hint/application/hint_cubit.dart';
 import 'package:lexilink_app/features/hint/data/hint_repository.dart';
 import 'package:lexilink_app/features/market/data/market_models.dart';
@@ -533,9 +534,10 @@ class _GameObjectivePanel extends StatelessWidget {
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          game.currentWord,
-                          style: theme.textTheme.headlineSmall?.copyWith(
+                        child: WordDefinitionPopover(
+                          word: game.currentWord,
+                          definition: game.currentDescription,
+                          textStyle: theme.textTheme.headlineSmall?.copyWith(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.w900,
                             height: 1,
@@ -560,7 +562,10 @@ class _GameObjectivePanel extends StatelessWidget {
                   size: 18,
                 ),
                 const SizedBox(width: 8),
-                _TargetWord(value: game.targetWord),
+                _TargetWord(
+                  value: game.targetWord,
+                  definition: game.targetDescription,
+                ),
               ],
             ),
             const SizedBox(height: 16),
@@ -632,9 +637,13 @@ class _GameLogo extends StatelessWidget {
 }
 
 class _TargetWord extends StatelessWidget {
-  const _TargetWord({required this.value});
+  const _TargetWord({
+    required this.value,
+    required this.definition,
+  });
 
   final String value;
+  final String? definition;
 
   @override
   Widget build(BuildContext context) {
@@ -658,10 +667,11 @@ class _TargetWord extends StatelessWidget {
           FittedBox(
             fit: BoxFit.scaleDown,
             alignment: Alignment.centerRight,
-            child: Text(
-              value,
-              maxLines: 1,
-              style: theme.textTheme.headlineSmall?.copyWith(
+            child: WordDefinitionPopover(
+              word: value,
+              definition: definition,
+              textAlign: TextAlign.end,
+              textStyle: theme.textTheme.headlineSmall?.copyWith(
                 color: colorScheme.secondary,
                 fontWeight: FontWeight.w900,
                 height: 1,
