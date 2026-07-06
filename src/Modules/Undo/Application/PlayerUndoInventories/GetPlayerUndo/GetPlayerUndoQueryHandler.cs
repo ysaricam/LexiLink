@@ -9,10 +9,14 @@ namespace LexiLink.Modules.Undo.Application.PlayerUndoInventories.GetPlayerUndo;
 internal class GetPlayerUndoQueryHandler : IQueryHandler<GetPlayerUndoQuery, PlayerUndoSnapshotDto>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
+    private readonly IUndoConfigurationService _undoConfiguration;
 
-    internal GetPlayerUndoQueryHandler(ISqlConnectionFactory sqlConnectionFactory)
+    internal GetPlayerUndoQueryHandler(
+        ISqlConnectionFactory sqlConnectionFactory,
+        IUndoConfigurationService undoConfiguration)
     {
         _sqlConnectionFactory = sqlConnectionFactory;
+        _undoConfiguration = undoConfiguration;
     }
 
     public async Task<PlayerUndoSnapshotDto> Handle(GetPlayerUndoQuery query, CancellationToken cancellationToken)
@@ -33,11 +37,17 @@ internal class GetPlayerUndoQueryHandler : IQueryHandler<GetPlayerUndoQuery, Pla
                 new { query.PlayerId },
                 cancellationToken: cancellationToken));
 
-        if (snapshot is null)
+        var presentedSnapshot = PlayerUndoSnapshotPresenter.PresentOrCreateForGameplay(
+            snapshot,
+            query.PlayerId,
+            _undoConfiguration,
+            query.UseGameplayPresentation);
+
+        if (presentedSnapshot is null)
         {
             throw new NotFoundException(nameof(PlayerUndoInventory), query.PlayerId);
         }
 
-        return snapshot;
+        return presentedSnapshot;
     }
 }

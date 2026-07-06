@@ -8,5 +8,6 @@ internal class TestExecutionContextAccessor : IExecutionContextAccessor
     public Guid CorrelationId => Guid.Empty;
     public bool IsAvailable => false;
     public bool IsAdmin => false;
+    public PlayerAuthSessionMode? PlayerAuthSessionMode => null;
     public Guid? AdminUserId => null;
 }

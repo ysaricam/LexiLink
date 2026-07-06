@@ -96,6 +96,8 @@ public class CompositionIsolationTests
 
         public bool IsAdmin => false;
 
+        public PlayerAuthSessionMode? PlayerAuthSessionMode => null;
+
         public Guid? AdminUserId => null;
     }
 }

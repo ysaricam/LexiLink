@@ -20,7 +20,7 @@ public static class AdminUndoEndpoints
             async (IUndoModule undo, Guid playerId, CancellationToken ct) =>
             {
                 var snapshot = await undo.ExecuteQueryAsync(
-                    new GetPlayerUndoQuery(playerId),
+                    new GetPlayerUndoQuery(playerId, useGameplayPresentation: false),
                     ct);
                 return Results.Ok(snapshot);
             })

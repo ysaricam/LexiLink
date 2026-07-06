@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" />
     <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="NSubstitute" />
     <PackageReference Include="NUnit" />
@@ -21,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Domain\LexiLink.Modules.Undo.Domain.csproj" />
     <ProjectReference Include="..\Application\LexiLink.Modules.Undo.Application.csproj" />
+    <ProjectReference Include="..\Infrastructure\LexiLink.Modules.Undo.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
