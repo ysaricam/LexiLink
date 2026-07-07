@@ -51,13 +51,7 @@ class _WordDefinitionPopoverState extends State<WordDefinitionPopover> {
       maxLines: widget.maxLines,
       overflow: TextOverflow.ellipsis,
       textAlign: widget.textAlign,
-      style: _hasDefinition
-          ? widget.textStyle?.copyWith(
-              decoration: TextDecoration.underline,
-              decorationStyle: TextDecorationStyle.dotted,
-              decorationThickness: 1.5,
-            )
-          : widget.textStyle,
+      style: widget.textStyle,
     );
 
     if (!_hasDefinition) return text;
