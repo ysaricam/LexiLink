@@ -20,7 +20,7 @@ internal sealed class GetPlayerAdminDetailQueryHandler : IQueryHandler<GetPlayer
             new PlayerId(request.PlayerId),
             cancellationToken);
 
-        return player is null ? null : PlayerAdminDetailMapper.Map(player);
+        return player is null || player.IsDeleted ? null : PlayerAdminDetailMapper.Map(player);
     }
 }
 
@@ -43,7 +43,7 @@ internal sealed class GetPlayerAdminDetailByHandleQueryHandler
             request.Discriminator,
             cancellationToken);
 
-        return player is null ? null : PlayerAdminDetailMapper.Map(player);
+        return player is null || player.IsDeleted ? null : PlayerAdminDetailMapper.Map(player);
     }
 }
 

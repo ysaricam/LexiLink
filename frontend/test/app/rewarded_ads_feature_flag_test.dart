@@ -4,12 +4,17 @@ import 'package:lexilink_app/app/router/app_router.dart';
 import 'package:lexilink_app/shared/config/feature_flags.dart';
 
 void main() {
-  test('ads and rewarded ads entry are disabled by default', () {
+  test('monetization entries are disabled by default', () {
     expect(FeatureFlags.adsEnabled, isFalse);
     expect(FeatureFlags.rewardedAdsEnabled, isFalse);
+    expect(FeatureFlags.iapEnabled, isFalse);
     expect(
       _routePaths(appRouter.configuration.routes),
       isNot(contains('/earn-diamonds')),
+    );
+    expect(
+      _routePaths(appRouter.configuration.routes),
+      isNot(contains('/payments')),
     );
   });
 }

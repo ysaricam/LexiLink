@@ -475,6 +475,15 @@
   "adminLimitLifetime": "À vie",
   "adminLimitDaily": "Quotidien",
   "adminLimitPerPromo": "Par promotion",
+  "privacyAndData": "Confidentialité et données",
+  "privacyPolicy": "Politique de confidentialité",
+  "accountDeletionInfo": "Informations sur la suppression du compte",
+  "deleteAccount": "Supprimer le compte",
+  "deletingAccount": "Suppression du compte...",
+  "deleteAccountTitle": "Supprimer définitivement le compte ?",
+  "deleteAccountMessage": "Votre identité, votre progression, vos scores, vos quêtes et votre inventaire seront définitivement supprimés. Les justificatifs d'achat peuvent être conservés sans lien avec votre identité pour des obligations légales ou de sécurité. Cette action est irréversible.",
+  "deleteAccountConfirm": "Supprimer définitivement",
+  "deleteAccountFailed": "Impossible de supprimer votre compte. Réessayez.",
   "adminMarketOrderSubtitle": "{price} diamants - {purchasedAt}",
   "@adminMarketOrderSubtitle": {
     "placeholders": {

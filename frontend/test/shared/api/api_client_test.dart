@@ -98,6 +98,23 @@ void main() {
       );
     });
 
+    test('sends authenticated delete requests', () async {
+      final tokenStore = InMemoryTokenStore();
+      await tokenStore.saveAccessToken('delete-token');
+      final client = ApiClient(
+        config: const ApiConfig(baseUrl: 'http://localhost:5000'),
+        tokenStore: tokenStore,
+        httpClient: MockClient((request) async {
+          expect(request.method, 'DELETE');
+          expect(request.url.path, '/players/player-1');
+          expect(request.headers['authorization'], 'Bearer delete-token');
+          return http.Response('', 204);
+        }),
+      );
+
+      await client.delete('/players/player-1');
+    });
+
     test('maps request timeouts to network api errors', () async {
       final client = ApiClient(
         config: const ApiConfig(

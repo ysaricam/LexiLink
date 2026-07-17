@@ -598,6 +598,15 @@
   "adminLimitLifetime": "Lifetime",
   "adminLimitDaily": "Daily",
   "adminLimitPerPromo": "Per promotion",
+  "privacyAndData": "Privacy and data",
+  "privacyPolicy": "Privacy policy",
+  "accountDeletionInfo": "Account deletion information",
+  "deleteAccount": "Delete account",
+  "deletingAccount": "Deleting account...",
+  "deleteAccountTitle": "Permanently delete your account?",
+  "deleteAccountMessage": "Your account identity, game progress, scores, quests and inventory will be permanently deleted. Purchase records may be retained without a link to your identity where required for security or legal obligations. This cannot be undone.",
+  "deleteAccountConfirm": "Delete permanently",
+  "deleteAccountFailed": "We could not delete your account. Try again.",
   "adminMarketOrderSubtitle": "{price} diamonds - {purchasedAt}",
   "@adminMarketOrderSubtitle": {
     "placeholders": {

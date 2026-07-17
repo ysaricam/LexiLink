@@ -327,6 +327,12 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         .As<IPlayerStatusLookup>()
         .InstancePerLifetimeScope();
 
+    containerBuilder.Register(c => new PlayerDataDeletionService(
+            connectionString,
+            c.Resolve<IClock>()))
+        .As<IPlayerDataDeletionService>()
+        .InstancePerLifetimeScope();
+
     containerBuilder.Register(c => new QuestCounterReader(
             connectionString,
             c.Resolve<IEnumerable<IOutboxProcessor>>(),

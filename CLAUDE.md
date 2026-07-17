@@ -22,6 +22,9 @@ All project docs live under `docs/`. Read the relevant one before non-trivial ch
 - **`docs/FIRST_INSTALL_TUTORIAL.md`** — First-pass setup guide that orders local bootstrap, production first deploy, content seeding, admin web, and release checks.
 - **`docs/CONTENT_AUTHORING.md`** — Content-ops handoff for authoring/importing per-language Category+Link word graphs (JSON schema, importer usage, validation, verify checklist). Authoring is a content task, not code.
 - **`docs/MOBILE_RELEASE.md`** — Store-build readiness for the Flutter app (prod API wiring, real AdMob/IAP ids, release build commands, store-readiness checklist). Mobile-only; signing/store/credentials are operator-owned.
+- **`docs/ANDROID_PLAY_RELEASE_ROADMAP.md`** — Ordered Android/Google Play execution plan: policy blockers, account deletion, privacy/Data safety, signing, Play Console, testing, staged rollout, and deferred monetization gates.
+- **`docs/PLAY_DATA_SAFETY.md`** — Version-controlled Play Console Data safety answer sheet for the exact Android v1 build, including SDK-derived disclosures and re-audit triggers.
+- **`docs/ANDROID_SIGNING_RUNBOOK.md`** — Operator procedure for creating, backing up, registering, and verifying the Android upload key without committing secrets.
 - **`docs/LAUNCH_CHECKLIST.md`** — Operator action items for go-live (domain/DNS, server first deploy, content seeding, store build, ads/IAP creds). The human/credential/server work that can't live in code.
 
 ## Commands

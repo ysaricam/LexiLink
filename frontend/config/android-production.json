@@ -1,0 +1,6 @@
+{
+  "LEXILINK_API_BASE_URL": "https://api.wordlope.com",
+  "LEXILINK_ENABLE_ADS": "false",
+  "LEXILINK_ENABLE_REWARDED_ADS": "false",
+  "LEXILINK_ENABLE_IAP": "false"
+}

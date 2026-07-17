@@ -17,6 +17,7 @@ import 'package:lexilink_app/features/undo/application/undo_cubit.dart';
 import 'package:lexilink_app/shared/api/api_client.dart';
 import 'package:lexilink_app/shared/api/api_config.dart';
 import 'package:lexilink_app/shared/audio/audio_service.dart';
+import 'package:lexilink_app/shared/config/feature_flags.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/storage/token_store.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
@@ -479,7 +480,9 @@ class _MarketItemCard extends StatelessWidget {
     final diamondBalance = _readIfPresent<DiamondCubit>(
       context,
     )?.state.diamond?.balance;
-    if (diamondBalance != null && diamondBalance < item.effectivePrice) {
+    if (FeatureFlags.iapEnabled &&
+        diamondBalance != null &&
+        diamondBalance < item.effectivePrice) {
       await showPaymentSheet(context);
       if (context.mounted) {
         await _readIfPresent<DiamondCubit>(context)?.loadDiamond();

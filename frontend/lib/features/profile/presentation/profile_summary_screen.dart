@@ -101,6 +101,7 @@ class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
   late final http.Client _httpClient;
   late final ProfileSummaryCubit _profileSummaryCubit;
   late final AccountLinkCubit _accountLinkCubit;
+  late final PlayerStatsRepository _playerStatsRepository;
 
   @override
   void initState() {
@@ -111,8 +112,9 @@ class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
       httpClient: _httpClient,
       tokenStore: widget.bootstrap.tokenStore,
     );
+    _playerStatsRepository = PlayerStatsRepository(apiClient: apiClient);
     _profileSummaryCubit = ProfileSummaryCubit(
-      playerStatsRepository: PlayerStatsRepository(apiClient: apiClient),
+      playerStatsRepository: _playerStatsRepository,
       tokenStore: widget.bootstrap.tokenStore,
     );
     _accountLinkCubit = AccountLinkCubit(
@@ -139,15 +141,33 @@ class _ProfileSummaryProvidersState extends State<_ProfileSummaryProviders> {
         BlocProvider.value(value: _profileSummaryCubit),
         BlocProvider.value(value: _accountLinkCubit),
       ],
-      child: _ProfileSummaryView(guestDeviceId: widget.bootstrap.guestDeviceId),
+      child: _ProfileSummaryView(
+        guestDeviceId: widget.bootstrap.guestDeviceId,
+        onDeleteAccount: _deleteAccount,
+      ),
     );
+  }
+
+  Future<void> _deleteAccount() async {
+    final playerId = await widget.bootstrap.tokenStore.readPlayerId();
+    if (playerId == null || playerId.isEmpty) {
+      throw StateError('Player session is missing.');
+    }
+
+    await _playerStatsRepository.deleteAccount(playerId);
+    await widget.bootstrap.tokenStore.clear();
+    await GuestDeviceIdStore().clear();
   }
 }
 
 class _ProfileSummaryView extends StatelessWidget {
-  const _ProfileSummaryView({required this.guestDeviceId});
+  const _ProfileSummaryView({
+    required this.guestDeviceId,
+    required this.onDeleteAccount,
+  });
 
   final String guestDeviceId;
+  final Future<void> Function() onDeleteAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +215,7 @@ class _ProfileSummaryView extends StatelessWidget {
                     stats: state.stats!,
                     sessionMode: state.sessionMode,
                     guestDeviceId: guestDeviceId,
+                    onDeleteAccount: onDeleteAccount,
                   )
                 else
                   AppEmptyState(
@@ -221,11 +242,13 @@ class _ProfileSummaryCard extends StatelessWidget {
     required this.stats,
     required this.sessionMode,
     required this.guestDeviceId,
+    required this.onDeleteAccount,
   });
 
   final PlayerStats stats;
   final AuthSessionMode? sessionMode;
   final String guestDeviceId;
+  final Future<void> Function() onDeleteAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -254,6 +277,7 @@ class _ProfileSummaryCard extends StatelessWidget {
           authProvidersLinked: stats.authProvidersLinked,
           sessionMode: sessionMode,
           guestDeviceId: guestDeviceId,
+          onDeleteAccount: onDeleteAccount,
         ),
         const SizedBox(height: 4),
       ],
@@ -917,6 +941,7 @@ class _ProfileAccountPanel extends StatelessWidget {
     required this.authProvidersLinked,
     required this.sessionMode,
     required this.guestDeviceId,
+    required this.onDeleteAccount,
   });
 
   final String providerLabel;
@@ -924,6 +949,7 @@ class _ProfileAccountPanel extends StatelessWidget {
   final int authProvidersLinked;
   final AuthSessionMode? sessionMode;
   final String guestDeviceId;
+  final Future<void> Function() onDeleteAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -963,10 +989,81 @@ class _ProfileAccountPanel extends StatelessWidget {
               sessionMode: sessionMode,
               guestDeviceId: guestDeviceId,
             ),
+            const SizedBox(height: 18),
+            const Divider(),
+            const SizedBox(height: 10),
+            _DeleteAccountButton(onDeleteAccount: onDeleteAccount),
           ],
         ),
       ),
     );
+  }
+}
+
+class _DeleteAccountButton extends StatefulWidget {
+  const _DeleteAccountButton({required this.onDeleteAccount});
+
+  final Future<void> Function() onDeleteAccount;
+
+  @override
+  State<_DeleteAccountButton> createState() => _DeleteAccountButtonState();
+}
+
+class _DeleteAccountButtonState extends State<_DeleteAccountButton> {
+  bool _isDeleting = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton.icon(
+      icon: _isDeleting
+          ? const SizedBox.square(
+              dimension: 18,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            )
+          : const Icon(Icons.delete_forever_outlined),
+      label: Text(
+        _isDeleting ? context.l10n.deletingAccount : context.l10n.deleteAccount,
+      ),
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Theme.of(context).colorScheme.error,
+      ),
+      onPressed: _isDeleting ? null : _confirmAndDelete,
+    );
+  }
+
+  Future<void> _confirmAndDelete() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(context.l10n.deleteAccountTitle),
+        content: Text(context.l10n.deleteAccountMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(context.l10n.commonCancel),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(context.l10n.deleteAccountConfirm),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    setState(() => _isDeleting = true);
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      await widget.onDeleteAccount();
+      if (!mounted) return;
+      context.go('/');
+    } on Object {
+      if (!mounted) return;
+      setState(() => _isDeleting = false);
+      messenger.showSnackBar(
+        SnackBar(content: Text(context.l10n.deleteAccountFailed)),
+      );
+    }
   }
 }
 

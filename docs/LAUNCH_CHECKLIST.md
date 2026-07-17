@@ -76,19 +76,26 @@ içerik yüklemezsen oyuncu boş bir oyun görür.
       `namespace` + `applicationId`) ve **iOS bundle id**
       (`ios/Runner.xcodeproj/project.pbxproj` `PRODUCT_BUNDLE_IDENTIFIER`)
       değerlerini `com.wordlope.app` yap.
-- [x] **Görünen adı** `LexiLink` yap (`android:label`,
-      `CFBundleDisplayName`/`CFBundleName`).
-- [x] `pubspec.yaml` **sürümünü** yükselt (`0.1.0+1` → `1.0.0+1`).
-- [ ] **Signing** kur: Android upload keystore + `key.properties` (örnek:
+- [x] **Görünen Android/mağaza adı** `WordLope` olarak kilitlendi
+      (`android:label`, uygulama içi başlık ve public web aynı isimde).
+- [x] `pubspec.yaml` **sürümü** `1.0.1+2`; her Play yüklemesinde build
+      numarası artırılacak.
+- [x] **Signing** kur: Android upload keystore + `key.properties` (örnek:
       `frontend/android/key.properties.example`; release build dosya yoksa
       hata verir); iOS distribution sertifikası + provisioning profile.
-- [x] Production'a bakacak şekilde **Android build al:**
-      `flutter build appbundle --release --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com ...`
-      (`build/app/outputs/bundle/release/app-release.aab`, 50.3MB). iOS için
-      `ipa` hâlâ Xcode/CocoaPods/signing sonrası alınacak.
+- [x] Upload keystore hazırlandıktan sonra production'a bakan, reklam ve IAP'ı
+      kapalı **imzalı Android AAB** al. Eski release artifact'i güncel sürüm ve
+      yayın kapsamı için kabul edilmez. `1.0.1+2` AAB Play Console'a yüklendi.
 - [ ] Uygulamaları gerçek bundle id'lerle **App Store Connect** + **Google
       Play Console**'da oluştur; gizlilik/data-safety, ekran görüntüleri,
       açıklamalar, yaş sınırını doldur.
+- [ ] Google Play hesabı 2026'da açılmış yeni bir **kişisel hesap** ve WordLope
+      ilk uygulama: production erişimi için Closed testing'de en az 12 test
+      kullanıcısını kesintisiz en az 14 gün tut.
+- [x] İlk Play dağıtım kapsamı: Play Console'daki tüm uygun ülkeler/bölgeler;
+      mağaza listeleme dilleri Türkçe + İngilizce.
+- [x] `support@wordlope.com` ve `privacy@wordlope.com` adresleri aktif olarak
+      izleniyor.
 
 Durum: Android appbundle build geçti. iOS toolchain temiz, ancak IPA build
 `com.wordlope.app` için Xcode Signing & Capabilities altında Team /

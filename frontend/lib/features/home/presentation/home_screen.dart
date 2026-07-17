@@ -791,11 +791,12 @@ class _HomeActionDock extends StatelessWidget {
         label: context.l10n.navMarket,
         route: '/market',
       ),
-      _HomeAction(
-        icon: Icons.diamond_outlined,
-        label: context.l10n.navDiamonds,
-        route: '/payments',
-      ),
+      if (FeatureFlags.iapEnabled)
+        _HomeAction(
+          icon: Icons.diamond_outlined,
+          label: context.l10n.navDiamonds,
+          route: '/payments',
+        ),
       _HomeAction(
         icon: Icons.settings_outlined,
         label: context.l10n.navSettings,

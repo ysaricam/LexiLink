@@ -73,6 +73,9 @@ void main() {
     expect(find.text('Classic'), findsOneWidget);
     expect(find.text('Music'), findsOneWidget);
     expect(find.text('Sound effects'), findsOneWidget);
+    expect(find.text('Privacy and data'), findsOneWidget);
+    expect(find.text('Privacy policy'), findsOneWidget);
+    expect(find.text('Account deletion information'), findsOneWidget);
   });
 
   testWidgets('toggling the music switch updates the cubit', (tester) async {

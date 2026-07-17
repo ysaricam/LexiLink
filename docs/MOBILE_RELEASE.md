@@ -1,6 +1,6 @@
 # MOBILE_RELEASE.md
 
-Store-build readiness for the LexiLink Flutter app (GO3). The game ships to
+Store-build readiness for the WordLope Flutter app (GO3). The game ships to
 the **iOS App Store** and **Google Play** — there is no web build. The backend
 runs at `https://api.wordlope.com` (see `ROADMAP.md > Sprint GO`,
 `OPERATIONS.md`).
@@ -22,12 +22,9 @@ LEXILINK_API_BASE_URL   default http://127.0.0.1:5000   →  https://api.wordlop
 
 (`lib/shared/api/api_config.dart` reads `String.fromEnvironment('LEXILINK_API_BASE_URL')`.)
 
-Google account linking also needs the OAuth web/server client id at build time
-so the mobile SDK returns an ID token the backend can verify:
-
-```
-GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id>
-```
+The submitted Android build does not include Google sign-in. Apple account
+linking exists in the shared client, but must pass the Android store-installed
+device gate before it is treated as a recoverable identity for monetization.
 
 ## 2. Real ad ids (AdMob)
 
@@ -65,13 +62,13 @@ callback at `https://api.wordlope.com/ads/rewarded/callback`.
   but marks it unavailable because the localized store price cannot be loaded.
 - Configure backend verification creds (`Payments:Apple`, `Payments:Google`);
   these are fail-closed shells until real creds arrive.
-- **Do not enable real-money IAP until social sign-in exists.** Guest accounts
-  are device-bound (GO-A), so a purchase would be lost on device change. See
-  `ROADMAP.md > Sprint GO > Deliberate non-actions`.
+- **Do not enable real-money IAP in the first Android release.** Guest accounts
+  are device-bound and the Apple account flow has not yet passed the Android
+  store-installed device gate, so a purchase could be lost on device change.
 
 ## 4. Release build commands
 
-Version is set in `pubspec.yaml` as `1.0.0+1` (`+1` is the build number;
+Version is set in `pubspec.yaml` as `1.0.1+2` (`+2` is the build number;
 increment every store upload).
 
 Android App Bundle (for Play):
@@ -79,11 +76,13 @@ Android App Bundle (for Play):
 ```bash
 cd frontend
 flutter build appbundle --release \
-  --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
-  --dart-define=GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id> \
-  --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=<real> \
-  --dart-define=ADMOB_REWARDED_AD_UNIT_ID=ca-app-pub-2115638398802394/3077352370
+  --dart-define-from-file=config/android-production.json
 ```
+
+`config/android-production.json` is the committed, non-secret contract for the
+first Android release. Review it before every build. Signing passwords and
+keystore paths never belong in that file; provide them through the ignored
+`android/key.properties` or `ANDROID_KEYSTORE_*` environment variables.
 
 iOS (archive in Xcode or):
 
@@ -91,7 +90,6 @@ iOS (archive in Xcode or):
 cd frontend
 flutter build ipa --release \
   --dart-define=LEXILINK_API_BASE_URL=https://api.wordlope.com \
-  --dart-define=GOOGLE_SIGN_IN_SERVER_CLIENT_ID=<google-oauth-client-id> \
   --dart-define=ADMOB_INTERSTITIAL_AD_UNIT_ID=ca-app-pub-2115638398802394/4516380950 \
   --dart-define=ADMOB_REWARDED_AD_UNIT_ID=ca-app-pub-2115638398802394/3077352370
 ```
@@ -111,16 +109,17 @@ flutter build ipa --release \
 - [x] **iOS bundle identifier** — `ios/Runner.xcodeproj/project.pbxproj`
       `PRODUCT_BUNDLE_IDENTIFIER` is `com.wordlope.app` (tests use
       `com.wordlope.app.RunnerTests`).
-- [x] **App display name** — `android:label` (`AndroidManifest.xml`) and
-      `CFBundleDisplayName`/`CFBundleName` (`Info.plist`) are `LexiLink`.
-- [x] **Version** — `pubspec.yaml` `version:` is `1.0.0+1`; increment the
+- [x] **App display name** — Android and the in-app localized title are
+      `WordLope`; keep the store listing and public web on the same name.
+- [x] **Version** — `pubspec.yaml` `version:` is `1.0.1+2`; increment the
       build number per upload.
 
 **Signing:**
 
 - [ ] Android upload/release **keystore** configured (`android/key.properties`
       from `android/key.properties.example`; keystore kept out of git). Release
-      builds fail if this file is missing.
+      builds fail if neither this file nor the CI-oriented `ANDROID_KEYSTORE_*`
+      environment variables are present. Follow `ANDROID_SIGNING_RUNBOOK.md`.
 - [ ] iOS distribution **certificate** + **provisioning profile** (Apple
       Developer account); automatic signing in Xcode or fastlane.
 

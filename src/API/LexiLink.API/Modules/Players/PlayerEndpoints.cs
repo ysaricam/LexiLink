@@ -1,5 +1,6 @@
 using LexiLink.API.Configuration.Authentication;
 using LexiLink.API.Configuration.ExceptionHandling;
+using LexiLink.API.CrossModule;
 using LexiLink.Common.Application;
 using LexiLink.Modules.Players.Application.Players.GetPlayerByAuthProvider;
 using LexiLink.Modules.Players.Application.Players.GetPlayerById;
@@ -121,6 +122,26 @@ public static class PlayerEndpoints
                     $"Player with auth provider '{provider}' and external id '{externalId}' was not found.")
                 : Results.Ok(dto);
         }).AllowAnonymous();
+
+        group.MapDelete("/{id:guid}",
+            async (
+                Guid id,
+                IExecutionContextAccessor executionContextAccessor,
+                IPlayerDataDeletionService deletionService,
+                HttpContext httpContext,
+                CancellationToken ct) =>
+        {
+            if (executionContextAccessor.UserId != id)
+            {
+                return Results.Forbid();
+            }
+
+            return await deletionService.DeleteAsync(id, ct)
+                ? Results.NoContent()
+                : ApiProblemResults.NotFound(httpContext, $"Player '{id}' was not found.");
+        })
+        .Produces(StatusCodes.Status204NoContent)
+        .ProducesProblem(StatusCodes.Status403Forbidden);
     }
 
     private static bool IsPlayerHandleUniqueViolation(Exception exception) =>

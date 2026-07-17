@@ -475,6 +475,15 @@
   "adminLimitLifetime": "Ömür boyu",
   "adminLimitDaily": "Günlük",
   "adminLimitPerPromo": "Promosyon başına",
+  "privacyAndData": "Gizlilik ve veriler",
+  "privacyPolicy": "Gizlilik politikası",
+  "accountDeletionInfo": "Hesap silme bilgileri",
+  "deleteAccount": "Hesabı sil",
+  "deletingAccount": "Hesap siliniyor...",
+  "deleteAccountTitle": "Hesabın kalıcı olarak silinsin mi?",
+  "deleteAccountMessage": "Hesap kimliğin, oyun ilerlemen, skorların, görevlerin ve envanterin kalıcı olarak silinecek. Satın alma kayıtları güvenlik veya yasal yükümlülükler gerektirdiğinde kimliğinle bağlantısı kaldırılarak saklanabilir. Bu işlem geri alınamaz.",
+  "deleteAccountConfirm": "Kalıcı olarak sil",
+  "deleteAccountFailed": "Hesabını silemedik. Tekrar dene.",
   "adminMarketOrderSubtitle": "{price} elmas - {purchasedAt}",
   "@adminMarketOrderSubtitle": {
     "placeholders": {

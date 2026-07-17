@@ -13,6 +13,63 @@ env:
   ASPNETCORE_LexiLink_IntegrationTests_ConnectionString: Host=localhost;Port=5432;Database=lexilink;Username=lexiadmin;Password=0852
 
 jobs:
+  android-release:
+    name: Android release gate
+    runs-on: ubuntu-latest
+    env:
+      ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/ci-upload-keystore.jks
+      ANDROID_KEYSTORE_PASSWORD: ci-validation-only
+      ANDROID_KEY_ALIAS: ci-upload
+      ANDROID_KEY_PASSWORD: ci-validation-only
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.41.9
+          cache: true
+
+      - name: Install Flutter dependencies
+        working-directory: frontend
+        run: flutter pub get
+
+      - name: Analyze
+        working-directory: frontend
+        run: flutter analyze
+
+      - name: Test
+        working-directory: frontend
+        run: flutter test
+
+      - name: Create ephemeral CI signing key
+        run: >-
+          keytool -genkeypair -noprompt
+          -keystore "$ANDROID_KEYSTORE_PATH"
+          -storepass "$ANDROID_KEYSTORE_PASSWORD"
+          -alias "$ANDROID_KEY_ALIAS"
+          -keypass "$ANDROID_KEY_PASSWORD"
+          -keyalg RSA -keysize 4096 -validity 2
+          -dname "CN=WordLope CI Validation"
+
+      - name: Build production-configured release AAB
+        working-directory: frontend
+        run: >-
+          flutter build appbundle --release
+          --dart-define-from-file=config/android-production.json
+
+      - name: Verify release AAB
+        run: ./scripts/verify-android-aab.sh
+
   build-test:
     name: Build and test
     runs-on: ubuntu-latest

@@ -17,6 +17,8 @@ public class Player : Entity, IAggregateRoot
     private bool _isBanned;
     private string? _bannedReason;
     private DateTime? _bannedAt;
+    private bool _isDeleted;
+    private DateTime? _deletedAt;
 
     private readonly List<AuthIdentity> _authIdentities;
 
@@ -31,6 +33,8 @@ public class Player : Entity, IAggregateRoot
     public bool IsBanned => _isBanned;
     public string? BannedReason => _bannedReason;
     public DateTime? BannedAt => _bannedAt;
+    public bool IsDeleted => _isDeleted;
+    public DateTime? DeletedAt => _deletedAt;
 
     private Player()
     {
@@ -61,6 +65,8 @@ public class Player : Entity, IAggregateRoot
         _locale = locale;
         _createdAt = registeredAt;
         _isGuest = true;
+        _isDeleted = false;
+        _deletedAt = null;
 
         _authIdentities = [new AuthIdentity(AuthProvider.Guest, deviceId, email: null, linkedAt: registeredAt)];
 

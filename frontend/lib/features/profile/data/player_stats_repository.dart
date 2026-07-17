@@ -51,4 +51,7 @@ class PlayerStatsRepository {
         })
         .toList(growable: false);
   }
+
+  Future<void> deleteAccount(String playerId) =>
+      _apiClient.delete('/players/$playerId');
 }

@@ -475,6 +475,15 @@
   "adminLimitLifetime": "Lebenslang",
   "adminLimitDaily": "Täglich",
   "adminLimitPerPromo": "Pro Aktion",
+  "privacyAndData": "Datenschutz und Daten",
+  "privacyPolicy": "Datenschutzerklärung",
+  "accountDeletionInfo": "Informationen zur Kontolöschung",
+  "deleteAccount": "Konto löschen",
+  "deletingAccount": "Konto wird gelöscht...",
+  "deleteAccountTitle": "Konto dauerhaft löschen?",
+  "deleteAccountMessage": "Deine Identität, Spielfortschritte, Punktzahlen, Aufgaben und dein Inventar werden dauerhaft gelöscht. Kaufbelege können ohne Verbindung zu deiner Identität für rechtliche oder Sicherheitszwecke aufbewahrt werden. Dies kann nicht rückgängig gemacht werden.",
+  "deleteAccountConfirm": "Dauerhaft löschen",
+  "deleteAccountFailed": "Dein Konto konnte nicht gelöscht werden. Versuche es erneut.",
   "adminMarketOrderSubtitle": "{price} Diamanten - {purchasedAt}",
   "@adminMarketOrderSubtitle": {
     "placeholders": {

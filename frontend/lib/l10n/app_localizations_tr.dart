@@ -1366,6 +1366,34 @@ class AppLocalizationsTr extends AppLocalizations {
   String get adminLimitPerPromo => 'Promosyon başına';
 
   @override
+  String get privacyAndData => 'Gizlilik ve veriler';
+
+  @override
+  String get privacyPolicy => 'Gizlilik politikası';
+
+  @override
+  String get accountDeletionInfo => 'Hesap silme bilgileri';
+
+  @override
+  String get deleteAccount => 'Hesabı sil';
+
+  @override
+  String get deletingAccount => 'Hesap siliniyor...';
+
+  @override
+  String get deleteAccountTitle => 'Hesabın kalıcı olarak silinsin mi?';
+
+  @override
+  String get deleteAccountMessage =>
+      'Hesap kimliğin, oyun ilerlemen, skorların, görevlerin ve envanterin kalıcı olarak silinecek. Satın alma kayıtları güvenlik veya yasal yükümlülükler gerektirdiğinde kimliğinle bağlantısı kaldırılarak saklanabilir. Bu işlem geri alınamaz.';
+
+  @override
+  String get deleteAccountConfirm => 'Kalıcı olarak sil';
+
+  @override
+  String get deleteAccountFailed => 'Hesabını silemedik. Tekrar dene.';
+
+  @override
   String adminMarketOrderSubtitle(Object price, Object purchasedAt) {
     return '$price elmas - $purchasedAt';
   }

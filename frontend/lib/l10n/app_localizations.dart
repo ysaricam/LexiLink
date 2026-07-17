@@ -2606,6 +2606,60 @@ abstract class AppLocalizations {
   /// **'Per promotion'**
   String get adminLimitPerPromo;
 
+  /// No description provided for @privacyAndData.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy and data'**
+  String get privacyAndData;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @accountDeletionInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deletion information'**
+  String get accountDeletionInfo;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete account'**
+  String get deleteAccount;
+
+  /// No description provided for @deletingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting account...'**
+  String get deletingAccount;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently delete your account?'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account identity, game progress, scores, quests and inventory will be permanently deleted. Purchase records may be retained without a link to your identity where required for security or legal obligations. This cannot be undone.'**
+  String get deleteAccountMessage;
+
+  /// No description provided for @deleteAccountConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete permanently'**
+  String get deleteAccountConfirm;
+
+  /// No description provided for @deleteAccountFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not delete your account. Try again.'**
+  String get deleteAccountFailed;
+
   /// No description provided for @adminMarketOrderSubtitle.
   ///
   /// In en, this message translates to:

@@ -233,6 +233,63 @@ public sealed class PlayerProfileEndpointsTests
         }
     }
 
+    [Test]
+    public async Task DeletePlayer_ForOwner_AnonymizesAccountAndRemovesPersonalData()
+    {
+        var playerId = Guid.NewGuid();
+        await SeedPlayerAsync(playerId, "DeleteMe", 8701, isGuest: false);
+        await using (var connection = new NpgsqlConnection(ConnectionString))
+        {
+            await connection.OpenAsync();
+            await connection.ExecuteAsync(
+                """
+                INSERT INTO "stats"."PlayerStats"
+                    ("PlayerId", "DisplayName", "Discriminator", "IsGuest", "AuthProvidersLinked",
+                     "GamesCompleted", "BestScore", "TotalScore", "LastGameCompletedOn", "CreatedAt", "UpdatedAt")
+                VALUES
+                    (@PlayerId, 'DeleteMe', 8701, FALSE, 1, 2, 100, 150, @Now, @Now, @Now);
+                """,
+                new { PlayerId = playerId, Now = DateTime.UtcNow });
+        }
+
+        try
+        {
+            using var factory = CreateFactory();
+            using var client = CreateAuthenticatedClient(factory, playerId, PlayerAuthSessionMode.Apple);
+
+            var response = await client.DeleteAsync($"/players/{playerId}");
+
+            response.StatusCode.Should().Be(HttpStatusCode.NoContent);
+            await using var connection = new NpgsqlConnection(ConnectionString);
+            await connection.OpenAsync();
+            var tombstone = await connection.QuerySingleAsync<DeletedPlayerRow>(
+                """
+                SELECT "DisplayName", "AvatarUrl", "IsBanned", "IsDeleted", "DeletedAt"
+                FROM "players"."Players"
+                WHERE "Id" = @PlayerId;
+                """,
+                new { PlayerId = playerId });
+            tombstone.DisplayName.Should().StartWith("Deleted-");
+            tombstone.AvatarUrl.Should().BeNull();
+            tombstone.IsBanned.Should().BeTrue();
+            tombstone.IsDeleted.Should().BeTrue();
+            tombstone.DeletedAt.Should().NotBeNull();
+
+            var authCount = await connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM \"players\".\"PlayerAuthIdentities\" WHERE \"PlayerId\" = @PlayerId;",
+                new { PlayerId = playerId });
+            var statsCount = await connection.ExecuteScalarAsync<int>(
+                "SELECT COUNT(*) FROM \"stats\".\"PlayerStats\" WHERE \"PlayerId\" = @PlayerId;",
+                new { PlayerId = playerId });
+            authCount.Should().Be(0);
+            statsCount.Should().Be(0);
+        }
+        finally
+        {
+            await DeletePlayersAsync(playerId);
+        }
+    }
+
     private static WebApplicationFactory<Program> CreateFactory() =>
         new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
@@ -381,4 +438,11 @@ public sealed class PlayerProfileEndpointsTests
         int DiscriminatorValue,
         string? AvatarUrl,
         string Locale);
+
+    private sealed record DeletedPlayerRow(
+        string DisplayName,
+        string? AvatarUrl,
+        bool IsBanned,
+        bool IsDeleted,
+        DateTime? DeletedAt);
 }

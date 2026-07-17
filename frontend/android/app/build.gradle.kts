@@ -12,13 +12,28 @@ val keystoreProperties = Properties()
 if (keystorePropertiesFile.exists()) {
     keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
 }
+fun signingValue(propertyName: String, environmentName: String): String? =
+    (keystoreProperties[propertyName] as String?)
+        ?.takeIf { it.isNotBlank() }
+        ?: System.getenv(environmentName)?.takeIf { it.isNotBlank() }
+
+val releaseStoreFile = signingValue("storeFile", "ANDROID_KEYSTORE_PATH")
+val releaseStorePassword = signingValue("storePassword", "ANDROID_KEYSTORE_PASSWORD")
+val releaseKeyAlias = signingValue("keyAlias", "ANDROID_KEY_ALIAS")
+val releaseKeyPassword = signingValue("keyPassword", "ANDROID_KEY_PASSWORD")
+val hasReleaseSigning = listOf(
+    releaseStoreFile,
+    releaseStorePassword,
+    releaseKeyAlias,
+    releaseKeyPassword,
+).all { !it.isNullOrBlank() }
 val isReleaseBuild = gradle.startParameter.taskNames.any {
     it.contains("release", ignoreCase = true)
 }
 
 android {
     namespace = "com.wordlope.app"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -34,33 +49,32 @@ android {
         applicationId = "com.wordlope.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        minSdk = 24
+        targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
     signingConfigs {
         create("release") {
-            val storeFilePath = keystoreProperties["storeFile"] as String?
-            if (!storeFilePath.isNullOrBlank()) {
-                storeFile = rootProject.file(storeFilePath)
+            if (releaseStoreFile != null) {
+                storeFile = rootProject.file(releaseStoreFile)
             }
-            storePassword = keystoreProperties["storePassword"] as String?
-            keyAlias = keystoreProperties["keyAlias"] as String?
-            keyPassword = keystoreProperties["keyPassword"] as String?
+            storePassword = releaseStorePassword
+            keyAlias = releaseKeyAlias
+            keyPassword = releaseKeyPassword
         }
     }
 
     buildTypes {
         release {
-            if (isReleaseBuild && !keystorePropertiesFile.exists()) {
+            if (isReleaseBuild && !hasReleaseSigning) {
                 throw GradleException(
-                    "Missing frontend/android/key.properties. Configure the upload keystore before building release."
+                    "Missing Android upload signing configuration. Configure frontend/android/key.properties or the ANDROID_KEYSTORE_* environment variables."
                 )
             }
             signingConfig = signingConfigs.getByName(
-                if (keystorePropertiesFile.exists()) "release" else "debug"
+                if (hasReleaseSigning) "release" else "debug"
             )
         }
     }

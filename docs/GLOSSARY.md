@@ -45,6 +45,16 @@ PATCHes `Player.Locale`. Server-side content filtering does not consume it
 yet; that belongs to Phase 2 localized content/modeling. Flutter ARB lookup
 uses language codes (`tr`/`en`/`de`/`fr`/`es`) and falls back to English.
 
+### Deleted Player Tombstone — `players.Players`
+Account deletion is a compliance operation composed by the API host because
+player-owned data spans every bounded context. The original `Player` row is
+retained only as a non-identifying tombstone (`IsDeleted`, `DeletedAt`) so
+referential/audit history remains stable; auth identities and operational game
+data are physically deleted. The handle/profile is randomized, the tombstone
+is banned so existing JWTs stop at the authentication boundary, and
+`players.v_Players` excludes it from player/admin reads. Payment and admin-audit
+records may be retained only after replacing/redacting the player identifier.
+
 ### PlayerEnergy — `Modules/Energy/Domain/PlayerEnergies/PlayerEnergy.cs`
 A player's energy account in the Energy module. Aggregate root, identified by `PlayerEnergyId` (same Guid value as the owning `PlayerId` — cross-module reference by id only). Holds `_currentAmount`, `_maximumAmount`, `_rechargeIntervalSeconds`, and `_lastRefilledOn`. Lifecycle: `InitializeFor(playerId, max, intervalSeconds, initializedAt)` (called by `EnsurePlayerEnergyExistsCommand` after a `PlayerRegisteredIntegrationEvent`). Behavior: `Consume(amount, now)` recharges first via `RechargeBasedOnElapsedTime(now)`, then checks `EnergyMustBeSufficientToConsumeRule`, then debits; the refill timer is armed **only when consume crosses the bucket from at/above max to below max**. `GrantBonus(amount, now)` adds only up to `_maximumAmount` — it is the reward path invoked by `QuestClaimedIntegrationEvent`, so a 3/5 player receiving +5 ends at 5/5. Emits `PlayerEnergyConsumedDomainEvent` and `PlayerEnergyRefilledDomainEvent`.
 

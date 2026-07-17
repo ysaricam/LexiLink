@@ -25,6 +25,8 @@ internal class PlayerEntityTypeConfiguration : IEntityTypeConfiguration<Player>
         builder.Property<bool>("_isBanned").HasColumnName("IsBanned");
         builder.Property<string?>("_bannedReason").HasColumnName("BannedReason");
         builder.Property<DateTime?>("_bannedAt").HasColumnName("BannedAt");
+        builder.Property<bool>("_isDeleted").HasColumnName("IsDeleted");
+        builder.Property<DateTime?>("_deletedAt").HasColumnName("DeletedAt");
 
         builder.OwnsOne<Discriminator>("_discriminator", d =>
         {

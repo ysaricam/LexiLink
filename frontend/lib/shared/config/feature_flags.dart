@@ -10,4 +10,8 @@ class FeatureFlags {
         'LEXILINK_ENABLE_REWARDED_ADS',
       ) &&
       adsEnabled;
+
+  static const bool iapEnabled = bool.fromEnvironment(
+    'LEXILINK_ENABLE_IAP',
+  );
 }

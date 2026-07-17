@@ -1374,6 +1374,35 @@ class AppLocalizationsFr extends AppLocalizations {
   String get adminLimitPerPromo => 'Par promotion';
 
   @override
+  String get privacyAndData => 'Confidentialité et données';
+
+  @override
+  String get privacyPolicy => 'Politique de confidentialité';
+
+  @override
+  String get accountDeletionInfo => 'Informations sur la suppression du compte';
+
+  @override
+  String get deleteAccount => 'Supprimer le compte';
+
+  @override
+  String get deletingAccount => 'Suppression du compte...';
+
+  @override
+  String get deleteAccountTitle => 'Supprimer définitivement le compte ?';
+
+  @override
+  String get deleteAccountMessage =>
+      'Votre identité, votre progression, vos scores, vos quêtes et votre inventaire seront définitivement supprimés. Les justificatifs d\'achat peuvent être conservés sans lien avec votre identité pour des obligations légales ou de sécurité. Cette action est irréversible.';
+
+  @override
+  String get deleteAccountConfirm => 'Supprimer définitivement';
+
+  @override
+  String get deleteAccountFailed =>
+      'Impossible de supprimer votre compte. Réessayez.';
+
+  @override
   String adminMarketOrderSubtitle(Object price, Object purchasedAt) {
     return '$price diamants - $purchasedAt';
   }

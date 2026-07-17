@@ -11,6 +11,7 @@ import 'package:lexilink_app/shared/audio/audio_service.dart';
 import 'package:lexilink_app/shared/l10n/l10n_extension.dart';
 import 'package:lexilink_app/shared/widgets/app_back_bar.dart';
 import 'package:lexilink_app/shared/widgets/app_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Audio preferences screen. Reads the app-wide [AudioSettingsCubit] (provided
 /// above the router), so it needs no providers of its own. Changes apply to
@@ -81,12 +82,53 @@ class SettingsScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 14),
+              const _PrivacySection(),
             ],
           );
         },
       ),
     );
   }
+}
+
+class _PrivacySection extends StatelessWidget {
+  const _PrivacySection();
+
+  static final Uri _privacyUri = Uri.parse('https://wordlope.com/privacy/');
+  static final Uri _deletionUri = Uri.parse(
+    'https://wordlope.com/account-deletion/',
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return _SettingsSection(
+      icon: Icons.privacy_tip_outlined,
+      title: context.l10n.privacyAndData,
+      children: [
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.policy_outlined),
+          title: Text(context.l10n.privacyPolicy),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () => _open(_privacyUri),
+        ),
+        const _SectionDivider(),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          leading: const Icon(Icons.manage_accounts_outlined),
+          title: Text(context.l10n.accountDeletionInfo),
+          trailing: const Icon(Icons.open_in_new),
+          onTap: () => _open(_deletionUri),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _open(Uri uri) => launchUrl(
+    uri,
+    mode: LaunchMode.externalApplication,
+  );
 }
 
 class _SettingsHero extends StatelessWidget {

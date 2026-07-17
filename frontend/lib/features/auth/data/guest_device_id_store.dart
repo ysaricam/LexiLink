@@ -19,6 +19,16 @@ class GuestDeviceIdStore {
   final FlutterSecureStorage _secureStorage;
   final math.Random _random;
 
+  Future<void> clear() async {
+    await _preferences.remove(_deviceIdKey);
+    try {
+      await _secureStorage.delete(key: _deviceIdKey);
+    } on Object {
+      // SharedPreferences was still cleared on platforms without secure
+      // storage.
+    }
+  }
+
   Future<String> readOrCreate({bool preferLegacyDeviceId = false}) async {
     final existing = await _readSecureDeviceId();
     if (existing != null && existing.isNotEmpty) {

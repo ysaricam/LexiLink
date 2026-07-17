@@ -1364,6 +1364,35 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminLimitPerPromo => 'Per promotion';
 
   @override
+  String get privacyAndData => 'Privacy and data';
+
+  @override
+  String get privacyPolicy => 'Privacy policy';
+
+  @override
+  String get accountDeletionInfo => 'Account deletion information';
+
+  @override
+  String get deleteAccount => 'Delete account';
+
+  @override
+  String get deletingAccount => 'Deleting account...';
+
+  @override
+  String get deleteAccountTitle => 'Permanently delete your account?';
+
+  @override
+  String get deleteAccountMessage =>
+      'Your account identity, game progress, scores, quests and inventory will be permanently deleted. Purchase records may be retained without a link to your identity where required for security or legal obligations. This cannot be undone.';
+
+  @override
+  String get deleteAccountConfirm => 'Delete permanently';
+
+  @override
+  String get deleteAccountFailed =>
+      'We could not delete your account. Try again.';
+
+  @override
   String adminMarketOrderSubtitle(Object price, Object purchasedAt) {
     return '$price diamonds - $purchasedAt';
   }

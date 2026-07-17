@@ -33,6 +33,7 @@ internal class PlayerRepository : IPlayerRepository
             FROM "players"."Players"
             WHERE "DisplayName" = @DisplayName
               AND "DiscriminatorValue" = @Discriminator
+              AND "IsDeleted" = FALSE
         """;
 
         var playerIdValue = await connection.QuerySingleOrDefaultAsync<Guid?>(

@@ -67,10 +67,11 @@ final appRouter = GoRouter(
       path: '/market',
       builder: (context, state) => const MarketScreen(),
     ),
-    GoRoute(
-      path: '/payments',
-      builder: (context, state) => const PaymentScreen(),
-    ),
+    if (FeatureFlags.iapEnabled)
+      GoRoute(
+        path: '/payments',
+        builder: (context, state) => const PaymentScreen(),
+      ),
     if (FeatureFlags.rewardedAdsEnabled)
       GoRoute(
         path: '/earn-diamonds',
